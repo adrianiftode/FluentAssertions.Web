@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.757
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentAssertions.Web", "FluentAssertions.Web\FluentAssertions.Web.csproj", "{79E84A48-ED42-4F24-BEA9-32C878A2A7BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79E84A48-ED42-4F24-BEA9-32C878A2A7BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79E84A48-ED42-4F24-BEA9-32C878A2A7BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79E84A48-ED42-4F24-BEA9-32C878A2A7BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79E84A48-ED42-4F24-BEA9-32C878A2A7BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81F41C75-2F8A-4E70-BA17-38146C4BB6E6}
+	EndGlobalSection
+EndGlobal
