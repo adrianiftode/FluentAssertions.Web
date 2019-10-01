@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace FluentAssertions.Web.Api
+namespace Sample.Api
 {
     public class Program
     {

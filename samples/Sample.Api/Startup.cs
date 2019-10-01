@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FluentAssertions.Web.Api
+namespace Sample.Api
 {
     public class Startup
     {

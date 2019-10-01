@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentAssertions.Web\FluentAssertions.Web.csproj" />
-    <ProjectReference Include="..\FluentAssertions.Web.Api\FluentAssertions.Web.Api.csproj" />
   </ItemGroup>
 
 </Project>

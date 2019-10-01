@@ -1,5 +1,9 @@
 ﻿using FluentAssertions.Execution;
+using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
+using FluentAssertions.Web.Internal;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Dynamic;
 using System.Net;
 using System.Net.Http;
@@ -7,107 +11,101 @@ using System.Threading.Tasks;
 
 namespace FluentAssertions.Web
 {
-    public static class HttpResponseMessageFluentAssertionsExtensions
+    public class HttpResponseMessageAssertions : ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>
     {
-        public static HttpResponseMessageExtendedAssertions Should(this HttpResponseMessage actual)
-            => new HttpResponseMessageExtendedAssertions(actual);
-    }
-
-    public class HttpResponseMessageExtendedAssertions : ReferenceTypeAssertions<HttpResponseMessage,
-        HttpResponseMessageExtendedAssertions>
-    {
-        public HttpResponseMessageExtendedAssertions(HttpResponseMessage value)
+        static HttpResponseMessageAssertions()
         {
-            Subject = value;
+            Formatter.AddFormatter(new HttpResponseMessageFormatter());
         }
 
-        protected override string Identifier => $"{nameof(HttpResponseMessageExtendedAssertions)}";
+        public HttpResponseMessageAssertions(HttpResponseMessage value) => Subject = value;
 
-        public async Task<AndConstraint<ObjectAssertions>> BeOk<TModel>(string because = "",
+        protected override string Identifier => $"{nameof(HttpResponseMessage)}";
+
+        public AndConstraint<OkAssertions> Be200Ok(string because = "", params object[] becauseArgs)
+        {
+            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.OK);
+
+            return new AndConstraint<OkAssertions>(new OkAssertions(Subject));
+        }
+
+        public AndWhichConstraint<OkAssertions, TModel> Be200Ok<TModel>(TModel expected, string because = "",
             params object[] becauseArgs)
         {
-            await ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.OK);
+            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.OK);
 
-            var subjectModel = await Subject.Content.ReadAsAsync<TModel>();
-            return new AndConstraint<ObjectAssertions>(new ObjectAssertions(subjectModel));
+            var subjectModel = GetSubjectModel<TModel>();
+
+            return new AndWhichConstraint<OkAssertions, TModel>(new OkAssertions(Subject), subjectModel);
         }
 
-        public async Task BeOk(string because = "",
-            params object[] becauseArgs)
+        public AndConstraint<HttpResponseMessageAssertions> Be405MethodNotAllowed(string because = "", params object[] becauseArgs)
         {
-            await ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.OK);
+            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.MethodNotAllowed);
+
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
-        public async Task<AndConstraint<ObjectAssertions>> BeCreated<TModel>(string because = "",
-            params object[] becauseArgs)
+        public AndConstraint<BadRequestAssertions> Be400BadRequest(string because = "", params object[] becauseArgs)
         {
-            await ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Created);
-
-            var subjectModel = await Subject.Content.ReadAsAsync<TModel>();
-            return new AndConstraint<ObjectAssertions>(new ObjectAssertions(subjectModel));
+            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.BadRequest);
+            return new AndConstraint<BadRequestAssertions>(new BadRequestAssertions(Subject));
         }
 
-        public async Task<BadRequestAssertions> BeBadRequest(string because = "", params object[] becauseArgs)
+
+        public AndConstraint<HttpResponseMessageAssertions> WithHttpHeader(string expectedHeader, string expectedHeaderValue,
+            string because = "", params object[] becauseArgs)
         {
-            await ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.BadRequest);
-
-            var responseContent = await Subject.GetStringContent();
-            var expandoContent = await Subject.GetExpandoContent();
-
-            return new BadRequestAssertions(Subject, responseContent, expandoContent);
-        }
-
-        public async Task BeNotFound(string because = "", params object[] becauseArgs)
-        {
-            await ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.NotFound);
-        }
-
-        public async Task BeForbidden(string because = "", params object[] becauseArgs)
-        {
-            await ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Forbidden);
-        }
-
-        public async Task BeMethodNotAllowed(string because = "",
-            params object[] becauseArgs)
-        {
-            await ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.MethodNotAllowed);
-        }
-
-        private async Task ExecuteStatusAssertion(string because, object[] becauseArgs, HttpStatusCode expected)
-        {
-            var content = await Subject.GetBeautifiedStringContent();
+            bool IsHeaderPresent() => Subject.Headers.Contains(expectedHeader);
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
+
+                .ForCondition(IsHeaderPresent())
+                .FailWith("Expected {context:value} to contain " +
+                          "the HttpHeader {0} with content {1}, " +
+                          "but no such header was found in the actual headers list: " +
+                          $"{Environment.NewLine}{{2}}{Environment.NewLine}. " +
+                          $"The response content was {Environment.NewLine}{{3}}",
+                    expectedHeader,
+                    expectedHeaderValue,
+                    Subject.GetHeaders(),
+                    Subject)
+                ;
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+
+        private void ExecuteStatusAssertion(string because, object[] becauseArgs, HttpStatusCode expected)
+        {
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
                 .ForCondition(expected == Subject.StatusCode)
-                .FailWith("Expected {0}{because}, but found {1}{reason}. The content was {2}."
-                    , expected, Subject.StatusCode, content);
+                .FailWith("Expected HTTP {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , expected, Subject.StatusCode, Subject);
         }
-    }
 
-    public class ContentAssertions : ReferenceTypeAssertions<string, ContentAssertions>
-    {
-        public ContentAssertions(string content)
+        protected string GetContent()
         {
-            Subject = content;
+            Func<Task<string>> content = () => Subject.GetStringContent();
+            return content.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
 
-        protected override string Identifier => "content";
-    }
-
-    public class CreatedAssertions<TModel> : ReferenceTypeAssertions<HttpResponseMessage, CreatedAssertions<TModel>>
-    {
-        private readonly TModel _model;
-        private readonly string _responseContent;
-        private readonly ExpandoObject _responseContentExpando;
-        public CreatedAssertions(HttpResponseMessage value, TModel model, string responseContent, ExpandoObject responseContentExpando)
+        protected TModel GetSubjectModel<TModel>()
         {
-            Subject = value;
-            _model = model;
-            _responseContent = responseContent;
-            _responseContentExpando = responseContentExpando;
+            Func<Task<TModel>> model = () => Subject.Content.ReadAsAsync<TModel>();
+            return model.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
 
-        protected override string Identifier => "Created";
+        protected ExpandoObject GetExpandoContent()
+        {
+            Func<Task<ExpandoObject>> expando = Subject.GetExpandoContent;
+            return expando.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+        }
+
+        protected JObject GetJsonObject()
+        {
+            Func<Task<JObject>> jsonObject = () => Subject.GetJsonObject();
+            return jsonObject.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+        }
     }
 }
