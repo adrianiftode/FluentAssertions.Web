@@ -1,24 +1,18 @@
 ﻿using FluentAssertions.Execution;
-using FluentAssertions.Primitives;
+using FluentAssertions.Web.Internal;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace FluentAssertions.Web
 {
-    public class BadRequestAssertions : ReferenceTypeAssertions<HttpResponseMessage, BadRequestAssertions>
+    public class BadRequestAssertions : HttpResponseMessageAssertions
     {
-        private readonly string _responseContent;
-        private readonly ExpandoObject _responseContentExpando;
-
-        public BadRequestAssertions(HttpResponseMessage value, string responseContent,
-            ExpandoObject responseContentExpando)
+        public BadRequestAssertions(HttpResponseMessage value) : base(value)
         {
-            Subject = value;
-            _responseContent = responseContent;
-            _responseContentExpando = responseContentExpando;
+
         }
 
         protected override string Identifier => "BadRequest";
@@ -26,55 +20,26 @@ namespace FluentAssertions.Web
         public AndConstraint<BadRequestAssertions> WithError(string expectedField, string expectedErrorMessage,
             string because = "", params object[] becauseArgs)
         {
-            IDictionary<string, object> properties = _responseContentExpando;
-
-            IReadOnlyCollection<string> ErrorsLazy() => properties != null && properties.ContainsKey(expectedField)
-                ? ((List<object>)properties[expectedField]).Select(c => c.ToString()).ToList()
-                : null;
+            Func<Task<JObject>> jsonFunc = () => Subject.GetJsonObject();
+            var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-
-                .ForCondition(properties?.ContainsKey(expectedField) == true)
+                .ForCondition(json.HasKey(expectedField))
                 .FailWith("Expected {context:value} " +
-                          "to contain a response with a field named {0}, but found {1}. " +
-                          $"The response content was {Environment.NewLine} {{2}}",
-                    expectedField, properties?.Keys, _responseContent)
+                          "to an error message related to the `{0}` field, but not was found." +
+                          "{1}",
+                    expectedField, Subject)
 
                 .Then
-                .ForCondition(ErrorsLazy().Any(c => c.Contains(expectedErrorMessage)))
+                .ForCondition(json.GetStringValuesByKey(expectedField).Contains(expectedErrorMessage))
                 .FailWith("Expected {context:value} to contain " +
-                          "the error message {0} associated with {1}, " +
+                          "the error message {0} related to the {1} field, " +
                           "but no such message was found in the actual error messages list: " +
-                          $"{Environment.NewLine}{{2}}{Environment.NewLine}" +
-                          $"{Environment.NewLine}{Environment.NewLine}" +
-                          $"The response content was {Environment.NewLine}{{3}}",
+                          "{2}",
                     expectedErrorMessage,
                     expectedField,
-                    ErrorsLazy(),
-                    _responseContent)
-                ;
-            return new AndConstraint<BadRequestAssertions>(this);
-        }
-
-        public AndConstraint<BadRequestAssertions> WithHttpHeader(string expectedHeader, string expectedHeaderValue,
-            string because = "", params object[] becauseArgs)
-        {
-            bool IsHeaderPresent() => Subject.Headers.Contains(expectedHeader);
-
-            Execute.Assertion
-                .BecauseOf(because, becauseArgs)
-
-                .ForCondition(IsHeaderPresent())
-                .FailWith("Expected {context:value} to contain " +
-                          "the HttpHeader {0} with content {1}, " +
-                          "but no such header was found in the actual headers list: " +
-                          $"{Environment.NewLine}{{2}}{Environment.NewLine}. " +
-                          $"The response content was {Environment.NewLine}{{3}}",
-                    expectedHeader,
-                    expectedHeaderValue,
-                    Subject.Headers,
-                    _responseContent)
+                    Subject)
                 ;
             return new AndConstraint<BadRequestAssertions>(this);
         }
