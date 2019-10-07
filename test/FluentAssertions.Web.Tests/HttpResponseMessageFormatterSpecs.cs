@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FluentAssertions.Web.Tests
 {
-    public class HttpResponseMessageFormatterTests
+    public class HttpResponseMessageFormatterSpecs
     {
         [Fact]
         public void GivenUnspecifiedResponse_ShouldPrintProtocolAndHaveContentLengthZero()

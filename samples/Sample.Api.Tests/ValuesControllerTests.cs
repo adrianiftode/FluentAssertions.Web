@@ -55,8 +55,7 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/values/1");
 
             // Assert
-            response.Should().Be200Ok<string>("string")
-                ;
+            response.Should().Be200Ok().And.HaveContent<string>("value");
         }
 
         [Fact]
@@ -102,7 +101,7 @@ namespace Sample.Api.Tests
 
             // Assert
             response.Should().Be400BadRequest()
-                .And.WithError("", "A non-empty request body is required.");
+                .And.HaveError("", "A non-empty request body is required.");
         }
     }
 }
