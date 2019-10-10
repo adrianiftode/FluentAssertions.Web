@@ -18,9 +18,7 @@ namespace Sample.Api.Controllers
         public Comment Get(int id) => new Comment { Author = "Adrian", Content = "Hey" };
 
         [HttpPost]
-        public void Post([FromBody] Comment value)
-        {
-        }
+        public Comment Post([FromBody] Comment value) => value;
     }
 
     public class Comment

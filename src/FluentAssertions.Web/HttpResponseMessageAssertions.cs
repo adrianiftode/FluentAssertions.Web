@@ -11,68 +11,96 @@ using System.Threading.Tasks;
 
 namespace FluentAssertions.Web
 {
-    public class HttpResponseMessageAssertions : ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>
+    /// <summary>
+    /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state.
+    /// </summary>
+    public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>
     {
-        static HttpResponseMessageAssertions()
-        {
-            Formatter.AddFormatter(new HttpResponseMessageFormatter());
-        }
+        static HttpResponseMessageAssertions() => Formatter.AddFormatter(new HttpResponseMessageFormatter());
 
+        /// <summary>
+        /// Initialized a new instance of the <see cref="HttpResponseMessageAssertions"/>
+        /// class.
+        /// </summary>
+        /// <param name="value">The subject value to be asserted.</param>
         public HttpResponseMessageAssertions(HttpResponseMessage value) => Subject = value;
 
         protected override string Identifier => $"{nameof(HttpResponseMessage)}";
 
-        public AndConstraint<OkAssertions> Be200Ok(string because = "", params object[] becauseArgs)
+        /// <summary>
+        /// Asserts that a HTTP response has the HTTP status 200 Ok
+        /// </summary>        
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> Be200Ok(string because = "", params object[] becauseArgs)
         {
+            ExecuteSubjectNotNull(because, becauseArgs);
             ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.OK);
-
-            return new AndConstraint<OkAssertions>(new OkAssertions(Subject));
-        }
-
-        public AndWhichConstraint<OkAssertions, TModel> Be200Ok<TModel>(TModel expected, string because = "",
-            params object[] becauseArgs)
-        {
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.OK);
-
-            var subjectModel = GetSubjectModel<TModel>();
-
-            return new AndWhichConstraint<OkAssertions, TModel>(new OkAssertions(Subject), subjectModel);
-        }
-
-        public AndConstraint<HttpResponseMessageAssertions> Be405MethodNotAllowed(string because = "", params object[] becauseArgs)
-        {
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.MethodNotAllowed);
-
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
+        /// <summary>
+        /// Asserts that a HTTP response has the HTTP status 400 BadRequest
+        /// </summary>        
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// </param>
         public AndConstraint<BadRequestAssertions> Be400BadRequest(string because = "", params object[] becauseArgs)
         {
+            ExecuteSubjectNotNull(because, becauseArgs);
             ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.BadRequest);
             return new AndConstraint<BadRequestAssertions>(new BadRequestAssertions(Subject));
         }
 
-
-        public AndConstraint<HttpResponseMessageAssertions> WithHttpHeader(string expectedHeader, string expectedHeaderValue,
-            string because = "", params object[] becauseArgs)
+        /// <summary>
+        /// Asserts that a HTTP response has the HTTP status 401 Unauthorized
+        /// </summary>        
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> Be401Unauthorized(string because = "", params object[] becauseArgs)
         {
-            bool IsHeaderPresent() => Subject.Headers.Contains(expectedHeader);
-
-            Execute.Assertion
-                .BecauseOf(because, becauseArgs)
-
-                .ForCondition(IsHeaderPresent())
-                .FailWith("Expected {context:value} to contain " +
-                          "the HttpHeader {0} with content {1}, " +
-                          "but no such header was found in the actual headers list: " +
-                          $"{Environment.NewLine}{{2}}{Environment.NewLine}. " +
-                          $"The response content was {Environment.NewLine}{{3}}",
-                    expectedHeader,
-                    expectedHeaderValue,
-                    Subject.GetHeaders(),
-                    Subject)
-                ;
+            ExecuteSubjectNotNull(because, becauseArgs);
+            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Unauthorized);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+
+        /// <summary>
+        /// Asserts that a HTTP response has the HTTP status 405 Method Not Allowed
+        /// </summary>        
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> Be405MethodNotAllowed(string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.MethodNotAllowed);
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+
+        protected void ExecuteSubjectNotNull(string because, object[] becauseArgs)
+        {
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected an HTTP {context:response} to assert{reason}, but found <null>.");
         }
 
         private void ExecuteStatusAssertion(string because, object[] becauseArgs, HttpStatusCode expected)

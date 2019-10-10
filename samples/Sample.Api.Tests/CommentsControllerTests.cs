@@ -28,9 +28,9 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments");
 
             // Assert
-            response.Should().Be200Ok(new[]
+            response.Should().Be200Ok().And.HaveContent(new[]
             {
-                new Comment { Author = "Adrian", Content = "Hey" }
+                new { Author = "Adrian", Content = "Hey" }
             });
         }
 
@@ -44,7 +44,7 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments/1");
 
             // Assert
-            response.Should().Be200Ok(new
+            response.Should().Be200Ok().And.HaveContent(new
             {
                 Author = "Adrian",
                 Content = "Hey"
@@ -68,7 +68,11 @@ namespace Sample.Api.Tests
             var response = await client.PostAsync("/api/comments", new StringContent(content, Encoding.UTF8, "application/json"));
 
             // Assert
-            response.Should().Be200Ok();
+            response.Should().Be200Ok().And.HaveContent(new
+            {
+                Author = "John",
+                Content = "Hey, you..."
+            });
         }
 
         [Fact]
@@ -85,7 +89,7 @@ namespace Sample.Api.Tests
 
             // Assert
             response.Should().Be400BadRequest()
-                .And.WithError("", "A non-empty request body is required.");
+                .And.HaveError("", "A non-empty request body is required.");
         }
 
         [Fact]
@@ -106,8 +110,8 @@ namespace Sample.Api.Tests
 
             // Assert
             response.Should().Be400BadRequest()
-                .And.WithError("Author", "The Author field is required.")
-                .And.WithError("Content", "The Content field is required.");
+                .And.HaveError("Author", "The Author field is required.")
+                .And.HaveError("Content", "The Content field is required.");
         }
 
         [Fact]
@@ -126,13 +130,7 @@ namespace Sample.Api.Tests
 
             // Assert
             response.Should().Be400BadRequest()
-                .And.WithError("Author", "The Author field is required.");
+                .And.HaveError("Author", "The Author field is required.");
         }
-    }
-
-    public class Comment
-    {
-        public string Author { get; set; }
-        public string Content { get; set; }
     }
 }

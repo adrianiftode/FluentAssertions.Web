@@ -8,16 +8,23 @@ using System.Threading.Tasks;
 
 namespace FluentAssertions.Web
 {
+    /// <summary>
+    /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state related to HTTP Bad Request response
+    /// </summary>
     public class BadRequestAssertions : HttpResponseMessageAssertions
     {
+        /// <summary>
+        /// Initialized a new instance of the <see cref="BadRequestAssertions"/>
+        /// class.
+        /// </summary>
+        /// <param name="value">The subject value to be asserted.</param>
         public BadRequestAssertions(HttpResponseMessage value) : base(value)
         {
-
         }
 
         protected override string Identifier => "BadRequest";
 
-        public AndConstraint<BadRequestAssertions> WithError(string expectedField, string expectedErrorMessage,
+        public AndConstraint<BadRequestAssertions> HaveError(string expectedField, string expectedErrorMessage,
             string because = "", params object[] becauseArgs)
         {
             Func<Task<JObject>> jsonFunc = () => Subject.GetJsonObject();
