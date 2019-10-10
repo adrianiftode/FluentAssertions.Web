@@ -33,14 +33,14 @@ namespace FluentAssertions.Web
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
                 .ForCondition(json.HasKey(expectedField))
-                .FailWith("Expected {context:value} " +
-                          "to an error message related to the `{0}` field, but not was found." +
+                .FailWith("Expected {context:response} " +
+                          "to contain an error message related to the {0} field, but not was found." +
                           "{1}",
                     expectedField, Subject)
 
                 .Then
                 .ForCondition(json.GetStringValuesByKey(expectedField).Contains(expectedErrorMessage))
-                .FailWith("Expected {context:value} to contain " +
+                .FailWith("Expected {context:response} to contain " +
                           "the error message {0} related to the {1} field, " +
                           "but no such message was found in the actual error messages list: " +
                           "{2}",
