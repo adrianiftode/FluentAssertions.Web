@@ -2,7 +2,6 @@ using FluentAssertions;
 using FluentAssertions.Web;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -56,16 +55,28 @@ namespace Sample.Api.Tests
         {
             // Arrange
             var client = _factory.CreateClient();
-            client.DefaultRequestHeaders
-                .Accept
-                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var content = @"{
-              ""author"": ""John"",
-              ""content"": ""Hey, you...""
-            }";
 
             // Act
-            var response = await client.PostAsync("/api/comments", new StringContent(content, Encoding.UTF8, "application/json"));
+            var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                      ""author"": ""John"",
+                      ""content"": ""Hey, you...""
+                    }", Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.Should().Be200Ok();
+        }
+
+        [Fact]
+        public async Task Post_ReturnsOkAndWithContent()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                      ""author"": ""John"",
+                      ""content"": ""Hey, you...""
+                    }", Encoding.UTF8, "application/json"));
 
             // Assert
             response.Should().Be200Ok().And.HaveContent(new
@@ -80,9 +91,6 @@ namespace Sample.Api.Tests
         {
             // Arrange
             var client = _factory.CreateClient();
-            client.DefaultRequestHeaders
-                .Accept
-                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // Act
             var response = await client.PostAsync("/api/comments", new StringContent("", Encoding.UTF8, "application/json"));
@@ -97,16 +105,12 @@ namespace Sample.Api.Tests
         {
             // Arrange
             var client = _factory.CreateClient();
-            client.DefaultRequestHeaders
-                .Accept
-                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var content = @"{
-              ""author"": """",
-              ""content"": """"
-            }";
 
             // Act
-            var response = await client.PostAsync("/api/comments", new StringContent(content, Encoding.UTF8, "application/json"));
+            var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                        ""author"": """",
+                        ""content"": """"
+                    }", Encoding.UTF8, "application/json"));
 
             // Assert
             response.Should().Be400BadRequest()
@@ -119,14 +123,11 @@ namespace Sample.Api.Tests
         {
             // Arrange
             var client = _factory.CreateClient();
-            client.DefaultRequestHeaders
-                .Accept
-                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var content = @"{
-  ""content"": ""Hey, you...""
-}";
+
             // Act
-            var response = await client.PostAsync("/api/comments", new StringContent(content, Encoding.UTF8, "application/json"));
+            var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                                          ""content"": ""Hey, you...""
+                                        }", Encoding.UTF8, "application/json"));
 
             // Assert
             response.Should().Be400BadRequest()

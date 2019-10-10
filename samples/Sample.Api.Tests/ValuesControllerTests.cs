@@ -49,7 +49,8 @@ namespace Sample.Api.Tests
         {
             // Arrange
             var client = _factory.CreateClient();
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            client.DefaultRequestHeaders
+                .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // Act
             var response = await client.GetAsync("/api/values/1");
@@ -76,9 +77,6 @@ namespace Sample.Api.Tests
         {
             // Arrange
             var client = _factory.CreateClient();
-            client.DefaultRequestHeaders
-                .Accept
-                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // Act
             var response = await client.PostAsync("/api/values", new StringContent(@"""value""", Encoding.UTF8, "application/json"));
@@ -92,9 +90,6 @@ namespace Sample.Api.Tests
         {
             // Arrange
             var client = _factory.CreateClient();
-            client.DefaultRequestHeaders
-                .Accept
-                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // Act
             var response = await client.PostAsync("/api/values", new StringContent("", Encoding.UTF8, "application/json"));
