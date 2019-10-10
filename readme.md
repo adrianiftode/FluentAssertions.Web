@@ -21,7 +21,7 @@ public async Task Post_ReturnsOk()
 
 ```csharp
 [Fact]
-public async Task Post_WithNoAuthor_ReturnsBadRequest()
+public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 {
 	// Arrange
 	var client = _factory.CreateClient();
