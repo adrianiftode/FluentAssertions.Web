@@ -6,7 +6,7 @@ using Xunit.Sdk;
 
 namespace FluentAssertions.Web.Tests
 {
-    public class HaveHeaderAssertionsSpecs
+    public class HeadersAssertionsSpecs
     {
         #region HaveHeader
         [Fact]
