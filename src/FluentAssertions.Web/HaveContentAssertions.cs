@@ -5,7 +5,7 @@ using System;
 namespace FluentAssertions.Web
 {
     /// <summary>
-    /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state related to HTTP response content.
+    /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state related to the HTTP content.
     /// </summary>
     public partial class HttpResponseMessageAssertions
     {
