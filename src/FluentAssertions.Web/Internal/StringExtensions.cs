@@ -21,5 +21,9 @@ namespace FluentAssertions.Web.Internal
 
             return result;
         }
+
+        public static string ReplaceFirstWithLowercase(this string source) => !string.IsNullOrEmpty(source) ? 
+            source[0].ToString().ToLower() + source.Substring(1) 
+            : source;
     }
 }

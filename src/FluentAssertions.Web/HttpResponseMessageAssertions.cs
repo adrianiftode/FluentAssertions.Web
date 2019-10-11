@@ -16,7 +16,11 @@ namespace FluentAssertions.Web
     /// </summary>
     public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>
     {
-        static HttpResponseMessageAssertions() => Formatter.AddFormatter(new HttpResponseMessageFormatter());
+        static HttpResponseMessageAssertions()
+        {
+            Formatter.AddFormatter(new HttpResponseMessageFormatter());
+            Formatter.AddFormatter(new AssertionsFailuresFormatter());
+        }
 
         /// <summary>
         /// Initialized a new instance of the <see cref="HttpResponseMessageAssertions"/>
