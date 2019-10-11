@@ -12,10 +12,7 @@ namespace FluentAssertions.Web
 {
     public class HttpResponseMessageFormatter : IValueFormatter
     {
-        public bool CanHandle(object value)
-        {
-            return value is HttpResponseMessage;
-        }
+        public bool CanHandle(object value) => value is HttpResponseMessage;
 
         /// <inheritdoc />
         public string Format(object value, FormattingContext context, FormatChild formatChild)
