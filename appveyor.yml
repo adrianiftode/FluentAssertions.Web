@@ -24,7 +24,7 @@ before_build:
 build_script: 
   - dotnet pack
 artifacts:
-- path: .\src\\**\*.nupkg
+- path: **/*.nupkg
   name: NuGet
 deploy:
   provider: NuGet
