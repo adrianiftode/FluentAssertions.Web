@@ -9,6 +9,7 @@ platform: Any CPU
 shallow_clone: true
 init:
   - cmd: dotnet --version
+  - cmd: dotnet restore ./src/src.csproj --verbosity m
 dotnet_csproj:
   patch: true 
   file: '**\*.csproj'
@@ -20,13 +21,12 @@ dotnet_csproj:
 nuget:
   project_feed: true 
 before_build: 
-- ps: nuget restore 
-build: 
-  publish_nuget: true 
-  verbosity: minimal
+- ps: dotnet restore 
+build_script: 
+  - dotnet pack
 artifacts:
-- path: src/**/*.nupkg
-  name: nupkg
+- path: .\src\\**\*.nupkg
+  name: NuGet
 deploy:
   provider: NuGet
   api_key:
