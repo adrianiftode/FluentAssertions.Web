@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -13,12 +14,11 @@
       and also to spend less time with debugging when the tests fail.
     </PackageDescription>
     <PackageTags>fluentassertions;httpresponsemessage;fluentassertionsweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
-    <Version>0.1.0-beta1</Version>
+    <Version>1.0.1</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/adrianiftode/FluentAssertions.Web</PackageProjectUrl>
     <RepositoryUrl>https://github.com/adrianiftode/FluentAssertions.Web</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageLicenseUrl>https://github.com/adrianiftode/FluentAssertions.Web/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
   
   <ItemGroup>

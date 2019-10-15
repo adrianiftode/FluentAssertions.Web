@@ -1,12 +1,33 @@
-version: 0.0.0.{build}
-pull_requests:
-  do_not_increment_build_number: true
+version: 1.0.{build}
+branches:
+  only:
+  - master
+skip_branch_with_pr: true
 image: Visual Studio 2019
 configuration: Release
+shallow_clone: true
+dotnet_csproj:
+  patch: true 
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+configuration: Release
 platform: Any CPU
+nuget: 
+  project_feed: true 
+before_build: 
+- ps: nuget restore 
+build: 
+  publish_nuget: true 
+  verbosity: minimal
 deploy:
   provider: NuGet
   api_key:
     secure: +gGU9iifFY4osTq2ZOq/V1Nj2XR6yBawXYT61Gql2/PRtZ9ORjuFvAmr9E52ZIBB
   skip_symbols: false
   artifact: /.*\.nupkg/
+  on: 
+    branch: master
