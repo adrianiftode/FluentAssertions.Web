@@ -9,7 +9,6 @@ platform: Any CPU
 shallow_clone: true
 init:
   - cmd: dotnet --version
-  - cmd: dotnet restore ./src/src.csproj --verbosity m
 dotnet_csproj:
   patch: true 
   file: '**\*.csproj'
