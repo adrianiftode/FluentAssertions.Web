@@ -104,10 +104,9 @@ namespace FluentAssertions.Web
 
         private static void AppendHeaders(StringBuilder messageBuilder, IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
         {
-            if (headers.Any())
+            foreach (var header in headers)
             {
-                var headersPrint = string.Join(Environment.NewLine, headers
-                    .Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
+                var headersPrint = $"{header.Key}: {string.Join(", ", header.Value)}";
                 messageBuilder.AppendLine(headersPrint);
             }
         }

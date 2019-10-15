@@ -1,3 +1,7 @@
+## FluentAssertions.Web
+A FluentAssertions extension over the Http response message to ease discovering what to Assert 
+and also to spend less time with debugging when the tests fail.
+
 [![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
 
 ## Examples
