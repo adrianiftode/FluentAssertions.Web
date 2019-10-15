@@ -291,7 +291,7 @@ Content-Length: 0
 
 The originated HTTP request was:
 
-POST http://localhost:5001/ HTTP 2.0
+POST http://localhost:5001/ HTTP 1.1
 Authorization: Bearer xyz
 Content-Type: text/plain; charset=utf-8
 Content-Length: 13

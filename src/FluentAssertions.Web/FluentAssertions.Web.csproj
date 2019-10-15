@@ -1,14 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>FluentAssertions.Web</PackageId>
+    <Authors>Adrian Iftode</Authors>
+    <PackageDescription>
+      A FluentAssertions extension over the Http response message 
+      to ease discovering what to Assert 
+      and also to spend less time with debugging when the tests fail.
+    </PackageDescription>
+    <PackageTags>fluentassertions;httpresponsemessage;fluentassertionsweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
+    <Version>0.1.0-beta1</Version>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/adrianiftode/FluentAssertions.Web</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/adrianiftode/FluentAssertions.Web</RepositoryUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageLicenseUrl>https://github.com/adrianiftode/FluentAssertions.Web/blob/master/LICENSE</PackageLicenseUrl>
+  </PropertyGroup>
+  
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="FluentAssertions" Version="5.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
-
 </Project>
   
