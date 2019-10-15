@@ -18,7 +18,7 @@ namespace FluentAssertions.Web.Tests
             var formatted = sut.Format(subject, null, null);
 
             // Assert
-            formatted.Should().Be(@"
+            formatted.Should().Match(@"
 
 The HTTP response was:
 
@@ -48,7 +48,7 @@ The originated HTTP request was <null>.");
             var formatted = sut.Format(subject, null, null);
 
             // Assert
-            formatted.Should().Be(
+            formatted.Should().Match(
 @"
 
 The HTTP response was:
@@ -104,7 +104,7 @@ The originated HTTP request was <null>.");
             var formatted = sut.Format(subject, null, null);
 
             // Assert
-            formatted.Should().Be(@"
+            formatted.Should().Match(@"
 
 The HTTP response was:
 
@@ -155,41 +155,37 @@ The originated HTTP request was <null>.");
             var formatted = sut.Format(subject, null, null);
 
             // Assert
-            formatted.Should().Be(@"
-
-The HTTP response was:
-
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Content-Length: 360
-
-{
-    ""glossary"": {
-        ""title"": ""example glossary"",
-        ""GlossDiv"": {
-            ""title"": ""S"",
-            ""GlossList"": {
-                ""GlossEntry"": {
-                    ""ID"": ""SGML"",
-                    ""SortAs"": ""SGML"",
-                    ""GlossTerm"": ""Standard Generalized Markup Language"",
-                    ""Acronym"": ""SGML"",
-                    ""Abbrev"": ""ISO 8879:1986"",
-                    ""GlossDef"": {
-                        ""para"": ""A meta-markup language, used to create markup languages such as DocBook."",
-                        ""GlossSeeAlso"": [
-                            ""GML"",
-                            ""XML""
-                        ]
-                    },
-                    ""GlossSee"": ""markup""
-                }
-            }
-        }
-    }
-}
-
-The originated HTTP request was <null>.");
+            formatted.Should().Match(@"*
+The HTTP response was:*
+HTTP/1.1 200 OK*
+Content-Type: application/json; charset=utf-8*
+Content-Length: 360*
+{*
+    ""glossary"": {*
+        ""title"": ""example glossary"",*
+        ""GlossDiv"": {*
+            ""title"": ""S"",*
+            ""GlossList"": {*
+                ""GlossEntry"": {*
+                    ""ID"": ""SGML"",*
+                    ""SortAs"": ""SGML"",*
+                    ""GlossTerm"": ""Standard Generalized Markup Language"",*
+                    ""Acronym"": ""SGML"",*
+                    ""Abbrev"": ""ISO 8879:1986"",*
+                    ""GlossDef"": {*
+                        ""para"": ""A meta-markup language, used to create markup languages such as DocBook."",*
+                        ""GlossSeeAlso"": [*
+                            ""GML"",*
+                            ""XML""*
+                        ]*
+                    },*
+                    ""GlossSee"": ""markup""*
+                }*
+            }*
+        }*
+    }*
+}*
+The originated HTTP request was <null>.*");
         }
 
 
@@ -216,26 +212,20 @@ The content of the document......
             var formatted = sut.Format(subject, null, null);
 
             // Assert
-            formatted.Should().Be(@"
-
-The HTTP response was:
-
-HTTP/1.1 200 OK
-Content-Type: text/html; charset=utf-8
-Content-Length: 126
-
-<html>
-<head>
-<title>Title of the document</title>
-</head>
-
-<body>
-The content of the document......
-</body>
-
-</html>
-
-The originated HTTP request was <null>.");
+            formatted.Should().Match(@"*
+The HTTP response was:*
+HTTP/1.1 200 OK*
+Content-Type: text/html; charset=utf-8*
+Content-Length: 126*
+<html>*
+<head>*
+<title>Title of the document</title>*
+</head>*
+<body>*
+The content of the document......*
+</body>*
+</html>*
+The originated HTTP request was <null>.*");
         }
 
         [Fact]
@@ -252,16 +242,12 @@ The originated HTTP request was <null>.");
             var formatted = sut.Format(subject, null, null);
 
             // Assert
-            formatted.Should().Be(
-                @"
-
-The HTTP response was:
-
-HTTP/1.1 200 OK
-Content-Type: text/plain; charset=utf-8
-Content-Length: 0
-
-The originated HTTP request was <null>.");
+            formatted.Should().Match(
+                @"*The HTTP response was:*
+HTTP/1.1 200 OK*
+Content-Type: text/plain; charset=utf-8*
+Content-Length: 0*
+The originated HTTP request was <null>.*");
         }
 
         [Fact]
@@ -281,22 +267,16 @@ The originated HTTP request was <null>.");
             var formatted = sut.Format(subject, null, null);
 
             // Assert
-            formatted.Should().Be(
-                @"
-
-The HTTP response was:
-
-HTTP/1.1 200 OK
-Content-Length: 0
-
-The originated HTTP request was:
-
-POST http://localhost:5001/ HTTP 1.1
-Authorization: Bearer xyz
-Content-Type: text/plain; charset=utf-8
-Content-Length: 13
-
-Some content.");
+            formatted.Should().Match(
+                @"*The HTTP response was:*
+HTTP/1.1 200 OK*
+Content-Length: 0*
+The originated HTTP request was:*
+POST http://localhost:5001/ HTTP 1.1*
+Authorization: Bearer xyz*
+Content-Type: text/plain; charset=utf-8*
+Content-Length: *
+Some content.*");
         }
     }
 }
