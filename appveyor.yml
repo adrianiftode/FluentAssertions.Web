@@ -8,9 +8,7 @@ configuration: Release
 platform: Any CPU
 shallow_clone: true
 init:
-  - cmd: >-
-    msbuild -version
-    dotnet --version
+  - cmd: dotnet --version
 dotnet_csproj:
   patch: true 
   file: '**\*.csproj'
