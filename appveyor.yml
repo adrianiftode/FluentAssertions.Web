@@ -5,6 +5,7 @@ branches:
 skip_branch_with_pr: true
 image: Visual Studio 2019
 configuration: Release
+platform: Any CPU
 shallow_clone: true
 dotnet_csproj:
   patch: true 
@@ -14,9 +15,7 @@ dotnet_csproj:
   assembly_version: '{version}'
   file_version: '{version}'
   informational_version: '{version}'
-configuration: Release
-platform: Any CPU
-nuget: 
+nuget:
   project_feed: true 
 before_build: 
 - ps: nuget restore 
