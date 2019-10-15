@@ -15,7 +15,6 @@
     </PackageDescription>
     <PackageTags>fluentassertions;httpresponsemessage;fluentassertionsweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
     <Version>1.0.1</Version>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/adrianiftode/FluentAssertions.Web</PackageProjectUrl>
     <RepositoryUrl>https://github.com/adrianiftode/FluentAssertions.Web</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

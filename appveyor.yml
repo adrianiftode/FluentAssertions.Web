@@ -7,6 +7,10 @@ image: Visual Studio 2019
 configuration: Release
 platform: Any CPU
 shallow_clone: true
+init:
+  - cmd: >-
+    msbuild -version
+    dotnet --version
 dotnet_csproj:
   patch: true 
   file: '**\*.csproj'
@@ -22,6 +26,9 @@ before_build:
 build: 
   publish_nuget: true 
   verbosity: minimal
+artifacts:
+- path: src/**/*.nupkg
+  name: nupkg
 deploy:
   provider: NuGet
   api_key:
