@@ -4,7 +4,6 @@ branches:
   - master
 skip_branch_with_pr: true
 image: Visual Studio 2019
-os: Visual Studio 2019
 configuration: Release
 shallow_clone: true
 init:
@@ -22,9 +21,9 @@ nuget:
 before_build: 
 - ps: dotnet restore 
 build_script: 
-  - dotnet pack
+  - dotnet pack --no-restore
 test_script:
-  - dotnet test
+  - dotnet test --no-build --no-restore
 artifacts:
   path: '**\*.nupkg'
   name: NuGet
