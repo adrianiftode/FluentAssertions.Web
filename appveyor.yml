@@ -24,7 +24,7 @@ before_build:
 build_script: 
   - dotnet pack
 test_script:
-  -- dotnet test --no-build
+  - dotnet test
 artifacts:
   path: '**\*.nupkg'
   name: NuGet
