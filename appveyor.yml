@@ -4,6 +4,7 @@ branches:
   - master
 skip_branch_with_pr: true
 image: Visual Studio 2019
+os: Visual Studio 2019
 configuration: Release
 platform: Any CPU
 shallow_clone: true
