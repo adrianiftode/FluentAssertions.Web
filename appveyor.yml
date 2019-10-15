@@ -8,7 +8,7 @@ configuration: Release
 platform: Any CPU
 shallow_clone: true
 init:
-  - git config --global core.autocrlf input
+  - git config --global core.autocrlf true
   - cmd: dotnet --version
 dotnet_csproj:
   patch: true 
