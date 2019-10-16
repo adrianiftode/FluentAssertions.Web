@@ -8,6 +8,7 @@ configuration: Release
 shallow_clone: true
 init:
   - cmd: dotnet --version
+  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet tool install -g dotnet-sonnarscanner }'
 dotnet_csproj:
   patch: true 
   file: '**\*.csproj'
