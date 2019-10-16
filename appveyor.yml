@@ -19,11 +19,15 @@ dotnet_csproj:
 nuget:
   project_feed: true 
 before_build: 
-- ps: dotnet restore 
-build_script: 
+  - ps: dotnet restore 
+build_script:
+  # Begin SonarScanner
+  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"FluentAssertions.Web" /d:sonar.organization="adrianiftode-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" }'
   - dotnet pack --no-restore
 test_script:
   - dotnet test --no-restore
+after_test:
+  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner end /d:sonar.login="$env:SONAR_TOKEN" }'
 artifacts:
   path: '**\*.nupkg'
   name: NuGet
