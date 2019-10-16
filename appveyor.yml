@@ -23,7 +23,7 @@ before_build:
   - ps: dotnet restore 
 build_script:
   # Begin SonarScanner
-  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"FluentAssertions.Web" /d:sonar.organization="adrianiftode-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" }'
+  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" }'
   - dotnet pack --no-restore
 test_script:
   - dotnet test --no-restore
