@@ -26,7 +26,7 @@ build_script:
   - dotnet pack --no-restore
 test_script:
   - dotnet test --no-restore
-after_build:
+after_test:
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner end /d:sonar.login="$env:SONAR_TOKEN" }'
 artifacts:
   path: '**\*.nupkg'
