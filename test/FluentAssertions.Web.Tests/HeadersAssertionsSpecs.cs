@@ -13,7 +13,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_header_to_have_header_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -33,7 +33,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_header_and_no_header_value_to_have_header_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -53,7 +53,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_no_headers_to_have_header_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage();
+            using var subject = new HttpResponseMessage();
 
             // Act
             Action act = () =>
@@ -68,7 +68,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_without_header_to_have_header_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -89,7 +89,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_to_have_header_against_null_value_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage();
+            using var subject = new HttpResponseMessage();
 
             // Act
             Action act = () =>
@@ -107,7 +107,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_header_and_no_header_value_to_have_header_and_be_empty_value_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -127,7 +127,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_header_and_a_header_value_to_have_that_header_and_be_empty_value_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -150,7 +150,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_header_to_have_header_with_a_value_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -170,7 +170,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_header_without_a_value_to_have_value_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -191,7 +191,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_to_have_header_and_be_value_against_null_expected_value_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -214,7 +214,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_header_with_values_to_have_those_values_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -235,7 +235,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_header_without_some_value_to_be_different_values_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -258,7 +258,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_to_have_header_and_be_values_against_null_expected_values_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {
@@ -279,7 +279,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_to_have_header_and_be_values_against_empty_expected_values_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Headers =
                 {

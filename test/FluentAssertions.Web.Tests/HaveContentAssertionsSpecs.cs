@@ -14,7 +14,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_content_to_have_content_of_a_model_type_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Content = new StringContent(@"{
                                             ""comment"": ""Hey"",
@@ -37,7 +37,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_content_with_more_JSON_properties_than_a_model_to_have_content_of_a_model_type_it_should_scucceed()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Content = new StringContent(@"{
                                             ""author"": ""John"",
@@ -60,7 +60,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_content_with_differences_to_have_content_of_a_model_type_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Content = new StringContent(@"{
                                             ""comment"": ""Hey"",
@@ -93,7 +93,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_content_as_primitives_types_to_have_content_as_the_primitive_value_it_should_succeed(object expectedModel)
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Content = new StringContent(expectedModel.ToJson(), Encoding.UTF8, "application/json")
             };
@@ -110,7 +110,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_with_fewer_JSON_properties_than_the_model_to_have_content_of_a_model_type_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage
+            using var subject = new HttpResponseMessage
             {
                 Content = new StringContent(@"{
                                             ""comment"": ""Hey"",
@@ -134,7 +134,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_response_to_have_content_against_null_value_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage();
+            using var subject = new HttpResponseMessage();
 
             // Act
             Action act = () =>

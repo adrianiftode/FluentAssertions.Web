@@ -13,7 +13,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_200_Ok_response_to_be_200_Ok_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -27,7 +27,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_200_Ok_response_to_be_200_Ok_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.BadRequest);
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest);
 
             // Act
             Action act = () =>
@@ -59,7 +59,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_201_Created_response_to_be_201Created_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Created);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Created);
 
             // Act
             Action act = () =>
@@ -73,7 +73,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_201_Created_response_to_be_201Created_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -105,7 +105,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_202_Accepted_response_to_be_202Accepted_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Accepted);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Accepted);
 
             // Act
             Action act = () =>
@@ -119,7 +119,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_202_Accepted_response_to_be_202Accepted_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -151,7 +151,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_203_Non_Authoritative_Information_response_to_be_203NonAuthoritativeInformation_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.NonAuthoritativeInformation);
+            using var subject = new HttpResponseMessage(HttpStatusCode.NonAuthoritativeInformation);
 
             // Act
             Action act = () =>
@@ -165,7 +165,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_203_Non_Authoritative_Information_response_to_be_203NonAuthoritativeInformation_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -197,7 +197,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_204_No_Content_response_to_be_204NoContent_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.NoContent);
+            using var subject = new HttpResponseMessage(HttpStatusCode.NoContent);
 
             // Act
             Action act = () =>
@@ -211,7 +211,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_204_No_Content_response_to_be_204NoContent_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -243,7 +243,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_205_Reset_Content_response_to_be_205ResetContent_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.ResetContent);
+            using var subject = new HttpResponseMessage(HttpStatusCode.ResetContent);
 
             // Act
             Action act = () =>
@@ -257,7 +257,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_205_Reset_Content_response_to_be_205ResetContent_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -289,7 +289,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_206_Partial_Content_response_to_be_206PartialContent_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.PartialContent);
+            using var subject = new HttpResponseMessage(HttpStatusCode.PartialContent);
 
             // Act
             Action act = () =>
@@ -303,7 +303,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_206_Partial_Content_response_to_be_206PartialContent_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -335,7 +335,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_300_Multiple_Choices_response_to_be_300MultipleChoices_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.MultipleChoices);
+            using var subject = new HttpResponseMessage(HttpStatusCode.MultipleChoices);
 
             // Act
             Action act = () =>
@@ -349,7 +349,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_300_Multiple_Choices_response_to_be_300MultipleChoices_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -381,7 +381,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_300_Ambiguous_response_to_be_300Ambiguous_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Ambiguous);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Ambiguous);
 
             // Act
             Action act = () =>
@@ -395,7 +395,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_300_Ambiguous_response_to_be_300Ambiguous_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -427,7 +427,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_301_Moved_Permanently_response_to_be_301MovedPermanently_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.MovedPermanently);
+            using var subject = new HttpResponseMessage(HttpStatusCode.MovedPermanently);
 
             // Act
             Action act = () =>
@@ -441,7 +441,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_301_Moved_Permanently_response_to_be_301MovedPermanently_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -473,7 +473,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_301_Moved_response_to_be_301Moved_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Moved);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Moved);
 
             // Act
             Action act = () =>
@@ -487,7 +487,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_301_Moved_response_to_be_301Moved_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -519,7 +519,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_302_Found_response_to_be_302Found_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Found);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Found);
 
             // Act
             Action act = () =>
@@ -533,7 +533,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_302_Found_response_to_be_302Found_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -565,7 +565,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_302_Redirect_response_to_be_302Redirect_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Redirect);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Redirect);
 
             // Act
             Action act = () =>
@@ -579,7 +579,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_302_Redirect_response_to_be_302Redirect_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -611,7 +611,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_303_See_Other_response_to_be_303SeeOther_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.SeeOther);
+            using var subject = new HttpResponseMessage(HttpStatusCode.SeeOther);
 
             // Act
             Action act = () =>
@@ -625,7 +625,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_303_See_Other_response_to_be_303SeeOther_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -657,7 +657,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_303_Redirect_Method_response_to_be_303RedirectMethod_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.RedirectMethod);
+            using var subject = new HttpResponseMessage(HttpStatusCode.RedirectMethod);
 
             // Act
             Action act = () =>
@@ -671,7 +671,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_303_Redirect_Method_response_to_be_303RedirectMethod_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -703,7 +703,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_304_Not_Modified_response_to_be_304NotModified_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.NotModified);
+            using var subject = new HttpResponseMessage(HttpStatusCode.NotModified);
 
             // Act
             Action act = () =>
@@ -717,7 +717,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_304_Not_Modified_response_to_be_304NotModified_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -749,7 +749,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_305_Use_Proxy_response_to_be_305UseProxy_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.UseProxy);
+            using var subject = new HttpResponseMessage(HttpStatusCode.UseProxy);
 
             // Act
             Action act = () =>
@@ -763,7 +763,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_305_Use_Proxy_response_to_be_305UseProxy_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -795,7 +795,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_306_Unused_response_to_be_306Unused_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Unused);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Unused);
 
             // Act
             Action act = () =>
@@ -809,7 +809,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_306_Unused_response_to_be_306Unused_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -841,7 +841,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_307_Temporary_Redirect_response_to_be_307TemporaryRedirect_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.TemporaryRedirect);
+            using var subject = new HttpResponseMessage(HttpStatusCode.TemporaryRedirect);
 
             // Act
             Action act = () =>
@@ -855,7 +855,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_307_Temporary_Redirect_response_to_be_307TemporaryRedirect_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -887,7 +887,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_307_Redirect_Keep_Verb_response_to_be_307RedirectKeepVerb_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.RedirectKeepVerb);
+            using var subject = new HttpResponseMessage(HttpStatusCode.RedirectKeepVerb);
 
             // Act
             Action act = () =>
@@ -901,7 +901,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_307_Redirect_Keep_Verb_response_to_be_307RedirectKeepVerb_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -933,7 +933,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_400_BadRequest_response_to_be_400_BadRequest_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.BadRequest);
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest);
 
             // Act
             Action act = () =>
@@ -947,7 +947,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_400_BadRequest_response_to_be_400_BadRequest_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -979,7 +979,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_401_Unauthorized_response_to_be_401_Unauthorized_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Unauthorized);
 
             // Act
             Action act = () =>
@@ -993,7 +993,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_401_Unauthorized_response_to_be_401_Unauthorized_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1025,7 +1025,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_402_Payment_Required_response_to_be_402PaymentRequired_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.PaymentRequired);
+            using var subject = new HttpResponseMessage(HttpStatusCode.PaymentRequired);
 
             // Act
             Action act = () =>
@@ -1039,7 +1039,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_402_Payment_Required_response_to_be_402PaymentRequired_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1071,7 +1071,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_403_Forbidden_response_to_be_403Forbidden_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Forbidden);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Forbidden);
 
             // Act
             Action act = () =>
@@ -1085,7 +1085,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_403_Forbidden_response_to_be_403Forbidden_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1117,7 +1117,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_404_Not_Found_response_to_be_404NotFound_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.NotFound);
+            using var subject = new HttpResponseMessage(HttpStatusCode.NotFound);
 
             // Act
             Action act = () =>
@@ -1131,7 +1131,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_404_Not_Found_response_to_be_404NotFound_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1163,7 +1163,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_405_Method_Not_Allowed_response_to_be_405MethodNotAllowed_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.MethodNotAllowed);
+            using var subject = new HttpResponseMessage(HttpStatusCode.MethodNotAllowed);
 
             // Act
             Action act = () =>
@@ -1177,7 +1177,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_405_Method_Not_Allowed_response_to_be_405MethodNotAllowed_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1209,7 +1209,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_406_Not_Acceptable_response_to_be_406NotAcceptable_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+            using var subject = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
 
             // Act
             Action act = () =>
@@ -1223,7 +1223,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_406_Not_Acceptable_response_to_be_406NotAcceptable_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1255,7 +1255,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_407_Proxy_Authentication_Required_response_to_be_407ProxyAuthenticationRequired_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.ProxyAuthenticationRequired);
+            using var subject = new HttpResponseMessage(HttpStatusCode.ProxyAuthenticationRequired);
 
             // Act
             Action act = () =>
@@ -1269,7 +1269,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_407_Proxy_Authentication_Required_response_to_be_407ProxyAuthenticationRequired_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1301,7 +1301,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_408_Request_Timeout_response_to_be_408RequestTimeout_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.RequestTimeout);
+            using var subject = new HttpResponseMessage(HttpStatusCode.RequestTimeout);
 
             // Act
             Action act = () =>
@@ -1315,7 +1315,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_408_Request_Timeout_response_to_be_408RequestTimeout_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1347,7 +1347,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_409_Conflict_response_to_be_409Conflict_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Conflict);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Conflict);
 
             // Act
             Action act = () =>
@@ -1361,7 +1361,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_409_Conflict_response_to_be_409Conflict_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1393,7 +1393,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_410_Gone_response_to_be_410Gone_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Gone);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Gone);
 
             // Act
             Action act = () =>
@@ -1407,7 +1407,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_410_Gone_response_to_be_410Gone_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1439,7 +1439,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_411_Length_Required_response_to_be_411LengthRequired_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.LengthRequired);
+            using var subject = new HttpResponseMessage(HttpStatusCode.LengthRequired);
 
             // Act
             Action act = () =>
@@ -1453,7 +1453,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_411_Length_Required_response_to_be_411LengthRequired_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1485,7 +1485,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_412_Precondition_Failed_response_to_be_412PreconditionFailed_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
+            using var subject = new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
 
             // Act
             Action act = () =>
@@ -1499,7 +1499,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_412_Precondition_Failed_response_to_be_412PreconditionFailed_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1531,7 +1531,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_413_Request_Entity_Too_Large_response_to_be_413RequestEntityTooLarge_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.RequestEntityTooLarge);
+            using var subject = new HttpResponseMessage(HttpStatusCode.RequestEntityTooLarge);
 
             // Act
             Action act = () =>
@@ -1545,7 +1545,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_413_Request_Entity_Too_Large_response_to_be_413RequestEntityTooLarge_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1577,7 +1577,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_414_Request_Uri_Too_Long_response_to_be_414RequestUriTooLong_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.RequestUriTooLong);
+            using var subject = new HttpResponseMessage(HttpStatusCode.RequestUriTooLong);
 
             // Act
             Action act = () =>
@@ -1591,7 +1591,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_414_Request_Uri_Too_Long_response_to_be_414RequestUriTooLong_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1623,7 +1623,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_415_Unsupported_Media_Type_response_to_be_415UnsupportedMediaType_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.UnsupportedMediaType);
+            using var subject = new HttpResponseMessage(HttpStatusCode.UnsupportedMediaType);
 
             // Act
             Action act = () =>
@@ -1637,7 +1637,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_415_Unsupported_Media_Type_response_to_be_415UnsupportedMediaType_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1669,7 +1669,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_416_Requested_Range_Not_Satisfiable_response_to_be_416RequestedRangeNotSatisfiable_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.RequestedRangeNotSatisfiable);
+            using var subject = new HttpResponseMessage(HttpStatusCode.RequestedRangeNotSatisfiable);
 
             // Act
             Action act = () =>
@@ -1683,7 +1683,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_416_Requested_Range_Not_Satisfiable_response_to_be_416RequestedRangeNotSatisfiable_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1715,7 +1715,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_417_Expectation_Failed_response_to_be_417ExpectationFailed_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.ExpectationFailed);
+            using var subject = new HttpResponseMessage(HttpStatusCode.ExpectationFailed);
 
             // Act
             Action act = () =>
@@ -1729,7 +1729,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_417_Expectation_Failed_response_to_be_417ExpectationFailed_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1761,7 +1761,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_426_Upgrade_Required_response_to_be_426UpgradeRequired_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.UpgradeRequired);
+            using var subject = new HttpResponseMessage(HttpStatusCode.UpgradeRequired);
 
             // Act
             Action act = () =>
@@ -1775,7 +1775,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_426_Upgrade_Required_response_to_be_426UpgradeRequired_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1807,7 +1807,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_500_Internal_Server_Error_response_to_be_500InternalServerError_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            using var subject = new HttpResponseMessage(HttpStatusCode.InternalServerError);
 
             // Act
             Action act = () =>
@@ -1821,7 +1821,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_500_Internal_Server_Error_response_to_be_500InternalServerError_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1853,7 +1853,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_501_Not_Implemented_response_to_be_501NotImplemented_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+            using var subject = new HttpResponseMessage(HttpStatusCode.NotImplemented);
 
             // Act
             Action act = () =>
@@ -1867,7 +1867,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_501_Not_Implemented_response_to_be_501NotImplemented_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1899,7 +1899,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_502_Bad_Gateway_response_to_be_502BadGateway_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.BadGateway);
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadGateway);
 
             // Act
             Action act = () =>
@@ -1913,7 +1913,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_502_Bad_Gateway_response_to_be_502BadGateway_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1945,7 +1945,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_503_Service_Unavailable_response_to_be_503ServiceUnavailable_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
+            using var subject = new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
 
             // Act
             Action act = () =>
@@ -1959,7 +1959,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_503_Service_Unavailable_response_to_be_503ServiceUnavailable_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -1991,7 +1991,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_504_Gateway_Timeout_response_to_be_504GatewayTimeout_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.GatewayTimeout);
+            using var subject = new HttpResponseMessage(HttpStatusCode.GatewayTimeout);
 
             // Act
             Action act = () =>
@@ -2005,7 +2005,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_504_Gateway_Timeout_response_to_be_504GatewayTimeout_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -2037,7 +2037,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_505_Http_Version_Not_Supported_response_to_be_505HttpVersionNotSupported_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.HttpVersionNotSupported);
+            using var subject = new HttpResponseMessage(HttpStatusCode.HttpVersionNotSupported);
 
             // Act
             Action act = () =>
@@ -2051,7 +2051,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_505_Http_Version_Not_Supported_response_to_be_505HttpVersionNotSupported_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>

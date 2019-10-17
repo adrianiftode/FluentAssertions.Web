@@ -96,7 +96,7 @@ namespace Sample.Api.Tests
 
             // Assert
             response.Should().Be400BadRequest()
-                .And.HaveError("", "A non-empty request body is required.");
+                .And.HaveErrorMessage("A non-empty request body is required.");
         }
     }
 }

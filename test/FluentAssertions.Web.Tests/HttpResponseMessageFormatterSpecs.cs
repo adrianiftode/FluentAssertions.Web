@@ -11,7 +11,7 @@ namespace FluentAssertions.Web.Tests
         public void GivenUnspecifiedResponse_ShouldPrintProtocolAndHaveContentLengthZero()
         {
             // Arrange
-            var subject = new HttpResponseMessage();
+            using var subject = new HttpResponseMessage();
             var sut = new HttpResponseMessageFormatter();
 
             // Act
@@ -29,7 +29,7 @@ The originated HTTP request was <null>.*");
         public void GivenHeaders_ShouldPrintAllHeaders()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("", Encoding.UTF8, "text/html")
             };
@@ -63,7 +63,7 @@ The originated HTTP request was <null>.*");
         public void GivenResponseWithContent_ShouldPrintContent()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(@"{
     ""glossary"": {
@@ -133,7 +133,7 @@ The originated HTTP request was <null>.*");
         public void GivenResponseWithMinifiedJson_ShouldPrintFormattedJson()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(@"{""glossary"":{""title"":""example glossary"",""GlossDiv"":{""title"":""S"",""GlossList"":{""GlossEntry"":{""ID"":""SGML"",""SortAs"":""SGML"",""GlossTerm"":""Standard Generalized Markup Language"",""Acronym"":""SGML"",""Abbrev"":""ISO 8879:1986"",""GlossDef"":{""para"":""A meta-markup language, used to create markup languages such as DocBook."",""GlossSeeAlso"":[""GML"",""XML""]},""GlossSee"":""markup""}}}}}", Encoding.UTF8, "application/json")
             };
@@ -181,7 +181,7 @@ The originated HTTP request was <null>.*");
         public void GivenHtmlResponse_ShouldPrintAsItIs()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(@"<html>
 <head>
@@ -219,7 +219,7 @@ The originated HTTP request was <null>.*");
         [Fact]
         public void GivenContentLengthInHeaders_ShouldNotPrintItTwice()
         {
-            var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("")
             };
@@ -241,7 +241,7 @@ The originated HTTP request was <null>.*");
         [Fact]
         public void GivenRequest_ShouldPrintRequestDetails()
         {
-            var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
                 {
