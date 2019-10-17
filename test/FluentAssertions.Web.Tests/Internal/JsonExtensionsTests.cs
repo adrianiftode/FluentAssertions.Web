@@ -138,5 +138,45 @@ namespace FluentAssertions.Web.Tests.Internal
             // Assert
             result.Should().BeEmpty();
         }
+
+        [Fact]
+        public void GivenJsonWithAField_WhenGetChildrenKeysIsCalledWithThatField_ThenReturnsDirectKeys()
+        {
+            // Arrange
+            var json = JObject.Parse(@"{
+                ""errors"": {
+                    ""Author"": [
+                        ""The Author field is required.""
+                    ],
+                    ""Content"": [
+                        ""The Content field is required.""
+                    ]
+                }
+            }");
+
+            // Act
+            var result = json.GetChildrenKeys("errors");
+
+            // Assert
+            result.Should().BeEquivalentTo("Author", "Content");
+        }
+
+        [Fact]
+        public void GivenJsonWithAnEmptyField_WhenGetChildrenKeysIsCalledByItsParent_ThenReturnsDirectKeys()
+        {
+            // Arrange
+            var json = JObject.Parse(@"{
+                ""errors"": {
+                    """": [
+                        ""The Author field is required.""
+                    ]                }
+            }");
+
+            // Act
+            var result = json.GetChildrenKeys("errors");
+
+            // Assert
+            result.Should().BeEquivalentTo("");
+        }
     }
 }

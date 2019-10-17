@@ -55,6 +55,29 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
+        public void When_asserting_bad_request_response_be_BadRequest_and_match_error_message_by_pattern_it_should_succeed()
+        {
+            // Arrange
+            var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ]
+                    }
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.HaveError("Author", "*required*");
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
         public void When_asserting_bad_request_response_with_multiple_error_messages_to_be_BadRequest_and_have_error_field_and_error_message_and_also_having_another_error_message_it_should_succeed()
         {
             // Arrange
@@ -93,10 +116,88 @@ namespace FluentAssertions.Web.Tests
             // Act 
             Action act = () =>
                 response.Should().Be400BadRequest()
-                    .And.HaveError("", "A non-empty request body is required.");
+                    .And.HaveErrorMessage("A non-empty request body is required.");
 
             // Assert
             act.Should().NotThrow();
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string expectedField)
+        {
+            // Arrange
+            var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ]
+                    }
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.HaveError(expectedField, "*required*");
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+               .WithMessage("*<null> or empty field name*");
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string expectedWildcardErrorMessage)
+        {
+            // Arrange
+            var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ]
+                    }
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.HaveError("Author", expectedWildcardErrorMessage);
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+               .WithMessage("*<null> or empty wildcard error message*");
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveErrorMessage_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string expectedWildcardErrorMessage)
+        {
+            // Arrange
+            var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ]
+                    }
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.HaveErrorMessage(expectedWildcardErrorMessage);
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+               .WithMessage("*<null> or empty wildcard error message*");
         }
     }
 }

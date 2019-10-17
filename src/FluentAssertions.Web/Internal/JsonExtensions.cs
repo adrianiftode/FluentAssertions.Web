@@ -11,11 +11,18 @@ namespace FluentAssertions.Web.Internal
             => json.GetByKey(key).Any();
 
         public static IEnumerable<string> GetStringValuesByKey(this JObject json, string key)
-            => json.GetByKey(key).FirstOrDefault()?.First.Select(c => (string)c) ?? Enumerable.Empty<string>();
+        => json.GetByKey(key)
+               .FirstOrDefault()?.First
+               .Select(c => (string)c) ?? Enumerable.Empty<string>();
+
+        public static IEnumerable<string> GetChildrenKeys(this JObject json, string parentElement)
+            => json.GetByKey(parentElement)
+                   .SelectMany(c => c.Children<JObject>())
+                   .SelectMany(c => c.Properties().Select(p => p.Name));
 
         public static IEnumerable<JToken> GetByKey(this JObject json, string key) =>
             json.AllTokens().Where(c => c.Type == JTokenType.Property
-                                      && string.Equals(((JProperty)c).Name, key, StringComparison.OrdinalIgnoreCase));
+                                        && string.Equals(((JProperty)c).Name, key, StringComparison.OrdinalIgnoreCase));
 
         private static IEnumerable<JToken> AllTokens(this JObject obj)
         {
