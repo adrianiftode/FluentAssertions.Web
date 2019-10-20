@@ -21,5 +21,21 @@ namespace FluentAssertions.Web.Tests.Internal
                     type.Should().NotHaveAccessModifier(Common.CSharpAccessModifier.Public);
                 }
         }
+
+        [Fact]
+        public void GivenAssertionsExtensions_ThenShouldHaveFluentAssertionsNamespaceOnly()
+        {
+            // Arrange
+            var typesFromInternal = typeof(HttpResponseMessageAssertions).Assembly
+                .GetTypes()
+                .Where(c => c.Name.EndsWith("AssertionsExtensions"));
+
+            // Assert
+            using (new AssertionScope())
+                foreach (var type in typesFromInternal)
+                {
+                    type.Namespace.Should().Be("FluentAssertions", "because we want to make sure {0} has the FluentAssertions namespace", type.Name);
+                }
+        }
     }
 }

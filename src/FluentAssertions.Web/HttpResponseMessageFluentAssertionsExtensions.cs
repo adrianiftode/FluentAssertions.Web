@@ -1,6 +1,7 @@
-﻿using System.Net.Http;
+﻿using FluentAssertions.Web;
+using System.Net.Http;
 
-namespace FluentAssertions.Web
+namespace FluentAssertions
 {
     public static class HttpResponseMessageFluentAssertionsExtensions
     {
