@@ -22,6 +22,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see cref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> HaveContent<TModel>(TModel expectedModel, string because = "", params object[] becauseArgs)
         {
             ExecuteSubjectNotNull(because, becauseArgs);
@@ -31,7 +32,13 @@ namespace FluentAssertions.Web
                 throw new ArgumentNullException(nameof(expectedModel), "Cannot verify having a content against a <null> content.");
             }
 
-            var subjectModel = GetSubjectModel<TModel>();
+            var success = TryGetSubjectModel<TModel>(out var subjectModel);
+
+            Execute.Assertion
+                     .BecauseOf(because, becauseArgs)
+                     .ForCondition(success)
+                     .FailWith("Expected {context:response} to have a content equivalent to a model, but the JSON respresentation could not be parsed{reason}. {0}",
+                         Subject);
 
             string[] failures;
 

@@ -131,6 +131,27 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
+        public void When_asserting_response_with_not_a_proper_JSON_to_have_content_of_a_model_type_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent(@"some text:that doesn't look like a json {", Encoding.UTF8, "text/plain")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().HaveContent(new
+                {
+                    Comment = "Hey"
+                }, "we want to test the {0}", "reason");
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*to have a content equivalent to a model, but the JSON respresentation could not be parsed*");
+        }
+
+        [Fact]
         public void When_asserting_response_to_have_content_against_null_value_it_should_throw_with_descriptive_message()
         {
             // Arrange
