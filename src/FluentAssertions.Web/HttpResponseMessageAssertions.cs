@@ -2,6 +2,7 @@
 using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
 using FluentAssertions.Web.Internal;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Dynamic;
@@ -819,10 +820,19 @@ namespace FluentAssertions.Web
             return content.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
 
-        protected TModel GetSubjectModel<TModel>()
+        protected bool TryGetSubjectModel<TModel>(out TModel model)
         {
-            Func<Task<TModel>> model = () => Subject.Content.ReadAsAsync<TModel>();
-            return model.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+            Func<Task<TModel>> readModel = () => Subject.Content.ReadAsAsync<TModel>();
+            try
+            {
+                model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+                return true;
+            }
+            catch (JsonReaderException exception)
+            {
+                model = default;
+                return false;
+            }
         }
 
         protected ExpandoObject GetExpandoContent()

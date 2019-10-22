@@ -3,7 +3,7 @@ using System.Text;
 
 namespace FluentAssertions.Web.Internal
 {
-    public class AssertionsFailuresFormatter : IValueFormatter
+    internal class AssertionsFailuresFormatter : IValueFormatter
     {
         public bool CanHandle(object value) => value is AssertionsFailures;
 

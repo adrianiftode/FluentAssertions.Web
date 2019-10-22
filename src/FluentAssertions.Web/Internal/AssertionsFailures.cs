@@ -2,7 +2,7 @@
 
 namespace FluentAssertions.Web.Internal
 {
-    public class AssertionsFailures
+    internal class AssertionsFailures
     {
         public AssertionsFailures(string[] failuresMessages)
         {

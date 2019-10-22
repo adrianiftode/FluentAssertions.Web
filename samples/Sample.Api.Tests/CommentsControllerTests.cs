@@ -1,5 +1,4 @@
 using FluentAssertions;
-using FluentAssertions.Web;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Text;
@@ -97,7 +96,7 @@ namespace Sample.Api.Tests
 
             // Assert
             response.Should().Be400BadRequest()
-                .And.HaveErrorMessage("A non-empty request body is required.");
+                .And.HaveErrorMessage("*The input does not contain any JSON tokens*");
         }
 
         [Fact]

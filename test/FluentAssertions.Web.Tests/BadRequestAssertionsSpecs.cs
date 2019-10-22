@@ -122,6 +122,34 @@ namespace FluentAssertions.Web.Tests
             act.Should().NotThrow();
         }
 
+        [Fact]
+        public void When_asserting_bad_request_response_with_only_the_error_description_and_a_name_for_the_error_field_to_be_BadRequest_with_specific_message_it_should_succeed()
+        {
+            // Arrange
+            using var response = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+        ""type"": ""https://tools.ietf.org/html/rfc7231#section-6.5.1"",
+        ""title"": ""One or more validation errors occurred."",
+        ""status"": 400,
+        ""traceId"": ""|2e128730-44b8587a25408f28."",
+        ""errors"": {
+                ""$"": [
+                    ""The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0.""
+            ]
+    }
+}", Encoding.UTF8, "application/json")
+            };
+
+            // Act 
+            Action act = () =>
+                response.Should().Be400BadRequest()
+                    .And.HaveErrorMessage("The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0.");
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
