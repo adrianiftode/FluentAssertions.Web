@@ -100,7 +100,7 @@ namespace Sample.Api.Tests
         }
 
         [Fact]
-        public async Task Post_WithNoAuthorAndNoContentContent_ReturnsBadRequest()
+        public async Task Post_WithNoAuthorAndNoContent_ReturnsBadRequest()
         {
             // Arrange
             var client = _factory.CreateClient();

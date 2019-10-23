@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,7 +36,7 @@ namespace FluentAssertions.Web
             AppendProtocolAndStatusCode(messageBuilder, response);
             AppendHeaders(messageBuilder, response.GetHeaders());
             AppendContentLength(messageBuilder, response);
-            AppendContent(response?.Content, messageBuilder);
+            AppendContent(messageBuilder, response.Content, content => HandleInternalServerError(response, content));
         }
 
         private static void AppendRequest(StringBuilder messageBuilder, HttpRequestMessage request)
@@ -53,10 +54,10 @@ namespace FluentAssertions.Web
 
             AppendHeaders(messageBuilder, request.GetHeaders());
             AppendContentLength(messageBuilder, request);
-            AppendContent(request.Content, messageBuilder);
+            AppendContent(messageBuilder, request.Content);
         }
 
-        private static void AppendContent(HttpContent httpContent, StringBuilder messageBuilder)
+        private static void AppendContent(StringBuilder messageBuilder, HttpContent httpContent, Func<string, string> contentProcessor = null)
         {
             if (httpContent == null)
             {
@@ -73,6 +74,8 @@ namespace FluentAssertions.Web
 
             content = content.BeautifyJson();
 
+            content = contentProcessor?.Invoke(content) ?? content;
+            
             if (!string.IsNullOrEmpty(content))
             {
                 messageBuilder.AppendLine();
@@ -109,6 +112,38 @@ namespace FluentAssertions.Web
                 var headersPrint = $"{header.Key}: {string.Join(", ", header.Value)}";
                 messageBuilder.AppendLine(headersPrint);
             }
+        }
+
+        private static string HandleInternalServerError(HttpResponseMessage response, string content)
+        {
+            if (response.StatusCode != HttpStatusCode.InternalServerError)
+            {
+                return content;
+            }
+
+            // ASP.NET Core 3.0
+            if (content.Contains("HEADERS"))
+            {
+                var exceptionDetails = content.Substring(0, content.IndexOf("HEADERS")).Trim();
+
+                return exceptionDetails;
+            }
+
+            // ASP.NET Core 2.2
+            if (content.Contains("rawExceptionStackTrace"))
+            {
+                const string startTag = @"<pre class=""rawExceptionStackTrace"">";
+                var startTagIndex = content.LastIndexOf(startTag);
+                var endTagIndex = content.IndexOf("</pre>", startTagIndex);
+
+                var exceptionDetails = content.Substring(startTagIndex + startTag.Length, endTagIndex - startTagIndex - startTag.Length);
+
+                exceptionDetails = WebUtility.HtmlDecode(exceptionDetails);
+
+                return exceptionDetails;
+            }
+
+            return content;
         }
     }
 }

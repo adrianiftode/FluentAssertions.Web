@@ -27,7 +27,7 @@ namespace Sample.Api.Tests
                 {
                     endpoints.Map("/exception", context =>
                     {
-                        throw new Exception("Wow!");
+                        throw new Exception("Wow!", new Exception("Exactly!"));
                     });
                 }));
             using var testServer = new TestServer(builder);

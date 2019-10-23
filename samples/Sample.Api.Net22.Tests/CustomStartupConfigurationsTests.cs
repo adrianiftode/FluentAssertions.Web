@@ -23,7 +23,7 @@ namespace Sample.Api.Tests
             builder.Configure(app => app
                 .UseDeveloperExceptionPage()
                 .Use((context, next) => {
-                    throw new Exception("Wow!");
+                    throw new Exception("Wow!", new Exception("Exactly!"));
                 }));
 
             using var testServer = new TestServer(builder);
