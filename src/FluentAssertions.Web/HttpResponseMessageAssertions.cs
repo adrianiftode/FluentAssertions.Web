@@ -828,7 +828,7 @@ namespace FluentAssertions.Web
                 model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
                 return true;
             }
-            catch (JsonReaderException exception)
+            catch (JsonReaderException)
             {
                 model = default;
                 return false;

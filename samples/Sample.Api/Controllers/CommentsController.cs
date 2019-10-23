@@ -15,7 +15,7 @@ namespace Sample.Api.Controllers
         };
 
         [HttpGet("{id}")]
-        public Comment Get(int id) => new Comment { Author = "Adrian", Content = "Hey" };
+        public Comment Get(int id) => new Comment { Author = "Adrian", Content = "Hey", CommentId = id };
 
         [HttpPost]
         public Comment Post([FromBody] Comment value) => value;
@@ -27,5 +27,6 @@ namespace Sample.Api.Controllers
         public string Author { get; set; }
         [Required, StringLength(maximumLength: 500)]
         public string Content { get; set; }
+        public int CommentId { get; set; }
     }
 }
