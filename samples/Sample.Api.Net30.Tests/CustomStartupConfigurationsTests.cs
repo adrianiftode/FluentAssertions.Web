@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Sample.Api.Tests
 {
-    public class InlineSamplesTests
+    public class CustomStartupConfigurationsTests
     {
         [Fact]
         public async Task GetException_WhenDeveloperPageIsConfigured_ShouldBeInternalServerError()
