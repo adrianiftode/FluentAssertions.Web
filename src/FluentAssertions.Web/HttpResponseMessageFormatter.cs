@@ -122,19 +122,26 @@ namespace FluentAssertions.Web
             }
 
             // ASP.NET Core 3.0
-            if (content.Contains("HEADERS"))
+            const string headersText = "HEADERS";
+            var headersIndex = content.IndexOf(headersText);
+            if (headersIndex >= 0)
             {
-                var exceptionDetails = content.Substring(0, content.IndexOf("HEADERS")).Trim();
+                var exceptionDetails = content.Substring(0, headersIndex).Trim();
 
                 return exceptionDetails;
             }
 
             // ASP.NET Core 2.2
-            if (content.Contains("rawExceptionStackTrace"))
+            const string startTag = @"<pre class=""rawExceptionStackTrace"">";
+            if (content.Contains(startTag))
             {
-                const string startTag = @"<pre class=""rawExceptionStackTrace"">";
                 var startTagIndex = content.LastIndexOf(startTag);
                 var endTagIndex = content.IndexOf("</pre>", startTagIndex);
+                if (endTagIndex < 0)
+                {
+                    // there is no end tag
+                    return content;
+                }
 
                 var exceptionDetails = content.Substring(startTagIndex + startTag.Length, endTagIndex - startTagIndex - startTag.Length);
 

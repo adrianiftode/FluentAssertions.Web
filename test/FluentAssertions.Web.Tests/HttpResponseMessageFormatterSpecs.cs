@@ -270,6 +270,8 @@ Some content.*");
         [Theory]
         [InlineData(AspNetCore22InternalServerErrorResponse, "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "<!DOCTYPE html>")]
         [InlineData(AspNetCore30InternalServerErrorResponse, "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "HEADERS")]
+        [InlineData(@"<pre class=""rawExceptionStackTrace"">", "*rawExceptionStackTrace*", "DOCTYPE")]
+        [InlineData(@"</pre>", "*</pre>*", "DOCTYPE")]
         public void GivenInternalServerError_ShouldPrintExceptionDetails(string content, string expected, string unexpected)
         {
             // Arrange
