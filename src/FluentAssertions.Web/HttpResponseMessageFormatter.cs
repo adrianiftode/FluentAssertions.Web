@@ -1,10 +1,9 @@
 ﻿using FluentAssertions.Formatting;
 using FluentAssertions.Web.Internal;
+using FluentAssertions.Web.Internal.ContentProcessors;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,22 +24,30 @@ namespace FluentAssertions.Web
             messageBuilder.AppendLine();
             messageBuilder.AppendLine("The HTTP response was:");
 
-            AppendResponse(messageBuilder, response);
-            AppendRequest(messageBuilder, response.RequestMessage);
+            Func<Task> contentResolver = async () => await AppendHttpResponseMessage(messageBuilder, response);
+            contentResolver.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
-            return messageBuilder.ToString().TrimEnd();
+            return messageBuilder.ToString();
         }
 
-        private static void AppendResponse(StringBuilder messageBuilder, HttpResponseMessage response)
+        private static async Task AppendHttpResponseMessage(StringBuilder messageBuilder, HttpResponseMessage response)
+        {
+            await AppendResponse(messageBuilder, response);
+            await AppendRequest(messageBuilder, response);
+            messageBuilder.AppendLine();
+        }
+
+        private static async Task AppendResponse(StringBuilder messageBuilder, HttpResponseMessage response)
         {
             AppendProtocolAndStatusCode(messageBuilder, response);
             AppendHeaders(messageBuilder, response.GetHeaders());
             AppendContentLength(messageBuilder, response);
-            AppendContent(messageBuilder, response.Content, content => HandleInternalServerError(response, content));
+            await AppendResponseContent(messageBuilder, response);
         }
 
-        private static void AppendRequest(StringBuilder messageBuilder, HttpRequestMessage request)
+        private static async Task AppendRequest(StringBuilder messageBuilder, HttpResponseMessage response)
         {
+            var request = response.RequestMessage;
             messageBuilder.AppendLine();
             if (request == null)
             {
@@ -54,34 +61,56 @@ namespace FluentAssertions.Web
 
             AppendHeaders(messageBuilder, request.GetHeaders());
             AppendContentLength(messageBuilder, request);
-            AppendContent(messageBuilder, request.Content);
+            await AppendRequestContent(messageBuilder, response);
         }
 
-        private static void AppendContent(StringBuilder messageBuilder, HttpContent httpContent, Func<string, string> contentProcessor = null)
+        private static async Task AppendResponseContent(StringBuilder messageBuilder,
+            HttpResponseMessage response)
         {
+            var httpContent = response.Content;
             if (httpContent == null)
             {
                 return;
             }
 
-            Func<Task<string>> contentResolver = async () =>
-            {
-                var stream = await httpContent.ReadAsStreamAsync();
-                stream.Seek(0, SeekOrigin.Begin);
-                return new StreamReader(stream).ReadToEnd();
+            var processors = new IContentProcessor[] {
+                new JsonProcessor(response.Content),
+                new InternalServerErrorProcessor(response, response.Content),
+                new StreamProcessor(response.Content),
+                new FallbackProcessor(response, response.Content)
             };
-            var content = contentResolver.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
-            content = content.BeautifyJson();
-
-            content = contentProcessor?.Invoke(content) ?? content;
-            
-            if (!string.IsNullOrEmpty(content))
-            {
-                messageBuilder.AppendLine();
-                messageBuilder.AppendLine(content.Trim());
-            }
+            var contentBuilder = await RunProcessors(processors);
+            messageBuilder.AppendLine();
+            messageBuilder.Append(contentBuilder);
         }
+
+        private static async Task AppendRequestContent(StringBuilder messageBuilder,
+           HttpResponseMessage response)
+        {
+            var processors = new IContentProcessor[]
+            {
+                new JsonProcessor(response.RequestMessage.Content),
+                new StreamProcessor(response.RequestMessage.Content),
+                new FallbackProcessor(response, response.RequestMessage.Content)
+            };
+
+            var contentBuilder = await RunProcessors(processors);
+            messageBuilder.Append(contentBuilder);
+        }
+
+        private static async Task<StringBuilder> RunProcessors(IContentProcessor[] processors)
+        {
+            var contentBuilder = new StringBuilder();
+            foreach (var processor in processors)
+            {
+                await processor.GetContentInfo(contentBuilder);
+            }
+
+            return contentBuilder;
+        }
+
+
 
         private static void AppendProtocolAndStatusCode(StringBuilder messageBuilder, HttpResponseMessage response)
         {
@@ -112,45 +141,6 @@ namespace FluentAssertions.Web
                 var headersPrint = $"{header.Key}: {string.Join(", ", header.Value)}";
                 messageBuilder.AppendLine(headersPrint);
             }
-        }
-
-        private static string HandleInternalServerError(HttpResponseMessage response, string content)
-        {
-            if (response.StatusCode != HttpStatusCode.InternalServerError)
-            {
-                return content;
-            }
-
-            // ASP.NET Core 3.0
-            const string headersText = "HEADERS";
-            var headersIndex = content.IndexOf(headersText);
-            if (headersIndex >= 0)
-            {
-                var exceptionDetails = content.Substring(0, headersIndex).Trim();
-
-                return exceptionDetails;
-            }
-
-            // ASP.NET Core 2.2
-            const string startTag = @"<pre class=""rawExceptionStackTrace"">";
-            if (content.Contains(startTag))
-            {
-                var startTagIndex = content.LastIndexOf(startTag);
-                var endTagIndex = content.IndexOf("</pre>", startTagIndex);
-                if (endTagIndex < 0)
-                {
-                    // there is no end tag
-                    return content;
-                }
-
-                var exceptionDetails = content.Substring(startTagIndex + startTag.Length, endTagIndex - startTagIndex - startTag.Length);
-
-                exceptionDetails = WebUtility.HtmlDecode(exceptionDetails);
-
-                return exceptionDetails;
-            }
-
-            return content;
         }
     }
 }

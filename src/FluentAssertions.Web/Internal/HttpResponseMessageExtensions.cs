@@ -21,7 +21,7 @@ namespace FluentAssertions.Web.Internal
         {
             var headers = request.GetHeaders();
             return headers
-                .FirstOrDefault(c=> string.Equals(c.Key, header, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault(c => string.Equals(c.Key, header, StringComparison.OrdinalIgnoreCase))
                 .Value
                 .Where(c => !string.IsNullOrEmpty(c)) ?? Enumerable.Empty<string>();
         }
