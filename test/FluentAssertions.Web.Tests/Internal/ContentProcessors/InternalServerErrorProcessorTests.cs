@@ -1,295 +1,94 @@
-﻿using System.Net;
+﻿using FluentAssertions.Web.Internal.ContentProcessors;
+using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace FluentAssertions.Web.Tests
+namespace FluentAssertions.Web.Tests.Internal.ContentProcessors
 {
-    public class HttpResponseMessageFormatterSpecs
+    public class InternalServerErrorProcessorTests
     {
         [Fact]
-        public void GivenUnspecifiedResponse_ShouldPrintProtocolAndHaveContentLengthZero()
+        public async Task GivenHttpResponseOtherThanInternalServerError_WhenGetContentInfo_ThenIsEmpty()
         {
             // Arrange
-            using var subject = new HttpResponseMessage();
-            var sut = new HttpResponseMessageFormatter();
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK
+            };
+            var sut = new InternalServerErrorProcessor(response, response.Content);
+            var contentBuilder = new StringBuilder();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            await sut.GetContentInfo(contentBuilder);
 
             // Assert
-            formatted.Should().Match(@"*
-The HTTP response was:*
-HTTP/1.1 200 OK*
-Content-Length: 0*
-The originated HTTP request was <null>.*");
+            contentBuilder.ToString().Should().BeEmpty();
         }
 
         [Fact]
-        public void GivenHeaders_ShouldPrintAllHeaders()
+        public async Task GivenHttpResponseWithContentThatDoesNotDescribeAKnownError_WhenGetContentInfo_ThenIsEmpty()
         {
             // Arrange
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            var response = new HttpResponseMessage
             {
-                Content = new StringContent("", Encoding.UTF8, "text/html")
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent("the content")
             };
-            subject.Headers.Add("Cache-Control", "no-store, no-cache, max-age=0");
-            subject.Headers.Add("Pragma", "no-cache");
-            subject.Headers.Add("Request-Context", "appId=cid-v1:2e15fa14-72b6-44b3-a9b2-560e7b3234e5");
-            subject.Headers.Add("Strict-Transport-Security", "max-age=31536000");
-            subject.Headers.Add("Date", "Thu, 26 Sep 2019 22:33:34 GMT");
-            subject.Headers.Add("Connection", "close");
-            var sut = new HttpResponseMessageFormatter();
+            var sut = new InternalServerErrorProcessor(response, response.Content);
+            var contentBuilder = new StringBuilder();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            await sut.GetContentInfo(contentBuilder);
 
             // Assert
-            formatted.Should().Match(
-@"*The HTTP response was:*
-HTTP/1.1 200 OK*
-Cache-Control: no-store, no-cache, max-age=0*
-Pragma: no-cache*
-Request-Context: appId=cid-v1:2e15fa14-72b6-44b3-a9b2-560e7b3234e5*
-Strict-Transport-Security: max-age=31536000*
-Date: Thu, 26 Sep 2019 22:33:34 GMT*
-Connection: close*
-Content-Type: text/html; charset=utf-8*
-Content-Length: 0*
-The originated HTTP request was <null>.*");
+            contentBuilder.ToString().Should().BeEmpty();
         }
 
         [Fact]
-        public void GivenResponseWithContent_ShouldPrintContent()
+        public async Task GivenHttpResponseWithDeveloperPage_WhenGetContentInfo_ThenExceptionDetailsAreExtracted()
         {
             // Arrange
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            var response = new HttpResponseMessage
             {
-                Content = new StringContent(@"{
-    ""glossary"": {
-        ""title"": ""example glossary"",
-        ""GlossDiv"": {
-            ""title"": ""S"",
-            ""GlossList"": {
-                ""GlossEntry"": {
-                    ""ID"": ""SGML"",
-                    ""SortAs"": ""SGML"",
-                    ""GlossTerm"": ""Standard Generalized Markup Language"",
-                    ""Acronym"": ""SGML"",
-                    ""Abbrev"": ""ISO 8879:1986"",
-                    ""GlossDef"": {
-                        ""para"": ""A meta-markup language, used to create markup languages such as DocBook."",
-                        ""GlossSeeAlso"": [
-                            ""GML"",
-                            ""XML""
-                        ]
-                    },
-                    ""GlossSee"": ""markup""
-                }
-            }
-        }
-    }
-}", Encoding.UTF8, "application/json")
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(HtmlPageInternalServerErrorResponse)
             };
-            var sut = new HttpResponseMessageFormatter();
+            var sut = new InternalServerErrorProcessor(response, response.Content);
+            var contentBuilder = new StringBuilder();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            await sut.GetContentInfo(contentBuilder);
 
             // Assert
-            formatted.Should().Match(@"*The HTTP response was:*
-HTTP/1.1 200 OK*
-Content-Type: application/json; charset=utf-8*
-Content-Length:*
-{*
-    ""glossary"": {*
-        ""title"": ""example glossary"",*
-        ""GlossDiv"": {*
-            ""title"": ""S"",*
-            ""GlossList"": {*
-                ""GlossEntry"": {*
-                    ""ID"": ""SGML"",*
-                    ""SortAs"": ""SGML"",*
-                    ""GlossTerm"": ""Standard Generalized Markup Language"",*
-                    ""Acronym"": ""SGML"",*
-                    ""Abbrev"": ""ISO 8879:1986"",*
-                    ""GlossDef"": {*
-                        ""para"": ""A meta-markup language, used to create markup languages such as DocBook."",*
-                        ""GlossSeeAlso"": [*
-                            ""GML"",*
-                            ""XML""*
-                        ]*
-                    },*
-                    ""GlossSee"": ""markup""*
-                }*
-            }*
-        }*
-    }*
-}*
-The originated HTTP request was <null>.*");
+            contentBuilder.ToString().Should()
+                .Match("*System.Exception: Wow!*DeveloperExceptionPageMiddleware*")
+                .And.NotContain("<!DOCTYPE html>");
         }
 
         [Fact]
-        public void GivenResponseWithMinifiedJson_ShouldPrintFormattedJson()
+        public async Task GivenHttpResponseWithRawTextDeveloperPage_WhenGetContentInfo_ThenExceptionDetailsAreExtracted()
         {
             // Arrange
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            var response = new HttpResponseMessage
             {
-                Content = new StringContent(@"{""glossary"":{""title"":""example glossary"",""GlossDiv"":{""title"":""S"",""GlossList"":{""GlossEntry"":{""ID"":""SGML"",""SortAs"":""SGML"",""GlossTerm"":""Standard Generalized Markup Language"",""Acronym"":""SGML"",""Abbrev"":""ISO 8879:1986"",""GlossDef"":{""para"":""A meta-markup language, used to create markup languages such as DocBook."",""GlossSeeAlso"":[""GML"",""XML""]},""GlossSee"":""markup""}}}}}", Encoding.UTF8, "application/json")
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(RawTextInternalServerErrorResponse)
             };
-            var sut = new HttpResponseMessageFormatter();
+            var sut = new InternalServerErrorProcessor(response, response.Content);
+            var contentBuilder = new StringBuilder();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            await sut.GetContentInfo(contentBuilder);
 
             // Assert
-            formatted.Should().Match(@"*
-The HTTP response was:*
-HTTP/1.1 200 OK*
-Content-Type: application/json; charset=utf-8*
-Content-Length:*
-{*
-    ""glossary"": {*
-        ""title"": ""example glossary"",*
-        ""GlossDiv"": {*
-            ""title"": ""S"",*
-            ""GlossList"": {*
-                ""GlossEntry"": {*
-                    ""ID"": ""SGML"",*
-                    ""SortAs"": ""SGML"",*
-                    ""GlossTerm"": ""Standard Generalized Markup Language"",*
-                    ""Acronym"": ""SGML"",*
-                    ""Abbrev"": ""ISO 8879:1986"",*
-                    ""GlossDef"": {*
-                        ""para"": ""A meta-markup language, used to create markup languages such as DocBook."",*
-                        ""GlossSeeAlso"": [*
-                            ""GML"",*
-                            ""XML""*
-                        ]*
-                    },*
-                    ""GlossSee"": ""markup""*
-                }*
-            }*
-        }*
-    }*
-}*
-The originated HTTP request was <null>.*");
+            contentBuilder.ToString().Should()
+                .Match("*System.Exception: Wow!*DeveloperExceptionPageMiddleware*")
+                .And.NotContain("HEADERS");
         }
 
-
-        [Fact]
-        public void GivenHtmlResponse_ShouldPrintAsItIs()
-        {
-            // Arrange
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(@"<html>
-<head>
-<title>Title of the document</title>
-</head>
-
-<body>
-The content of the document......
-</body>
-
-</html>", Encoding.UTF8, "text/html")
-            };
-            var sut = new HttpResponseMessageFormatter();
-
-            // Act
-            var formatted = sut.Format(subject, null, null);
-
-            // Assert
-            formatted.Should().Match(@"*
-The HTTP response was:*
-HTTP/1.1 200 OK*
-Content-Type: text/html; charset=utf-8*
-Content-Length:*
-<html>*
-<head>*
-<title>Title of the document</title>*
-</head>*
-<body>*
-The content of the document......*
-</body>*
-</html>*
-The originated HTTP request was <null>.*");
-        }
-
-        [Fact]
-        public void GivenContentLengthInHeaders_ShouldNotPrintItTwice()
-        {
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent("")
-            };
-            subject.Content.Headers.Add("Content-Length", "0");
-            var sut = new HttpResponseMessageFormatter();
-
-            // Act
-            var formatted = sut.Format(subject, null, null);
-
-            // Assert
-            formatted.Should().Match(
-                @"*The HTTP response was:*
-HTTP/1.1 200 OK*
-Content-Type: text/plain; charset=utf-8*
-Content-Length: 0*
-The originated HTTP request was <null>.*");
-        }
-
-        [Fact]
-        public void GivenRequest_ShouldPrintRequestDetails()
-        {
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
-                {
-                    Content = new StringContent("Some content."),
-                    Headers = { { "Authorization", "Bearer xyz" } }
-                }
-            };
-            var sut = new HttpResponseMessageFormatter();
-
-            // Act
-            var formatted = sut.Format(subject, null, null);
-
-            // Assert
-            formatted.Should().Match(
-                @"*The HTTP response was:*
-HTTP/1.1 200 OK*
-Content-Length: 0*
-The originated HTTP request was:*
-POST http://localhost:5001/ HTTP 1.1*
-Authorization: Bearer xyz*
-Content-Type: text/plain; charset=utf-8*
-Content-Length: *
-Some content.*");
-        }
-
-        [Theory]
-        [InlineData(AspNetCore22InternalServerErrorResponse, "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "<!DOCTYPE html>")]
-        [InlineData(AspNetCore30InternalServerErrorResponse, "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "HEADERS")]
-        [InlineData(@"<pre class=""rawExceptionStackTrace"">", "*rawExceptionStackTrace*", "DOCTYPE")]
-        [InlineData(@"</pre>", "*</pre>*", "DOCTYPE")]
-        public void GivenInternalServerError_ShouldPrintExceptionDetails(string content, string expected, string unexpected)
-        {
-            // Arrange
-            using var subject = new HttpResponseMessage(HttpStatusCode.InternalServerError)
-            {
-                Content = new StringContent(content)
-            };
-            var sut = new HttpResponseMessageFormatter();
-
-            // Act
-            var formatted = sut.Format(subject, null, null);
-
-            // Assert
-            formatted.Should().Match(expected);
-            formatted.Should().NotContain(unexpected);
-        }
-
-        private const string AspNetCore22InternalServerErrorResponse = @"<!DOCTYPE html>
+        private const string HtmlPageInternalServerErrorResponse = @"<!DOCTYPE html>
 <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
     <head>
         <meta charset=""utf-8"" />
@@ -791,7 +590,7 @@ a {
         </script>
     </body>
 </html>";
-        private const string AspNetCore30InternalServerErrorResponse = @"System.Exception: Wow!
+        private const string RawTextInternalServerErrorResponse = @"System.Exception: Wow!
    at Sample.Api.Tests.CustomStartupConfigurationsTests.<>c.<GetException_WhenDeveloperPageIsConfigured_ShouldBeInternalServerError>b__0_3(HttpContext context) in E:\projects\mine\FluentAssertions.Web\samples\Sample.Api.Net30.Tests\CustomStartupConfigurationsTests.cs:line 30
    at Microsoft.AspNetCore.Routing.EndpointMiddleware.Invoke(HttpContext httpContext)
 --- End of stack trace from previous location where exception was thrown ---

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace FluentAssertions.Web.Internal
 {
@@ -14,7 +15,7 @@ namespace FluentAssertions.Web.Internal
             {
                 result = JToken.Parse(content).ToString().Replace("  ", "    ");
             }
-            catch
+            catch (JsonReaderException)
             {
                 result = content;
             }

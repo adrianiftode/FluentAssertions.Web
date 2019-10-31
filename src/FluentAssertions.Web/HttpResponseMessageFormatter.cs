@@ -1,8 +1,8 @@
 ﻿using FluentAssertions.Formatting;
 using FluentAssertions.Web.Internal;
+using FluentAssertions.Web.Internal.ContentProcessors;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -24,22 +24,30 @@ namespace FluentAssertions.Web
             messageBuilder.AppendLine();
             messageBuilder.AppendLine("The HTTP response was:");
 
-            AppendResponse(messageBuilder, response);
-            AppendRequest(messageBuilder, response.RequestMessage);
+            Func<Task> contentResolver = async () => await AppendHttpResponseMessage(messageBuilder, response);
+            contentResolver.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
-            return messageBuilder.ToString().TrimEnd();
+            return messageBuilder.ToString();
         }
 
-        private static void AppendResponse(StringBuilder messageBuilder, HttpResponseMessage response)
+        private static async Task AppendHttpResponseMessage(StringBuilder messageBuilder, HttpResponseMessage response)
+        {
+            await AppendResponse(messageBuilder, response);
+            await AppendRequest(messageBuilder, response);
+            messageBuilder.AppendLine();
+        }
+
+        private static async Task AppendResponse(StringBuilder messageBuilder, HttpResponseMessage response)
         {
             AppendProtocolAndStatusCode(messageBuilder, response);
             AppendHeaders(messageBuilder, response.GetHeaders());
             AppendContentLength(messageBuilder, response);
-            AppendContent(response?.Content, messageBuilder);
+            await AppendResponseContent(messageBuilder, response);
         }
 
-        private static void AppendRequest(StringBuilder messageBuilder, HttpRequestMessage request)
+        private static async Task AppendRequest(StringBuilder messageBuilder, HttpResponseMessage response)
         {
+            var request = response.RequestMessage;
             messageBuilder.AppendLine();
             if (request == null)
             {
@@ -53,32 +61,56 @@ namespace FluentAssertions.Web
 
             AppendHeaders(messageBuilder, request.GetHeaders());
             AppendContentLength(messageBuilder, request);
-            AppendContent(request.Content, messageBuilder);
+            await AppendRequestContent(messageBuilder, response);
         }
 
-        private static void AppendContent(HttpContent httpContent, StringBuilder messageBuilder)
+        private static async Task AppendResponseContent(StringBuilder messageBuilder,
+            HttpResponseMessage response)
         {
+            var httpContent = response.Content;
             if (httpContent == null)
             {
                 return;
             }
 
-            Func<Task<string>> contentResolver = async () =>
-            {
-                var stream = await httpContent.ReadAsStreamAsync();
-                stream.Seek(0, SeekOrigin.Begin);
-                return new StreamReader(stream).ReadToEnd();
+            var processors = new IContentProcessor[] {
+                new JsonProcessor(response.Content),
+                new InternalServerErrorProcessor(response, response.Content),
+                new StreamProcessor(response.Content),
+                new FallbackProcessor(response, response.Content)
             };
-            var content = contentResolver.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
-            content = content.BeautifyJson();
-
-            if (!string.IsNullOrEmpty(content))
-            {
-                messageBuilder.AppendLine();
-                messageBuilder.AppendLine(content.Trim());
-            }
+            var contentBuilder = await RunProcessors(processors);
+            messageBuilder.AppendLine();
+            messageBuilder.Append(contentBuilder);
         }
+
+        private static async Task AppendRequestContent(StringBuilder messageBuilder,
+           HttpResponseMessage response)
+        {
+            var processors = new IContentProcessor[]
+            {
+                new JsonProcessor(response.RequestMessage.Content),
+                new StreamProcessor(response.RequestMessage.Content),
+                new FallbackProcessor(response, response.RequestMessage.Content)
+            };
+
+            var contentBuilder = await RunProcessors(processors);
+            messageBuilder.Append(contentBuilder);
+        }
+
+        private static async Task<StringBuilder> RunProcessors(IContentProcessor[] processors)
+        {
+            var contentBuilder = new StringBuilder();
+            foreach (var processor in processors)
+            {
+                await processor.GetContentInfo(contentBuilder);
+            }
+
+            return contentBuilder;
+        }
+
+
 
         private static void AppendProtocolAndStatusCode(StringBuilder messageBuilder, HttpResponseMessage response)
         {

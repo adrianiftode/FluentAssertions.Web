@@ -96,11 +96,11 @@ namespace Sample.Api.Tests
 
             // Assert
             response.Should().Be400BadRequest()
-                .And.HaveErrorMessage("*The input does not contain any JSON tokens*");
+                .And.HaveErrorMessage("A non-empty request body is required.");
         }
 
         [Fact]
-        public async Task Post_WithNoAuthorAndNoContentContent_ReturnsBadRequest()
+        public async Task Post_WithNoAuthorAndNoContent_ReturnsBadRequest()
         {
             // Arrange
             var client = _factory.CreateClient();

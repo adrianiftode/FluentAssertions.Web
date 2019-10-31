@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Sample.Api.Tests
 {
-    public class InlineSamplesTests
+    public class CustomStartupConfigurationsTests
     {
         [Fact]
         public async Task GetException_WhenDeveloperPageIsConfigured_ShouldBeInternalServerError()
@@ -27,7 +27,7 @@ namespace Sample.Api.Tests
                 {
                     endpoints.Map("/exception", context =>
                     {
-                        throw new Exception("Wow!");
+                        throw new Exception("Wow!", new Exception("Exactly!"));
                     });
                 }));
             using var testServer = new TestServer(builder);

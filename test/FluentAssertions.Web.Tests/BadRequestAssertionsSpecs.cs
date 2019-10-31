@@ -123,6 +123,28 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
+        public void When_asserting_bad_request_response_with_content_generated_by_AspNetCore22_to_be_BadRequest_with_specific_message_it_should_succeed()
+        {
+            // Arrange
+            using var response = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{ 
+                              """":[ 
+                                 ""A non-empty request body is required.""
+                              ]                           
+                        }", Encoding.UTF8, "application/json")
+            };
+
+            // Act 
+            Action act = () =>
+                response.Should().Be400BadRequest()
+                    .And.HaveErrorMessage("A non-empty request body is required.");
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
         public void When_asserting_bad_request_response_with_only_the_error_description_and_a_name_for_the_error_field_to_be_BadRequest_with_specific_message_it_should_succeed()
         {
             // Arrange
