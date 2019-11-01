@@ -8,6 +8,98 @@ namespace FluentAssertions.Web.Tests
 {
     public class StatusesSpecs
     {
+        #region 100 Continue
+        [Fact]
+        public void When_asserting_100_Continue_response_to_be_100Continue_it_should_succeed()
+        {
+            // Arrange
+            var subject = new HttpResponseMessage(HttpStatusCode.Continue);
+
+            // Act
+            Action act = () =>
+                subject.Should().Be100Continue();
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_other_than_100_Continue_response_to_be_100Continue_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+
+            // Act
+            Action act = () =>
+                subject.Should().Be100Continue("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Continue because we want to test the failure message, but found OK*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_be_100Continue_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().Be100Continue("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion
+
+        #region 101 Switching Protocols
+        [Fact]
+        public void When_asserting_101_Switching_Protocols_response_to_be_101SwitchingProtocols_it_should_succeed()
+        {
+            // Arrange
+            var subject = new HttpResponseMessage(HttpStatusCode.SwitchingProtocols);
+
+            // Act
+            Action act = () =>
+                subject.Should().Be101SwitchingProtocols();
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_other_than_101_Switching_Protocols_response_to_be_101SwitchingProtocols_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+
+            // Act
+            Action act = () =>
+                subject.Should().Be101SwitchingProtocols("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*SwitchingProtocols because we want to test the failure message, but found OK*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_be_101SwitchingProtocols_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().Be101SwitchingProtocols("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion 
+
         #region 200 Ok
         [Fact]
         public void When_asserting_200_Ok_response_to_be_200_Ok_it_should_succeed()
@@ -973,7 +1065,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 401 Unauthorized
         [Fact]
         public void When_asserting_401_Unauthorized_response_to_be_401_Unauthorized_it_should_succeed()
@@ -1019,7 +1111,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 402 Payment Required
         [Fact]
         public void When_asserting_402_Payment_Required_response_to_be_402PaymentRequired_it_should_succeed()
@@ -1065,7 +1157,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 403 Forbidden
         [Fact]
         public void When_asserting_403_Forbidden_response_to_be_403Forbidden_it_should_succeed()
@@ -1111,7 +1203,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 404 Not Found
         [Fact]
         public void When_asserting_404_Not_Found_response_to_be_404NotFound_it_should_succeed()
@@ -1157,7 +1249,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 405 Method Not Allowed
         [Fact]
         public void When_asserting_405_Method_Not_Allowed_response_to_be_405MethodNotAllowed_it_should_succeed()
@@ -1203,7 +1295,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 406 Not Acceptable
         [Fact]
         public void When_asserting_406_Not_Acceptable_response_to_be_406NotAcceptable_it_should_succeed()
@@ -1249,7 +1341,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 407 Proxy Authentication Required
         [Fact]
         public void When_asserting_407_Proxy_Authentication_Required_response_to_be_407ProxyAuthenticationRequired_it_should_succeed()
@@ -1295,7 +1387,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 408 Request Timeout
         [Fact]
         public void When_asserting_408_Request_Timeout_response_to_be_408RequestTimeout_it_should_succeed()
@@ -1341,7 +1433,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 409 Conflict
         [Fact]
         public void When_asserting_409_Conflict_response_to_be_409Conflict_it_should_succeed()
@@ -1387,7 +1479,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 410 Gone
         [Fact]
         public void When_asserting_410_Gone_response_to_be_410Gone_it_should_succeed()
@@ -1433,7 +1525,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 411 Length Required
         [Fact]
         public void When_asserting_411_Length_Required_response_to_be_411LengthRequired_it_should_succeed()
@@ -1479,7 +1571,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 412 Precondition Failed
         [Fact]
         public void When_asserting_412_Precondition_Failed_response_to_be_412PreconditionFailed_it_should_succeed()
@@ -1525,7 +1617,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 413 Request Entity Too Large
         [Fact]
         public void When_asserting_413_Request_Entity_Too_Large_response_to_be_413RequestEntityTooLarge_it_should_succeed()
@@ -1571,7 +1663,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 414 Request Uri Too Long
         [Fact]
         public void When_asserting_414_Request_Uri_Too_Long_response_to_be_414RequestUriTooLong_it_should_succeed()
@@ -1617,7 +1709,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 415 Unsupported Media Type
         [Fact]
         public void When_asserting_415_Unsupported_Media_Type_response_to_be_415UnsupportedMediaType_it_should_succeed()
@@ -1663,7 +1755,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 416 Requested Range Not Satisfiable
         [Fact]
         public void When_asserting_416_Requested_Range_Not_Satisfiable_response_to_be_416RequestedRangeNotSatisfiable_it_should_succeed()
@@ -1709,7 +1801,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 417 Expectation Failed
         [Fact]
         public void When_asserting_417_Expectation_Failed_response_to_be_417ExpectationFailed_it_should_succeed()
@@ -1755,7 +1847,7 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
-        
+
         #region 426 Upgrade Required
         [Fact]
         public void When_asserting_426_Upgrade_Required_response_to_be_426UpgradeRequired_it_should_succeed()

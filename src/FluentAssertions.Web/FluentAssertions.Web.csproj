@@ -14,7 +14,7 @@
       and also to spend less time with debugging when the tests fail.
     </PackageDescription>
     <PackageTags>fluentassertions;httpresponsemessage;fluentassertionsweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
     <PackageProjectUrl>https://github.com/adrianiftode/FluentAssertions.Web</PackageProjectUrl>
     <RepositoryUrl>https://github.com/adrianiftode/FluentAssertions.Web</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

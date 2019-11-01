@@ -33,6 +33,40 @@ namespace FluentAssertions.Web
         protected override string Identifier => $"{nameof(HttpResponseMessage)}";
 
         /// <summary>
+        /// Asserts that a HTTP response has the HTTP status 100 Continue
+        /// </summary>        
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> Be100Continue(string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Continue);
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+
+        /// <summary>
+        /// Asserts that a HTTP response has the HTTP status 101 Switching Protocols
+        /// </summary>        
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> Be101SwitchingProtocols(string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.SwitchingProtocols);
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+
+        /// <summary>
         /// Asserts that a HTTP response has the HTTP status 200 Ok
         /// </summary>        
         /// <param name="because">
