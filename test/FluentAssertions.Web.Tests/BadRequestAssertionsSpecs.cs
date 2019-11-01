@@ -34,7 +34,7 @@ namespace FluentAssertions.Web.Tests
 
         #region HaveError
         [Fact]
-        public void When_asserting_bad_request_response_with_standard_net_json_content_to_be_BadRequest_and_have_error_field_and_error_message_it_should_succeed()
+        public void When_asserting_bad_request_response_with_standard_dot_net_json_content_to_be_BadRequest_and_have_error_field_and_error_message_it_should_succeed()
         {
             // Arrange
             using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -119,6 +119,25 @@ namespace FluentAssertions.Web.Tests
                response.Should().Be400BadRequest()
                     .And.HaveError("id", "Error message 1.")
                     .And.HaveError("id", "Error message 2.");
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_bad_request_response_with_a_the_errors_messages_as_a_single_field_to_be_BadRequest_and_have_error_field_and_error_message_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                        ""Author"": ""The Author field is required.""
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.HaveError("Author", "The Author field is required.");
 
             // Assert
             act.Should().NotThrow();
@@ -281,7 +300,7 @@ namespace FluentAssertions.Web.Tests
 
         #region NotHaveError
         [Fact]
-        public void When_asserting_bad_request_response_with_standard_net_json_content_to_be_BadRequest_and_NotHaveError_it_should_succeed()
+        public void When_asserting_bad_request_response_with_standard_dot_net_json_content_to_be_BadRequest_and_NotHaveError_it_should_succeed()
         {
             // Arrange
             using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -300,8 +319,7 @@ namespace FluentAssertions.Web.Tests
                 .And.NotHaveError("Comments");
 
             // Assert
-            act.Should().Throw<ArgumentException>()
-                .WithMessage("*<null> or empty wildcard error message*");
+            act.Should().NotThrow();
         }
 
         [Fact]

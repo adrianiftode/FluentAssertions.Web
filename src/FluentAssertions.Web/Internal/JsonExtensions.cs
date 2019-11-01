@@ -11,9 +11,20 @@ namespace FluentAssertions.Web.Internal
             => json.GetByKey(key).Any();
 
         public static IEnumerable<string> GetStringValuesByKey(this JObject json, string key)
-        => json.GetByKey(key)
-               .FirstOrDefault()?.First
-               .Select(c => (string)c) ?? Enumerable.Empty<string>();
+        {
+            var byKey = json.GetByKey(key);
+            if (!byKey.Any())
+            {
+                return Enumerable.Empty<string>();
+            }
+
+            var first = byKey.FirstOrDefault()?.First;
+            return first switch
+            {
+                JArray values => values.Select(c => (string)c),
+                JToken token => new[] { token.ToString() }
+            };
+        }
 
         public static IEnumerable<string> GetChildrenKeys(this JObject json, string parentElement)
             => json.GetByKey(parentElement)
