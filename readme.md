@@ -97,14 +97,13 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 | **Should().Be505HttpVersionNotSupported()**  | Asserts that a HTTP response has the HTTP status 505 Http Version Not Supported  | 
 | **Should().HaveContent()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
 | **Should().HaveHeader()**  | Asserts that an HTTP response has a named header.  | 
+| **Should().NotHaveHeader()**  | Asserts that an HTTP response does not have a named header.  | 
 
 |  *Should().HaveHeader().And.* | Contains a number of methods to assert that an  is in the expected state related to HTTP headers. | 
 | --- | --- | 
 | **BeEmpty()**  | Asserts that an existing HTTP header in a HTTP response has no values.  | 
 | **BeValues()**  | Asserts that an existing HTTP header in a HTTP response has an expected list of header values.  | 
 | **Match()**  | Asserts that an existing HTTP header in a HTTP response contains at least a value that matches a wildcard pattern.  | 
-
-****
 
 |  *Should().Be400BadRequest().And.* | Contains a number of methods to assert that an  is in the expected state related to HTTP Bad Request response | 
 | --- | --- | 

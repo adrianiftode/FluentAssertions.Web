@@ -42,8 +42,9 @@ namespace FluentAssertions.Web
             ExecuteSubjectNotNull(because, becauseArgs);
 
             IEnumerable<string> headerValues = Subject.GetHeaderValues(_header);
-            
-            var matchFound = headerValues.Any(headerValue => {
+
+            var matchFound = headerValues.Any(headerValue =>
+            {
                 using (var scope = new AssertionScope())
                 {
                     headerValue.Should().Match(expectedWildcardValue);
@@ -74,7 +75,7 @@ namespace FluentAssertions.Web
         /// Zero or more objects to format using the placeholders in <see cref="because" />.
         /// </param>
         public AndConstraint<HeadersAssertions> BeEmpty(string because = "", params object[] becauseArgs)
-        {            
+        {
             var headerValues = Subject.GetHeaderValues(_header);
 
             Execute.Assertion
@@ -166,6 +167,38 @@ namespace FluentAssertions.Web
             return new AndConstraint<HeadersAssertions>(new HeadersAssertions(Subject, expectedHeader));
         }
 
-        private bool IsHeaderPresent(string expectedHeader) => Subject.GetHeaders().Any(c => string.Equals(c.Key, expectedHeader, StringComparison.OrdinalIgnoreCase));
+        /// <summary>
+        /// Asserts that an HTTP response does not have a named header.
+        /// </summary>
+        /// <param name="expectedHeader">
+        /// The expected header with which the HTTP headers list is matched.
+        /// </param>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> NotHaveHeader(string expectedHeader,
+            string because = "", params object[] becauseArgs)
+        {
+            Guard.ThrowIfArgumentIsNull(expectedHeader, nameof(expectedHeader), "Cannot verify not having a header against a <null> header.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(!IsHeaderPresent(expectedHeader))
+                .FailWith("Expected {context:value} to not to contain " +
+                          "the HTTP header {0}, but the header was found in the actual response{reason}.{1}",
+                    expectedHeader,
+                    Subject);
+
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+
+        private bool IsHeaderPresent(string expectedHeader)
+            => Subject
+                .GetHeaders()
+                .Any(c => string.Equals(c.Key, expectedHeader, StringComparison.OrdinalIgnoreCase));
     }
 }
