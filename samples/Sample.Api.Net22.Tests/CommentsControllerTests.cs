@@ -130,7 +130,8 @@ namespace Sample.Api.Tests
 
             // Assert
             response.Should().Be400BadRequest()
-                .And.HaveError("Author", "The Author field is required.");
+                .And.HaveError("Author", "The Author field is required.")
+                .And.NotHaveError("content");
         }
     }
 }
