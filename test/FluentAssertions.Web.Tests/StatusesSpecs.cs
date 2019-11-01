@@ -35,7 +35,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Continue because we want to test the failure message, but found OK*");
+                .WithMessage(@"*Continue"" because we want to test the failure message, but found OK*");
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*SwitchingProtocols because we want to test the failure message, but found OK*");
+                .WithMessage(@"*SwitchingProtocols"" because we want to test the failure message, but found OK*");
         }
 
         [Fact]
