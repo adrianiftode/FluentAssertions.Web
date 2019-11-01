@@ -121,7 +121,7 @@ namespace FluentAssertions.Web.Tests.Internal
         }
 
         [Fact]
-        public void GivenJson_WhenKeyDoesntExist_ThenReturnsEmpty()
+        public void GivenJson_WhenKeyDoesNotExist_ThenReturnsEmpty()
         {
             // Arrange
             var json = JObject.Parse(@"{
@@ -137,6 +137,23 @@ namespace FluentAssertions.Web.Tests.Internal
 
             // Assert
             result.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void GivenJson_WhenKeyHasSingleValue_ThenReturnsEmpty()
+        {
+            // Arrange
+            var json = JObject.Parse(@"{
+                ""errors"": {
+                    ""Author"": ""The Author field is required.""
+                }
+            }");
+
+            // Act
+            var result = json.GetStringValuesByKey("Author");
+
+            // Assert
+            result.Should().BeEquivalentTo(new[] { "The Author field is required." });
         }
 
         [Fact]

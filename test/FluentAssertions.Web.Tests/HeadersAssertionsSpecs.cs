@@ -102,6 +102,79 @@ namespace FluentAssertions.Web.Tests
 
         #endregion
 
+        #region NotHaveHeader
+        [Fact]
+        public void When_asserting_response_with_headers_to_to_not_have_a_header_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Headers =
+                {
+                    { "a-header", "with-a-value" }
+                }
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().NotHaveHeader("other-header");
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_response_with_no_headers_to_not_to_have_header_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage();
+
+            // Act
+            Action act = () =>
+                subject.Should().NotHaveHeader("custom-header");
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_response_with_a_header_to_not_have_that_header_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Headers =
+                {
+                    { "that-header", "with-a-value" }
+                }
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().NotHaveHeader("that-header", "we want to test the {0}", "reason");
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage("*to not to contain the HTTP header*that-header*but the header was found*reason*");
+        }
+
+        [Fact]
+        public void When_asserting_response_to_not_have_header_against_null_value_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage();
+
+            // Act
+            Action act = () =>
+                subject.Should().NotHaveHeader(null);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+                .WithMessage("*not having*header*<null>*");
+        }
+
+        #endregion
+
         #region BeEmpty
         [Fact]
         public void When_asserting_response_with_header_and_no_header_value_to_have_header_and_be_empty_value_it_should_succeed()
