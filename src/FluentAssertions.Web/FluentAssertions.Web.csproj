@@ -18,6 +18,7 @@
     <PackageProjectUrl>https://github.com/adrianiftode/FluentAssertions.Web</PackageProjectUrl>
     <RepositoryUrl>https://github.com/adrianiftode/FluentAssertions.Web</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>
