@@ -24,7 +24,7 @@ namespace FluentAssertions.Web
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         [CustomAssertion]
-        public AndConstraint<HttpResponseMessageAssertions> HaveContent<TModel>(TModel expectedModel, string because = "", params object[] becauseArgs)
+        public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, string because = "", params object[] becauseArgs)
         {
             ExecuteSubjectNotNull(because, becauseArgs);
 
