@@ -13,7 +13,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_100_Continue_response_to_be_100Continue_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.Continue);
+            using var subject = new HttpResponseMessage(HttpStatusCode.Continue);
 
             // Act
             Action act = () =>
@@ -27,7 +27,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_100_Continue_response_to_be_100Continue_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
@@ -59,7 +59,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_101_Switching_Protocols_response_to_be_101SwitchingProtocols_it_should_succeed()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.SwitchingProtocols);
+            using var subject = new HttpResponseMessage(HttpStatusCode.SwitchingProtocols);
 
             // Act
             Action act = () =>
@@ -73,7 +73,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_other_than_101_Switching_Protocols_response_to_be_101SwitchingProtocols_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            var subject = new HttpResponseMessage(HttpStatusCode.OK);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
             // Act
             Action act = () =>
