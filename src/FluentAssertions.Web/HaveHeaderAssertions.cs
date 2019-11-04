@@ -45,11 +45,9 @@ namespace FluentAssertions.Web
 
             var matchFound = headerValues.Any(headerValue =>
             {
-                using (var scope = new AssertionScope())
-                {
-                    headerValue.Should().Match(expectedWildcardValue);
-                    return !scope.Discard().Any();
-                }
+                using var scope = new AssertionScope();
+                headerValue.Should().Match(expectedWildcardValue);
+                return !scope.Discard().Any();
             });
 
             Execute.Assertion

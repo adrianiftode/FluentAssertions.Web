@@ -63,11 +63,9 @@ namespace FluentAssertions.Web
             var values = json.GetStringValuesByKey(expectedErrorField);
             var matchFound = values.Any(headerValue =>
             {
-                using (var scope = new AssertionScope())
-                {
-                    headerValue.Should().Match(expectedWildcardErrorMessage);
-                    return !scope.Discard().Any();
-                }
+                using var scope = new AssertionScope();
+                headerValue.Should().Match(expectedWildcardErrorMessage);
+                return !scope.Discard().Any();
             });
 
             Execute.Assertion
@@ -148,11 +146,9 @@ namespace FluentAssertions.Web
 
             var matchFound = allErrors.Any(headerValue =>
             {
-                using (var scope = new AssertionScope())
-                {
-                    headerValue.Should().Match(expectedWildcardErrorMessage);
-                    return !scope.Discard().Any();
-                }
+                using var scope = new AssertionScope();
+                headerValue.Should().Match(expectedWildcardErrorMessage);
+                return !scope.Discard().Any();
             });
 
             Execute.Assertion
