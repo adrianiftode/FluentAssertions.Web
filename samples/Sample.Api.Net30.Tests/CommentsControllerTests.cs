@@ -133,5 +133,21 @@ namespace Sample.Api.Tests
                 .And.HaveError("Author", "The Author field is required.")
                 .And.NotHaveError("content");
         }
+
+        [Fact]
+        public async Task Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMessageRelatedToAuthorOnly()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                                          ""content"": ""Hey, you...""
+                                        }", Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.Should().Be400BadRequest()
+                .And.OnlyHaveError("Author", "The Author field is required.");
+        }
     }
 }

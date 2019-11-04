@@ -27,9 +27,26 @@ namespace FluentAssertions.Web.Internal
         }
 
         public static IEnumerable<string> GetChildrenKeys(this JObject json, string parentElement)
-            => json.GetByKey(parentElement)
-                   .SelectMany(c => c.Children<JObject>())
-                   .SelectMany(c => c.Properties().Select(p => p.Name));
+        {
+            if (string.IsNullOrEmpty(parentElement))
+            {
+                return json
+                    .Children()
+                    .OfType<JProperty>()
+                    .Select(c => c.Name);
+            }
+
+            return json.GetByKey(parentElement)
+                .SelectMany(c => c.Children<JObject>())
+                .SelectMany(c => c.Properties().Select(p => p.Name));
+        }
+
+        public static string GetParentKey(this JObject json, string childElement)
+            => (json.GetByKey(childElement)
+                .FirstOrDefault()
+                ?.Parent // JObject
+                .Parent as JProperty)
+                ?.Name;
 
         public static IEnumerable<JToken> GetByKey(this JObject json, string key) =>
             json.AllTokens().Where(c => c.Type == JTokenType.Property
