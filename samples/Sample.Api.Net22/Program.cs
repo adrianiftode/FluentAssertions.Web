@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Sample.Api
+namespace Sample.Api.Net22
 {
     public sealed class Program
     {

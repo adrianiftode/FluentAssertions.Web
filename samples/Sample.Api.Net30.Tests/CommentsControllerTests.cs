@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Sample.Api.Net30;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
