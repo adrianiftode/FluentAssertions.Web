@@ -6,6 +6,7 @@ namespace FluentAssertions.Web.Tests.Internal
 {
     public class JsonExtensionsTests
     {
+        #region HasKey
         [Fact]
         public void GivenJsonWithAKey_WhenHasKeyIsCalledWithThatKeyName_ThenReturnsTrue()
         {
@@ -100,7 +101,9 @@ namespace FluentAssertions.Web.Tests.Internal
             // Assert
             result.Should().BeTrue();
         }
+        #endregion
 
+        #region GetStringValuesByKey
         [Fact]
         public void GivenJson_WhenKeyExistsAndHasAnArrayOfStringValues_ThenReturnsTheStrings()
         {
@@ -140,7 +143,7 @@ namespace FluentAssertions.Web.Tests.Internal
         }
 
         [Fact]
-        public void GivenJson_WhenKeyHasSingleValue_ThenReturnsEmpty()
+        public void GivenJson_WhenKeyHasSingleValue_ThenReturnsCollection()
         {
             // Arrange
             var json = JObject.Parse(@"{
@@ -186,7 +189,8 @@ namespace FluentAssertions.Web.Tests.Internal
                 ""errors"": {
                     """": [
                         ""The Author field is required.""
-                    ]                }
+                    ]
+                }
             }");
 
             // Act
@@ -195,5 +199,84 @@ namespace FluentAssertions.Web.Tests.Internal
             // Assert
             result.Should().BeEquivalentTo("");
         }
+
+        [Fact]
+        public void GivenJson_WhenGetChildrenKeysIsCalledWithNullOrEmpty_ThenReturnsDirectKeysOfRoot()
+        {
+            // Arrange
+            var json = JObject.Parse(@"{
+                    ""Author"": [
+                        ""The Author field is required.""
+                    ]
+            }");
+
+            // Act
+            var result = json.GetChildrenKeys("");
+
+            // Assert
+            result.Should().BeEquivalentTo("Author");
+        }
+        #endregion
+
+        #region GetParentKey
+        [Fact]
+        public void GivenJsonWithAFieldWithChildren_WhenGetParentKeyIsCalledWithOneOfTheChildren_ThenReturnsParent()
+        {
+            // Arrange
+            var json = JObject.Parse(@"{ ""root"" : {
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ],
+                        ""Content"": [
+                            ""The Content field is required.""
+                        ]
+                    }
+                }
+            }");
+
+            // Act
+            var result = json.GetParentKey("content");
+
+            // Assert
+            result.Should().Be("errors");
+        }
+
+        [Fact]
+        public void GivenJsonWithAFieldWithChildren_WhenGetParentKeyIsCalledWithNoneOfTheChildren_ThenReturnsNull()
+        {
+            // Arrange
+            var json = JObject.Parse(@"{ ""root"" : {
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ],
+                        ""Content"": [
+                            ""The Content field is required.""
+                        ]
+                    }
+                }
+            }");
+
+            // Act
+            var result = json.GetParentKey("date");
+
+            // Assert
+            result.Should().BeNull();
+        }
+
+        [Fact]
+        public void GivenJsonAFieldAndChildren_WhenGetParentKeyIsCalledWithItself_ThenReturnsNull()
+        {
+            // Arrange
+            var json = JObject.Parse(@"{ ""root"" : """" }");
+
+            // Act
+            var result = json.GetParentKey("root");
+
+            // Assert
+            result.Should().BeNull();
+        }
+        #endregion
     }
 }

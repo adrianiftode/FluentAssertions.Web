@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Sample.Api.Net22;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -132,6 +133,22 @@ namespace Sample.Api.Tests
             response.Should().Be400BadRequest()
                 .And.HaveError("Author", "The Author field is required.")
                 .And.NotHaveError("content");
+        }
+
+        [Fact]
+        public async Task Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMessageRelatedToAuthorOnly()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                                          ""content"": ""Hey, you...""
+                                        }", Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.Should().Be400BadRequest()
+                .And.OnlyHaveError("Author", "The Author field is required.");
         }
     }
 }

@@ -108,5 +108,6 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 |  *Should().Be400BadRequest().And.* | Contains a number of methods to assert that an  is in the expected state related to HTTP Bad Request response | 
 | --- | --- | 
 | **HaveError()**  | Asserts that a Bad Request HTTP response content contains an error message identifiable by an expected field name and a wildcard error text.  | 
+| **OnlyHaveError()**  | Asserts that a Bad Request HTTP response content contains only a single error message identifiable by an expected field name and a wildcard error text.  | 
 | **NotHaveError()**  | Asserts that a Bad Request HTTP response content does not contain an error message identifiable by an expected field name and a wildcard error text.  | 
 | **HaveErrorMessage()**  | Asserts that a Bad Request HTTP response content contains an error message identifiable by an wildcard error text.  | 

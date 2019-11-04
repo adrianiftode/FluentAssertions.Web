@@ -372,6 +372,137 @@ namespace FluentAssertions.Web.Tests
                 .WithMessage("*not having*<null> or empty field name*");
         }
         #endregion
+
+        #region OnlyHaveError
+        [Fact]
+        public void When_asserting_bad_request_response_with_a_single_error_field_to_be_BadRequest_and_OnlyHaveError_for_that_field_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ]
+                    }
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.OnlyHaveError("Author", "*required*");
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_bad_request_response_with_multiple_error_fields_where_one_of_them_is_the_actual_error_to_be_BadRequest_and_OnlyHaveError_fo_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ],
+                        ""Comments"": [
+                            ""The Comments field is required.""
+                        ]
+                    }
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.OnlyHaveError("Author", "*required*");
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage("*author*but more than this one was found.*");
+        }
+
+        [Fact]
+        public void When_asserting_bad_request_response_with_multiple_error_fields_where_none_one_of_them_is_the_actual_error_to_be_BadRequest_and_OnlyHaveError_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ],
+                        ""Comments"": [
+                            ""The Comments field is required.""
+                        ]
+                    }
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.OnlyHaveError("Date", "*required*");
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage("*to contain*Date*field, but was not found*");
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string expectedField)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ]
+                    }
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.OnlyHaveError(expectedField, "*required*");
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .WithMessage("*<null> or empty field name*");
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string expectedWildcardErrorMessage)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"{
+                    ""errors"": {
+                        ""Author"": [
+                            ""The Author field is required.""
+                        ]
+                    }
+                }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.OnlyHaveError("Author", expectedWildcardErrorMessage);
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .WithMessage("*<null> or empty wildcard error message*");
+        }
+        #endregion
     }
 }
 

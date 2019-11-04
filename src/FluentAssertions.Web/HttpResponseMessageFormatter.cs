@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FluentAssertions.Web
 {
-    public class HttpResponseMessageFormatter : IValueFormatter
+    internal class HttpResponseMessageFormatter : IValueFormatter
     {
         public bool CanHandle(object value) => value is HttpResponseMessage;
 
