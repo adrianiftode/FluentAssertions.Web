@@ -3,7 +3,7 @@ A FluentAssertions extension over the HttpResponseMessage to ease the Assert par
 and spend less time with debugging during the Fail part.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adrianiftode_FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/dashboard?id=adrianiftode_FluentAssertions.Web)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/dashboard?id=adrianiftode_FluentAssertions.Web)
 
 ## Examples
 ```csharp
