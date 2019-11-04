@@ -831,7 +831,7 @@ namespace FluentAssertions.Web
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
-        protected void ExecuteSubjectNotNull(string because, object[] becauseArgs)
+        private protected void ExecuteSubjectNotNull(string because, object[] becauseArgs)
         {
             Execute.Assertion
                 .ForCondition(!ReferenceEquals(Subject, null))
@@ -848,13 +848,13 @@ namespace FluentAssertions.Web
                     , otherName ?? expected.ToString(), Subject.StatusCode, Subject);
         }
 
-        protected string GetContent()
+        private protected string GetContent()
         {
             Func<Task<string>> content = () => Subject.GetStringContent();
             return content.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
 
-        protected bool TryGetSubjectModel<TModel>(out TModel model)
+        private protected bool TryGetSubjectModel<TModel>(out TModel model)
         {
             Func<Task<TModel>> readModel = () => Subject.Content.ReadAsAsync<TModel>();
             try
@@ -869,13 +869,13 @@ namespace FluentAssertions.Web
             }
         }
 
-        protected ExpandoObject GetExpandoContent()
+        private protected ExpandoObject GetExpandoContent()
         {
             Func<Task<ExpandoObject>> expando = Subject.GetExpandoContent;
             return expando.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
 
-        protected JObject GetJsonObject()
+        private protected JObject GetJsonObject()
         {
             Func<Task<JObject>> jsonObject = () => Subject.GetJsonObject();
             return jsonObject.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
