@@ -33,7 +33,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HeadersAssertions> Match(string expectedWildcardValue, string because = "", params object[] becauseArgs)
         {
@@ -70,7 +70,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HeadersAssertions> BeEmpty(string because = "", params object[] becauseArgs)
         {
@@ -99,7 +99,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HeadersAssertions> BeValues(IEnumerable<string> expectedValues,
             string because = "", params object[] becauseArgs)
@@ -147,7 +147,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HeadersAssertions> HaveHeader(string expectedHeader,
             string because = "", params object[] becauseArgs)
@@ -176,7 +176,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> NotHaveHeader(string expectedHeader,
             string because = "", params object[] becauseArgs)

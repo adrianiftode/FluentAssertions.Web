@@ -20,7 +20,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> HaveContent<TModel>(TModel expectedModel, string because = "", params object[] becauseArgs)

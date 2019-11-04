@@ -40,7 +40,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be100Continue(string because = "", params object[] becauseArgs)
         {
@@ -57,7 +57,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be101SwitchingProtocols(string because = "", params object[] becauseArgs)
         {
@@ -74,7 +74,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be200Ok(string because = "", params object[] becauseArgs)
         {
@@ -91,7 +91,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be201Created(string because = "", params object[] becauseArgs)
         {
@@ -108,7 +108,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be202Accepted(string because = "", params object[] becauseArgs)
         {
@@ -125,7 +125,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be203NonAuthoritativeInformation(string because = "", params object[] becauseArgs)
         {
@@ -142,7 +142,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be204NoContent(string because = "", params object[] becauseArgs)
         {
@@ -159,7 +159,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be205ResetContent(string because = "", params object[] becauseArgs)
         {
@@ -176,7 +176,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be206PartialContent(string because = "", params object[] becauseArgs)
         {
@@ -193,7 +193,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be300MultipleChoices(string because = "", params object[] becauseArgs)
         {
@@ -210,7 +210,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be300Ambiguous(string because = "", params object[] becauseArgs)
         {
@@ -227,7 +227,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be301MovedPermanently(string because = "", params object[] becauseArgs)
         {
@@ -244,7 +244,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be301Moved(string because = "", params object[] becauseArgs)
         {
@@ -261,7 +261,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be302Found(string because = "", params object[] becauseArgs)
         {
@@ -278,7 +278,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be302Redirect(string because = "", params object[] becauseArgs)
         {
@@ -295,7 +295,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be303SeeOther(string because = "", params object[] becauseArgs)
         {
@@ -312,7 +312,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be303RedirectMethod(string because = "", params object[] becauseArgs)
         {
@@ -329,7 +329,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be304NotModified(string because = "", params object[] becauseArgs)
         {
@@ -346,7 +346,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be305UseProxy(string because = "", params object[] becauseArgs)
         {
@@ -363,7 +363,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be306Unused(string because = "", params object[] becauseArgs)
         {
@@ -380,7 +380,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be307TemporaryRedirect(string because = "", params object[] becauseArgs)
         {
@@ -397,7 +397,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be307RedirectKeepVerb(string because = "", params object[] becauseArgs)
         {
@@ -414,7 +414,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<BadRequestAssertions> Be400BadRequest(string because = "", params object[] becauseArgs)
         {
@@ -431,7 +431,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be401Unauthorized(string because = "", params object[] becauseArgs)
         {
@@ -448,7 +448,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be402PaymentRequired(string because = "", params object[] becauseArgs)
         {
@@ -465,7 +465,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be403Forbidden(string because = "", params object[] becauseArgs)
         {
@@ -482,7 +482,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be404NotFound(string because = "", params object[] becauseArgs)
         {
@@ -499,7 +499,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be405MethodNotAllowed(string because = "", params object[] becauseArgs)
         {
@@ -516,7 +516,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be406NotAcceptable(string because = "", params object[] becauseArgs)
         {
@@ -533,7 +533,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be407ProxyAuthenticationRequired(string because = "", params object[] becauseArgs)
         {
@@ -550,7 +550,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be408RequestTimeout(string because = "", params object[] becauseArgs)
         {
@@ -567,7 +567,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be409Conflict(string because = "", params object[] becauseArgs)
         {
@@ -584,7 +584,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be410Gone(string because = "", params object[] becauseArgs)
         {
@@ -601,7 +601,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be411LengthRequired(string because = "", params object[] becauseArgs)
         {
@@ -618,7 +618,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be412PreconditionFailed(string because = "", params object[] becauseArgs)
         {
@@ -635,7 +635,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be413RequestEntityTooLarge(string because = "", params object[] becauseArgs)
         {
@@ -652,7 +652,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be414RequestUriTooLong(string because = "", params object[] becauseArgs)
         {
@@ -669,7 +669,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be415UnsupportedMediaType(string because = "", params object[] becauseArgs)
         {
@@ -686,7 +686,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be416RequestedRangeNotSatisfiable(string because = "", params object[] becauseArgs)
         {
@@ -703,7 +703,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be417ExpectationFailed(string because = "", params object[] becauseArgs)
         {
@@ -720,7 +720,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be426UpgradeRequired(string because = "", params object[] becauseArgs)
         {
@@ -737,7 +737,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be500InternalServerError(string because = "", params object[] becauseArgs)
         {
@@ -754,7 +754,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be501NotImplemented(string because = "", params object[] becauseArgs)
         {
@@ -771,7 +771,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be502BadGateway(string because = "", params object[] becauseArgs)
         {
@@ -788,7 +788,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be503ServiceUnavailable(string because = "", params object[] becauseArgs)
         {
@@ -805,7 +805,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be504GatewayTimeout(string because = "", params object[] becauseArgs)
         {
@@ -822,7 +822,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> Be505HttpVersionNotSupported(string because = "", params object[] becauseArgs)
         {

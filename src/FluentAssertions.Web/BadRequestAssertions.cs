@@ -41,7 +41,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<BadRequestAssertions> HaveError(string expectedErrorField, string expectedWildcardErrorMessage,
             string because = "", params object[] becauseArgs)
@@ -96,7 +96,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<BadRequestAssertions> NotHaveError(string expectedErrorField, string because = "", params object[] becauseArgs)
         {
@@ -126,7 +126,7 @@ namespace FluentAssertions.Web
         /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
         /// </param>
         /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see cref="because" />.
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<BadRequestAssertions> HaveErrorMessage(string expectedWildcardErrorMessage,
             string because = "", params object[] becauseArgs)
