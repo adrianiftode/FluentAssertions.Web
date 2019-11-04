@@ -132,6 +132,13 @@ namespace FluentAssertions.Web
 
             return new AndConstraint<HeadersAssertions>(this);
         }
+
+
+
+        /// <summary>
+        /// Returns the type of the subject the assertion applies on.
+        /// </summary>
+        protected override string Identifier => "Header";
     }
 
     public partial class HttpResponseMessageAssertions

@@ -30,6 +30,9 @@ namespace FluentAssertions.Web
         /// <param name="value">The subject value to be asserted.</param>
         public HttpResponseMessageAssertions(HttpResponseMessage value) => Subject = value;
 
+        /// <summary>
+        /// Returns the type of the subject the assertion applies on.
+        /// </summary>
         protected override string Identifier => $"{nameof(HttpResponseMessage)}";
 
         /// <summary>

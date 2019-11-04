@@ -1,6 +1,7 @@
 ﻿using FluentAssertions.Execution;
 using FluentAssertions.Web.Internal;
 using System;
+using System.Net.Http;
 
 namespace FluentAssertions.Web
 {
