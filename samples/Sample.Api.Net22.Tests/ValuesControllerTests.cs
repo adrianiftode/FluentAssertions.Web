@@ -56,7 +56,7 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/values/1");
 
             // Assert
-            response.Should().Be200Ok().And.HaveContent<string>("value");
+            response.Should().Be200Ok().And.BeAs<string>("value");
         }
 
         [Fact]

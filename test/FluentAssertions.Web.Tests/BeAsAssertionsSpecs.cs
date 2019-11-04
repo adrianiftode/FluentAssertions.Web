@@ -1,17 +1,17 @@
-﻿using System;
+﻿using FluentAssertions.Web.Internal;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Xunit;
 using Xunit.Sdk;
-using FluentAssertions.Web.Internal;
-using System.Collections.Generic;
 
 namespace FluentAssertions.Web.Tests
 {
-    public class HaveContentAssertionsSpecs
+    public class BeAsAssertionsSpecs
     {
         [Fact]
-        public void When_asserting_response_with_content_to_have_content_of_a_model_type_it_should_succeed()
+        public void When_asserting_response_with_content_to_be_as_model_it_should_succeed()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -24,7 +24,8 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveContent(new { 
+                subject.Should().BeAs(new
+                {
                     Comment = "Hey",
                     Author = "John"
                 });
@@ -34,7 +35,7 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_response_with_content_with_more_JSON_properties_than_a_model_to_have_content_of_a_model_type_it_should_scucceed()
+        public void When_asserting_response_with_content_with_more_JSON_properties_than_a_model_to_be_as_model_it_should_succeed()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -47,7 +48,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveContent(new
+                subject.Should().BeAs(new
                 {
                     Comment = "Hey",
                 });
@@ -57,7 +58,7 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_response_with_content_with_differences_to_have_content_of_a_model_type_it_should_throw_with_descriptive_message()
+        public void When_asserting_response_with_content_with_differences_to_be_as_model_it_should_throw_with_descriptive_message()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -70,7 +71,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveContent(new
+                subject.Should().BeAs(new
                 {
                     Comment = "Not Hey",
                     Author = "John"
@@ -90,7 +91,7 @@ namespace FluentAssertions.Web.Tests
            };
         [Theory]
         [MemberData(nameof(Data))]
-        public void When_asserting_response_with_content_as_primitives_types_to_have_content_as_the_primitive_value_it_should_succeed(object expectedModel)
+        public void When_asserting_response_with_content_as_primitives_types_to_be_as_the_primitive_value_it_should_succeed(object expectedModel)
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -100,14 +101,14 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveContent(expectedModel);
+                subject.Should().BeAs(expectedModel);
 
             // Assert
             act.Should().NotThrow();
         }
 
         [Fact]
-        public void When_asserting_response_with_fewer_JSON_properties_than_the_model_to_have_content_of_a_model_type_it_should_throw_with_descriptive_message()
+        public void When_asserting_response_with_fewer_JSON_properties_than_the_model_to_be_as_model_it_should_throw_with_descriptive_message()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -119,7 +120,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveContent(new
+                subject.Should().BeAs(new
                 {
                     Comment = "Hey",
                     Author = "John"
@@ -131,7 +132,7 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_response_with_not_a_proper_JSON_to_have_content_of_a_model_type_it_should_throw_with_descriptive_message()
+        public void When_asserting_response_with_not_a_proper_JSON_to_be_as_model_it_should_throw_with_descriptive_message()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -141,7 +142,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveContent(new
+                subject.Should().BeAs(new
                 {
                     Comment = "Hey"
                 }, "we want to test the {0}", "reason");
@@ -152,14 +153,14 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_response_to_have_content_against_null_value_it_should_throw_with_descriptive_message()
+        public void When_asserting_response_to_be_as_against_null_value_it_should_throw_with_descriptive_message()
         {
             // Arrange
             using var subject = new HttpResponseMessage();
 
             // Act
             Action act = () =>
-                subject.Should().HaveContent((object)null);
+                subject.Should().BeAs((object)null);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -167,14 +168,14 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_null_HttpResponse_to_be_have_content_it_should_throw_with_descriptive_message()
+        public void When_asserting_null_response_to_be_as_it_should_throw_with_descriptive_message()
         {
             // Arrange
             HttpResponseMessage subject = null;
 
             // Act
             Action act = () =>
-                subject.Should().HaveContent((object)null, "because we want to test the failure {0}", "message"); ;
+                subject.Should().BeAs((object)null, "because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()

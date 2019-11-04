@@ -46,6 +46,8 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 	
 ![FailedTest2](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest2.png?raw=true)
 
+## Full API
+
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an  is in the expected state related to the HTTP content. | 
 | --- | --- |
 | **Should().Be100Continue()**  | Asserts that a HTTP response has the HTTP status 100 Continue  | 
@@ -95,7 +97,7 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 | **Should().Be503ServiceUnavailable()**  | Asserts that a HTTP response has the HTTP status 503 Service Unavailable  | 
 | **Should().Be504GatewayTimeout()**  | Asserts that a HTTP response has the HTTP status 504 Gateway Timeout  | 
 | **Should().Be505HttpVersionNotSupported()**  | Asserts that a HTTP response has the HTTP status 505 Http Version Not Supported  | 
-| **Should().HaveContent()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
+| **Should().BeAs()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
 | **Should().HaveHeader()**  | Asserts that an HTTP response has a named header.  | 
 | **Should().NotHaveHeader()**  | Asserts that an HTTP response does not have a named header.  | 
 

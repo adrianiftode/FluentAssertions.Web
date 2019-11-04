@@ -27,7 +27,7 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments");
 
             // Assert
-            response.Should().Be200Ok().And.HaveContent(new[]
+            response.Should().Be200Ok().And.BeAs(new[]
             {
                 new { Author = "Adrian", Content = "Hey" }
             });
@@ -43,7 +43,7 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments/1");
 
             // Assert
-            response.Should().Be200Ok().And.HaveContent(new
+            response.Should().Be200Ok().And.BeAs(new
             {
                 Author = "Adrian",
                 Content = "Hey"
@@ -79,7 +79,7 @@ namespace Sample.Api.Tests
                     }", Encoding.UTF8, "application/json"));
 
             // Assert
-            response.Should().Be200Ok().And.HaveContent(new
+            response.Should().Be200Ok().And.BeAs(new
             {
                 Author = "John",
                 Content = "Hey, you..."
