@@ -6,11 +6,9 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 {
     internal class FallbackProcessor : IContentProcessor
     {
-        private readonly HttpResponseMessage _httpResponseMessage;
         private readonly HttpContent _httpContent;
-        public FallbackProcessor(HttpResponseMessage httpResponseMessage, HttpContent httpContent)
+        public FallbackProcessor(HttpContent httpContent)
         {
-            _httpResponseMessage = httpResponseMessage;
             _httpContent = httpContent;
         }
 

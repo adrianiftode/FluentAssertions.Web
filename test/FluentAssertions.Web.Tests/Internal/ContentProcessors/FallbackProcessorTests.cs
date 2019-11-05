@@ -14,7 +14,7 @@ namespace FluentAssertions.Web.Tests.Internal.ContentProcessors
         {
             // Arrange
             var response = new HttpResponseMessage();
-            var sut = new FallbackProcessor(response, response.Content);
+            var sut = new FallbackProcessor(response.Content);
             var contentBuilder = new StringBuilder();
 
             // Act
@@ -32,7 +32,7 @@ namespace FluentAssertions.Web.Tests.Internal.ContentProcessors
             {
                 Content = new StringContent("the content")
             };
-            var sut = new FallbackProcessor(response, response.Content);
+            var sut = new FallbackProcessor(response.Content);
             var contentBuilder = new StringBuilder();
 
             // Act
@@ -53,7 +53,7 @@ namespace FluentAssertions.Web.Tests.Internal.ContentProcessors
                     .Select(_ => '0')
                     .ToArray()))
             };
-            var sut = new FallbackProcessor(response, response.Content);
+            var sut = new FallbackProcessor(response.Content);
             var contentBuilder = new StringBuilder();
 
             // Act

@@ -77,7 +77,7 @@ namespace FluentAssertions.Web
                 new JsonProcessor(response.Content),
                 new InternalServerErrorProcessor(response, response.Content),
                 new StreamProcessor(response.Content),
-                new FallbackProcessor(response, response.Content)
+                new FallbackProcessor(response.Content)
             };
 
             var contentBuilder = await RunProcessors(processors);
@@ -92,7 +92,7 @@ namespace FluentAssertions.Web
             {
                 new JsonProcessor(response.RequestMessage.Content),
                 new StreamProcessor(response.RequestMessage.Content),
-                new FallbackProcessor(response, response.RequestMessage.Content)
+                new FallbackProcessor(response.RequestMessage.Content)
             };
 
             var contentBuilder = await RunProcessors(processors);
