@@ -100,6 +100,7 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 | **Should().BeAs()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
 | **Should().HaveHeader()**  | Asserts that an HTTP response has a named header.  | 
 | **Should().NotHaveHeader()**  | Asserts that an HTTP response does not have a named header.  | 
+| **Should().MatchInContent()**  | Asserts that HTTP response has content that matches a wildcard pattern.  | 
 | **Should().Satisfy()**  |  Asserts that an HTTP response satisfies a condition about it.  | 
 
 |  *Should().HaveHeader().And.* | Contains a number of methods to assert that an  is in the expected state related to HTTP headers. | 

@@ -43,9 +43,7 @@ namespace FluentAssertions.Web.Internal
         }
 
         public static async Task<string> GetStringContent(this HttpResponseMessage response)
-        {
-            return await response.Content.ReadAsStringAsync();
-        }
+            => response.Content != null ? await response.Content.ReadAsStringAsync() : null;
 
         public static async Task<JObject> GetJsonObject(this HttpResponseMessage response)
         {
