@@ -16,16 +16,16 @@ namespace FluentAssertions.Web.Internal
             return headers
                 .FirstOrDefault(c => string.Equals(c.Key, header, StringComparison.OrdinalIgnoreCase))
                 .Value
-                .Where(c => !string.IsNullOrEmpty(c)) ?? Enumerable.Empty<string>();
+                .Where(c => !string.IsNullOrEmpty(c));
         }
 
         public static IEnumerable<string> GetHeaderValues(this HttpResponseMessage response, string header)
         {
             var headers = response.GetHeaders();
             return headers
-                  .FirstOrDefault(c => string.Equals(c.Key, header, StringComparison.OrdinalIgnoreCase))
-                  .Value
-                  .Where(c => !string.IsNullOrEmpty(c)) ?? Enumerable.Empty<string>();
+                .FirstOrDefault(c => string.Equals(c.Key, header, StringComparison.OrdinalIgnoreCase))
+                .Value
+                .Where(c => !string.IsNullOrEmpty(c));
         }
 
         public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpResponseMessage response)
