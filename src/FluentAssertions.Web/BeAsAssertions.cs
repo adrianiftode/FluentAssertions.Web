@@ -38,7 +38,7 @@ namespace FluentAssertions.Web
             Execute.Assertion
                      .BecauseOf(because, becauseArgs)
                      .ForCondition(success)
-                     .FailWith("Expected {context:response} to have a content equivalent to a model, but the JSON respresentation could not be parsed{reason}. {0}",
+                     .FailWith("Expected {context:response} to have a content equivalent to a model, but the JSON representation could not be parsed{reason}. {0}",
                          Subject);
 
             string[] failures;
