@@ -1,12 +1,11 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Sample.Api.Net22;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Sample.Api.Tests
+namespace Sample.Api.Net22.Tests
 {
     public class CommentsControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {

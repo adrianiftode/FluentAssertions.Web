@@ -1,13 +1,12 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Sample.Api.Net30;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Sample.Api.Tests
+namespace Sample.Api.Net30.Tests
 {
     public class ValuesControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {

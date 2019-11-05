@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Sample.Api.Tests
+namespace Sample.Api.Net30.Tests
 {
     public class CustomStartupConfigurationsTests
     {
