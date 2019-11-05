@@ -12,18 +12,18 @@ namespace FluentAssertions.Web.Internal
             return new DisposingAction(() => SynchronizationContext.SetSynchronizationContext(context));
         }
 
-        internal class DisposingAction : IDisposable
+        internal sealed class DisposingAction : IDisposable
         {
-            private readonly Action action;
+            private readonly Action _action;
 
             public DisposingAction(Action action)
             {
-                this.action = action;
+                _action = action;
             }
 
             public void Dispose()
             {
-                action();
+                _action();
             }
         }
     }
