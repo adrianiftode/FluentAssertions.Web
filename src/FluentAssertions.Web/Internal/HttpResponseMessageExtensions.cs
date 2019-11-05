@@ -10,13 +10,6 @@ namespace FluentAssertions.Web.Internal
 {
     internal static class HttpResponseMessageExtensions
     {
-        public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpResponseMessage response)
-        {
-            var responseContentHeaders =
-                response.Content?.Headers ?? Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>();
-            return response.Headers.Union(responseContentHeaders);
-        }
-
         public static IEnumerable<string> GetHeaderValues(this HttpRequestMessage request, string header)
         {
             var headers = request.GetHeaders();
@@ -33,6 +26,13 @@ namespace FluentAssertions.Web.Internal
                   .FirstOrDefault(c => string.Equals(c.Key, header, StringComparison.OrdinalIgnoreCase))
                   .Value
                   .Where(c => !string.IsNullOrEmpty(c)) ?? Enumerable.Empty<string>();
+        }
+
+        public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpResponseMessage response)
+        {
+            var responseContentHeaders =
+                response.Content?.Headers ?? Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>();
+            return response.Headers.Union(responseContentHeaders);
         }
 
         public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpRequestMessage request)
