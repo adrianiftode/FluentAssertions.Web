@@ -253,7 +253,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
-                .WithMessage("*wildcard*<null>*");
+                .WithMessage("*<null>*wildcard*");
         }
 
         [Fact]
@@ -264,7 +264,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().MatchInContent(null, "because we want to test the failure {0}", "message"); ;
+                subject.Should().MatchInContent("wildcard", "because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
