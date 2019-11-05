@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Sample.Api.Tests
+namespace Sample.Api.Net22.Tests
 {
     public class CustomStartupConfigurationsTests
     {
@@ -22,7 +22,8 @@ namespace Sample.Api.Tests
             });
             builder.Configure(app => app
                 .UseDeveloperExceptionPage()
-                .Use((context, next) => {
+                .Use((context, next) =>
+                {
                     throw new Exception("Wow!", new Exception("Exactly!"));
                 }));
 

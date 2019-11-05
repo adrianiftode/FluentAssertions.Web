@@ -6,7 +6,7 @@ using Xunit.Sdk;
 
 namespace FluentAssertions.Web.Tests
 {
-    public class StatusesSpecs
+    public class HttpStatusCodeAssertionsSpecs
     {
         #region 100 Continue
         [Fact]

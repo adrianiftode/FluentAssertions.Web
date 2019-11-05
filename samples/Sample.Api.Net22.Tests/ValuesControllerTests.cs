@@ -1,13 +1,12 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Sample.Api.Net22;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Sample.Api.Tests
+namespace Sample.Api.Net22.Tests
 {
     public class ValuesControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {
@@ -97,6 +96,19 @@ namespace Sample.Api.Tests
             // Assert
             response.Should().Be400BadRequest()
                 .And.HaveErrorMessage("*non-empty*required*", "this is the AspNetCore22 response");
+        }
+
+        [Fact]
+        public async Task Post_WhenBadRequest_DoesNotCache()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.PostAsync("/api/values", new StringContent("", Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.Should().Satisfy(c => c.Headers.CacheControl == null);
         }
     }
 }
