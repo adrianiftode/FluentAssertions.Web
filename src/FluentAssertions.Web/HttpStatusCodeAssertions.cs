@@ -1,10 +1,189 @@
-﻿using System.Net;
+﻿using FluentAssertions.Execution;
+using System.Net;
 
 namespace FluentAssertions.Web
 {
     public partial class HttpResponseMessageAssertions
     {
-        #region HttpStatusCode
+        #region BeInformational
+        /// <summary>
+        /// Asserts that a HTTP response has a HTTP status code representing an informational response.
+        /// </summary>
+        /// <remarks>The HTTP response was an informational one if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 100-199.</remarks>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> BeInformational(string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(Subject.StatusCode < HttpStatusCode.OK)
+                .FailWith("Expected {context:response} to have a HTTP status code representing an informational error, but it was {0}{reason}.{1}",
+                    Subject.StatusCode, Subject);
+
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+        #endregion
+
+        #region BeSuccessful
+        /// <summary>
+        /// Asserts that a HTTP response has a successful HTTP status code.
+        /// </summary>
+        /// <remarks>The HTTP response was successful if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 200-299.</remarks>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> BeSuccessful(string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(Subject.IsSuccessStatusCode)
+                .FailWith("Expected {context:response} to have a successful HTTP status code, but it was {0}{reason}.{1}",
+                    Subject.StatusCode, Subject);
+
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+        #endregion
+
+        #region BeClientError
+        /// <summary>
+        /// Asserts that a HTTP response has a HTTP status code representing a client error.
+        /// </summary>
+        /// <remarks>The HTTP response was a client error if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 400-499.</remarks>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> BeClientError(string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(Subject.StatusCode >= HttpStatusCode.BadRequest && Subject.StatusCode < HttpStatusCode.InternalServerError)
+                .FailWith("Expected {context:response} to have a HTTP status code representing a client error, but it was {0}{reason}.{1}",
+                    Subject.StatusCode, Subject);
+
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+        #endregion
+
+        #region BeRedirection
+        /// <summary>
+        /// Asserts that a HTTP response has a HTTP status code representing a redirection response.
+        /// </summary>
+        /// <remarks>The HTTP response was an informational one if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 300-399.</remarks>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> BeRedirection(string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(Subject.StatusCode >= HttpStatusCode.Moved && Subject.StatusCode < HttpStatusCode.BadRequest)
+                .FailWith("Expected {context:response} to have a HTTP status code representing a redirection, but it was {0}{reason}.{1}",
+                    Subject.StatusCode, Subject);
+
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+        #endregion
+
+        #region BeServerError
+        /// <summary>
+        /// Asserts that a HTTP response has a HTTP status code representing a server error.
+        /// </summary>
+        /// <remarks>The HTTP response was a server error if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was above 500.</remarks>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> BeServerError(string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(Subject.StatusCode >= HttpStatusCode.InternalServerError)
+                .FailWith("Expected {context:response} to have a HTTP status code representing a server error, but it was {0}{reason}.{1}",
+                    Subject.StatusCode, Subject);
+
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+        #endregion
+
+        #region HaveHtppStatus
+        /// <summary>
+        /// Asserts that a HTTP response has a HTTP status with the specified code.
+        /// </summary>
+        /// <param name="expected">
+        /// The code of the expected HTTP Status.
+        /// </param>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> HaveHttpStatusCode(HttpStatusCode expected, string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+            ExecuteStatusAssertion(because, becauseArgs, expected);
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+        #endregion
+
+        #region NotHaveHtppStatus
+        /// <summary>
+        /// Asserts that a HTTP response does not have a HTTP status with the specified code.
+        /// </summary>
+        /// <param name="unexpected">
+        /// The code of the unexpected HTTP Status.
+        /// </param>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> NotHaveHttpStatusCode(HttpStatusCode unexpected, string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(unexpected != Subject.StatusCode)
+                .FailWith("Did not expect {context:response} to have status {0}{reason}.{1}",
+                    Subject.StatusCode, Subject);
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+        #endregion
+
+        #region BeXXXHttpStatus
         /// <summary>
         /// Asserts that a HTTP response has the HTTP status 100 Continue
         /// </summary>        

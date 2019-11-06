@@ -50,6 +50,11 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an  is in the expected state related to the HTTP content. | 
 | --- | --- |
+| **Should().BeInformational()**  |  Asserts that a HTTP response has a HTTP status code representing an informational response.  | 
+| **Should().BeSuccessful()**  | Asserts that a HTTP response has a successful HTTP status code.  | 
+| **Should().BeClientError()**  | Asserts that a HTTP response has a HTTP status code representing a client error.  | 
+| **Should().BeRedirection()**  | Asserts that a HTTP response has a HTTP status code representing a redirection response.  | 
+| **Should().BeServerError()**  | Asserts that a HTTP response has a HTTP status code representing a server error.  | 
 | **Should().Be100Continue()**  | Asserts that a HTTP response has the HTTP status 100 Continue  | 
 | **Should().Be101SwitchingProtocols()**  | Asserts that a HTTP response has the HTTP status 101 Switching Protocols  | 
 | **Should().Be200Ok()**  | Asserts that a HTTP response has the HTTP status 200 Ok  | 
@@ -100,6 +105,8 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 | **Should().BeAs()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
 | **Should().HaveHeader()**  | Asserts that an HTTP response has a named header.  | 
 | **Should().NotHaveHeader()**  | Asserts that an HTTP response does not have a named header.  | 
+| **Should().HaveHttpStatus()**  | Asserts that a HTTP response has a HTTP status with the specified code.  | 
+| **Should().NotHaveHttpStatus()**  |  that a HTTP response does not have a HTTP status with the specified code.  | 
 | **Should().MatchInContent()**  | Asserts that HTTP response has content that matches a wildcard pattern.  | 
 | **Should().Satisfy()**  |  Asserts that an HTTP response satisfies a condition about it.  | 
 
