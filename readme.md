@@ -98,8 +98,13 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 | **Should().Be504GatewayTimeout()**  | Asserts that a HTTP response has the HTTP status 504 Gateway Timeout  | 
 | **Should().Be505HttpVersionNotSupported()**  | Asserts that a HTTP response has the HTTP status 505 Http Version Not Supported  | 
 | **Should().BeAs()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
+|||
 | **Should().HaveHeader()**  | Asserts that an HTTP response has a named header.  | 
 | **Should().NotHaveHeader()**  | Asserts that an HTTP response does not have a named header.  | 
+|||
+| **Should().HaveHttpStatus()**  | Asserts that a HTTP response has a HTTP status with the specified code.  | 
+| **Should().NotHaveHttpStatus()**  |  that a HTTP response does not have a HTTP status with the specified code.  | 
+|||
 | **Should().MatchInContent()**  | Asserts that HTTP response has content that matches a wildcard pattern.  | 
 | **Should().Satisfy()**  |  Asserts that an HTTP response satisfies a condition about it.  | 
 

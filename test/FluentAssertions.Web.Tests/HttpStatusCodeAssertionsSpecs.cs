@@ -8,6 +8,99 @@ namespace FluentAssertions.Web.Tests
 {
     public class HttpStatusCodeAssertionsSpecs
     {
+
+        #region HaveHttpStatusCode
+        [Fact]
+        public void When_asserting_response_with_a_status_to_HaveHttpStatusCode_with_that_status_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.Continue);
+
+            // Act
+            Action act = () =>
+                subject.Should().HaveHttpStatusCode(HttpStatusCode.Continue);
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_other_than_the_expected_status_response_to_HaveHttpStatusCode_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
+
+            // Act
+            Action act = () =>
+                subject.Should().HaveHttpStatusCode(HttpStatusCode.BadRequest, "because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*BadRequest"" because we want to test the failure message, but found OK*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_HaveHttpStatusCode_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().HaveHttpStatusCode(HttpStatusCode.InternalServerError, "because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion
+
+        #region NotHaveHttpStatusCode
+        [Fact]
+        public void When_asserting_response_with_a_status_to_NotHaveHttpStatusCode_with_that_other_status_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.Continue);
+
+            // Act
+            Action act = () =>
+                subject.Should().NotHaveHttpStatusCode(HttpStatusCode.InsufficientStorage);
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_response_with_the_unexpected_status_to_NotHaveHttpStatusCode_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK);
+
+            // Act
+            Action act = () =>
+                subject.Should().NotHaveHttpStatusCode(HttpStatusCode.OK, "because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Did not expect HTTP*to have status OK*message*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_NotHaveHttpStatusCode_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().NotHaveHttpStatusCode(HttpStatusCode.InternalServerError, "because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion
+
         #region 100 Continue
         [Fact]
         public void When_asserting_100_Continue_response_to_be_100Continue_it_should_succeed()
