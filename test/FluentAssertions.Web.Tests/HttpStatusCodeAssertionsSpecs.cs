@@ -8,6 +8,261 @@ namespace FluentAssertions.Web.Tests
 {
     public class HttpStatusCodeAssertionsSpecs
     {
+        #region BeInformational
+        [Theory]
+        [InlineData(HttpStatusCode.Continue)]
+        [InlineData(HttpStatusCode.SwitchingProtocols)]
+        public void When_asserting_response_with_an_informational_status_to_BeInformational_it_should_succeed(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeInformational();
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.OK)]
+        [InlineData(HttpStatusCode.BadRequest)]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        public void When_asserting_other_than_an_informational_status_code_response_to_BeInformational_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeInformational("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*to have a HTTP status code representing an informational error*message*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_BeInformational_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().BeInformational("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion
+
+        #region BeSuccessful
+        [Theory]
+        [InlineData(HttpStatusCode.OK)]
+        [InlineData(HttpStatusCode.PartialContent)]
+        public void When_asserting_response_with_a_successful_status_to_BeSuccessful_it_should_succeed(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeSuccessful();
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.SwitchingProtocols)]
+        [InlineData(HttpStatusCode.PermanentRedirect)]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        public void When_asserting_other_than_a_successful_status_code_response_to_BeSuccessful_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeSuccessful("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*have a successful HTTP status code, but it was*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_BeSuccessful_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().BeSuccessful("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion
+
+        #region BeClientError
+        [Theory]
+        [InlineData(HttpStatusCode.BadRequest)]
+        [InlineData(HttpStatusCode.UpgradeRequired)]
+        public void When_asserting_response_with_a_client_error_status_code_to_BeClientError_it_should_succeed(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeClientError();
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.Continue)]
+        [InlineData(HttpStatusCode.OK)]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        public void When_asserting_other_than_a_client_error_status_code_response_to_BeClientError_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeClientError("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*to have a HTTP status code representing a client error*message*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_BeClientError_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().BeClientError("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion
+
+        #region BeRedirection
+        [Theory]
+        [InlineData(HttpStatusCode.Moved)]
+        [InlineData(HttpStatusCode.TemporaryRedirect)]
+        public void When_asserting_response_with_a_redirection_status_code_to_BeRedirection_it_should_succeed(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeRedirection();
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.Continue)]
+        [InlineData(HttpStatusCode.OK)]
+        [InlineData(HttpStatusCode.BadRequest)]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        public void When_asserting_other_than_a_client_redirection_status_code_response_to_BeRedirection_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeRedirection("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*to have a HTTP status code representing a redirection*message*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_BeRedirection_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().BeRedirection("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion
+
+        #region BeServerError
+        [Theory]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        [InlineData(HttpStatusCode.HttpVersionNotSupported)]
+        public void When_asserting_response_with_a_server_error_status_code_to_BeServerError_it_should_succeed(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeServerError();
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.Continue)]
+        [InlineData(HttpStatusCode.OK)]
+        [InlineData(HttpStatusCode.UpgradeRequired)]
+        public void When_asserting_other_than_a_server_error_status_code_response_to_BeServerError_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().BeServerError("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*to have a HTTP status code representing a server error*message*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_BeServerError_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().BeServerError("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion
 
         #region HaveHttpStatusCode
         [Fact]
@@ -82,7 +337,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Did not expect HTTP*to have status OK*message*");
+                .WithMessage(@"*Did not expect *to have status OK*message*");
         }
 
         [Fact]
