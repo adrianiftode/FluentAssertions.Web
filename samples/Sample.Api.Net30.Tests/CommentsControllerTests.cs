@@ -50,6 +50,22 @@ namespace Sample.Api.Net30.Tests
         }
 
         [Fact]
+        public async Task Get_WithCommentId_Returns_Response_That_Satisfies_Several_Assertions()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/api/comments/1");
+
+            // Assert
+            response.Should().SatisfyAssertions(
+                    r => r.Content.Headers.ContentRange.Should().BeNull(),
+                    r => r.Content.Headers.Allow.Should().NotBeNull()
+            );
+        }
+
+        [Fact]
         public async Task Post_ReturnsOk()
         {
             // Arrange

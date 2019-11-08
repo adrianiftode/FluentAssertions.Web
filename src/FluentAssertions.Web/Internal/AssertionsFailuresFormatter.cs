@@ -13,6 +13,7 @@ namespace FluentAssertions.Web.Internal
 
             var messageBuilder = new StringBuilder();
             messageBuilder.AppendLine();
+            messageBuilder.AppendLine();
 
             foreach (var failure in assertionsFailures.FailuresMessages)
             {
