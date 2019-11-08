@@ -50,11 +50,11 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an  is in the expected state related to the HTTP content. | 
 | --- | --- |
-| **Should().BeInformational()**  |  Asserts that a HTTP response has a HTTP status code representing an informational response.  | 
-| **Should().BeSuccessful()**  | Asserts that a HTTP response has a successful HTTP status code.  | 
-| **Should().BeClientError()**  | Asserts that a HTTP response has a HTTP status code representing a client error.  | 
-| **Should().BeRedirection()**  | Asserts that a HTTP response has a HTTP status code representing a redirection response.  | 
-| **Should().BeServerError()**  | Asserts that a HTTP response has a HTTP status code representing a server error.  | 
+| **Should().Be1XXInformational()**  |  Asserts that a HTTP response has a HTTP status code representing an informational response.  | 
+| **Should().Be2XXSuccessful()**  | Asserts that a HTTP response has a successful HTTP status code.  | 
+| **Should().Be4XXClientError()**  | Asserts that a HTTP response has a HTTP status code representing a client error.  | 
+| **Should().Be3XXRedirection()**  | Asserts that a HTTP response has a HTTP status code representing a redirection response.  | 
+| **Should().Be5XXServerError()**  | Asserts that a HTTP response has a HTTP status code representing a server error.  | 
 | **Should().Be100Continue()**  | Asserts that a HTTP response has the HTTP status 100 Continue  | 
 | **Should().Be101SwitchingProtocols()**  | Asserts that a HTTP response has the HTTP status 101 Switching Protocols  | 
 | **Should().Be200Ok()**  | Asserts that a HTTP response has the HTTP status 200 Ok  | 
