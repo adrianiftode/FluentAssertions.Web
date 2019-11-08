@@ -108,7 +108,6 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 | **Should().HaveHttpStatus()**  | Asserts that a HTTP response has a HTTP status with the specified code.  | 
 | **Should().NotHaveHttpStatus()**  |  that a HTTP response does not have a HTTP status with the specified code.  | 
 | **Should().MatchInContent()**  | Asserts that HTTP response has content that matches a wildcard pattern.  | 
-| **Should().Satisfy()**  |  Asserts that an HTTP response satisfies a condition about it.  | 
 | **Should().SatisfyAssertions()**  |  Asserts that an HTTP response satisfies an assertion.  | 
 
 |  *Should().HaveHeader().And.* | Contains a number of methods to assert that an  is in the expected state related to HTTP headers. | 
