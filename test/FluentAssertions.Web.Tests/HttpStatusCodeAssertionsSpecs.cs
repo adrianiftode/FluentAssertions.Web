@@ -8,18 +8,18 @@ namespace FluentAssertions.Web.Tests
 {
     public class HttpStatusCodeAssertionsSpecs
     {
-        #region BeInformational
+        #region Be1XXInformational
         [Theory]
         [InlineData(HttpStatusCode.Continue)]
         [InlineData(HttpStatusCode.SwitchingProtocols)]
-        public void When_asserting_response_with_an_informational_status_to_BeInformational_it_should_succeed(HttpStatusCode status)
+        public void When_asserting_response_with_an_informational_status_to_Be1XXInformational_it_should_succeed(HttpStatusCode status)
         {
             // Arrange
             using var subject = new HttpResponseMessage(status);
 
             // Act
             Action act = () =>
-                subject.Should().BeInformational();
+                subject.Should().Be1XXInformational();
 
             // Assert
             act.Should().NotThrow();
@@ -29,14 +29,14 @@ namespace FluentAssertions.Web.Tests
         [InlineData(HttpStatusCode.OK)]
         [InlineData(HttpStatusCode.BadRequest)]
         [InlineData(HttpStatusCode.InternalServerError)]
-        public void When_asserting_other_than_an_informational_status_code_response_to_BeInformational_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        public void When_asserting_other_than_an_informational_status_code_response_to_Be1XXInformational_it_should_throw_with_descriptive_message(HttpStatusCode status)
         {
             // Arrange
             using var subject = new HttpResponseMessage(status);
 
             // Act
             Action act = () =>
-                subject.Should().BeInformational("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be1XXInformational("because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -44,14 +44,14 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_null_HttpResponse_to_BeInformational_it_should_throw_with_descriptive_message()
+        public void When_asserting_null_HttpResponse_to_Be1XXInformational_it_should_throw_with_descriptive_message()
         {
             // Arrange
             HttpResponseMessage subject = null;
 
             // Act
             Action act = () =>
-                subject.Should().BeInformational("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be1XXInformational("because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -59,18 +59,18 @@ namespace FluentAssertions.Web.Tests
         }
         #endregion
 
-        #region BeSuccessful
+        #region Be2XXSuccessful
         [Theory]
         [InlineData(HttpStatusCode.OK)]
         [InlineData(HttpStatusCode.PartialContent)]
-        public void When_asserting_response_with_a_successful_status_to_BeSuccessful_it_should_succeed(HttpStatusCode status)
+        public void When_asserting_response_with_a_successful_status_to_Be2XXSuccessful_it_should_succeed(HttpStatusCode status)
         {
             // Arrange
             using var subject = new HttpResponseMessage(status);
 
             // Act
             Action act = () =>
-                subject.Should().BeSuccessful();
+                subject.Should().Be2XXSuccessful();
 
             // Assert
             act.Should().NotThrow();
@@ -80,14 +80,14 @@ namespace FluentAssertions.Web.Tests
         [InlineData(HttpStatusCode.SwitchingProtocols)]
         [InlineData(HttpStatusCode.PermanentRedirect)]
         [InlineData(HttpStatusCode.InternalServerError)]
-        public void When_asserting_other_than_a_successful_status_code_response_to_BeSuccessful_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        public void When_asserting_other_than_a_successful_status_code_response_to_Be2XXSuccessful_it_should_throw_with_descriptive_message(HttpStatusCode status)
         {
             // Arrange
             using var subject = new HttpResponseMessage(status);
 
             // Act
             Action act = () =>
-                subject.Should().BeSuccessful("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be2XXSuccessful("because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -95,14 +95,14 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_null_HttpResponse_to_BeSuccessful_it_should_throw_with_descriptive_message()
+        public void When_asserting_null_HttpResponse_to_Be2XXSuccessful_it_should_throw_with_descriptive_message()
         {
             // Arrange
             HttpResponseMessage subject = null;
 
             // Act
             Action act = () =>
-                subject.Should().BeSuccessful("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be2XXSuccessful("because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -110,69 +110,18 @@ namespace FluentAssertions.Web.Tests
         }
         #endregion
 
-        #region BeClientError
-        [Theory]
-        [InlineData(HttpStatusCode.BadRequest)]
-        [InlineData(HttpStatusCode.UpgradeRequired)]
-        public void When_asserting_response_with_a_client_error_status_code_to_BeClientError_it_should_succeed(HttpStatusCode status)
-        {
-            // Arrange
-            using var subject = new HttpResponseMessage(status);
-
-            // Act
-            Action act = () =>
-                subject.Should().BeClientError();
-
-            // Assert
-            act.Should().NotThrow();
-        }
-
-        [Theory]
-        [InlineData(HttpStatusCode.Continue)]
-        [InlineData(HttpStatusCode.OK)]
-        [InlineData(HttpStatusCode.InternalServerError)]
-        public void When_asserting_other_than_a_client_error_status_code_response_to_BeClientError_it_should_throw_with_descriptive_message(HttpStatusCode status)
-        {
-            // Arrange
-            using var subject = new HttpResponseMessage(status);
-
-            // Act
-            Action act = () =>
-                subject.Should().BeClientError("because we want to test the failure {0}", "message"); ;
-
-            // Assert
-            act.Should().Throw<XunitException>()
-                .WithMessage(@"*to have a HTTP status code representing a client error*message*");
-        }
-
-        [Fact]
-        public void When_asserting_null_HttpResponse_to_BeClientError_it_should_throw_with_descriptive_message()
-        {
-            // Arrange
-            HttpResponseMessage subject = null;
-
-            // Act
-            Action act = () =>
-                subject.Should().BeClientError("because we want to test the failure {0}", "message"); ;
-
-            // Assert
-            act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
-        }
-        #endregion
-
-        #region BeRedirection
+        #region Be3XXRedirection
         [Theory]
         [InlineData(HttpStatusCode.Moved)]
         [InlineData(HttpStatusCode.TemporaryRedirect)]
-        public void When_asserting_response_with_a_redirection_status_code_to_BeRedirection_it_should_succeed(HttpStatusCode status)
+        public void When_asserting_response_with_a_redirection_status_code_to_Be3XXRedirection_it_should_succeed(HttpStatusCode status)
         {
             // Arrange
             using var subject = new HttpResponseMessage(status);
 
             // Act
             Action act = () =>
-                subject.Should().BeRedirection();
+                subject.Should().Be3XXRedirection();
 
             // Assert
             act.Should().NotThrow();
@@ -183,14 +132,14 @@ namespace FluentAssertions.Web.Tests
         [InlineData(HttpStatusCode.OK)]
         [InlineData(HttpStatusCode.BadRequest)]
         [InlineData(HttpStatusCode.InternalServerError)]
-        public void When_asserting_other_than_a_client_redirection_status_code_response_to_BeRedirection_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        public void When_asserting_other_than_a_client_redirection_status_code_response_to_Be3XXRedirection_it_should_throw_with_descriptive_message(HttpStatusCode status)
         {
             // Arrange
             using var subject = new HttpResponseMessage(status);
 
             // Act
             Action act = () =>
-                subject.Should().BeRedirection("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be3XXRedirection("because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -198,14 +147,14 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_null_HttpResponse_to_BeRedirection_it_should_throw_with_descriptive_message()
+        public void When_asserting_null_HttpResponse_to_Be3XXRedirection_it_should_throw_with_descriptive_message()
         {
             // Arrange
             HttpResponseMessage subject = null;
 
             // Act
             Action act = () =>
-                subject.Should().BeRedirection("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be3XXRedirection("because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -213,18 +162,69 @@ namespace FluentAssertions.Web.Tests
         }
         #endregion
 
-        #region BeServerError
+        #region Be4XXClientError
         [Theory]
-        [InlineData(HttpStatusCode.InternalServerError)]
-        [InlineData(HttpStatusCode.HttpVersionNotSupported)]
-        public void When_asserting_response_with_a_server_error_status_code_to_BeServerError_it_should_succeed(HttpStatusCode status)
+        [InlineData(HttpStatusCode.BadRequest)]
+        [InlineData(HttpStatusCode.UpgradeRequired)]
+        public void When_asserting_response_with_a_client_error_status_code_to_Be4XXClientError_it_should_succeed(HttpStatusCode status)
         {
             // Arrange
             using var subject = new HttpResponseMessage(status);
 
             // Act
             Action act = () =>
-                subject.Should().BeServerError();
+                subject.Should().Be4XXClientError();
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.Continue)]
+        [InlineData(HttpStatusCode.OK)]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        public void When_asserting_other_than_a_client_error_status_code_response_to_Be4XXClientError_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().Be4XXClientError("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*to have a HTTP status code representing a client error*message*");
+        }
+
+        [Fact]
+        public void When_asserting_null_HttpResponse_to_Be4XXClientError_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            HttpResponseMessage subject = null;
+
+            // Act
+            Action act = () =>
+                subject.Should().Be4XXClientError("because we want to test the failure {0}", "message"); ;
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+        }
+        #endregion
+
+        #region Be5XXServerError
+        [Theory]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        [InlineData(HttpStatusCode.HttpVersionNotSupported)]
+        public void When_asserting_response_with_a_server_error_status_code_to_Be5XXServerError_it_should_succeed(HttpStatusCode status)
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(status);
+
+            // Act
+            Action act = () =>
+                subject.Should().Be5XXServerError();
 
             // Assert
             act.Should().NotThrow();
@@ -234,14 +234,14 @@ namespace FluentAssertions.Web.Tests
         [InlineData(HttpStatusCode.Continue)]
         [InlineData(HttpStatusCode.OK)]
         [InlineData(HttpStatusCode.UpgradeRequired)]
-        public void When_asserting_other_than_a_server_error_status_code_response_to_BeServerError_it_should_throw_with_descriptive_message(HttpStatusCode status)
+        public void When_asserting_other_than_a_server_error_status_code_response_to_Be5XXServerError_it_should_throw_with_descriptive_message(HttpStatusCode status)
         {
             // Arrange
             using var subject = new HttpResponseMessage(status);
 
             // Act
             Action act = () =>
-                subject.Should().BeServerError("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be5XXServerError("because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -249,14 +249,14 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_null_HttpResponse_to_BeServerError_it_should_throw_with_descriptive_message()
+        public void When_asserting_null_HttpResponse_to_Be5XXServerError_it_should_throw_with_descriptive_message()
         {
             // Arrange
             HttpResponseMessage subject = null;
 
             // Act
             Action act = () =>
-                subject.Should().BeServerError("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be5XXServerError("because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()

@@ -1,60 +1,133 @@
 ## FluentAssertions.Web
-A FluentAssertions extension over the HttpResponseMessage to ease the Assert part
-and spend less time with debugging during the Fail part.
+This is a FluentAssertions extension for HttpResponseMessage to help with the **Assert** part and to extract enough information during the **Fail** part, so less time in debugging is spent.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/dashboard?id=FluentAssertions.Web)
 
+## Nuget
+
+PM&gt; Install-Package FluentAssertions.Web
+
+
 ## Examples
+
+Checks if a response is HTTP 200 OK. The Test Detail Summary will contain information about the response and and the request, providing the a similar experience as intercepting it with Fiddler. 
+
 ```csharp
 [Fact]
 public async Task Post_ReturnsOk()
 {
-	// Arrange
-	var client = _factory.CreateClient();
+    // Arrange
+    var client = _factory.CreateClient();
 
-	// Act
-	var response = await client.PostAsync("/api/comments", new StringContent(@"{
-			  ""author"": ""John"",
-			  ""content"": ""Hey, you...""
-			}", Encoding.UTF8, "application/json"));
+    // Act
+    var response = await client.PostAsync("/api/comments", new StringContent(@"{
+              ""author"": ""John"",
+              ""content"": ""Hey, you...""
+            }", Encoding.UTF8, "application/json"));
 
-	// Assert
-	response.Should().Be200Ok();
+    // Assert
+    response.Should().Be200Ok();
 }
 ```
 
 ![FailedTest1](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest1.png?raw=true)
 
+Checks if a response is HTTP 400 BadRequest and it contains an expected error. 
+The Test Detail Summary will contain information about the response so it is much faster and easier to investigate why is the assert failed.
+This is also very useful on build server when contextual data is lost and some tests might not be possible to be repeated on the developer machine.
+
 ```csharp
 [Fact]
 public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 {
-	// Arrange
-	var client = _factory.CreateClient();
+    // Arrange
+    var client = _factory.CreateClient();
 
-	// Act
-	var response = await client.PostAsync("/api/comments", new StringContent(@"{
-								  ""content"": ""Hey, you...""
-								}", Encoding.UTF8, "application/json"));
+    // Act
+    var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                                  ""content"": ""Hey, you...""
+                                }", Encoding.UTF8, "application/json"));
 
-	// Assert
-	response.Should().Be400BadRequest()
-		.And.HaveError("Author", "The Author field is required.");
+    // Assert
+    response.Should().Be400BadRequest()
+        .And.HaveError("Author", "The Author field is required.");
 }
 ```
-	
+    
 ![FailedTest2](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest2.png?raw=true)
+
+### Other examples that show more extensions
+
+```csharp
+[Fact]
+public async Task Get_Returns_Ok_With_CommentsList()
+{
+    // Arrange
+    var client = _factory.CreateClient();
+
+    // Act
+    var response = await client.GetAsync("/api/comments");
+
+    // Assert
+    response.Should().Be200Ok().And.BeAs(new[]
+    {
+        new { Author = "Adrian", Content = "Hey" }
+    });
+}
+
+[Fact]
+public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
+{
+    // Arrange
+    var client = _factory.CreateClient();
+
+    // Act
+    var response = await client.GetAsync("/api/comments");
+
+    // Assert
+    response.Should().Satisfy<IReadOnlyCollection<Comment>>(
+        model =>
+        {
+            model.Should().HaveCount(2);
+            model.Should().OnlyHaveUniqueItems(c => c.CommentId);
+        }
+    );
+}
+
+[Fact]
+public async Task Get_WithCommentId_Returns_A_NonSpam_Comment()
+{
+    // Arrange
+    var client = _factory.CreateClient();
+
+    // Act
+    var response = await client.GetAsync("/api/comments/1");
+
+    // Assert
+    response.Should().Satisfy(givenModelStructure: new
+    {
+        Author = default(string),
+        Content = default(string)
+    }, assertion: model =>
+        {
+            model.Author.Should().NotBe("I DO SPAM!");
+            model.Content.Should().NotContain("BUY MORE");
+        });
+}
+```
+
+Many more examples can be found in the [Samples](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/samples) projects and in the Specs files from the [FluentAssertions.Web.Tests](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/FluentAssertions.Web.Tests) project
 
 ## Full API
 
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an  is in the expected state related to the HTTP content. | 
 | --- | --- |
-| **Should().BeInformational()**  |  Asserts that a HTTP response has a HTTP status code representing an informational response.  | 
-| **Should().BeSuccessful()**  | Asserts that a HTTP response has a successful HTTP status code.  | 
-| **Should().BeClientError()**  | Asserts that a HTTP response has a HTTP status code representing a client error.  | 
-| **Should().BeRedirection()**  | Asserts that a HTTP response has a HTTP status code representing a redirection response.  | 
-| **Should().BeServerError()**  | Asserts that a HTTP response has a HTTP status code representing a server error.  | 
+| **Should().Be1XXInformational()**  |  Asserts that a HTTP response has a HTTP status code representing an informational response.  | 
+| **Should().Be2XXSuccessful()**  | Asserts that a HTTP response has a successful HTTP status code.  | 
+| **Should().Be4XXClientError()**  | Asserts that a HTTP response has a HTTP status code representing a client error.  | 
+| **Should().Be3XXRedirection()**  | Asserts that a HTTP response has a HTTP status code representing a redirection response.  | 
+| **Should().Be5XXServerError()**  | Asserts that a HTTP response has a HTTP status code representing a server error.  | 
 | **Should().Be100Continue()**  | Asserts that a HTTP response has the HTTP status 100 Continue  | 
 | **Should().Be101SwitchingProtocols()**  | Asserts that a HTTP response has the HTTP status 101 Switching Protocols  | 
 | **Should().Be200Ok()**  | Asserts that a HTTP response has the HTTP status 200 Ok  | 
@@ -102,13 +175,14 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
 | **Should().Be503ServiceUnavailable()**  | Asserts that a HTTP response has the HTTP status 503 Service Unavailable  | 
 | **Should().Be504GatewayTimeout()**  | Asserts that a HTTP response has the HTTP status 504 Gateway Timeout  | 
 | **Should().Be505HttpVersionNotSupported()**  | Asserts that a HTTP response has the HTTP status 505 Http Version Not Supported  | 
-| **Should().BeAs()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
+| **Should().BeAs&lt;TModel&gt;()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
 | **Should().HaveHeader()**  | Asserts that an HTTP response has a named header.  | 
 | **Should().NotHaveHeader()**  | Asserts that an HTTP response does not have a named header.  | 
 | **Should().HaveHttpStatus()**  | Asserts that a HTTP response has a HTTP status with the specified code.  | 
 | **Should().NotHaveHttpStatus()**  |  that a HTTP response does not have a HTTP status with the specified code.  | 
 | **Should().MatchInContent()**  | Asserts that HTTP response has content that matches a wildcard pattern.  | 
-| **Should().Satisfy()**  |  Asserts that an HTTP response satisfies a condition about it.  | 
+| **Should().Satisfy&lt;TModel&gt;()**  |  Asserts that an HTTP response content can be a model that satisfies an assertion.  |
+| **Should().Satisfy&lt;HttpResponseMessage&gt;()**  |  Asserts that an HTTP response content can be a model that satisfies an assertion.  |
 
 |  *Should().HaveHeader().And.* | Contains a number of methods to assert that an  is in the expected state related to HTTP headers. | 
 | --- | --- | 

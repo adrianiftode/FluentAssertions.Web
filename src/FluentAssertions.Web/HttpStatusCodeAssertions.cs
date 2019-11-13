@@ -5,7 +5,7 @@ namespace FluentAssertions.Web
 {
     public partial class HttpResponseMessageAssertions
     {
-        #region BeInformational
+        #region Be1XXInformational
         /// <summary>
         /// Asserts that a HTTP response has a HTTP status code representing an informational response.
         /// </summary>
@@ -17,7 +17,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
-        public AndConstraint<HttpResponseMessageAssertions> BeInformational(string because = "", params object[] becauseArgs)
+        public AndConstraint<HttpResponseMessageAssertions> Be1XXInformational(string because = "", params object[] becauseArgs)
         {
             ExecuteSubjectNotNull(because, becauseArgs);
 
@@ -31,7 +31,7 @@ namespace FluentAssertions.Web
         }
         #endregion
 
-        #region BeSuccessful
+        #region Be2XXSuccessful
         /// <summary>
         /// Asserts that a HTTP response has a successful HTTP status code.
         /// </summary>
@@ -43,7 +43,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
-        public AndConstraint<HttpResponseMessageAssertions> BeSuccessful(string because = "", params object[] becauseArgs)
+        public AndConstraint<HttpResponseMessageAssertions> Be2XXSuccessful(string because = "", params object[] becauseArgs)
         {
             ExecuteSubjectNotNull(because, becauseArgs);
 
@@ -57,33 +57,7 @@ namespace FluentAssertions.Web
         }
         #endregion
 
-        #region BeClientError
-        /// <summary>
-        /// Asserts that a HTTP response has a HTTP status code representing a client error.
-        /// </summary>
-        /// <remarks>The HTTP response was a client error if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 400-499.</remarks>
-        /// <param name="because">
-        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
-        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
-        /// </param>
-        /// <param name="becauseArgs">
-        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
-        /// </param>
-        public AndConstraint<HttpResponseMessageAssertions> BeClientError(string because = "", params object[] becauseArgs)
-        {
-            ExecuteSubjectNotNull(because, becauseArgs);
-
-            Execute.Assertion
-                .BecauseOf(because, becauseArgs)
-                .ForCondition(Subject.StatusCode >= HttpStatusCode.BadRequest && Subject.StatusCode < HttpStatusCode.InternalServerError)
-                .FailWith("Expected {context:response} to have a HTTP status code representing a client error, but it was {0}{reason}.{1}",
-                    Subject.StatusCode, Subject);
-
-            return new AndConstraint<HttpResponseMessageAssertions>(this);
-        }
-        #endregion
-
-        #region BeRedirection
+        #region Be3XXRedirection
         /// <summary>
         /// Asserts that a HTTP response has a HTTP status code representing a redirection response.
         /// </summary>
@@ -95,7 +69,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
-        public AndConstraint<HttpResponseMessageAssertions> BeRedirection(string because = "", params object[] becauseArgs)
+        public AndConstraint<HttpResponseMessageAssertions> Be3XXRedirection(string because = "", params object[] becauseArgs)
         {
             ExecuteSubjectNotNull(because, becauseArgs);
 
@@ -109,7 +83,33 @@ namespace FluentAssertions.Web
         }
         #endregion
 
-        #region BeServerError
+        #region Be4XXClientError
+        /// <summary>
+        /// Asserts that a HTTP response has a HTTP status code representing a client error.
+        /// </summary>
+        /// <remarks>The HTTP response was a client error if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 400-499.</remarks>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> Be4XXClientError(string because = "", params object[] becauseArgs)
+        {
+            ExecuteSubjectNotNull(because, becauseArgs);
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(Subject.StatusCode >= HttpStatusCode.BadRequest && Subject.StatusCode < HttpStatusCode.InternalServerError)
+                .FailWith("Expected {context:response} to have a HTTP status code representing a client error, but it was {0}{reason}.{1}",
+                    Subject.StatusCode, Subject);
+
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+        #endregion
+
+        #region Be5XXServerError
         /// <summary>
         /// Asserts that a HTTP response has a HTTP status code representing a server error.
         /// </summary>
@@ -121,7 +121,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
-        public AndConstraint<HttpResponseMessageAssertions> BeServerError(string because = "", params object[] becauseArgs)
+        public AndConstraint<HttpResponseMessageAssertions> Be5XXServerError(string because = "", params object[] becauseArgs)
         {
             ExecuteSubjectNotNull(because, becauseArgs);
 

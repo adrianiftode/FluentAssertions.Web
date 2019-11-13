@@ -3,9 +3,7 @@ using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
 using FluentAssertions.Web.Internal;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -73,16 +71,35 @@ namespace FluentAssertions.Web
             }
         }
 
-        private protected ExpandoObject GetExpandoContent()
+        private string[] CollectFailuresFromAssertion<TAsserted>(Action<TAsserted> assertion, TAsserted subject)
         {
-            Func<Task<ExpandoObject>> expando = Subject.GetExpandoContent;
-            return expando.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
-        }
+            string[] collectionFailures;
+            using (var collectionScope = new AssertionScope())
+            {
+                string[] assertionFailures;
+                using (var itemScope = new AssertionScope())
+                {
+                    try
+                    {
+                        assertion(subject);
+                        assertionFailures = itemScope.Discard();
+                    }
+                    catch (Exception ex)
+                    {
+                        assertionFailures = new[] { $"Expected to successfully verify an assertion, but the following exception occured: { ex }" };
+                    }
 
-        private protected JObject GetJsonObject()
-        {
-            Func<Task<JObject>> jsonObject = () => Subject.GetJsonObject();
-            return jsonObject.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+                }
+
+                foreach (var assertionFailure in assertionFailures)
+                {
+                    collectionScope.AddPreFormattedFailure($"{assertionFailure}");
+                }
+
+                collectionFailures = collectionScope.Discard();
+            }
+
+            return collectionFailures;
         }
     }
 }

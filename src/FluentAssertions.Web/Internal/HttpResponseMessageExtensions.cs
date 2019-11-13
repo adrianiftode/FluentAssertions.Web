@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,15 +9,6 @@ namespace FluentAssertions.Web.Internal
 {
     internal static class HttpResponseMessageExtensions
     {
-        public static IEnumerable<string> GetHeaderValues(this HttpRequestMessage request, string header)
-        {
-            var headers = request.GetHeaders();
-            return headers
-                .FirstOrDefault(c => string.Equals(c.Key, header, StringComparison.OrdinalIgnoreCase))
-                .Value
-                .Where(c => !string.IsNullOrEmpty(c));
-        }
-
         public static IEnumerable<string> GetHeaderValues(this HttpResponseMessage response, string header)
         {
             var headers = response.GetHeaders();
@@ -50,11 +40,6 @@ namespace FluentAssertions.Web.Internal
             var content = await response.GetStringContent();
 
             return JObject.Parse(content);
-        }
-
-        public static async Task<ExpandoObject> GetExpandoContent(this HttpResponseMessage response)
-        {
-            return await response.Content.ReadAsAsync<ExpandoObject>();
         }
     }
 }
