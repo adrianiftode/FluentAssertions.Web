@@ -1,5 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Sample.Api.Net22.Controllers;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +30,28 @@ namespace Sample.Api.Net22.Tests
             // Assert
             response.Should().Be200Ok().And.BeAs(new[]
             {
-                new { Author = "Adrian", Content = "Hey" }
+                new { Author = "Adrian", Content = "Hey" },
+                new { Author = "Johnny", Content = "Hey!" }
             });
+        }
+
+        [Fact]
+        public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/api/comments");
+
+            // Assert
+            response.Should().Satisfy<IReadOnlyCollection<Comment>>(
+                model =>
+                {
+                    model.Should().HaveCount(2);
+                    model.Should().OnlyHaveUniqueItems(c => c.CommentId);
+                }
+            );
         }
 
         [Fact]
@@ -47,6 +69,46 @@ namespace Sample.Api.Net22.Tests
                 Author = "Adrian",
                 Content = "Hey"
             });
+        }
+
+        [Fact]
+        public async Task Get_WithCommentId_Returns_A_NonSpam_Comment()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/api/comments/1");
+
+            // Assert
+            response.Should().Satisfy(givenModelStructure: new
+            {
+                Author = default(string),
+                Content = default(string)
+            }, assertion: model =>
+            {
+                model.Author.Should().NotBe("I DO SPAM!");
+                model.Content.Should().NotContain("BUY MORE");
+            });
+        }
+
+        [Fact]
+        public async Task Get_WithCommentId_Returns_Response_That_Satisfies_Several_Assertions()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/api/comments/1");
+
+            // Assert
+            response.Should().Satisfy(
+                resp =>
+                {
+                    resp.Content.Headers.ContentRange.Should().BeNull();
+                    resp.Content.Headers.Allow.Should().NotBeNull();
+                }
+            );
         }
 
         [Fact]

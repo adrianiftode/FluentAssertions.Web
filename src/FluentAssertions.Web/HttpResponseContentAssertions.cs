@@ -23,14 +23,13 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
-        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, string because = "", params object[] becauseArgs)
         {
             ExecuteSubjectNotNull(because, becauseArgs);
 
             if (expectedModel == null)
             {
-                throw new ArgumentNullException(nameof(expectedModel), "Cannot verify having a content against a <null> content.");
+                throw new ArgumentNullException(nameof(expectedModel), "Cannot verify having a content equivalent to a model against a <null> model.");
             }
 
             var success = TryGetSubjectModel<TModel>(out var subjectModel);
@@ -73,7 +72,6 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
-        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> MatchInContent(string expectedWildcardText, string because = "", params object[] becauseArgs)
         {
             Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify a HTTP response content match a <null> wildcard pattern.");

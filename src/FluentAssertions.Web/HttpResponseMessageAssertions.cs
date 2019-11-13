@@ -70,5 +70,36 @@ namespace FluentAssertions.Web
                 return false;
             }
         }
+
+        private string[] CollectFailuresFromAssertion<TAsserted>(Action<TAsserted> assertion, TAsserted subject)
+        {
+            string[] collectionFailures;
+            using (var collectionScope = new AssertionScope())
+            {
+                string[] assertionFailures;
+                using (var itemScope = new AssertionScope())
+                {
+                    try
+                    {
+                        assertion(subject);
+                        assertionFailures = itemScope.Discard();
+                    }
+                    catch (Exception ex)
+                    {
+                        assertionFailures = new[] { $"Expected to successfully verify an assertion, but the following exception occured: { ex }" };
+                    }
+
+                }
+
+                foreach (var assertionFailure in assertionFailures)
+                {
+                    collectionScope.AddPreFormattedFailure($"{assertionFailure}");
+                }
+
+                collectionFailures = collectionScope.Discard();
+            }
+
+            return collectionFailures;
+        }
     }
 }

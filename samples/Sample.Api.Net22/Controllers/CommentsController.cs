@@ -11,7 +11,8 @@ namespace Sample.Api.Net22.Controllers
         [HttpGet]
         public IEnumerable<Comment> Get() => new[]
         {
-            new Comment { Author = "Adrian", Content = "Hey" }
+            new Comment { Author = "Adrian", Content = "Hey", CommentId = 1},
+            new Comment { Author = "Johnny", Content = "Hey!", CommentId = 2 }
         };
 
         [HttpGet("{id}")]
