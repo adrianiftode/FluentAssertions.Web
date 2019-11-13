@@ -3,9 +3,7 @@ using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
 using FluentAssertions.Web.Internal;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Dynamic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -71,18 +69,6 @@ namespace FluentAssertions.Web
                 model = default;
                 return false;
             }
-        }
-
-        private protected ExpandoObject GetExpandoContent()
-        {
-            Func<Task<ExpandoObject>> expando = Subject.GetExpandoContent;
-            return expando.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
-        }
-
-        private protected JObject GetJsonObject()
-        {
-            Func<Task<JObject>> jsonObject = () => Subject.GetJsonObject();
-            return jsonObject.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
     }
 }
