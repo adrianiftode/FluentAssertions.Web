@@ -53,7 +53,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"Expected value to satisfy one or more assertions, but it wasn't because we want to test the reason:*expected response.Headers.* {empty} to contain ""byte""*- expected*to be <null>, but found {empty}*The HTTP response was:*");
+                .WithMessage(@"Expected value to satisfy one or more assertions, but it wasn't because we want to test the reason:*expected*""byte""*expected*to be <null>*The HTTP response was:*");
         }
 
         [Fact]

@@ -71,7 +71,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"Expected value to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expectedNot Value*expected*to be <null>*The HTTP response was:*");
+                .WithMessage(@"Expected value to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*Not Value*expected*to be <null>*The HTTP response was:*");
         }
 
         [Fact]
