@@ -11,8 +11,7 @@
     <Authors>Adrian Iftode</Authors>
     <PackageDescription>This is a FluentAssertions extension for HttpResponseMessage to help with the Assert part and to extract enough information during the Fail part, so less time in debugging is spent.</PackageDescription>
     <PackageTags>fluentassertions;httpresponsemessage;fluentassertionsweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
-    <Version>1.0.0</Version>
-    <PackageVersion>1.0.0</PackageVersion>
+    <VersionPrefix>0.2.0</VersionPrefix>
     <PackageProjectUrl>https://github.com/adrianiftode/FluentAssertions.Web</PackageProjectUrl>
     <RepositoryUrl>https://github.com/adrianiftode/FluentAssertions.Web</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
