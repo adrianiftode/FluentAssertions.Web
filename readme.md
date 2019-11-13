@@ -11,7 +11,7 @@ PM&gt; Install-Package FluentAssertions.Web
 
 ## Examples
 
-Checks if a response is HTTP 200 OK. The Test Detail Summary will contain information about the response and and the request, providing the a similar experience as intercepting it with Fiddler. 
+Checks if a response is HTTP 200 OK. The Test Detail Summary will contain information about the response and the request, providing the a similar experience as intercepting it with Fiddler. 
 
 ```csharp
 [Fact]
