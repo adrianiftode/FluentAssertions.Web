@@ -267,6 +267,26 @@ Content-Length: *
 Some content.*");
         }
 
+        [Fact]
+        public void GivenResponseWithNoContentType_ShouldPrint()
+        {
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("", Encoding.UTF8)
+            };
+            subject.Content.Headers.ContentType = null;
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*The HTTP response was:*
+HTTP/1.1 200 OK*
+Content-Length: 0*HTTP request*<null>*");
+        }
+
         [Theory]
         [InlineData(AspNetCore22InternalServerErrorResponse, "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "<!DOCTYPE html>")]
         [InlineData(AspNetCore30InternalServerErrorResponse, "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "HEADERS")]

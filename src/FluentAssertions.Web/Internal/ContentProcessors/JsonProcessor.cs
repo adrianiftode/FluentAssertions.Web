@@ -31,7 +31,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
         private bool CanHandle() => _httpContent != null
              && _httpContent.Headers.ContentLength <= ContentFormatterOptions.MaximumReadableBytes
-             && _httpContent.Headers.ContentType.MediaType == "application/json";
+             && _httpContent.Headers.ContentType?.MediaType == "application/json";
 
     }
 }
