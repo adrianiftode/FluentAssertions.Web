@@ -11,7 +11,7 @@ PM&gt; Install-Package FluentAssertions.Web
 
 ## Examples
 
-Checks if a response is HTTP 200 OK. The Test Detail Summary will contain information about the response and the request, providing the a similar experience as intercepting it with Fiddler. 
+Checks if a response is HTTP 200 OK. If the test fails, then the Test Detail Summary will contain request/response information, providing the a similar experience as if intercepting it with Fiddler. 
 
 ```csharp
 [Fact]
@@ -57,7 +57,7 @@ public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
     
 ![FailedTest2](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest2.png?raw=true)
 
-### Other examples that show more extensions
+### Few more examples
 
 ```csharp
 [Fact]
@@ -121,7 +121,7 @@ Many more examples can be found in the [Samples](https://github.com/adrianiftode
 
 ## Full API
 
-|  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an  is in the expected state related to the HTTP content. | 
+|  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to the HTTP content. | 
 | --- | --- |
 | **Should().Be1XXInformational()**  |  Asserts that a HTTP response has a HTTP status code representing an informational response.  | 
 | **Should().Be2XXSuccessful()**  | Asserts that a HTTP response has a successful HTTP status code.  | 
@@ -184,13 +184,13 @@ Many more examples can be found in the [Samples](https://github.com/adrianiftode
 | **Should().Satisfy&lt;TModel&gt;()**  |  Asserts that an HTTP response content can be a model that satisfies an assertion.  |
 | **Should().Satisfy&lt;HttpResponseMessage&gt;()**  |  Asserts that an HTTP response content can be a model that satisfies an assertion.  |
 
-|  *Should().HaveHeader().And.* | Contains a number of methods to assert that an  is in the expected state related to HTTP headers. | 
+|  *Should().HaveHeader().And.* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to HTTP headers. | 
 | --- | --- | 
 | **BeEmpty()**  | Asserts that an existing HTTP header in a HTTP response has no values.  | 
 | **BeValues()**  | Asserts that an existing HTTP header in a HTTP response has an expected list of header values.  | 
 | **Match()**  | Asserts that an existing HTTP header in a HTTP response contains at least a value that matches a wildcard pattern.  | 
 
-|  *Should().Be400BadRequest().And.* | Contains a number of methods to assert that an  is in the expected state related to HTTP Bad Request response | 
+|  *Should().Be400BadRequest().And.* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to HTTP Bad Request response | 
 | --- | --- | 
 | **HaveError()**  | Asserts that a Bad Request HTTP response content contains an error message identifiable by an expected field name and a wildcard error text.  | 
 | **OnlyHaveError()**  | Asserts that a Bad Request HTTP response content contains only a single error message identifiable by an expected field name and a wildcard error text.  | 
