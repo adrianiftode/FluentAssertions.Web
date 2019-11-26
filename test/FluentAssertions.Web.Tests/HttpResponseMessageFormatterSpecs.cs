@@ -821,5 +821,49 @@ HEADERS
 =======
 Host: localhost
 ";
+
+        [Fact]
+        public void GivenDisposedRequestContent_ShouldPrintAndShowWarning()
+        {
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("", Encoding.UTF8),
+                RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
+                {
+                    Content = new StringContent("Some content."),
+                }
+            };
+            subject.RequestMessage.Content.Dispose();
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*>>>Content is disposed so it cannot be read<<<*");
+        }
+
+        [Fact]
+        public void GivenDisposedRequest_ShouldPrintAndShowWarning()
+        {
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("", Encoding.UTF8),
+                RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
+                {
+                    Content = new StringContent("Some content."),
+                }
+            };
+            subject.RequestMessage.Dispose();
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*>>>Content is disposed so it cannot be read<<<*");
+        }
     }
 }

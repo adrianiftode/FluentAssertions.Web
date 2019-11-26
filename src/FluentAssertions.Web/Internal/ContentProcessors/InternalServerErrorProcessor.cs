@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
         private async Task Handle(StringBuilder contentBuilder)
         {
-            var content = await _httpContent.ReadAsStringAsync();
+            var content = await _httpContent.SafeReadAsStringAsync();
 
             AspNetCore30(contentBuilder, content);
 
@@ -40,7 +41,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
         private static void AspNetCore30(StringBuilder contentBuilder, string content)
         {
             const string headersText = "HEADERS";
-            var headersIndex = content.IndexOf(headersText);
+            var headersIndex = content.IndexOf(headersText, StringComparison.Ordinal);
             if (headersIndex >= 0)
             {
                 var exceptionDetails = content.Substring(0, headersIndex).Trim();
@@ -53,8 +54,8 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             const string startTag = @"<pre class=""rawExceptionStackTrace"">";
             if (content.Contains(startTag))
             {
-                var startTagIndex = content.LastIndexOf(startTag);
-                var endTagIndex = content.IndexOf("</pre>", startTagIndex);
+                var startTagIndex = content.LastIndexOf(startTag, StringComparison.Ordinal);
+                var endTagIndex = content.IndexOf("</pre>", startTagIndex, StringComparison.Ordinal);
                 if (endTagIndex < 0)
                 {
                     // there is no end tag

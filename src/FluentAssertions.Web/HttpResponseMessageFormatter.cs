@@ -128,9 +128,12 @@ namespace FluentAssertions.Web
 
         private static void AppendContentLength(StringBuilder messageBuilder, HttpRequestMessage request)
         {
-            if (!request.GetHeaders().Any(c => string.Equals(c.Key, "Content-Length", StringComparison.OrdinalIgnoreCase)))
+            if (!request.GetHeaders()
+                .Any(c => string.Equals(c.Key, "Content-Length", StringComparison.OrdinalIgnoreCase))
+            )
             {
-                messageBuilder.AppendLine($"Content-Length: {request.Content?.Headers.ContentLength ?? 0}");
+                request.Content.TryGetContentLength(out long contentLength);
+                messageBuilder.AppendLine($"Content-Length: {contentLength}");
             }
         }
 
