@@ -1,4 +1,5 @@
-﻿using FluentAssertions.Web.Internal.ContentProcessors;
+﻿using FluentAssertions.Web.Internal;
+using FluentAssertions.Web.Internal.ContentProcessors;
 using System.Linq;
 using System.Net.Http;
 using System.Text;

@@ -21,7 +21,12 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             await Handle();
         }
 
-        private bool CanHandle() => _httpContent is StreamContent;
+        private bool CanHandle()
+        {
+            _httpContent.TryGetContentLength(out var length);
+            return _httpContent is StreamContent
+                   && length < ContentFormatterOptions.MaximumReadableBytes;
+        }
 
         private Task Handle() => Task.CompletedTask;
     }

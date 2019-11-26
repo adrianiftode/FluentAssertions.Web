@@ -20,7 +20,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
                 return;
             }
 
-            var content = await _httpContent.ReadAsStringAsync();
+            var content = await _httpContent.SafeReadAsStringAsync();
 
             var beautified = content?.BeautifyJson();
             if (!string.IsNullOrEmpty(beautified))
@@ -29,9 +29,16 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             }
         }
 
-        private bool CanHandle() => _httpContent != null
-             && _httpContent.Headers.ContentLength <= ContentFormatterOptions.MaximumReadableBytes
-             && _httpContent.Headers.ContentType?.MediaType == "application/json";
+        private bool CanHandle()
+        {
+            if (_httpContent == null)
+            {
+                return false;
+            }
 
+            _httpContent.TryGetContentLength(out long length);
+            return length <= ContentFormatterOptions.MaximumReadableBytes
+                   && _httpContent.Headers.ContentType?.MediaType == "application/json";
+        }
     }
 }

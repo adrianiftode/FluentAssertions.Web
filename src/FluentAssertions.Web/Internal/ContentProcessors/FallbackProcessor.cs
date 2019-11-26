@@ -19,14 +19,22 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
                 return;
             }
 
-            if (_httpContent.Headers.ContentLength >= ContentFormatterOptions.MaximumReadableBytes)
+            if (_httpContent.IsDisposed())
             {
                 contentBuilder.AppendLine();
-                contentBuilder.AppendLine("Content is too large to display.");
+                contentBuilder.AppendLine(ContentFormatterOptions.WarningMessageWhenDisposed);
                 return;
             }
 
-            var content = await _httpContent.ReadAsStringAsync();
+            var contentLength = _httpContent.Headers.ContentLength;
+            if (contentLength >= ContentFormatterOptions.MaximumReadableBytes)
+            {
+                contentBuilder.AppendLine();
+                contentBuilder.AppendLine(ContentFormatterOptions.WarningMessageWhenContentIsTooLarge);
+                return;
+            }
+
+            var content = await _httpContent.SafeReadAsStringAsync();
             contentBuilder.Append(content);
         }
     }
