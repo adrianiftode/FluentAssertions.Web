@@ -264,3 +264,8 @@ __pycache__/
 .sonar/
 .sonarqube/
 .scannerwork/
+
+# coveralls
+coverage-html
+coverage-hits
+coverage.json

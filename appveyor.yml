@@ -6,9 +6,13 @@ skip_branch_with_pr: true
 image: Visual Studio 2019
 configuration: Release
 shallow_clone: true
+environment:
+    COVERALLS_REPO_TOKEN:
+        secure: SflouAAf3PpL3Rb4aRbOhQEjZSfyaccBKst05kN6TQhJ2OCupXCUzzEdx1uzFI6j
 init:
   - cmd: dotnet --version
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet tool install -g dotnet-sonarscanner }'
+  - cmd: dotnet tool install -g minicover
 dotnet_csproj:
   patch: true 
   file: '**\*.csproj'
@@ -20,15 +24,19 @@ dotnet_csproj:
 nuget:
   project_feed: true 
 before_build: 
-  - ps: dotnet restore 
+  - dotnet restore   
 build_script:
   # Begin SonarScanner
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" }'
   - dotnet pack --no-restore
+  - minicover instrument
 test_script:
-  - dotnet test --no-restore
+  - dotnet test --no-restore --no-build
 after_test:
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner end /d:sonar.login="$env:SONAR_TOKEN" }'
+  - minicover uninstrument
+  # will fail when the test coverage is lower than the threshold
+  - minicover report --threshold 97
 artifacts:
   path: '**\*.nupkg'
   name: NuGet
