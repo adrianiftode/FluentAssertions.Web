@@ -6,9 +6,6 @@ skip_branch_with_pr: true
 image: Visual Studio 2019
 configuration: Release
 shallow_clone: true
-environment:
-    COVERALLS_REPO_TOKEN:
-        secure: SflouAAf3PpL3Rb4aRbOhQEjZSfyaccBKst05kN6TQhJ2OCupXCUzzEdx1uzFI6j
 init:
   - cmd: dotnet --version
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet tool install -g dotnet-sonarscanner }'
