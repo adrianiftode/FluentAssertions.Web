@@ -9,6 +9,7 @@ shallow_clone: true
 init:
   - cmd: dotnet --version
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet tool install -g dotnet-sonarscanner }'
+  - cmd: dotnet tool install -g minicover
 dotnet_csproj:
   patch: true 
   file: '**\*.csproj'
@@ -20,15 +21,21 @@ dotnet_csproj:
 nuget:
   project_feed: true 
 before_build: 
-  - ps: dotnet restore 
+  - dotnet restore
 build_script:
   # Begin SonarScanner
-  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" }'
+  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" /d:sonar.cs.opencover.reportsPaths="opencovercoverage.xml" /d:sonar.coverage.exclusions=test/**}'
   - dotnet pack --no-restore
+  - dotnet build
+  - minicover instrument
 test_script:
-  - dotnet test --no-restore
+  - dotnet test --no-restore --no-build
 after_test:
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner end /d:sonar.login="$env:SONAR_TOKEN" }'
+  - minicover uninstrument
+  - minicover opencoverreport
+  # will fail when the test coverage is lower than the threshold
+  - minicover report --threshold 95
 artifacts:
   path: '**\*.nupkg'
   name: NuGet
