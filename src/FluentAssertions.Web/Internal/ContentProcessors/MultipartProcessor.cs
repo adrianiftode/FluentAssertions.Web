@@ -31,19 +31,18 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             {
                 contentBuilder.AppendLine();
                 contentBuilder.AppendLine(boundary);
+
                 Appender.AppendHeaders(contentBuilder, content.Headers);
+
                 await Appender.AppendContent(contentBuilder, content);
+
                 contentBuilder.AppendLine();
             }
 
             contentBuilder.AppendLine();
             contentBuilder.AppendLine($"{boundary}--");
-
-
         }
 
-
         private bool CanHandle() => _httpContent is MultipartContent;
-
     }
 }
