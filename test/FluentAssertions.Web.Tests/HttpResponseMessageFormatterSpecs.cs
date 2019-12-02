@@ -1,5 +1,9 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using Xunit;
 
@@ -46,7 +50,7 @@ The originated HTTP request was <null>.*");
 
             // Assert
             formatted.Should().Match(
-@"*The HTTP response was:*
+                @"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Cache-Control: no-store, no-cache, max-age=0*
 Pragma: no-cache*
@@ -135,7 +139,9 @@ The originated HTTP request was <null>.*");
             // Arrange
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(@"{""glossary"":{""title"":""example glossary"",""GlossDiv"":{""title"":""S"",""GlossList"":{""GlossEntry"":{""ID"":""SGML"",""SortAs"":""SGML"",""GlossTerm"":""Standard Generalized Markup Language"",""Acronym"":""SGML"",""Abbrev"":""ISO 8879:1986"",""GlossDef"":{""para"":""A meta-markup language, used to create markup languages such as DocBook."",""GlossSeeAlso"":[""GML"",""XML""]},""GlossSee"":""markup""}}}}}", Encoding.UTF8, "application/json")
+                Content = new StringContent(
+                    @"{""glossary"":{""title"":""example glossary"",""GlossDiv"":{""title"":""S"",""GlossList"":{""GlossEntry"":{""ID"":""SGML"",""SortAs"":""SGML"",""GlossTerm"":""Standard Generalized Markup Language"",""Acronym"":""SGML"",""Abbrev"":""ISO 8879:1986"",""GlossDef"":{""para"":""A meta-markup language, used to create markup languages such as DocBook."",""GlossSeeAlso"":[""GML"",""XML""]},""GlossSee"":""markup""}}}}}",
+                    Encoding.UTF8, "application/json")
             };
             var sut = new HttpResponseMessageFormatter();
 
@@ -288,11 +294,14 @@ Content-Length: 0*HTTP request*<null>*");
         }
 
         [Theory]
-        [InlineData(AspNetCore22InternalServerErrorResponse, "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "<!DOCTYPE html>")]
-        [InlineData(AspNetCore30InternalServerErrorResponse, "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "HEADERS")]
+        [InlineData(AspNetCore22InternalServerErrorResponse,
+            "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "<!DOCTYPE html>")]
+        [InlineData(AspNetCore30InternalServerErrorResponse,
+            "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "HEADERS")]
         [InlineData(@"<pre class=""rawExceptionStackTrace"">", "*rawExceptionStackTrace*", "DOCTYPE")]
         [InlineData(@"</pre>", "*</pre>*", "DOCTYPE")]
-        public void GivenInternalServerError_ShouldPrintExceptionDetails(string content, string expected, string unexpected)
+        public void GivenInternalServerError_ShouldPrintExceptionDetails(string content, string expected,
+            string unexpected)
         {
             // Arrange
             using var subject = new HttpResponseMessage(HttpStatusCode.InternalServerError)
@@ -811,6 +820,7 @@ a {
         </script>
     </body>
 </html>";
+
         private const string AspNetCore30InternalServerErrorResponse = @"System.Exception: Wow!
    at Sample.Api.Tests.CustomStartupConfigurationsTests.<>c.<GetException_WhenDeveloperPageIsConfigured_ShouldBeInternalServerError>b__0_3(HttpContext context) in E:\projects\mine\FluentAssertions.Web\samples\Sample.Api.Net30.Tests\CustomStartupConfigurationsTests.cs:line 30
    at Microsoft.AspNetCore.Routing.EndpointMiddleware.Invoke(HttpContext httpContext)
@@ -825,6 +835,7 @@ Host: localhost
         [Fact]
         public void GivenDisposedRequestContent_ShouldPrintAndShowWarning()
         {
+            // Arrange
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("", Encoding.UTF8),
@@ -841,12 +852,13 @@ Host: localhost
 
             // Assert
             formatted.Should().Match(
-                @"*>>>Content is disposed so it cannot be read<<<*");
+                @"*Content is disposed so it cannot be read.*");
         }
 
         [Fact]
         public void GivenDisposedRequest_ShouldPrintAndShowWarning()
         {
+            // Arrange
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("", Encoding.UTF8),
@@ -863,7 +875,240 @@ Host: localhost
 
             // Assert
             formatted.Should().Match(
-                @"*>>>Content is disposed so it cannot be read<<<*");
+                @"*Content is disposed so it cannot be read*");
+        }
+
+        [Fact]
+        public void GivenByteArrayResponse_ShouldPrintMessageInfo()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(new byte[1])
+            };
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*Content is of a binary data type having the length 1.*");
+        }
+
+        [Fact]
+        public void GivenByteArrayRequest_ShouldPrintMessageInfo()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                RequestMessage = new HttpRequestMessage
+                {
+                    Content = new ByteArrayContent(new byte[1])
+                }
+            };
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*Content is of a binary data type having the length 1.*");
+        }
+
+        [Fact]
+        public void GivenStreamResponse_ShouldPrintMessageInfo()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(new MemoryStream(new byte[1]))
+                {
+                    Headers =
+                    {
+                        ContentType = new MediaTypeHeaderValue("image/jpeg")
+                    }
+                }
+            };
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*Content is of a stream type having the length 1.*");
+        }
+
+        [Fact]
+        public void GivenStreamRequest_ShouldPrintMessageInfo()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                RequestMessage = new HttpRequestMessage
+                {
+                    Content = new StreamContent(new MemoryStream(new byte[1]))
+                    {
+                        Headers =
+                        {
+                            ContentType = new MediaTypeHeaderValue("image/jpeg")
+                        }
+                    }
+                }
+            };
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*Content is of a stream type having the length 1.*");
+        }
+
+        [Fact(Skip = "Don't know how to handle this yet.")]
+        public void GivenReadOnlyMemoryResponse_ShouldPrintMessageInfo()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ReadOnlyMemoryContent(new ReadOnlyMemory<byte>(new byte[1]))
+            };
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*Content is of a binary data type having the length 1.*");
+        }
+
+        [Fact(Skip = "Don't know how to handle this yet.")]
+        public void GivenReadOnlyMemoryRequest_ShouldPrintMessageInfo()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                RequestMessage = new HttpRequestMessage
+                {
+                    Content = new ReadOnlyMemoryContent(new ReadOnlyMemory<byte>(new byte[1]))
+                }
+            };
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*Content is of a binary data type having the length 1.*");
+        }
+
+        [Fact]
+        public void GivenFormUrlEncodedRequest_ShouldPrintFormUrlEncodedData()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                RequestMessage = new HttpRequestMessage
+                {
+
+                    Content = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("key1", "value1"),
+                        new KeyValuePair<string, string>("key2", "value2")
+                    })
+                }
+            };
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match(
+                @"*key1=value1&key2=value2*");
+        }
+
+        [Fact]
+        public void GivenMultipartFormDataResponse_ShouldPrintAsSingleParts()
+        {
+            // Arrange
+            var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
+            {
+                new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("key1", "value1"),
+                    new KeyValuePair<string, string>("key2", "value2")
+                }),
+                {new ByteArrayContent(new byte[1]), "ByteArray"},
+                {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
+                new StringContent("some string content", Encoding.UTF8, "plain/text")
+            };
+
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = content
+            };
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should()
+                .Match(@"*key1=value1&key2=value2*")
+                .And.Match(@"*Content is of a binary data type having the length 1.*")
+                .And.Match(@"*a-file-name.jpg*Content is of a binary data type having the length 2.*")
+                .And.Match(@"*plain/text*some string content*")
+                ;
+        }
+
+        [Fact]
+        public void GivenMultipartFormDataRequest_ShouldPrintAsSingleParts()
+        {
+            // Arrange
+            var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
+            {
+                new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("key1", "value1"),
+                    new KeyValuePair<string, string>("key2", "value2")
+                }),
+                {new ByteArrayContent(new byte[1]), "ByteArray"},
+                {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
+                new StringContent("some string content", Encoding.UTF8, "plain/text")
+            };
+
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                RequestMessage = new HttpRequestMessage
+                {
+                    Content = content
+                }
+            };
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should()
+                .Match(@"*key1=value1&key2=value2*")
+                .And.Match(@"*Content is of a binary data type having the length 1.*")
+                .And.Match(@"*a-file-name.jpg*Content is of a binary data type having the length 2.*")
+                .And.Match(@"*plain/text*some string content*")
+                ;
         }
     }
 }

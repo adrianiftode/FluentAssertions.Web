@@ -20,6 +20,11 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
                 return;
             }
 
+            await Handle(contentBuilder);
+        }
+
+        private async Task Handle(StringBuilder contentBuilder)
+        {
             var content = await _httpContent.SafeReadAsStringAsync();
 
             var beautified = content?.BeautifyJson();
