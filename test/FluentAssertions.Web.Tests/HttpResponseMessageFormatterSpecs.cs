@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentAssertions.Web.Internal;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -1109,6 +1110,25 @@ Host: localhost
                 .And.Match(@"*a-file-name.jpg*Content is of a binary data type having the length 2.*")
                 .And.Match(@"*plain/text*some string content*")
                 ;
+        }
+
+        [Fact]
+        public void GivenLargeStringContent_ShouldNotPrintEverything()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(new string('-', ContentFormatterOptions.MaximumReadableBytes + 1) + "end")
+            };
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null, null);
+
+            // Assert
+            formatted.Should().Match("*Content is too large to display*")
+                .And.Contain(new string('-', 500));
         }
     }
 }

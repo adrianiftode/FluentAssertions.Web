@@ -26,15 +26,15 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
                 return;
             }
 
+            var content = await _httpContent.SafeReadAsStringAsync();
             var contentLength = _httpContent.Headers.ContentLength;
             if (contentLength >= ContentFormatterOptions.MaximumReadableBytes)
             {
                 contentBuilder.AppendLine();
                 contentBuilder.AppendLine(ContentFormatterOptions.WarningMessageWhenContentIsTooLarge);
-                return;
+                content = content.Substring(ContentFormatterOptions.MaximumPrintableBytes);
             }
 
-            var content = await _httpContent.SafeReadAsStringAsync();
             contentBuilder.Append(content);
         }
     }
