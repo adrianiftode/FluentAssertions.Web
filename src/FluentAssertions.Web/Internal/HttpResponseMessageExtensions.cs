@@ -32,7 +32,7 @@ namespace FluentAssertions.Web.Internal
             return request.Headers.Union(requestContentHeaders);
         }
 
-        public static async Task<string> GetStringContent(this HttpResponseMessage response)
+        public static async Task<string?> GetStringContent(this HttpResponseMessage response)
             => response.Content != null ? await response.Content.ReadAsStringAsync() : null;
 
         public static async Task<JObject> GetJsonObject(this HttpResponseMessage response)

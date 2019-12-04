@@ -41,7 +41,7 @@ namespace FluentAssertions.Web
                 .FailWith("Expected an HTTP {context:response} to assert{reason}, but found <null>.");
         }
 
-        private void ExecuteStatusAssertion(string because, object[] becauseArgs, HttpStatusCode expected, string otherName = null)
+        private void ExecuteStatusAssertion(string because, object[] becauseArgs, HttpStatusCode expected, string? otherName = null)
         {
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
@@ -50,9 +50,9 @@ namespace FluentAssertions.Web
                     , otherName ?? expected.ToString(), Subject.StatusCode, Subject);
         }
 
-        private protected string GetContent()
+        private protected string? GetContent()
         {
-            Func<Task<string>> content = () => Subject.GetStringContent();
+            Func<Task<string?>> content = () => Subject.GetStringContent();
             return content.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
 

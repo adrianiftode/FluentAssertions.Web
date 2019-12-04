@@ -40,7 +40,7 @@ namespace FluentAssertions.Web.Internal
             }
         }
 
-        public static async Task<string> SafeReadAsStringAsync(this HttpContent content, string defaultMessage = null)
+        public static async Task<string> SafeReadAsStringAsync(this HttpContent content, string? defaultMessage = null)
         {
             try
             {
