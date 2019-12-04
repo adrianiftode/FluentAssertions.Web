@@ -37,7 +37,7 @@ namespace FluentAssertions.Web.Tests
             {
                 Headers =
                 {
-                    { "custom-header", (string)null }
+                    { "custom-header", (string?)null }
                 }
             };
 
@@ -93,7 +93,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveHeader(null);
+                subject.Should().HaveHeader(null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -166,7 +166,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().NotHaveHeader(null);
+                subject.Should().NotHaveHeader(null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -184,7 +184,7 @@ namespace FluentAssertions.Web.Tests
             {
                 Headers =
                 {
-                    { "custom-header", (string)null }
+                    { "custom-header", (string?)null }
                 }
             };
 
@@ -274,7 +274,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveHeader("custom-header").And.Match(null);
+                subject.Should().HaveHeader("custom-header").And.Match(null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -341,7 +341,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveHeader("custom-header").And.BeValues(null);
+                subject.Should().HaveHeader("custom-header").And.BeValues(null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()

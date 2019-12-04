@@ -26,7 +26,7 @@ namespace FluentAssertions.Web
         /// class.
         /// </summary>
         /// <param name="value">The subject value to be asserted.</param>
-        public HttpResponseMessageAssertions(HttpResponseMessage value) => Subject = value;
+        public HttpResponseMessageAssertions(HttpResponseMessage? value) => Subject = value;
 
         /// <summary>
         /// Returns the type of the subject the assertion applies on.
@@ -66,7 +66,7 @@ namespace FluentAssertions.Web
             }
             catch (JsonReaderException)
             {
-                model = default;
+                model = default!;
                 return false;
             }
         }

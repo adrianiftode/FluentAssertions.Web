@@ -47,7 +47,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_Be1XXInformational_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -98,7 +98,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_Be2XXSuccessful_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -150,7 +150,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_Be3XXRedirection_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -201,7 +201,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_Be4XXClientError_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -252,7 +252,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_Be5XXServerError_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -298,7 +298,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_HaveHttpStatusCode_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -344,7 +344,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_NotHaveHttpStatusCode_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -390,7 +390,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_100Continue_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -436,7 +436,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_101SwitchingProtocols_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -482,7 +482,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_200_Ok_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -528,7 +528,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_201Created_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -574,7 +574,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_202Accepted_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -620,7 +620,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_203NonAuthoritativeInformation_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -666,7 +666,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_204NoContent_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -712,7 +712,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_205ResetContent_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -758,7 +758,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_206PartialContent_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -804,7 +804,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_300MultipleChoices_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -850,7 +850,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_300Ambiguous_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -896,7 +896,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_301MovedPermanently_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -942,7 +942,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_301Moved_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -988,7 +988,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_302Found_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1034,7 +1034,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_302Redirect_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1080,7 +1080,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_303SeeOther_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1126,7 +1126,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_303RedirectMethod_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1172,7 +1172,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_304NotModified_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1218,7 +1218,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_305UseProxy_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1264,7 +1264,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_306Unused_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1310,7 +1310,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_307TemporaryRedirect_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1356,7 +1356,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_307RedirectKeepVerb_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1402,7 +1402,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_400_BadRequest_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1448,7 +1448,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_401_Unauthorized_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1494,7 +1494,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_402PaymentRequired_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1540,7 +1540,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_403Forbidden_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1586,7 +1586,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_404NotFound_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1632,7 +1632,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_405MethodNotAllowed_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1678,7 +1678,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_406NotAcceptable_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1724,7 +1724,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_407ProxyAuthenticationRequired_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1770,7 +1770,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_408RequestTimeout_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1816,7 +1816,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_409Conflict_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1862,7 +1862,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_410Gone_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1908,7 +1908,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_411LengthRequired_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -1954,7 +1954,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_412PreconditionFailed_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2000,7 +2000,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_413RequestEntityTooLarge_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2046,7 +2046,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_414RequestUriTooLong_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2092,7 +2092,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_415UnsupportedMediaType_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2138,7 +2138,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_416RequestedRangeNotSatisfiable_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2184,7 +2184,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_417ExpectationFailed_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2230,7 +2230,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_426UpgradeRequired_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2276,7 +2276,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_500InternalServerError_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2322,7 +2322,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_501NotImplemented_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2368,7 +2368,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_502BadGateway_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2414,7 +2414,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_503ServiceUnavailable_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2460,7 +2460,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_504GatewayTimeout_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -2506,7 +2506,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_HttpResponse_to_be_505HttpVersionNotSupported_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>

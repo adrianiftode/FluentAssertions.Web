@@ -161,7 +161,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().BeAs((object)null);
+                subject.Should().BeAs((object?)null);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -172,11 +172,11 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_response_to_be_as_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
-                subject.Should().BeAs((object)null, "because we want to test the failure {0}", "message"); ;
+                subject.Should().BeAs((object?)null, "because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -249,7 +249,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().MatchInContent(null);
+                subject.Should().MatchInContent(null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -260,7 +260,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_response_to_match_in_content_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
