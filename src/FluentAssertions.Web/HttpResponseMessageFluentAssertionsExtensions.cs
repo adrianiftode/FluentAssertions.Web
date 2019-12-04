@@ -15,7 +15,7 @@ namespace FluentAssertions
         /// Returns an <see cref="HttpResponseMessageAssertions"/> object that can be used to assert the
         /// current <see cref="HttpResponseMessage"/>.
         /// </summary>
-        public static HttpResponseMessageAssertions Should(this HttpResponseMessage actual)
+        public static HttpResponseMessageAssertions Should(this HttpResponseMessage? actual)
             => new HttpResponseMessageAssertions(actual);
     }
 }

@@ -26,7 +26,7 @@ namespace FluentAssertions.Web
         /// class.
         /// </summary>
         /// <param name="value">The subject value to be asserted.</param>
-        public HttpResponseMessageAssertions(HttpResponseMessage value) => Subject = value;
+        public HttpResponseMessageAssertions(HttpResponseMessage? value) => Subject = value;
 
         /// <summary>
         /// Returns the type of the subject the assertion applies on.
@@ -41,7 +41,7 @@ namespace FluentAssertions.Web
                 .FailWith("Expected an HTTP {context:response} to assert{reason}, but found <null>.");
         }
 
-        private void ExecuteStatusAssertion(string because, object[] becauseArgs, HttpStatusCode expected, string otherName = null)
+        private void ExecuteStatusAssertion(string because, object[] becauseArgs, HttpStatusCode expected, string? otherName = null)
         {
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
@@ -50,9 +50,9 @@ namespace FluentAssertions.Web
                     , otherName ?? expected.ToString(), Subject.StatusCode, Subject);
         }
 
-        private protected string GetContent()
+        private protected string? GetContent()
         {
-            Func<Task<string>> content = () => Subject.GetStringContent();
+            Func<Task<string?>> content = () => Subject.GetStringContent();
             return content.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
 
@@ -66,7 +66,7 @@ namespace FluentAssertions.Web
             }
             catch (JsonReaderException)
             {
-                model = default;
+                model = default!;
                 return false;
             }
         }

@@ -20,7 +20,7 @@ namespace FluentAssertions.Web.Tests
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(@"*
@@ -47,7 +47,7 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -99,7 +99,7 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(@"*The HTTP response was:*
@@ -147,7 +147,7 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(@"*
@@ -204,7 +204,7 @@ The content of the document......
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(@"*
@@ -234,7 +234,7 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -259,7 +259,7 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -285,7 +285,7 @@ Some content.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -312,7 +312,7 @@ Content-Length: 0*HTTP request*<null>*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(expected);
@@ -849,7 +849,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -872,7 +872,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -890,7 +890,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -911,7 +911,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -936,7 +936,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -964,7 +964,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -983,7 +983,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -1005,7 +1005,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -1032,7 +1032,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match(
@@ -1063,7 +1063,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should()
@@ -1101,7 +1101,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should()
@@ -1124,7 +1124,7 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null, null);
+            var formatted = sut.Format(subject, null!, null!);
 
             // Assert
             formatted.Should().Match("*Content is too large to display*")

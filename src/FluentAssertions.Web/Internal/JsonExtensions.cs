@@ -13,7 +13,7 @@ namespace FluentAssertions.Web.Internal
         public static IEnumerable<string> GetStringValuesByKey(this JObject json, string key)
         {
             var byKey = json.GetByKey(key);
-            if (!byKey.Any())
+            if (byKey != null && !byKey.Any())
             {
                 return Enumerable.Empty<string>();
             }
@@ -22,11 +22,12 @@ namespace FluentAssertions.Web.Internal
             return first switch
             {
                 JArray values => values.Select(c => (string)c),
-                JToken token => new[] { token.ToString() }
+                { } token => new[] { token.ToString() },
+                _ => Enumerable.Empty<string>()
             };
         }
 
-        public static IEnumerable<string> GetChildrenKeys(this JObject json, string parentElement)
+        public static IEnumerable<string> GetChildrenKeys(this JObject json, string? parentElement)
         {
             if (string.IsNullOrEmpty(parentElement))
             {
@@ -36,17 +37,17 @@ namespace FluentAssertions.Web.Internal
                     .Select(c => c.Name);
             }
 
-            return json.GetByKey(parentElement)
+            return json.GetByKey(parentElement!)
                 .SelectMany(c => c.Children<JObject>())
                 .SelectMany(c => c.Properties().Select(p => p.Name));
         }
 
-        public static string GetParentKey(this JObject json, string childElement)
-            => (json.GetByKey(childElement)
+        public static string? GetParentKey(this JObject json, string childElement) =>
+            (json.GetByKey(childElement)
                 .FirstOrDefault()
                 ?.Parent // JObject
                 .Parent as JProperty)
-                ?.Name;
+            ?.Name;
 
         public static IEnumerable<JToken> GetByKey(this JObject json, string key) =>
             json.AllTokens().Where(c => c.Type == JTokenType.Property

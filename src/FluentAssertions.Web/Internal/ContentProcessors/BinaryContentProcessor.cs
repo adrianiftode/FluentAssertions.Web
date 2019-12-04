@@ -47,7 +47,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
         private Task Handle(StringBuilder contentBuilder)
         {
-            var contentLength = _httpContent?.Headers.ContentLength ?? (_httpContent.TryGetContentLength(out var length) ? length : 0);
+            var contentLength = _httpContent.Headers?.ContentLength ?? (_httpContent.TryGetContentLength(out var length) ? length : 0);
 
             contentBuilder.AppendLine(string.Format(ContentFormatterOptions.ContentIsSomeTypeHavingLength, _dataType, contentLength));
 

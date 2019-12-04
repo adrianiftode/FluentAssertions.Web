@@ -12,7 +12,7 @@ namespace FluentAssertions.Web.Tests.Internal
             // Arrange
             var typesFromInternal = typeof(HttpResponseMessageAssertions).Assembly
                 .GetTypes()
-                .Where(c => c.Namespace.Contains("Internal"));
+                .Where(c => c.Namespace?.Contains("Internal") == true);
 
             // Assert
             using (new AssertionScope())

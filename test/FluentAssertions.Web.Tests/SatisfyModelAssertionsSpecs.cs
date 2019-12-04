@@ -11,7 +11,7 @@ namespace FluentAssertions.Web.Tests
         #region Typed Model
         private class Model
         {
-            public string Property { get; set; }
+            public string? Property { get; set; }
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy<Model>(null);
+                subject.Should().Satisfy<Model>(null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -93,7 +93,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_response_content_to_be_satisfy_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
@@ -137,7 +137,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy(givenModelStructure: (Model)null, model => model.Property.Should().NotBeNullOrEmpty());
+                subject.Should().Satisfy(givenModelStructure: (Model?)null, model => model!.Property.Should().NotBeNullOrEmpty());
 
             // Assert
             act.Should().NotThrow();
@@ -200,7 +200,7 @@ namespace FluentAssertions.Web.Tests
                 subject.Should().Satisfy(givenModelStructure: new
                 {
                     Property = default(string)
-                }, null);
+                }, null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -213,7 +213,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_response_content_to_be_satisfy_inferred_from_model_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>

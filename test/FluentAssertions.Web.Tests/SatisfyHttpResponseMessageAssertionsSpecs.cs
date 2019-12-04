@@ -64,7 +64,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy(null);
+                subject.Should().Satisfy(null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -75,7 +75,7 @@ namespace FluentAssertions.Web.Tests
         public void When_asserting_null_response_to_be_satisfy_it_should_throw_with_descriptive_message()
         {
             // Arrange
-            HttpResponseMessage subject = null;
+            HttpResponseMessage? subject = null;
 
             // Act
             Action act = () =>
