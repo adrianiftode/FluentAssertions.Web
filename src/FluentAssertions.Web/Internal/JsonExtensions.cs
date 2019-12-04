@@ -42,19 +42,12 @@ namespace FluentAssertions.Web.Internal
                 .SelectMany(c => c.Properties().Select(p => p.Name));
         }
 
-        public static string? GetParentKey(this JObject json, string childElement)
-        {
-            if (childElement != null)
-            {
-                return (json.GetByKey(childElement)
-                        .FirstOrDefault()
-                        ?.Parent // JObject
-                        .Parent as JProperty)
-                    ?.Name;
-            }
-
-            return null;
-        }
+        public static string? GetParentKey(this JObject json, string childElement) =>
+            (json.GetByKey(childElement)
+                .FirstOrDefault()
+                ?.Parent // JObject
+                .Parent as JProperty)
+            ?.Name;
 
         public static IEnumerable<JToken> GetByKey(this JObject json, string key) =>
             json.AllTokens().Where(c => c.Type == JTokenType.Property
