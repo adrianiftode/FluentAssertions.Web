@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal.ContentProcessors
 {
-    internal class InternalServerErrorProcessor : IContentProcessor
+    internal class InternalServerErrorProcessor : ProcessorBase
     {
         private readonly HttpResponseMessage _httpResponseMessage;
         private readonly HttpContent _httpContent;
@@ -16,20 +16,9 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             _httpContent = httpContent;
         }
 
-        public async Task GetContentInfo(StringBuilder contentBuilder)
-        {
-            if (!CanHandle())
-            {
-                return;
-            }
+        protected override bool CanHandle() => _httpResponseMessage.StatusCode == HttpStatusCode.InternalServerError;
 
-            await Handle(contentBuilder);
-        }
-
-        private bool CanHandle() =>
-            _httpResponseMessage.StatusCode == HttpStatusCode.InternalServerError;
-
-        private async Task Handle(StringBuilder contentBuilder)
+        protected override async Task Handle(StringBuilder contentBuilder)
         {
             var content = await _httpContent.SafeReadAsStringAsync();
 

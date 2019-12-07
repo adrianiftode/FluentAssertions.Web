@@ -34,7 +34,6 @@ namespace FluentAssertions.Web
         {
             await AppendResponse(messageBuilder, response);
             await AppendRequest(messageBuilder, response);
-            messageBuilder.AppendLine();
         }
 
         private static async Task AppendResponse(StringBuilder messageBuilder, HttpResponseMessage response)
@@ -63,7 +62,8 @@ namespace FluentAssertions.Web
             AppendContentLength(messageBuilder, request);
 
             messageBuilder.AppendLine();
-            await AppendRequestContent(messageBuilder, response);
+
+            await AppendRequestContent(messageBuilder, request.Content);
         }
 
         private static async Task AppendResponseContent(StringBuilder messageBuilder, HttpResponseMessage response)
@@ -83,10 +83,8 @@ namespace FluentAssertions.Web
             messageBuilder.Append(contentBuilder);
         }
 
-        private static async Task AppendRequestContent(StringBuilder messageBuilder, HttpResponseMessage response)
+        private static async Task AppendRequestContent(StringBuilder messageBuilder, HttpContent content)
         {
-            var content = response.RequestMessage.Content;
-
             await Appender.AppendContent(messageBuilder, content);
         }
 

@@ -7,23 +7,30 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 {
     internal class StreamProcessor : BinaryContentProcessor
     {
+        private static readonly Func<HttpContent, bool> CanHandleFunc = content => content is StreamContent
+                    && (IsApplicationOctetStream(content) ?? true)
+                        || (IsBinaryImage(content) ?? true);
         public StreamProcessor(HttpContent httpContent)
-            : base(httpContent, content => content is StreamContent, "stream")
+            : base(httpContent, CanHandleFunc, "stream")
         {
         }
     }
 
     internal class ByteArrayContentProcessor : BinaryContentProcessor
     {
+
+        private static readonly Func<HttpContent, bool> CanHandleFunc = content => content is ByteArrayContent
+                    && !(content is StringContent || content is FormUrlEncodedContent)
+                    && (IsApplicationOctetStream(content) ?? true)
+                        || (IsBinaryImage(content) ?? true);
+
         public ByteArrayContentProcessor(HttpContent httpContent)
-            : base(httpContent,
-                content => content is ByteArrayContent && !(content is StringContent || content is FormUrlEncodedContent),
-                "binary data")
+            : base(httpContent, CanHandleFunc, "binary data")
         {
         }
     }
 
-    internal class BinaryContentProcessor : IContentProcessor
+    internal class BinaryContentProcessor : ProcessorBase, IContentProcessor
     {
         private readonly HttpContent _httpContent;
         private readonly Func<HttpContent, bool> _canHandlePredicate;
@@ -36,25 +43,39 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             _dataType = dataType;
         }
 
-        public async Task GetContentInfo(StringBuilder contentBuilder)
-        {
-            if (!CanHandle())
-            {
-                return;
-            }
-            await Handle(contentBuilder);
-        }
-
-        private Task Handle(StringBuilder contentBuilder)
+        protected override Task Handle(StringBuilder contentBuilder)
         {
             var contentLength = _httpContent.Headers?.ContentLength ?? (_httpContent.TryGetContentLength(out var length) ? length : 0);
 
-            contentBuilder.AppendLine(string.Format(ContentFormatterOptions.ContentIsSomeTypeHavingLength, _dataType, contentLength));
+            contentBuilder.AppendLine(String.Format(ContentFormatterOptions.ContentIsSomeTypeHavingLength, _dataType, contentLength));
 
             return Task.CompletedTask;
         }
 
-        private bool CanHandle()
-            => _canHandlePredicate(_httpContent);
+        protected override bool CanHandle() => _canHandlePredicate(_httpContent);
+
+        protected static bool? IsApplicationOctetStream(HttpContent content)
+        {
+            var contentTypeMediaType = content.Headers?.ContentType?.MediaType;
+            if (contentTypeMediaType == null)
+            {
+                return default;
+            }
+
+            return contentTypeMediaType.Contains("application/")
+                && !(contentTypeMediaType.Contains("xml") || contentTypeMediaType.Contains("json"));
+        }
+
+        protected static bool? IsBinaryImage(HttpContent content)
+        {
+            var contentTypeMediaType = content.Headers?.ContentType?.MediaType;
+            if (contentTypeMediaType == null)
+            {
+                return default;
+            }
+
+            return contentTypeMediaType.Contains("image/")
+                   && !(contentTypeMediaType.EndsWith("xml") || contentTypeMediaType.EndsWith("webp"));
+        }
     }
 }
