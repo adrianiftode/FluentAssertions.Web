@@ -4,17 +4,20 @@ using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal.ContentProcessors
 {
-    internal class FallbackProcessor : IContentProcessor
+    internal class FallbackProcessor : ProcessorBase
     {
         private readonly HttpContent _httpContent;
+
         public FallbackProcessor(HttpContent httpContent)
         {
             _httpContent = httpContent;
         }
 
-        public async Task GetContentInfo(StringBuilder contentBuilder)
+        protected override bool CanHandle() => _httpContent != null;
+
+        protected override async Task Handle(StringBuilder contentBuilder)
         {
-            if (contentBuilder.Length != 0 || _httpContent == null)
+            if (contentBuilder.Length > 0)
             {
                 return;
             }

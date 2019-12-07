@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal.ContentProcessors
 {
-    internal class MultipartProcessor : IContentProcessor
+    internal class MultipartProcessor : ProcessorBase
     {
         private readonly HttpContent _httpContent;
         public MultipartProcessor(HttpContent httpContent)
@@ -13,16 +13,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             _httpContent = httpContent;
         }
 
-        public async Task GetContentInfo(StringBuilder contentBuilder)
-        {
-            if (!CanHandle())
-            {
-                return;
-            }
-            await Handle(contentBuilder);
-        }
-
-        private async Task Handle(StringBuilder contentBuilder)
+        protected override async Task Handle(StringBuilder contentBuilder)
         {
             var multipartContent = (MultipartFormDataContent)_httpContent;
             var boundary = multipartContent.Headers?.ContentType?.Parameters.FirstOrDefault(c => c.Name == "boundary")?.Value?.Trim('\"');
@@ -43,6 +34,6 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             contentBuilder.AppendLine($"{boundary}--");
         }
 
-        private bool CanHandle() => _httpContent is MultipartContent;
+        protected override bool CanHandle() => _httpContent is MultipartContent;
     }
 }

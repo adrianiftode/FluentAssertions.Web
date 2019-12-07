@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal.ContentProcessors
 {
-
-    internal class JsonProcessor : IContentProcessor
+    internal class JsonProcessor : ProcessorBase
     {
         private readonly HttpContent _httpContent;
         public JsonProcessor(HttpContent httpContent)
@@ -13,17 +12,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             _httpContent = httpContent;
         }
 
-        public async Task GetContentInfo(StringBuilder contentBuilder)
-        {
-            if (!CanHandle())
-            {
-                return;
-            }
-
-            await Handle(contentBuilder);
-        }
-
-        private async Task Handle(StringBuilder contentBuilder)
+        protected override async Task Handle(StringBuilder contentBuilder)
         {
             var content = await _httpContent.SafeReadAsStringAsync();
 
@@ -34,7 +23,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             }
         }
 
-        private bool CanHandle()
+        protected override bool CanHandle()
         {
             if (_httpContent == null)
             {
@@ -42,8 +31,9 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             }
 
             _httpContent.TryGetContentLength(out long length);
+            var mediaType = _httpContent.Headers.ContentType?.MediaType;
             return length <= ContentFormatterOptions.MaximumReadableBytes
-                   && _httpContent.Headers.ContentType?.MediaType == "application/json";
+                   && (mediaType.EqualsCaseInsensitive("application/json") || mediaType.EqualsCaseInsensitive("application/problem+json"));
         }
     }
 }

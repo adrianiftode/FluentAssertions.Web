@@ -19,9 +19,11 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
         {
             var partContentBuilder = await ProcessorsRunner.RunProcessors(ProcessorsRunner.CommonProcessors(content));
 
-            contentBuilder.AppendLine();
-            contentBuilder.Append(partContentBuilder);
+            if (partContentBuilder.Length > 0)
+            {
+                contentBuilder.AppendLine();
+                contentBuilder.Append(partContentBuilder);
+            }
         }
-
     }
 }
