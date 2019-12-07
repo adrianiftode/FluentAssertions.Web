@@ -7,9 +7,10 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 {
     internal class StreamProcessor : BinaryContentProcessor
     {
-        private static readonly Func<HttpContent, bool> CanHandleFunc = content => content is StreamContent
-                    && (IsApplicationOctetStream(content) ?? true)
-                        || (IsBinaryImage(content) ?? true);
+        private static readonly Func<HttpContent, bool> CanHandleFunc = content =>
+                    content is StreamContent
+                    && ((IsApplicationOctetStream(content) ?? true)
+                        || (IsBinaryImage(content) ?? true));
         public StreamProcessor(HttpContent httpContent)
             : base(httpContent, CanHandleFunc, "stream")
         {
@@ -18,11 +19,11 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
     internal class ByteArrayContentProcessor : BinaryContentProcessor
     {
-
-        private static readonly Func<HttpContent, bool> CanHandleFunc = content => content is ByteArrayContent
+        private static readonly Func<HttpContent, bool> CanHandleFunc = content =>
+                    content is ByteArrayContent
                     && !(content is StringContent || content is FormUrlEncodedContent)
-                    && (IsApplicationOctetStream(content) ?? true)
-                        || (IsBinaryImage(content) ?? true);
+                    && ((IsApplicationOctetStream(content) ?? true)
+                        || (IsBinaryImage(content) ?? true));
 
         public ByteArrayContentProcessor(HttpContent httpContent)
             : base(httpContent, CanHandleFunc, "binary data")
@@ -30,7 +31,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
         }
     }
 
-    internal class BinaryContentProcessor : ProcessorBase, IContentProcessor
+    internal class BinaryContentProcessor : ProcessorBase
     {
         private readonly HttpContent _httpContent;
         private readonly Func<HttpContent, bool> _canHandlePredicate;
@@ -47,16 +48,16 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
         {
             var contentLength = _httpContent.Headers?.ContentLength ?? (_httpContent.TryGetContentLength(out var length) ? length : 0);
 
-            contentBuilder.AppendLine(String.Format(ContentFormatterOptions.ContentIsSomeTypeHavingLength, _dataType, contentLength));
+            contentBuilder.AppendLine(string.Format(ContentFormatterOptions.ContentIsSomeTypeHavingLength, _dataType, contentLength));
 
             return Task.CompletedTask;
         }
 
         protected override bool CanHandle() => _canHandlePredicate(_httpContent);
 
-        protected static bool? IsApplicationOctetStream(HttpContent content)
+        protected static bool? IsApplicationOctetStream(HttpContent? content)
         {
-            var contentTypeMediaType = content.Headers?.ContentType?.MediaType;
+            var contentTypeMediaType = content?.Headers?.ContentType?.MediaType;
             if (contentTypeMediaType == null)
             {
                 return default;
@@ -66,9 +67,9 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
                 && !(contentTypeMediaType.Contains("xml") || contentTypeMediaType.Contains("json"));
         }
 
-        protected static bool? IsBinaryImage(HttpContent content)
+        protected static bool? IsBinaryImage(HttpContent? content)
         {
-            var contentTypeMediaType = content.Headers?.ContentType?.MediaType;
+            var contentTypeMediaType = content?.Headers?.ContentType?.MediaType;
             if (contentTypeMediaType == null)
             {
                 return default;
