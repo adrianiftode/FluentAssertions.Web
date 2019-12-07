@@ -1,5 +1,5 @@
 ## FluentAssertions.Web
-This is a FluentAssertions extension for HttpResponseMessage to help with the **Assert** part and to extract enough information during the **Fail** part, so less time in debugging is spent.
+This is a [*FluentAssertions*](https://fluentassertions.com/) extension for *HttpResponseMessage* in order help with the **Assert** part and to extract enough information during the **Fail** part, so less time in debugging is spent.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/dashboard?id=FluentAssertions.Web)
@@ -8,6 +8,21 @@ This is a FluentAssertions extension for HttpResponseMessage to help with the **
 
 PM&gt; Install-Package FluentAssertions.Web
 
+## Why?
+
+I'm using quite often lately functional tests with [*TestSever*](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/test-asp-net-core-mvc-apps#functional-testing-aspnet-core-apps) and consequently wrote some repetitive code or spent good time in debugging failing tests. With this tool I intend to solve two problems:
+
+##### Focus on Assert and not on HttpClient related APIs, neither on serialization/deserialization
+
+Once the response is ready you'll want to assert it. With first level properties like `StatusCode` is somehow easy, especially with FluentAssertions, but often we need more, like to deserialize the content into an object of a certain type and then to Assert it. Or to simply assert the response content itself. Soon duplication code occurs and the urge to fix it is just the next logical step. 
+
+##### Focus on writing functional tests and not on debugging things
+ When a test is failing, the following actions are taken most of the time:
+- attach the debugger to the line containing ```var response = await client..```
+- Debug the failing test
+- add to Watch ``` response.Content.ReadAsStringAsync().Content ``` and see the actual response content.
+
+These steps don't have to happen if we get the right diagnostics in the *Test Detail Summary* screen.
 
 ## Examples
 
@@ -33,31 +48,7 @@ public async Task Post_ReturnsOk()
 
 ![FailedTest1](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest1.png?raw=true)
 
-Checks if a response is HTTP 400 BadRequest and it contains an expected error. 
-The Test Detail Summary will contain information about the response so it is much faster and easier to investigate why is the assert failed.
-This is also very useful on build server when contextual data is lost and some tests might not be possible to be repeated on the developer machine.
-
-```csharp
-[Fact]
-public async Task Post_WithNoAuthor_ReturnsBadRequestWithUsefulMessage()
-{
-    // Arrange
-    var client = _factory.CreateClient();
-
-    // Act
-    var response = await client.PostAsync("/api/comments", new StringContent(@"{
-                                  ""content"": ""Hey, you...""
-                                }", Encoding.UTF8, "application/json"));
-
-    // Assert
-    response.Should().Be400BadRequest()
-        .And.HaveError("Author", "The Author field is required.");
-}
-```
-    
-![FailedTest2](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest2.png?raw=true)
-
-### Few more examples
+### Other examples
 
 ```csharp
 [Fact]
@@ -123,6 +114,30 @@ Many more examples can be found in the [Samples](https://github.com/adrianiftode
 
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to the HTTP content. | 
 | --- | --- |
+| **Should().BeAs&lt;TModel&gt;()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
+| **Should().HaveHeader()**  | Asserts that an HTTP response has a named header.  | 
+| **Should().NotHaveHeader()**  | Asserts that an HTTP response does not have a named header.  | 
+| **Should().HaveHttpStatus()**  | Asserts that a HTTP response has a HTTP status with the specified code.  | 
+| **Should().NotHaveHttpStatus()**  |  that a HTTP response does not have a HTTP status with the specified code.  | 
+| **Should().MatchInContent()**  | Asserts that HTTP response has content that matches a wildcard pattern.  | 
+| **Should().Satisfy&lt;TModel&gt;()**  |  Asserts that an HTTP response content can be a model that satisfies an assertion.  |
+| **Should().Satisfy&lt;HttpResponseMessage&gt;()**  |  Asserts that an HTTP response content can be a model that satisfies an assertion.  |
+
+|  *Should().HaveHeader().And.* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to HTTP headers. | 
+| --- | --- | 
+| **BeEmpty()**  | Asserts that an existing HTTP header in a HTTP response has no values.  | 
+| **BeValues()**  | Asserts that an existing HTTP header in a HTTP response has an expected list of header values.  | 
+| **Match()**  | Asserts that an existing HTTP header in a HTTP response contains at least a value that matches a wildcard pattern.  | 
+
+|  *Should().Be400BadRequest().And.* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to HTTP Bad Request response | 
+| --- | --- | 
+| **HaveError()**  | Asserts that a Bad Request HTTP response content contains an error message identifiable by an expected field name and a wildcard error text.  | 
+| **OnlyHaveError()**  | Asserts that a Bad Request HTTP response content contains only a single error message identifiable by an expected field name and a wildcard error text.  | 
+| **NotHaveError()**  | Asserts that a Bad Request HTTP response content does not contain an error message identifiable by an expected field name and a wildcard error text.  | 
+| **HaveErrorMessage()**  | Asserts that a Bad Request HTTP response content contains an error message identifiable by an wildcard error text.  | 
+
+|  *Fine grained status assertions.* |  | 
+| --- | --- |
 | **Should().Be1XXInformational()**  |  Asserts that a HTTP response has a HTTP status code representing an informational response.  | 
 | **Should().Be2XXSuccessful()**  | Asserts that a HTTP response has a successful HTTP status code.  | 
 | **Should().Be4XXClientError()**  | Asserts that a HTTP response has a HTTP status code representing a client error.  | 
@@ -175,24 +190,3 @@ Many more examples can be found in the [Samples](https://github.com/adrianiftode
 | **Should().Be503ServiceUnavailable()**  | Asserts that a HTTP response has the HTTP status 503 Service Unavailable  | 
 | **Should().Be504GatewayTimeout()**  | Asserts that a HTTP response has the HTTP status 504 Gateway Timeout  | 
 | **Should().Be505HttpVersionNotSupported()**  | Asserts that a HTTP response has the HTTP status 505 Http Version Not Supported  | 
-| **Should().BeAs&lt;TModel&gt;()**  | Asserts that HTTP response content can be an equivalent representation of the expected model.  | 
-| **Should().HaveHeader()**  | Asserts that an HTTP response has a named header.  | 
-| **Should().NotHaveHeader()**  | Asserts that an HTTP response does not have a named header.  | 
-| **Should().HaveHttpStatus()**  | Asserts that a HTTP response has a HTTP status with the specified code.  | 
-| **Should().NotHaveHttpStatus()**  |  that a HTTP response does not have a HTTP status with the specified code.  | 
-| **Should().MatchInContent()**  | Asserts that HTTP response has content that matches a wildcard pattern.  | 
-| **Should().Satisfy&lt;TModel&gt;()**  |  Asserts that an HTTP response content can be a model that satisfies an assertion.  |
-| **Should().Satisfy&lt;HttpResponseMessage&gt;()**  |  Asserts that an HTTP response content can be a model that satisfies an assertion.  |
-
-|  *Should().HaveHeader().And.* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to HTTP headers. | 
-| --- | --- | 
-| **BeEmpty()**  | Asserts that an existing HTTP header in a HTTP response has no values.  | 
-| **BeValues()**  | Asserts that an existing HTTP header in a HTTP response has an expected list of header values.  | 
-| **Match()**  | Asserts that an existing HTTP header in a HTTP response contains at least a value that matches a wildcard pattern.  | 
-
-|  *Should().Be400BadRequest().And.* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to HTTP Bad Request response | 
-| --- | --- | 
-| **HaveError()**  | Asserts that a Bad Request HTTP response content contains an error message identifiable by an expected field name and a wildcard error text.  | 
-| **OnlyHaveError()**  | Asserts that a Bad Request HTTP response content contains only a single error message identifiable by an expected field name and a wildcard error text.  | 
-| **NotHaveError()**  | Asserts that a Bad Request HTTP response content does not contain an error message identifiable by an expected field name and a wildcard error text.  | 
-| **HaveErrorMessage()**  | Asserts that a Bad Request HTTP response content contains an error message identifiable by an wildcard error text.  | 
