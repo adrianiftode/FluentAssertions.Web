@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FluentAssertions.Web.Tests.Internal
 {
-    public class ApiAccessibilitiyTests
+    public class ApiAccessibilityTests
     {
         [Fact]
         public void GivenTypesFromTheInternalNamespace_ThenShouldBeInternalOrLessThanInternal()
