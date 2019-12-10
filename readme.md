@@ -3,6 +3,7 @@ This is a [*FluentAssertions*](https://fluentassertions.com/) extension for *Htt
 
 [![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/dashboard?id=FluentAssertions.Web)
+[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.svg)](https://www.nuget.org/packages/FluentAssertions.Web)
 
 ## Nuget
 
@@ -65,6 +66,43 @@ public async Task Get_Returns_Ok_With_CommentsList()
     {
         new { Author = "Adrian", Content = "Hey" }
     });
+}
+
+
+[Fact]
+public async Task Post_ReturnsOkAndWithContent()
+{
+    // Arrange
+    var client = _factory.CreateClient();
+
+    // Act
+    var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                ""author"": ""John"",
+                ""content"": ""Hey, you...""
+            }", Encoding.UTF8, "application/json"));
+
+    // Assert
+    response.Should().Be200Ok().And.BeAs(new
+    {
+        Author = "John",
+        Content = "Hey, you..."
+    });
+}
+
+[Fact]
+public async Task Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMessageRelatedToAuthorOnly()
+{
+    // Arrange
+    var client = _factory.CreateClient();
+
+    // Act
+    var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                                    ""content"": ""Hey, you...""
+                                }", Encoding.UTF8, "application/json"));
+
+    // Assert
+    response.Should().Be400BadRequest()
+        .And.OnlyHaveError("Author", "The Author field is required.");
 }
 
 [Fact]
