@@ -7,10 +7,10 @@ namespace FluentAssertions.Web.Internal
 {
     internal static class JsonExtensions
     {
-        public static bool HasKey(this JObject json, string key)
+        public static bool HasKey(this JToken json, string key)
             => json.GetByKey(key).Any();
 
-        public static IEnumerable<string> GetStringValuesByKey(this JObject json, string key)
+        public static IEnumerable<string> GetStringValuesByKey(this JToken json, string key)
         {
             var byKey = json.GetByKey(key);
             if (byKey != null && !byKey.Any())
@@ -27,7 +27,7 @@ namespace FluentAssertions.Web.Internal
             };
         }
 
-        public static IEnumerable<string> GetChildrenKeys(this JObject json, string? parentElement)
+        public static IEnumerable<string> GetChildrenKeys(this JToken json, string? parentElement)
         {
             if (string.IsNullOrEmpty(parentElement))
             {
@@ -42,18 +42,18 @@ namespace FluentAssertions.Web.Internal
                 .SelectMany(c => c.Properties().Select(p => p.Name));
         }
 
-        public static string? GetParentKey(this JObject json, string childElement) =>
+        public static string? GetParentKey(this JToken json, string childElement) =>
             (json.GetByKey(childElement)
                 .FirstOrDefault()
                 ?.Parent // JObject
                 .Parent as JProperty)
             ?.Name;
 
-        public static IEnumerable<JToken> GetByKey(this JObject json, string key) =>
+        public static IEnumerable<JToken> GetByKey(this JToken json, string key) =>
             json.AllTokens().Where(c => c.Type == JTokenType.Property
                                         && string.Equals(((JProperty)c).Name, key, StringComparison.OrdinalIgnoreCase));
 
-        private static IEnumerable<JToken> AllTokens(this JObject obj)
+        private static IEnumerable<JToken> AllTokens(this JToken obj)
         {
             var toSearch = new Stack<JToken>(obj.Children());
             while (toSearch.Count > 0)

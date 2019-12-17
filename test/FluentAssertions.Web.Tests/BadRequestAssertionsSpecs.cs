@@ -125,7 +125,7 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_bad_request_response_with_a_the_errors_messages_as_a_single_field_to_be_BadRequest_and_have_error_field_and_error_message_it_should_succeed()
+        public void When_asserting_bad_request_response_with_the_errors_messages_as_a_single_field_to_be_BadRequest_and_have_error_field_and_error_message_it_should_succeed()
         {
             // Arrange
             using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -141,6 +141,30 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void
+            When_asserting_bad_request_response_with_a_response_content_having_an_array_to_BeBadRequest_and_have_error_field_and_error_message_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+            {
+                Content = new StringContent(@"  [
+                        {
+                            ""code"": ""previous_steps_validation_error"",
+                            ""description"": null
+                        }
+                    ]", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () => subject.Should().Be400BadRequest()
+                .And.HaveError("error", "*required*");
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage("*error*");
         }
 
         [Theory]

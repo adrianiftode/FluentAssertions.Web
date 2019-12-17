@@ -35,11 +35,11 @@ namespace FluentAssertions.Web.Internal
         public static async Task<string?> GetStringContent(this HttpResponseMessage response)
             => response.Content != null ? await response.Content.ReadAsStringAsync() : null;
 
-        public static async Task<JObject> GetJsonObject(this HttpResponseMessage response)
+        public static async Task<JToken> GetJsonObject(this HttpResponseMessage response)
         {
             var content = await response.GetStringContent();
 
-            return JObject.Parse(content);
+            return JToken.Parse(content, new JsonLoadSettings());
         }
     }
 }
