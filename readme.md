@@ -11,23 +11,23 @@ PM&gt; Install-Package FluentAssertions.Web
 
 ## Why?
 
-I'm using quite often lately functional tests with [*TestSever*](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/test-asp-net-core-mvc-apps#functional-testing-aspnet-core-apps) and consequently wrote some repetitive code or spent good time in debugging failing tests. With this tool I intend to solve two problems:
+I'm using quite often lately [*TestSever*](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/test-asp-net-core-mvc-apps#functional-testing-aspnet-core-apps) for functional tests and consequently wrote some repetitive code or spent good time in debugging. With this tool I intend to solve two problems:
 
 ##### Focus on Assert and not on HttpClient related APIs, neither on serialization/deserialization
 
-Once the response is ready you'll want to assert it. With first level properties like `StatusCode` is somehow easy, especially with FluentAssertions, but often we need more, like to deserialize the content into an object of a certain type and then to Assert it. Or to simply assert the response content itself. Soon duplication code occurs and the urge to fix it is just the next logical step. 
+Once the response is ready you'll want to assert it. With first level properties like `StatusCode` is somehow easy, especially with FluentAssertions, but often we need more, like to deserialize the content into an object of a certain type and then to Assert it. Or to simply assert something about the response content itself. Soon duplication code occurs and the urge to reduce it is just the next logical step. 
 
 ##### Focus on writing functional tests and not on debugging things
  When a test is failing, the following actions are taken most of the time:
 - attach the debugger to the line containing ```var response = await client..```
 - Debug the failing test
-- add to Watch ``` response.Content.ReadAsStringAsync().Content ``` and see the actual response content.
+- add an Watch for ``` response.Content.ReadAsStringAsync().Result ``` and see the actual response content
 
-These steps don't have to happen if we get the right diagnostics in the *Test Detail Summary* screen.
+All these don't have to happen if we would get the right diagnostics in the *Test Detail Summary* screen.
 
 ## Examples
 
-Checks if a response is HTTP 200 OK. If the test fails, then the Test Detail Summary will contain request/response information, providing the a similar experience as if intercepting it with Fiddler. 
+Asserts that a response is HTTP 200 OK. If the test fails, then the Test Detail Summary will contain request/response information, providing for example the a similar experience as when intercepting it with Fiddler. 
 
 ```csharp
 [Fact]
