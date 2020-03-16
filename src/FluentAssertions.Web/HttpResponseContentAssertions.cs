@@ -34,7 +34,7 @@ namespace FluentAssertions.Web
 
             var success = TryGetSubjectModel<TModel>(out var subjectModel);
 
-            ExecuteModelExtractedAssertions<TModel>(success, because, becauseArgs);
+            ExecuteModelExtractedAssertion<TModel>(success, because, becauseArgs);
 
             string[] failures;
 

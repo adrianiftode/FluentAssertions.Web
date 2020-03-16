@@ -50,7 +50,7 @@ namespace FluentAssertions.Web
                     , otherName ?? expected.ToString(), Subject.StatusCode, Subject);
         }
 
-        private void ExecuteModelExtractedAssertions<TModel>(bool success, string because, object[] becauseArgs)
+        private void ExecuteModelExtractedAssertion<TModel>(bool success, string because, object[] becauseArgs)
         {
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
