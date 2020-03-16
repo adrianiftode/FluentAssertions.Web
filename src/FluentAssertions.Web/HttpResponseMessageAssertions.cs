@@ -50,6 +50,15 @@ namespace FluentAssertions.Web
                     , otherName ?? expected.ToString(), Subject.StatusCode, Subject);
         }
 
+        private void ExecuteModelExtractedAssertions<TModel>(bool success, string because, object[] becauseArgs)
+        {
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(success)
+                .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed{reason}. {1}",
+                    typeof(TModel), Subject);
+        }
+
         private protected string? GetContent()
         {
             Func<Task<string?>> content = () => Subject.GetStringContent();
@@ -64,7 +73,7 @@ namespace FluentAssertions.Web
                 model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
                 return true;
             }
-            catch (JsonReaderException)
+            catch (Exception ex) when (ex is JsonReaderException || ex is JsonSerializationException)
             {
                 model = default!;
                 return false;
