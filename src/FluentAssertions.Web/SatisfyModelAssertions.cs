@@ -69,7 +69,9 @@ namespace FluentAssertions.Web
 
         private protected void ExecuteSatisfyModelAssertions<TModel>(Action<TModel> assertion, string because, object[] becauseArgs)
         {
-            TryGetSubjectModel<TModel>(out var model);
+            var success = TryGetSubjectModel<TModel>(out var model);
+
+            ExecuteModelExtractedAssertion<TModel>(success, because, becauseArgs);
 
             var failuresFromAssertions = CollectFailuresFromAssertion(assertion, model);
 

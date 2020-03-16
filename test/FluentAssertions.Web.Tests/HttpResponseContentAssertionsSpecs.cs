@@ -150,7 +150,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*to have a content equivalent to a model, but the JSON representation could not be parsed*");
+                .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
         }
 
         [Fact]

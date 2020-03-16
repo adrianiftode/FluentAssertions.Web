@@ -34,11 +34,7 @@ namespace FluentAssertions.Web
 
             var success = TryGetSubjectModel<TModel>(out var subjectModel);
 
-            Execute.Assertion
-                     .BecauseOf(because, becauseArgs)
-                     .ForCondition(success)
-                     .FailWith("Expected {context:response} to have a content equivalent to a model, but the JSON representation could not be parsed{reason}. {0}",
-                         Subject);
+            ExecuteModelExtractedAssertion<TModel>(success, because, becauseArgs);
 
             string[] failures;
 
