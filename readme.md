@@ -27,7 +27,7 @@ All these don't have to happen if we would get the right diagnostics in the *Tes
 
 ## Examples
 
-Asserts that a response is HTTP 200 OK. If the test fails, then the Test Detail Summary will contain request/response information, providing for example the a similar experience as when intercepting it with Fiddler. 
+Asserts that a response is HTTP 200 OK. If the test fails, then the *Test Detail Summary* will contain request/response information, providing for example a similar experience as when intercepting it with Fiddler. 
 
 ```csharp
 [Fact]
