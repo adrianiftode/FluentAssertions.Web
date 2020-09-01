@@ -275,6 +275,37 @@ Some content.*");
         }
 
         [Fact]
+        public void GivenRequest_WhenRequestStreamAtTheEnd_ShouldPrintRequestDetails()
+        {
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
+                {
+                    Content = new StringContent("Some content."),
+                    Headers = { { "Authorization", "Bearer xyz" } }
+                }
+            };
+            var readOnce = subject.RequestMessage.Content.ReadAsStreamAsync().GetAwaiter().GetResult();
+            readOnce.Seek(readOnce.Length, SeekOrigin.Begin);
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null!, null!);
+
+            // Assert
+            formatted.Should().Match(
+                @"*The HTTP response was:*
+HTTP/1.1 200 OK*
+Content-Length: 0*
+The originated HTTP request was:*
+POST http://localhost:5001/ HTTP 1.1*
+Authorization: Bearer xyz*
+Content-Type: text/plain; charset=utf-8*
+Content-Length: *
+Some content.*");
+        }
+
+        [Fact]
         public void GivenResponseWithNoContentType_ShouldPrint()
         {
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
