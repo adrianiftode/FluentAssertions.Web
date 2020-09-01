@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net22", "samples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net22.Tests", "samples\Sample.Api.Net22.Tests\Sample.Api.Net22.Tests.csproj", "{36205B2B-AEEC-4CC0-A229-C86E294C32EF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssertions.Web.IntegrationTests", "test\FluentAssertions.Web.IntegrationTests\FluentAssertions.Web.IntegrationTests.csproj", "{FB821F16-306E-448E-94E1-1E48464D5A20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{36205B2B-AEEC-4CC0-A229-C86E294C32EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36205B2B-AEEC-4CC0-A229-C86E294C32EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36205B2B-AEEC-4CC0-A229-C86E294C32EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB821F16-306E-448E-94E1-1E48464D5A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB821F16-306E-448E-94E1-1E48464D5A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB821F16-306E-448E-94E1-1E48464D5A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB821F16-306E-448E-94E1-1E48464D5A20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{0FC01F80-293D-4EFB-9FE4-266D4C3BDBF1} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 		{75C52AB3-0B18-4B3D-B604-6C2EDD724402} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 		{36205B2B-AEEC-4CC0-A229-C86E294C32EF} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
+		{FB821F16-306E-448E-94E1-1E48464D5A20} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81F41C75-2F8A-4E70-BA17-38146C4BB6E6}

@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal
@@ -44,8 +46,16 @@ namespace FluentAssertions.Web.Internal
         {
             try
             {
-                var result = await content.ReadAsStringAsync();
-                return result;
+                var stream = await content.ReadAsStreamAsync();
+                if (stream == null)
+                {
+                    return "";
+                }
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                using var sr = new StreamReader(stream, Encoding.UTF8, true, 1024, true);
+                return await sr.ReadToEndAsync();
             }
             catch (ObjectDisposedException)
             {
