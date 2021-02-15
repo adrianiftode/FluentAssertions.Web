@@ -26,6 +26,9 @@ nuget:
 before_build: 
   - dotnet restore
 build_script:
+  # Ensure Java 11, required by Sonar
+  - set JAVA_HOME=C:\Program Files\Java\jdk11
+  - set PATH=%JAVA_HOME%\bin;%PATH%
   # Begin SonarScanner
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" /d:sonar.cs.opencover.reportsPaths="opencovercoverage.xml" /d:sonar.coverage.exclusions=test/**}'
   - dotnet pack --no-restore
