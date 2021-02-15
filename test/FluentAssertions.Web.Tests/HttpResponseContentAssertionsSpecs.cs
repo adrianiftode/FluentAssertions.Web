@@ -154,6 +154,27 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
+        public void When_asserting_response_with_not_a_proper_JSON_to_be_as_model_it_should_throw_with_descriptive_message_which_includes_the_parsing_error_details()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent(@"{ ""price"" : 0.0}", Encoding.UTF8, "text/plain")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().BeAs(new
+                {
+                    price = 0
+                }, "we want to test the {0}", "reason");
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: ""Input string '0.0' is not a valid integer*");
+        }
+
+        [Fact]
         public void When_asserting_response_to_be_as_against_null_value_it_should_throw_with_descriptive_message()
         {
             // Arrange
