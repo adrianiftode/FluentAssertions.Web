@@ -50,13 +50,13 @@ namespace FluentAssertions.Web
                     , otherName ?? expected.ToString(), Subject.StatusCode, Subject);
         }
 
-        private void ExecuteModelExtractedAssertion<TModel>(bool success, string because, object[] becauseArgs)
+        private void ExecuteModelExtractedAssertion<TModel>(bool success, string? errorMessage, string because, object[] becauseArgs)
         {
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
                 .ForCondition(success)
-                .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed{reason}. {1}",
-                    typeof(TModel), Subject);
+                .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
+                    typeof(TModel), Subject, errorMessage);
         }
 
         private protected string? GetContent()
@@ -65,18 +65,18 @@ namespace FluentAssertions.Web
             return content.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
 
-        private protected bool TryGetSubjectModel<TModel>(out TModel model)
+        private protected (bool success, string? errorMessage) TryGetSubjectModel<TModel>(out TModel model)
         {
             Func<Task<TModel>> readModel = () => Subject.Content.ReadAsAsync<TModel>();
             try
             {
                 model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
-                return true;
+                return (true, null);
             }
             catch (Exception ex) when (ex is JsonReaderException || ex is JsonSerializationException)
             {
                 model = default!;
-                return false;
+                return (false, ex.Message);
             }
         }
 
