@@ -1,24 +1,32 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Sdk;
 
 namespace FluentAssertions.Web.Tests
 {
-    public class SatisfyHttpResponseMessageAssertionsSpecs
+    public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
     {
         [Fact]
         public void When_asserting_response_with_a_certain_assertion_to_satisfy_assertions_it_should_succeed()
         {
             // Arrange
             using var subject = new HttpResponseMessage();
+            bool completed = false;
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy(response => true.Should().BeTrue());
+                subject.Should().Satisfy(async response =>
+                {
+                    await Task.Delay(10);
+                    true.Should().BeTrue();
+                    completed = true;
+                });
 
             // Assert
             act.Should().NotThrow();
+            completed.Should().BeTrue();
         }
 
         [Fact]
@@ -29,7 +37,12 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy(c => c.Headers.AcceptRanges.Should().Contain("byte"), "we want to test the {0}", "reason");
+                subject.Should().Satisfy(async response =>
+                {
+                    await Task.Delay(10);
+                    response.Headers.AcceptRanges.Should().Contain("byte");
+
+                }, "we want to test the {0}", "reason");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -45,8 +58,9 @@ namespace FluentAssertions.Web.Tests
             // Act
             Action act = () =>
                 subject.Should().Satisfy(
-                    response =>
+                    async response =>
                     {
+                        await Task.Delay(10);
                         response.Headers.AcceptRanges.Should().Contain("byte");
                         response.Headers.Should().BeNull();
                     }, "we want to test the {0}", "reason");
@@ -64,7 +78,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy((Action<HttpResponseMessage>)null!);
+                subject.Should().Satisfy((Func<HttpResponseMessage, Task>)null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -79,7 +93,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy(response => true.Should().BeTrue(), "because we want to test the failure {0}", "message"); ;
+                subject.Should().Satisfy(async response => true.Should().BeTrue(), "because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
