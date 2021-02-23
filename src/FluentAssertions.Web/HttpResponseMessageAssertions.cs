@@ -82,33 +82,28 @@ namespace FluentAssertions.Web
 
         private string[] CollectFailuresFromAssertion<TAsserted>(Action<TAsserted> assertion, TAsserted subject)
         {
-            string[] collectionFailures;
-            using (var collectionScope = new AssertionScope())
+            using var collectionScope = new AssertionScope();
+            string[] assertionFailures;
+            using (var itemScope = new AssertionScope())
             {
-                string[] assertionFailures;
-                using (var itemScope = new AssertionScope())
+                try
                 {
-                    try
-                    {
-                        assertion(subject);
-                        assertionFailures = itemScope.Discard();
-                    }
-                    catch (Exception ex)
-                    {
-                        assertionFailures = new[] { $"Expected to successfully verify an assertion, but the following exception occured: { ex }" };
-                    }
-
+                    assertion(subject);
+                    assertionFailures = itemScope.Discard();
+                }
+                catch (Exception ex)
+                {
+                    assertionFailures = new[] { $"Expected to successfully verify an assertion, but the following exception occurred: { ex }" };
                 }
 
-                foreach (var assertionFailure in assertionFailures)
-                {
-                    collectionScope.AddPreFormattedFailure($"{assertionFailure}");
-                }
-
-                collectionFailures = collectionScope.Discard();
             }
 
-            return collectionFailures;
+            foreach (var assertionFailure in assertionFailures)
+            {
+                collectionScope.AddPreFormattedFailure($"{assertionFailure}");
+            }
+
+            return collectionScope.Discard();
         }
     }
 }

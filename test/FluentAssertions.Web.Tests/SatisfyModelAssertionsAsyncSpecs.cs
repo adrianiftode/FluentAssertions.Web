@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Sdk;
 
 namespace FluentAssertions.Web.Tests
 {
-    public class SatisfyModelAssertionsSpecs
+    public class SatisfyModelAssertionsAsyncSpecs
     {
         #region Typed Model
         private class Model
@@ -22,14 +23,21 @@ namespace FluentAssertions.Web.Tests
             {
                 Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
             };
+            bool completed = false;
 
             // Act
             Action act = () =>
                 subject.Should().Satisfy<Model>(
-                    model => model.Property.Should().NotBeEmpty());
+                    async model =>
+                    {
+                        await Task.Delay(10);
+                        model.Property.Should().NotBeEmpty();
+                        completed = true;
+                    });
 
             // Assert
             act.Should().NotThrow();
+            completed.Should().BeTrue();
         }
 
         [Fact]
@@ -44,7 +52,11 @@ namespace FluentAssertions.Web.Tests
             // Act
             Action act = () =>
                 subject.Should().Satisfy<Model>(
-                    model => model.Property.Should().BeEmpty(), "we want to test the {0}", "reason");
+                    async model =>
+                    {
+                        await Task.Delay(10);
+                        model.Property.Should().BeEmpty();
+                    }, "we want to test the {0}", "reason");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -63,7 +75,11 @@ namespace FluentAssertions.Web.Tests
             // Act
             Action act = () =>
                 subject.Should().Satisfy<Model>(
-                    model => model.Property.Should().BeNull(), "we want to test the {0}", "reason");
+                    async model =>
+                    {
+                        await Task.Delay(10);
+                        model.Property.Should().BeNull();
+                    }, "we want to test the {0}", "reason");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -82,8 +98,9 @@ namespace FluentAssertions.Web.Tests
             // Act
             Action act = () =>
                 subject.Should().Satisfy<Model>(
-                    model =>
+                    async model =>
                     {
+                        await Task.Delay(10);
                         model.Property.Should().Be("Not Value");
                         model.Should().BeNull();
                     }, "we want to test the {0}", "reason");
@@ -101,7 +118,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy<Model>(null!);
+                subject.Should().Satisfy<Model>((Func<Model, Task>)null!);
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -116,7 +133,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy<Model>(model => true.Should().BeTrue(), "because we want to test the failure {0}", "message"); ;
+                subject.Should().Satisfy<Model>(async model => true.Should().BeTrue(), "because we want to test the failure {0}", "message"); ;
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -133,16 +150,23 @@ namespace FluentAssertions.Web.Tests
             {
                 Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
             };
+            var completed = false;
 
             // Act
             Action act = () =>
                 subject.Should().Satisfy(givenModelStructure: new
                 {
                     Property = default(string)
-                }, assertion: model => model.Property.Should().NotBeEmpty());
+                }, assertion:async model =>
+                {
+                    await Task.Delay(10);
+                    model.Property.Should().NotBeEmpty();
+                    completed = true;
+                });
 
             // Assert
             act.Should().NotThrow();
+            completed.Should().BeTrue();
         }
 
         [Fact]
@@ -153,13 +177,20 @@ namespace FluentAssertions.Web.Tests
             {
                 Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
             };
+            var completed = false;
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy(givenModelStructure: (Model?)null, model => model!.Property.Should().NotBeNullOrEmpty());
+                subject.Should().Satisfy(givenModelStructure: (Model?)null, async model =>
+                {
+                    await Task.Delay(10);
+                    model!.Property.Should().NotBeNullOrEmpty();
+                    completed = true;
+                });
 
             // Assert
             act.Should().NotThrow();
+            completed.Should().BeTrue();
         }
 
         [Fact]
@@ -176,7 +207,11 @@ namespace FluentAssertions.Web.Tests
                 subject.Should().Satisfy(givenModelStructure: new
                 {
                     Property = default(string)
-                }, assertion: model => model.Property.Should().BeEmpty(), "we want to test the {0}", "reason");
+                }, assertion: async model =>
+                {
+                    await Task.Delay(10);
+                    model.Property.Should().BeEmpty();
+                }, "we want to test the {0}", "reason");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -197,8 +232,9 @@ namespace FluentAssertions.Web.Tests
                 subject.Should().Satisfy(givenModelStructure: new
                 {
                     Property = default(string)
-                }, assertion: model =>
+                }, assertion: async model =>
                       {
+                          await Task.Delay(10);
                           model.Property.Should().Be("Not Value");
                           model.Should().BeNull();
                       }, "we want to test the {0}", "reason");
@@ -222,7 +258,11 @@ namespace FluentAssertions.Web.Tests
                 subject.Should().Satisfy(givenModelStructure: new
                 {
                     Property = default(string)
-                }, assertion: model => model.Property.Should().BeNull(), "we want to test the {0}", "reason");
+                }, assertion: async model =>
+                {
+                    await Task.Delay(10);
+                    model.Property.Should().BeNull();
+                }, "we want to test the {0}", "reason");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -260,7 +300,7 @@ namespace FluentAssertions.Web.Tests
                 subject.Should().Satisfy(givenModelStructure: new
                 {
                     Property = default(string)
-                }, assertion: model => true.Should().BeTrue(), "because we want to test the failure {0}", "message");
+                }, assertion: async model => true.Should().BeTrue(), "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
