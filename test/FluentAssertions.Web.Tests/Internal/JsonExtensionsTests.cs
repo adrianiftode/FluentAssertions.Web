@@ -1,5 +1,5 @@
 ﻿using FluentAssertions.Web.Internal;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
 using Xunit;
 
 namespace FluentAssertions.Web.Tests.Internal
@@ -11,7 +11,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJsonWithAKey_WhenHasKeyIsCalledWithThatKeyName_ThenReturnsTrue()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     ""Author"": [
                         ""The Author field is required.""
@@ -30,7 +30,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJsonWithAKey_WhenHasKeyIsCalledWithADifferentKeyName_ThenReturnsFalse()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     ""Comment"": [
                         ""The Comment field is required.""
@@ -49,7 +49,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJsonWithAnEmptyKey_WhenHasKeyIsCalledWithEmptyKey_ThenReturnsTrue()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     """": [
                         ""A non-empty request body is required.""
@@ -68,7 +68,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJsonWithoutAnEmptyKey_WhenHasKeyIsCalledWithEmptyKey_ThenReturnsFalse()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     ""Comment"": [
                         ""The Comment field is required.""
@@ -87,7 +87,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJsonWithAKey_WhenHasKeyIsCalledWithThatKeyNameButInDifferentCase_ThenReturnsTrue()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     ""Author"": [
                         ""The Author field is required.""
@@ -108,10 +108,11 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJson_WhenKeyExistsAndHasAnArrayOfStringValues_ThenReturnsTheStrings()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     ""Author"": [
-                        ""The Author field is required.""
+                        ""The Author field is required."",
+                        ""The Author length exceeds 200 characters.""
                     ]
                 }
             }");
@@ -120,14 +121,54 @@ namespace FluentAssertions.Web.Tests.Internal
             var result = json.GetStringValuesByKey("Author");
 
             // Assert
-            result.Should().BeEquivalentTo(new[] { "The Author field is required." });
+            result.Should().BeEquivalentTo(new[] { "The Author field is required.", "The Author length exceeds 200 characters." });
+        }
+
+        [Fact]
+        public void GivenJson_WhenKeyExistsAndHasAnArrayOfObjects_ThenReturnsAnEmptyCollection()
+        {
+            // Arrange
+            using var json = JsonDocument.Parse(@"{
+                ""errors"": {
+                    ""Author"": [
+                        {""description"" : ""The Author field is required.""},
+                        {""description"" : ""The Author length exceeds 200 characters.""}
+                    ]
+                }
+            }");
+
+            // Act
+            var result = json.GetStringValuesByKey("Author");
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void GivenJson_WhenKeyExistsAndHasAnArrayOfNull_ThenReturnsAnEmptyCollection()
+        {
+            // Arrange
+            using var json = JsonDocument.Parse(@"{
+                ""errors"": {
+                    ""Author"": [
+                        null,
+                        null
+                    ]
+                }
+            }");
+
+            // Act
+            var result = json.GetStringValuesByKey("Author");
+
+            // Assert
+            result.Should().BeEmpty();
         }
 
         [Fact]
         public void GivenJson_WhenKeyDoesNotExist_ThenReturnsEmpty()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     ""Author"": [
                         ""The Author field is required.""
@@ -146,7 +187,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJson_WhenKeyHasSingleValue_ThenReturnsCollection()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     ""Author"": ""The Author field is required.""
                 }
@@ -160,10 +201,80 @@ namespace FluentAssertions.Web.Tests.Internal
         }
 
         [Fact]
+        public void GivenJson_WhenKeyHasAComplexObject_ThenReturnsEmpty()
+        {
+            // Arrange
+            using var json = JsonDocument.Parse(@"{
+                ""errors"": {
+                    ""Author"": { ""Text"" : ""The Author field is required."" }
+                }
+            }");
+
+            // Act
+            var result = json.GetStringValuesByKey("Author");
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void GivenJson_WhenKeyHasNullValue_ThenReturnsEmpty()
+        {
+            // Arrange
+            using var json = JsonDocument.Parse(@"{
+                ""errors"": {
+                    ""Author"": null
+                }
+            }");
+
+            // Act
+            var result = json.GetStringValuesByKey("Author");
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void GivenJson_WhenKeyHasTrueValue_ThenReturnsEmpty()
+        {
+            // Arrange
+            using var json = JsonDocument.Parse(@"{
+                ""errors"": {
+                    ""Author"": true
+                }
+            }");
+
+            // Act
+            var result = json.GetStringValuesByKey("Author");
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void GivenJson_WhenKeyHasFalseValue_ThenReturnsEmpty()
+        {
+            // Arrange
+            using var json = JsonDocument.Parse(@"{
+                ""errors"": {
+                    ""Author"": false
+                }
+            }");
+
+            // Act
+            var result = json.GetStringValuesByKey("Author");
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+        #endregion
+
+        #region GetChildrenKeys
+        [Fact]
         public void GivenJsonWithAField_WhenGetChildrenKeysIsCalledWithThatField_ThenReturnsDirectKeys()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     ""Author"": [
                         ""The Author field is required.""
@@ -185,7 +296,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJsonWithAnEmptyField_WhenGetChildrenKeysIsCalledByItsParent_ThenReturnsDirectKeys()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                 ""errors"": {
                     """": [
                         ""The Author field is required.""
@@ -204,7 +315,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJson_WhenGetChildrenKeysIsCalledWithNullOrEmpty_ThenReturnsDirectKeysOfRoot()
         {
             // Arrange
-            var json = JObject.Parse(@"{
+            using var json = JsonDocument.Parse(@"{
                     ""Author"": [
                         ""The Author field is required.""
                     ]
@@ -216,6 +327,29 @@ namespace FluentAssertions.Web.Tests.Internal
             // Assert
             result.Should().BeEquivalentTo("Author");
         }
+
+        [Fact]
+        public void GivenJson_WhenArrayContainsANonStringValue_ThenItExcludeFromResult()
+        {
+            // Arrange
+            using var json = JsonDocument.Parse(@"{
+                ""errors"": {
+                    ""Author"": [
+                        ""The Author field is required."",
+                        true,
+                        false,
+                        null,
+                        []
+                    ]
+                }
+            }");
+
+            // Act
+            var result = json.GetStringValuesByKey("Author");
+
+            // Assert
+            result.Should().BeEquivalentTo(new[] { "The Author field is required." });
+        }
         #endregion
 
         #region GetParentKey
@@ -223,7 +357,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJsonWithAFieldWithChildren_WhenGetParentKeyIsCalledWithOneOfTheChildren_ThenReturnsParent()
         {
             // Arrange
-            var json = JObject.Parse(@"{ ""root"" : {
+            using var json = JsonDocument.Parse(@"{ ""root"" : {
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -246,7 +380,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJsonWithAFieldWithChildren_WhenGetParentKeyIsCalledWithNoneOfTheChildren_ThenReturnsNull()
         {
             // Arrange
-            var json = JObject.Parse(@"{ ""root"" : {
+            using var json = JsonDocument.Parse(@"{ ""root"" : {
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -269,7 +403,7 @@ namespace FluentAssertions.Web.Tests.Internal
         public void GivenJsonAFieldAndChildren_WhenGetParentKeyIsCalledWithItself_ThenReturnsNull()
         {
             // Arrange
-            var json = JObject.Parse(@"{ ""root"" : """" }");
+            using var json = JsonDocument.Parse(@"{ ""root"" : """" }");
 
             // Act
             var result = json.GetParentKey("root");

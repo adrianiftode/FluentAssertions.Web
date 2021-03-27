@@ -1,9 +1,9 @@
 ﻿using FluentAssertions.Execution;
 using FluentAssertions.Web.Internal;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FluentAssertions.Web
@@ -52,8 +52,8 @@ namespace FluentAssertions.Web
             Guard.ThrowIfArgumentIsNullOrEmpty(expectedErrorField, nameof(expectedErrorField), "Cannot verify having an error against a <null> or empty field name.");
             Guard.ThrowIfArgumentIsNullOrEmpty(expectedWildcardErrorMessage, nameof(expectedWildcardErrorMessage), "Cannot verify having an error against a <null> or empty wildcard error message.");
 
-            Func<Task<JToken>> jsonFunc = () => Subject.GetJsonObject();
-            var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+            Func<Task<JsonDocument>> jsonFunc = () => Subject.GetJsonDocument();
+            using var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
@@ -110,8 +110,8 @@ namespace FluentAssertions.Web
             Guard.ThrowIfArgumentIsNullOrEmpty(expectedErrorField, nameof(expectedErrorField), "Cannot verify having only an error against a <null> or empty field name.");
             Guard.ThrowIfArgumentIsNullOrEmpty(expectedWildcardErrorMessage, nameof(expectedWildcardErrorMessage), "Cannot verify having only an error against a <null> or empty wildcard error message.");
 
-            Func<Task<JToken>> jsonFunc = () => Subject.GetJsonObject();
-            var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+            Func<Task<JsonDocument>> jsonFunc = () => Subject.GetJsonDocument();
+            using var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
@@ -176,8 +176,8 @@ namespace FluentAssertions.Web
         {
             Guard.ThrowIfArgumentIsNullOrEmpty(expectedErrorField, nameof(expectedErrorField), "Cannot verify not having an error against a <null> or empty field name.");
 
-            Func<Task<JToken>> jsonFunc = () => Subject.GetJsonObject();
-            var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+            Func<Task<JsonDocument>> jsonFunc = () => Subject.GetJsonDocument();
+            using var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
@@ -207,8 +207,8 @@ namespace FluentAssertions.Web
         {
             Guard.ThrowIfArgumentIsNullOrEmpty(expectedWildcardErrorMessage, nameof(expectedWildcardErrorMessage), "Cannot verify having an error against a <null> or empty wildcard error message.");
 
-            Func<Task<JToken>> jsonFunc = () => Subject.GetJsonObject();
-            var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+            Func<Task<JsonDocument>> jsonFunc = () => Subject.GetJsonDocument();
+            using var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
             var allErrorsFields = json.GetChildrenKeys("errors");
             var allErrors = allErrorsFields.SelectMany(c => json.GetStringValuesByKey(c));

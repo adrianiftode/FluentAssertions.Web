@@ -135,12 +135,12 @@ namespace FluentAssertions.Web
 
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
-
+        
         private protected void ExecuteSatisfyModelAssertions<TModel>(Action<TModel> assertion, string because, object[] becauseArgs)
         {
             var (success, errorMessage) = TryGetSubjectModel<TModel>(out var model);
 
-            ExecuteModelExtractedAssertion<TModel>(success, errorMessage, because, becauseArgs);
+            ExecuteModelExtractedAssertion(success, errorMessage, typeof(TModel), because, becauseArgs);
 
             var failuresFromAssertions = CollectFailuresFromAssertion(assertion, model);
 
