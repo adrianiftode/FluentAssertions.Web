@@ -11,8 +11,10 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
         {
             foreach (var header in headers)
             {
-                var headersPrint = $"{header.Key}: {string.Join(", ", header.Value)}";
-                messageBuilder.AppendLine(headersPrint);
+                foreach (var headerValue in header.Value)
+                {
+                    messageBuilder.AppendLine($"{header.Key}: {headerValue}");
+                }
             }
         }
         public static async Task AppendContent(StringBuilder contentBuilder, HttpContent content)
