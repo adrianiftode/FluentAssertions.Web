@@ -1,18 +1,32 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal
 {
     internal static class HttpContentExtensions
     {
-        public static async Task<T> ReadAsAsync<T>(this HttpContent content)
+        public static async Task<T?> ReadAsAsync<T>(this HttpContent content)
         {
-            var stringResponse = await content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<T>(stringResponse);
+            var contentStream = await content.ReadAsStreamAsync();
+            return await JsonSerializer.DeserializeAsync<T>(contentStream, new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                PropertyNameCaseInsensitive = true
+            });
+        }
+
+        public static async Task<object?> ReadAsAsync(this HttpContent content, Type modelType)
+        {
+            var contentStream = await content.ReadAsStreamAsync();
+            return await JsonSerializer.DeserializeAsync(contentStream, modelType, new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                PropertyNameCaseInsensitive = true
+            });
         }
 
         public static bool IsDisposed(this HttpContent content)

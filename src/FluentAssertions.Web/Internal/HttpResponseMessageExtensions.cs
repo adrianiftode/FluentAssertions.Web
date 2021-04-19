@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal
@@ -35,11 +35,11 @@ namespace FluentAssertions.Web.Internal
         public static async Task<string?> GetStringContent(this HttpResponseMessage response)
             => response.Content != null ? await response.Content.ReadAsStringAsync() : null;
 
-        public static async Task<JToken> GetJsonObject(this HttpResponseMessage response)
+        public static async Task<JsonDocument> GetJsonDocument(this HttpResponseMessage response)
         {
             var content = await response.GetStringContent();
 
-            return JToken.Parse(content, new JsonLoadSettings());
+            return JsonDocument.Parse(content!);
         }
     }
 }

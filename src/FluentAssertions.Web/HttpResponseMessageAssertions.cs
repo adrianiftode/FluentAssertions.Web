@@ -2,10 +2,10 @@
 using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
 using FluentAssertions.Web.Internal;
-using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FluentAssertions.Web
@@ -50,13 +50,13 @@ namespace FluentAssertions.Web
                     , otherName ?? expected.ToString(), Subject.StatusCode, Subject);
         }
 
-        private void ExecuteModelExtractedAssertion<TModel>(bool success, string? errorMessage, string because, object[] becauseArgs)
+        private void ExecuteModelExtractedAssertion(bool success, string? errorMessage, Type? modelType, string because, object[] becauseArgs)
         {
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
                 .ForCondition(success)
                 .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
-                    typeof(TModel), Subject, errorMessage);
+                    modelType?.ToString() ?? "unknown type", Subject, errorMessage);
         }
 
         private protected string? GetContent()
@@ -65,17 +65,32 @@ namespace FluentAssertions.Web
             return content.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
         }
 
-        private protected (bool success, string? errorMessage) TryGetSubjectModel<TModel>(out TModel model)
+        private protected (bool success, string? errorMessage) TryGetSubjectModel<TModel>(out TModel? model)
         {
-            Func<Task<TModel>> readModel = () => Subject.Content.ReadAsAsync<TModel>();
+            Func<Task<TModel?>> readModel = () => Subject.Content.ReadAsAsync<TModel>();
             try
             {
                 model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
                 return (true, null);
             }
-            catch (Exception ex) when (ex is JsonReaderException || ex is JsonSerializationException)
+            catch (Exception ex) when (ex is JsonException || ex is NotSupportedException)
             {
-                model = default!;
+                model = default;
+                return (false, ex.Message);
+            }
+        }
+
+        private protected (bool success, string? errorMessage) TryGetSubjectModel(out object? model, Type modelType)
+        {
+            Func<Task<object?>> readModel = () => Subject.Content.ReadAsAsync(modelType);
+            try
+            {
+                model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+                return (true, null);
+            }
+            catch (Exception ex) when (ex is JsonException || ex is NotSupportedException)
+            {
+                model = default;
                 return (false, ex.Message);
             }
         }
