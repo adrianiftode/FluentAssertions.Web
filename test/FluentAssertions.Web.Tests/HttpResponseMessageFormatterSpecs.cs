@@ -65,6 +65,29 @@ The originated HTTP request was <null>.*");
         }
 
         [Fact]
+        public void GivenDuplicatedHeaders_ShouldPrintOnNewLines()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("", Encoding.UTF8, "text/html")
+            };
+            subject.Headers.Add("Set-Cookie", "name1=value1");
+            subject.Headers.Add("Set-Cookie", "name2=value2");
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            var formatted = sut.Format(subject, null!, null!);
+
+            // Assert
+            formatted.Should().Match(
+                @"*The HTTP response was:*
+HTTP/1.1 200 OK*
+Set-Cookie: name1=value1*
+Set-Cookie: name2=value2*");
+        }
+
+        [Fact]
         public void GivenResponseWithContent_ShouldPrintContent()
         {
             // Arrange
