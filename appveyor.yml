@@ -1,14 +1,24 @@
-version: 1.0.{build}
+version: 1.1.{build}
+image: Visual Studio 2019
 branches:
   only:
   - master
-skip_branch_with_pr: true
-image: Visual Studio 2019
+pull_requests:
+  do_not_increment_build_number: true
 configuration: Release
 shallow_clone: true
 #environment:
 #    COVERALLS_REPO_TOKEN:
 #        secure: SflouAAf3PpL3Rb4aRbOhQEjZSfyaccBKst05kN6TQhJ2OCupXCUzzEdx1uzFI6j
+
+skip_commits:
+  files:
+    - '**/*.yml'
+    - '**/*.md'
+    - .gitignore
+    - .editorconfig
+  message: /updated readme.*|update readme.*s|update docs.*|update version.*|update changelog.*/
+
 init:
   - cmd: dotnet --version
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet tool install -g dotnet-sonarscanner }'
@@ -31,7 +41,6 @@ build_script:
   - set PATH=%JAVA_HOME%\bin;%PATH%
   # Begin SonarScanner
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" /d:sonar.cs.opencover.reportsPaths="opencovercoverage.xml" /d:sonar.coverage.exclusions=test/**}'
-  - dotnet pack --no-restore
   - dotnet build
   - minicover instrument
 test_script:
@@ -42,14 +51,17 @@ after_test:
   # will fail when the test coverage is lower than the threshold
   - minicover report --threshold 95
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner end /d:sonar.login="$env:SONAR_TOKEN" }'
+  - dotnet pack --no-restore --include-symbols -c %CONFIGURATION%
+
 artifacts:
-  path: '**\*.nupkg'
-  name: NuGet
+  - path: '**\*.nupkg'
+    name: NuGet
+
 deploy:
-  provider: NuGet
-  api_key:
-    secure: dQssSGAckt6KCAeMrLKt0y2ZqQimWj2kRHS33F0zduvoV5sHG0TA1U3XmjdVuXnx
-  skip_symbols: false
-  artifact: /.*\.nupkg/
-  on: 
-    branch: master
+  - provider: NuGet
+    api_key:
+        secure: dQssSGAckt6KCAeMrLKt0y2ZqQimWj2kRHS33F0zduvoV5sHG0TA1U3XmjdVuXnx
+    skip_symbols: false
+    artifact: /.*\.nupkg/
+    on:
+        branch: master
