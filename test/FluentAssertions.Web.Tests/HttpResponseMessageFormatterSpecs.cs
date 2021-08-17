@@ -1,4 +1,5 @@
-﻿using FluentAssertions.Web.Internal;
+﻿using FluentAssertions.Formatting;
+using FluentAssertions.Web.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,13 +17,15 @@ namespace FluentAssertions.Web.Tests
         public void GivenUnspecifiedResponse_ShouldPrintProtocolAndHaveContentLengthZero()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage();
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(@"*
 The HTTP response was:*
 HTTP/1.1 200 OK*
@@ -34,6 +37,7 @@ The originated HTTP request was <null>.*");
         public void GivenHeaders_ShouldPrintAllHeaders()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("", Encoding.UTF8, "text/html")
@@ -47,9 +51,10 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*The HTTP response was:*
 HTTP/1.1 200 OK*
@@ -68,6 +73,7 @@ The originated HTTP request was <null>.*");
         public void GivenDuplicatedHeaders_ShouldPrintOnNewLines()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("", Encoding.UTF8, "text/html")
@@ -77,9 +83,10 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*The HTTP response was:*
 HTTP/1.1 200 OK*
@@ -91,6 +98,7 @@ Set-Cookie: name2=value2*");
         public void GivenResponseWithContent_ShouldPrintContent()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(@"{
@@ -122,9 +130,10 @@ Set-Cookie: name2=value2*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(@"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Type: application/json; charset=utf-8*
@@ -161,6 +170,7 @@ The originated HTTP request was <null>.*");
         public void GivenResponseWithMinifiedJson_ShouldPrintFormattedJson()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(
@@ -170,9 +180,10 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(@"*
 The HTTP response was:*
 HTTP/1.1 200 OK*
@@ -211,6 +222,7 @@ The originated HTTP request was <null>.*");
         public void GivenHtmlResponse_ShouldPrintAsItIs()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(@"<html>
@@ -227,9 +239,10 @@ The content of the document......
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(@"*
 The HTTP response was:*
 HTTP/1.1 200 OK*
@@ -249,6 +262,8 @@ The originated HTTP request was <null>.*");
         [Fact]
         public void GivenContentLengthInHeaders_ShouldNotPrintItTwice()
         {
+            // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("")
@@ -257,9 +272,10 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*The HTTP response was:*
 HTTP/1.1 200 OK*
@@ -271,6 +287,8 @@ The originated HTTP request was <null>.*");
         [Fact]
         public void GivenRequest_ShouldPrintRequestDetails()
         {
+            // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
@@ -282,9 +300,10 @@ The originated HTTP request was <null>.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*The HTTP response was:*
 HTTP/1.1 200 OK*
@@ -300,6 +319,8 @@ Some content.*");
         [Fact]
         public void GivenRequest_WhenRequestStreamAtTheEnd_ShouldPrintRequestDetails()
         {
+            // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
@@ -313,9 +334,10 @@ Some content.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*The HTTP response was:*
 HTTP/1.1 200 OK*
@@ -331,6 +353,8 @@ Some content.*");
         [Fact]
         public void GivenResponseWithNoContentType_ShouldPrint()
         {
+            // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("", Encoding.UTF8)
@@ -339,9 +363,10 @@ Some content.*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*The HTTP response was:*
 HTTP/1.1 200 OK*
@@ -359,6 +384,7 @@ Content-Length: 0*HTTP request*<null>*");
             string unexpected)
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.InternalServerError)
             {
                 Content = new StringContent(content)
@@ -366,9 +392,10 @@ Content-Length: 0*HTTP request*<null>*");
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(expected);
             formatted.Should().NotContain(unexpected);
         }
@@ -891,6 +918,7 @@ Host: localhost
         public void GivenDisposedRequestContent_ShouldPrintAndShowWarning()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("", Encoding.UTF8),
@@ -903,9 +931,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*Content is disposed so it cannot be read.*");
         }
@@ -914,6 +943,7 @@ Host: localhost
         public void GivenDisposedRequest_ShouldPrintAndShowWarning()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("", Encoding.UTF8),
@@ -926,9 +956,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*Content is disposed so it cannot be read*");
         }
@@ -937,6 +968,7 @@ Host: localhost
         public void GivenByteArrayResponse_ShouldPrintMessageInfo()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new ByteArrayContent(new byte[1])
@@ -944,9 +976,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*Content is of a binary data type having the length 1.*");
         }
@@ -955,6 +988,7 @@ Host: localhost
         public void GivenByteArrayRequest_ShouldPrintMessageInfo()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 RequestMessage = new HttpRequestMessage
@@ -965,9 +999,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*Content is of a binary data type having the length 1.*");
         }
@@ -976,6 +1011,7 @@ Host: localhost
         public void GivenStreamResponse_ShouldPrintMessageInfo()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StreamContent(new MemoryStream(new byte[1]))
@@ -990,9 +1026,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*Content is of a stream type having the length 1.*");
         }
@@ -1001,6 +1038,7 @@ Host: localhost
         public void GivenStreamRequest_ShouldPrintMessageInfo()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 RequestMessage = new HttpRequestMessage
@@ -1018,9 +1056,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*Content is of a stream type having the length 1.*");
         }
@@ -1029,6 +1068,7 @@ Host: localhost
         public void GivenReadOnlyMemoryResponse_ShouldPrintMessageInfo()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new ReadOnlyMemoryContent(new ReadOnlyMemory<byte>(new byte[1]))
@@ -1037,9 +1077,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*Content is of a binary data type having the length 1.*");
         }
@@ -1048,6 +1089,7 @@ Host: localhost
         public void GivenReadOnlyMemoryRequest_ShouldPrintMessageInfo()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 RequestMessage = new HttpRequestMessage
@@ -1059,9 +1101,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*Content is of a binary data type having the length 1.*");
         }
@@ -1070,6 +1113,7 @@ Host: localhost
         public void GivenFormUrlEncodedRequest_ShouldPrintFormUrlEncodedData()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 RequestMessage = new HttpRequestMessage
@@ -1086,9 +1130,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match(
                 @"*key1=value1&key2=value2*");
         }
@@ -1097,6 +1142,7 @@ Host: localhost
         public void GivenMultipartFormDataResponse_ShouldPrintAsSingleParts()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
             {
                 new FormUrlEncodedContent(new[]
@@ -1117,9 +1163,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should()
                 .Match(@"*key1=value1&key2=value2*")
                 .And.Match(@"*Content is of a binary data type having the length 1.*")
@@ -1132,6 +1179,7 @@ Host: localhost
         public void GivenMultipartFormDataRequest_ShouldPrintAsSingleParts()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
             {
                 new FormUrlEncodedContent(new[]
@@ -1155,9 +1203,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should()
                 .Match(@"*key1=value1&key2=value2*")
                 .And.Match(@"*Content is of a binary data type having the length 1.*")
@@ -1170,6 +1219,7 @@ Host: localhost
         public void GivenLargeStringContent_ShouldNotPrintEverything()
         {
             // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(new string('-', ContentFormatterOptions.MaximumReadableBytes + 1) + "end")
@@ -1178,9 +1228,10 @@ Host: localhost
             var sut = new HttpResponseMessageFormatter();
 
             // Act
-            var formatted = sut.Format(subject, null!, null!);
+            sut.Format(subject, formattedGraph, null!, null!);
 
             // Assert
+            var formatted = formattedGraph.ToString();
             formatted.Should().Match("*Content is too large to display*")
                 .And.Contain(new string('-', 500));
         }
