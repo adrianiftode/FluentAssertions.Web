@@ -7,7 +7,10 @@ namespace FluentAssertions.Web.Internal
     {
         public bool CanHandle(object value) => value is AssertionsFailures;
 
-        public string Format(object value, FormattingContext context, FormatChild formatChild)
+        public void Format(object value,
+            FormattedObjectGraph formattedGraph,
+            FormattingContext context,
+            FormatChild formatChild)
         {
             var assertionsFailures = (AssertionsFailures)value;
 
@@ -20,7 +23,7 @@ namespace FluentAssertions.Web.Internal
                 messageBuilder.AppendLine($"    - { failure.ReplaceFirstWithLowercase() }");
             }
 
-            return messageBuilder.ToString();
+            formattedGraph.AddFragment(messageBuilder.ToString());
         }
     }
 }

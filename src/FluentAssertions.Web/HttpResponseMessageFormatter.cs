@@ -15,7 +15,10 @@ namespace FluentAssertions.Web
         public bool CanHandle(object value) => value is HttpResponseMessage;
 
         /// <inheritdoc />
-        public string Format(object value, FormattingContext context, FormatChild formatChild)
+        public void Format(object value,
+            FormattedObjectGraph formattedGraph,
+            FormattingContext context,
+            FormatChild formatChild)
         {
             var response = (HttpResponseMessage)value;
 
@@ -27,7 +30,7 @@ namespace FluentAssertions.Web
             Func<Task> contentResolver = async () => await AppendHttpResponseMessage(messageBuilder, response);
             contentResolver.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
-            return messageBuilder.ToString();
+            formattedGraph.AddFragment(messageBuilder.ToString());
         }
 
         private static async Task AppendHttpResponseMessage(StringBuilder messageBuilder, HttpResponseMessage response)
