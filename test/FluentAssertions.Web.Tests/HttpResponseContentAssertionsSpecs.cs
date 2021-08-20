@@ -109,6 +109,23 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
+        public void When_asserting_response_with_content_as_int_to_be_as_the_primitive_value_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent(1.ToJson(), Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().BeAs(1);
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
         public void When_asserting_response_with_fewer_JSON_properties_than_the_model_to_be_as_model_it_should_throw_with_descriptive_message()
         {
             // Arrange
@@ -171,7 +188,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: ""Input string '0.0' is not a valid integer*");
+                .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: ""The JSON value could not be converted to * Path: $.price | LineNumber: 0 | BytePositionInLine: 15.*");
         }
 
         [Fact]

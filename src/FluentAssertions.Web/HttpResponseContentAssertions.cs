@@ -32,9 +32,11 @@ namespace FluentAssertions.Web
                 throw new ArgumentNullException(nameof(expectedModel), "Cannot verify having a content equivalent to a model against a <null> model.");
             }
 
-            var (success, errorMessage) = TryGetSubjectModel<TModel>(out var subjectModel);
+            var expectedModelType = expectedModel.GetType();
 
-            ExecuteModelExtractedAssertion<TModel>(success, errorMessage, because, becauseArgs);
+            var (success, errorMessage) = TryGetSubjectModel(out var subjectModel, expectedModelType);
+
+            ExecuteModelExtractedAssertion(success, errorMessage, expectedModelType, because, becauseArgs);
 
             string[] failures;
 
