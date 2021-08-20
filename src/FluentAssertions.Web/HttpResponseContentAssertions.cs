@@ -48,7 +48,7 @@ namespace FluentAssertions.Web
             Execute.Assertion
                        .BecauseOf(because, becauseArgs)
                        .ForCondition(failures.Length == 0)
-                       .FailWith("Expected {context:response} to have a content equivalent to a model, but is has differences:{0}{reason}. {1}",
+                       .FailWith("Expected {context:response} to have a content equivalent to a model, but it has differences:{0}{reason}. {1}",
                            new AssertionsFailures(failures),
                            Subject);
 
