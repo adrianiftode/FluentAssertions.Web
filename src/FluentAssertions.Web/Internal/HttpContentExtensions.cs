@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal
@@ -15,7 +16,8 @@ namespace FluentAssertions.Web.Internal
             return await JsonSerializer.DeserializeAsync<T>(contentStream, new JsonSerializerOptions
             {
                 AllowTrailingCommas = true,
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter() }
             });
         }
 
@@ -25,7 +27,8 @@ namespace FluentAssertions.Web.Internal
             return await JsonSerializer.DeserializeAsync(contentStream, modelType, new JsonSerializerOptions
             {
                 AllowTrailingCommas = true,
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter() }
             });
         }
 
