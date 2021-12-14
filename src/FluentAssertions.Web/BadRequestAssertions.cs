@@ -13,6 +13,8 @@ namespace FluentAssertions.Web
     /// </summary>
     public class BadRequestAssertions : HttpResponseMessageAssertions
     {
+        private const string ErrorsPropertyName = "errors";
+
         /// <summary>
         /// Initialized a new instance of the <see cref="BadRequestAssertions"/>
         /// class.
@@ -55,19 +57,25 @@ namespace FluentAssertions.Web
             Func<Task<JsonDocument>> jsonFunc = () => Subject.GetJsonDocument();
             using var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
+            var errorsProperty = json.GetPropertiesByName(ErrorsPropertyName).ToList();
+            var hasErrorsProperty = errorsProperty.Any();
+            var fieldsOfErrorsProperty = json.GetChildrenNames(ErrorsPropertyName);
+            var allFields = json.GetChildrenNames("");
+            var fields = hasErrorsProperty ? fieldsOfErrorsProperty : allFields;
+
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-                .ForCondition(json.HasKey(expectedErrorField))
+                .ForCondition(fields.Any(field => string.Equals(field, expectedErrorField, StringComparison.OrdinalIgnoreCase)))
                 .FailWith("Expected {context:response} " +
                           "to contain an error message related to the {0} field, but was not found." +
                           "{1}",
                     expectedErrorField, Subject);
 
-            var values = json.GetStringValuesByKey(expectedErrorField);
-            var matchFound = values.Any(headerValue =>
+            var errorsMessages = hasErrorsProperty ? errorsProperty.First().GetStringValuesOf(expectedErrorField) : json.GetStringValuesOf(expectedErrorField);
+            var matchFound = errorsMessages.Any(errorMessage =>
             {
                 using var scope = new AssertionScope();
-                headerValue.Should().Match(expectedWildcardErrorMessage);
+                errorMessage.Should().Match(expectedWildcardErrorMessage);
                 return !scope.Discard().Any();
             });
 
@@ -113,16 +121,22 @@ namespace FluentAssertions.Web
             Func<Task<JsonDocument>> jsonFunc = () => Subject.GetJsonDocument();
             using var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
+            var errorsProperty = json.GetPropertiesByName(ErrorsPropertyName).ToList();
+            var hasErrorsProperty = errorsProperty.Any();
+            var fieldsOfErrorsProperty = json.GetChildrenNames(ErrorsPropertyName);
+            var allFields = json.GetChildrenNames("");
+            var fields = hasErrorsProperty ? fieldsOfErrorsProperty : allFields;
+
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-                .ForCondition(json.HasKey(expectedErrorField))
+                .ForCondition(fields.Any(field => string.Equals(field, expectedErrorField, StringComparison.OrdinalIgnoreCase)))
                 .FailWith("Expected {context:response} " +
                           "to contain an error message related to the {0} field, but was not found." +
                           "{1}",
                     expectedErrorField, Subject);
 
-            var parent = json.GetParentKey(expectedErrorField);
-            var children = json.GetChildrenKeys(parent);
+            var parent = hasErrorsProperty ? ErrorsPropertyName : json.GetParentKey(expectedErrorField);
+            var children = json.GetChildrenNames(parent);
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
@@ -132,7 +146,7 @@ namespace FluentAssertions.Web
                           "{1}",
                     expectedErrorField, Subject);
 
-            var values = json.GetStringValuesByKey(expectedErrorField);
+            var values = json.GetStringValuesOf(expectedErrorField);
             var expectedWildcardErrorMessageMatchFound = values.Any(headerValue =>
             {
                 using var scope = new AssertionScope();
@@ -151,7 +165,13 @@ namespace FluentAssertions.Web
                             expectedErrorField,
                             Subject);
 
-
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(values.Count() == 1)
+                .FailWith("Expected {context:response} " +
+                          "to only contain an error message related to the {0} field and message {1}, but more than this one was found." +
+                          "{2}",
+                    expectedErrorField, expectedWildcardErrorMessage, Subject);
 
             return new AndConstraint<BadRequestAssertions>(this);
         }
@@ -179,9 +199,15 @@ namespace FluentAssertions.Web
             Func<Task<JsonDocument>> jsonFunc = () => Subject.GetJsonDocument();
             using var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
+            var errorsProperty = json.GetPropertiesByName(ErrorsPropertyName).ToList();
+            var hasErrorsProperty = errorsProperty.Any();
+            var fieldsOfErrorsProperty = json.GetChildrenNames(ErrorsPropertyName);
+            var allFields = json.GetChildrenNames("");
+            var fields = hasErrorsProperty ? fieldsOfErrorsProperty : allFields;
+
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-                .ForCondition(!json.HasKey(expectedErrorField))
+                .ForCondition(!fields.Any(c => string.Equals(c, expectedErrorField, StringComparison.OrdinalIgnoreCase)))
                 .FailWith("Expected {context:response} " +
                           "to not contain an error message related to the {0} field, but was found.{1}",
                     expectedErrorField, Subject);
@@ -210,18 +236,15 @@ namespace FluentAssertions.Web
             Func<Task<JsonDocument>> jsonFunc = () => Subject.GetJsonDocument();
             using var json = jsonFunc.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
 
-            var allErrorsFields = json.GetChildrenKeys("errors");
-            var allErrors = allErrorsFields.SelectMany(c => json.GetStringValuesByKey(c));
-
-            if (!allErrors.Any())
-            {
-                allErrors = json.GetStringValuesByKey("");
-            }
-
-            var matchFound = allErrors.Any(headerValue =>
+            var errorsPropertyList = json.GetPropertiesByName(ErrorsPropertyName).ToList();
+            var hasErrorsProperty = errorsPropertyList.Any();
+            var errorsProperty = errorsPropertyList.FirstOrDefault();
+            var allErrors = hasErrorsProperty ? json.GetChildrenNames(ErrorsPropertyName).SelectMany(field => errorsProperty.GetStringValuesOf(field)) : json.GetChildrenNames("").SelectMany(field => json.GetStringValuesOf(field));
+            
+            var matchFound = allErrors.Any(errorMessage =>
             {
                 using var scope = new AssertionScope();
-                headerValue.Should().Match(expectedWildcardErrorMessage);
+                errorMessage.Should().Match(expectedWildcardErrorMessage);
                 return !scope.Discard().Any();
             });
 
