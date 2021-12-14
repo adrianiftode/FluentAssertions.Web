@@ -17,6 +17,7 @@ skip_commits:
     - '**/*.md'
     - .gitignore
     - .editorconfig
+    - samples/
   message: /updated readme.*|update readme.*s|update docs.*|update version.*|update changelog.*/
 
 init:

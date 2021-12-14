@@ -9,6 +9,9 @@ using Sample.Api.Net22;
 #if NETCOREAPP3_0
 using Sample.Api.Net30;
 #endif
+#if NETCOREAPP3_1
+using Sample.Api.Net31;
+#endif
 using Xunit;
 using Xunit.Sdk;
 
