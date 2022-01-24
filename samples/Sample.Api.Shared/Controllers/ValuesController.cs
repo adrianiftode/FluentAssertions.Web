@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace Sample.Api.Net22.Controllers
+namespace Sample.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

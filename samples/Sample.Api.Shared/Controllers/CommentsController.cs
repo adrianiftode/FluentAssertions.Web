@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Sample.Api.Net30.Controllers
+namespace Sample.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

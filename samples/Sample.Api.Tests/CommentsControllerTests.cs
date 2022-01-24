@@ -1,24 +1,13 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Sample.Api.Controllers;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-#if NETCOREAPP2_2
-using Sample.Api.Net22;
-using Sample.Api.Net22.Controllers;
-#endif
-#if NETCOREAPP3_0
-using Sample.Api.Net30;
-using Sample.Api.Net30.Controllers;
-#endif
-#if NETCOREAPP3_1
-using Sample.Api.Net31;
-using Sample.Api.Net31.Controllers;
-#endif
 
-namespace Sample.Api.Net31.Tests
+namespace Sample.Api.Tests
 {
     public class CommentsControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {
@@ -168,7 +157,7 @@ namespace Sample.Api.Net31.Tests
             var response = await client.PostAsync("/api/comments", new StringContent("", Encoding.UTF8, "application/json"));
 
             // Assert
-#if NETCOREAPP2_2
+#if NETCOREAPP2_2 || NET5_0  || NET6_0
             response.Should().Be400BadRequest()
                 .And.HaveErrorMessage("A non-empty request body is required.");
 #elif NETCOREAPP3_0 || NETCOREAPP3_1

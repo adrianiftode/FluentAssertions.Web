@@ -6,20 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using Xunit;
-#if NETCOREAPP2_2
-using Sample.Api.Net22;
-using Sample.Api.Net22.Controllers;
-#endif
-#if NETCOREAPP3_0
-using Sample.Api.Net30;
-using Sample.Api.Net30.Controllers;
-#endif
-#if NETCOREAPP3_1
-using Sample.Api.Net31;
-using Sample.Api.Net31.Controllers;
-#endif
 
-namespace Sample.Api.Net31.Tests
+namespace Sample.Api.Tests
 {
     public class CustomStartupConfigurationsTests
     {
@@ -37,22 +25,24 @@ namespace Sample.Api.Net31.Tests
 #endif
             });
             builder.Configure(app => app
-                .UseDeveloperExceptionPage()
+                    .UseDeveloperExceptionPage(
+#if NET5_0_OR_GREATER
+                    new DeveloperExceptionPageOptions()
+#endif
+                    )
 #if NETCOREAPP2_2
 
-                .Use((context, next) => throw new Exception("Wow!", new Exception("Exactly!"))))
+                .Use((context, next) => throw new Exception("Wow!", new Exception("Exactly!")))
 #endif
-#if NETCOREAPP3_0 || NETCOREAPP3_1
+#if NETCOREAPP3_0_OR_GREATER
                 .UseRouting()
                 .UseEndpoints(endpoints =>
                 {
-                    endpoints.Map("/exception", context =>
-                    {
-                        throw new Exception("Wow!", new Exception("Exactly!"));
-                    });
-                }))
+                    endpoints.Map("/exception", context => 
+                        throw new Exception("Wow!", new Exception("Exactly!")));
+                })
 #endif
-                ;
+                );
             using var testServer = new TestServer(builder);
             using var client = testServer.CreateClient();
 
