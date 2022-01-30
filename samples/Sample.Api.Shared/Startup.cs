@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+#if NETCOREAPP3_0_OR_GREATER
 using Microsoft.Extensions.Hosting;
+#endif
 
-namespace Sample.Api.Net31
+namespace Sample.Api
 {
     public class Startup
     {
@@ -18,11 +20,23 @@ namespace Sample.Api.Net31
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
+#if NETCOREAPP2_2
+            services.AddMvc();
+#endif
+#if NETCOREAPP3_0_OR_GREATER
             services.AddControllers();
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app,
+#if NETCOREAPP2_2
+            IHostingEnvironment env
+#endif
+#if NETCOREAPP3_0_OR_GREATER
+            IWebHostEnvironment env
+#endif
+            )
         {
             if (env.IsDevelopment())
             {
@@ -35,13 +49,17 @@ namespace Sample.Api.Net31
             }
 
             app.UseHttpsRedirection();
-
+#if NETCOREAPP2_2
+            app.UseMvc();
+#endif
+#if NETCOREAPP3_0_OR_GREATER
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+#endif
         }
     }
 }

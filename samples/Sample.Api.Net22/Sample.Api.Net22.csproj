@@ -10,9 +10,6 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="FailedTest1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <Import Project="..\Sample.Api.Shared\Sample.Api.Shared.projitems" Label="Shared" />
+
 </Project>

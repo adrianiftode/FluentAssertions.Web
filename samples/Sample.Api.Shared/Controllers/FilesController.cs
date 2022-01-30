@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace Sample.Api.Net31.Controllers
+namespace Sample.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

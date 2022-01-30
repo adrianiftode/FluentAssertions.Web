@@ -1,17 +1,9 @@
+using Microsoft.AspNetCore.Mvc.Testing;
+using Sample.Api;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
-#if NETCOREAPP2_2
-using Sample.Api.Net22;
-#endif
-#if NETCOREAPP3_0
-using Sample.Api.Net30;
-#endif
-#if NETCOREAPP3_1
-using Sample.Api.Net31;
-#endif
 using Xunit;
 using Xunit.Sdk;
 
