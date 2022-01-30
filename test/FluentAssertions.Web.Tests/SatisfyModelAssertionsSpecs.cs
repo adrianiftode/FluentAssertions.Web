@@ -15,7 +15,7 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertions_it_should_succeed()
+        public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_it_should_succeed()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -33,7 +33,27 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_response_content_without_having_satisfiable_assertion_to_satisfy_assertions_it_should_throw_with_descriptive_message()
+        public void When_asserting_response_content_with_a_certain_assertion_to_twice_satisfy_assertion_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().Satisfy<Model>(
+                    model => model.Property.Should().NotBeEmpty())
+                .And.Satisfy<Model>(
+                    model => model.Property.Should().NotBeEmpty());
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_response_content_without_having_satisfiable_assertion_to_satisfy_assertion_it_should_throw_with_descriptive_message()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -52,7 +72,7 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_response_with_not_a_proper_JSON_to_satisfy_assertions_it_should_throw_with_descriptive_message()
+        public void When_asserting_response_with_not_a_proper_JSON_to_satisfy_assertion_it_should_throw_with_descriptive_message()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -126,7 +146,7 @@ namespace FluentAssertions.Web.Tests
 
         #region Inferred Model
         [Fact]
-        public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertions_inferred_from_model_it_should_succeed()
+        public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_inferred_from_model_it_should_succeed()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -137,6 +157,30 @@ namespace FluentAssertions.Web.Tests
             // Act
             Action act = () =>
                 subject.Should().Satisfy(givenModelStructure: new
+                {
+                    Property = default(string)
+                }, assertion: model => model.Property.Should().NotBeEmpty());
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_response_content_with_a_certain_assertion_to_twice_satisfy_assertion_inferred_from_model_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().Satisfy(givenModelStructure: new
+                {
+                    Property = default(string)
+                }, assertion: model => model.Property.Should().NotBeEmpty())
+                .And.Satisfy(givenModelStructure: new
                 {
                     Property = default(string)
                 }, assertion: model => model.Property.Should().NotBeEmpty());
@@ -163,7 +207,7 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_response_content_without_having_satisfiable_assertion_to_satisfy_assertions_inferred_from_model_it_should_throw_with_descriptive_message()
+        public void When_asserting_response_content_without_having_satisfiable_assertion_to_satisfy_assertion_inferred_from_model_it_should_throw_with_descriptive_message()
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -209,7 +253,7 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
-        public void When_asserting_response_with_not_a_proper_JSON_to_satisfy_assertions_inferred_from_model_it_should_throw_with_descriptive_message()
+        public void When_asserting_response_with_not_a_proper_JSON_to_satisfy_assertion_inferred_from_model_it_should_throw_with_descriptive_message()
         {
             // Arrange
             using var subject = new HttpResponseMessage
