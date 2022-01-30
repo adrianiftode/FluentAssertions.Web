@@ -11,7 +11,7 @@ namespace FluentAssertions.Web.Internal
 {
     internal static class HttpContentExtensions
     {
-        private static readonly JsonSerializerOptions JsonSerializerOptions = new ()
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new()
         {
             AllowTrailingCommas = true,
             PropertyNameCaseInsensitive = true,
@@ -22,20 +22,22 @@ namespace FluentAssertions.Web.Internal
         public static async Task<T?> ReadAsAsync<T>(this HttpContent content)
         {
             var contentStream = await content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<T>(contentStream, JsonSerializerOptions);
+            contentStream.Seek(0, SeekOrigin.Begin);
+            var result = await JsonSerializer.DeserializeAsync<T>(contentStream, JsonSerializerOptions);
+            contentStream.Seek(0, SeekOrigin.Begin);
+            return result;
         }
 
         public static async Task<object?> ReadAsAsync(this HttpContent content, Type modelType)
         {
             var contentStream = await content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync(contentStream, modelType, JsonSerializerOptions);
+            contentStream.Seek(0, SeekOrigin.Begin);
+            var result = await JsonSerializer.DeserializeAsync(contentStream, modelType, JsonSerializerOptions);
+            contentStream.Seek(0, SeekOrigin.Begin);
+            return result;
         }
 
-        public static async Task<T?> ReadAsAsync<T>(this HttpContent content, T _)
-        {
-            var result = await content.ReadAsAsync(typeof(T));
-            return result != null ? (T) result : default;
-        }
+        public static Task<T?> ReadAsAsync<T>(this HttpContent content, T _) => content.ReadAsAsync<T>();
 
         public static bool IsDisposed(this HttpContent content)
         {
