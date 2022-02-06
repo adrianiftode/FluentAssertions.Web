@@ -18,7 +18,7 @@ namespace Sample.Api.Tests
             var builder = new WebHostBuilder();
             builder.ConfigureServices(services =>
             {
-#if NETCOREAPP2_2
+#if NETCOREAPP2_1 || NETCOREAPP2_2
                 services.AddMvc();
 #else
                 services.AddRouting();
@@ -30,7 +30,7 @@ namespace Sample.Api.Tests
                     new DeveloperExceptionPageOptions()
 #endif
                     )
-#if NETCOREAPP2_2
+#if NETCOREAPP2_1 || NETCOREAPP2_2
 
                 .Use((context, next) => throw new Exception("Wow!", new Exception("Exactly!")))
 #endif

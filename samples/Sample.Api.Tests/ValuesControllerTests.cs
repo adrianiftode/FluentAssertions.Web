@@ -58,7 +58,7 @@ namespace Sample.Api.Tests
             response.Should().Be200Ok().And.BeAs<string>("value");
         }
 
-#if NETCOREAPP2_2
+#if NETCOREAPP2_1 || NETCOREAPP2_2
         [Fact]
         public async Task Patch_Returns404NotFound()
         {
@@ -111,7 +111,7 @@ namespace Sample.Api.Tests
             var response = await client.PostAsync("/api/values", new StringContent("", Encoding.UTF8, "application/json"));
 
             // Assert
-#if NETCOREAPP2_2
+#if NETCOREAPP2_2 || NET5_0_OR_GREATER
             response.Should().Be400BadRequest()
                 .And.HaveErrorMessage("A non-empty request body is required.");
 #elif NETCOREAPP3_0 || NETCOREAPP3_1
