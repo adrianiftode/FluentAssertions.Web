@@ -62,13 +62,8 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments");
 
             // Assert
-            response.Should().Satisfy<IReadOnlyCollection<Comment>>(
-                    model =>
-                    {
-                        model.Should().HaveCount(2);
-                        model.Should().OnlyHaveUniqueItems(c => c.CommentId);
-                    }
-                );
+            response.Should().Satisfy<IEnumerable<Comment>>(model => 
+                    model.Should().HaveCount(2).And.OnlyHaveUniqueItems(c => c.CommentId));
         }
 
         [Fact]

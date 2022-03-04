@@ -1,33 +1,11 @@
 ## FluentAssertions.Web
-This is a [*FluentAssertions*](https://fluentassertions.com/) extension for *HttpResponseMessage* in order help with the **Assert** part and to extract enough information during the **Fail** part, so less time in debugging is spent.
+This is a [*FluentAssertions*](https://fluentassertions.com/) extension over the *HttpResponseMessage* object.
+
+It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/dashboard?id=FluentAssertions.Web)
 [![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.svg)](https://www.nuget.org/packages/FluentAssertions.Web)
-
-## Nuget
-
-PM&gt; Install-Package FluentAssertions.Web
-
-## Why?
-
-I'm using quite often lately [*TestSever*](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/test-asp-net-core-mvc-apps#functional-testing-aspnet-core-apps) for functional tests and consequently wrote some repetitive code or spent good time in debugging. With this tool I intend to solve two problems:
-
-##### Focus on Assert and not on HttpClient related APIs, neither on serialization/deserialization
-
-Once the response is ready you'll want to assert it. With first level properties like `StatusCode` is somehow easy, especially with FluentAssertions, but often we need more, like to deserialize the content into an object of a certain type and then to Assert it. Or to simply assert something about the response content itself. Soon duplication code occurs and the urge to reduce it is just the next logical step. 
-
-##### Focus on writing functional tests and not on debugging things
- When a test is failing, the following actions are taken most of the time:
-- attach the debugger to the line containing ```var response = await client..```
-- Debug the failing test
-- add an Watch for ``` response.Content.ReadAsStringAsync().Result ``` and see the actual response content
-
-All these don't have to happen if we would get the right diagnostics in the *Test Detail Summary* screen.
-
-## Examples
-
-Asserts that a response is HTTP 200 OK. If the test fails, then the *Test Detail Summary* will contain request/response information, providing for example a similar experience as when intercepting it with Fiddler. 
 
 ```csharp
 [Fact]
@@ -47,9 +25,54 @@ public async Task Post_ReturnsOk()
 }
 ```
 
+
+## Why?
+
+Writing tests for ASP.NET Core APIs and or any APIs by using the HttpClient classes leads to some repetitive code and also often to an incomplete one. When the test fails, the developer needs to debug the test in order to assess the failure reason, as the test itself did not usually consider what happens in this case.
+
+Thus this library solves two problems:
+
+##### Focus on the Assert part and not on the HttpClient related APIs, neither on the response deserialization
+
+Once the response is ready you'll want to assert it. With first level properties like `StatusCode` is somehow easy, especially with FluentAssertions, but often we need more, like to deserialize the content into an object of a certain type and then to Assert it. Or to simply assert something about the response content itself. Soon duplication code occurs and the urge to reduce it is just the next logical step. 
+
+##### Debugging failed tests interrupts the programmer's flow state
+ When a test is failing, the following actions are taken most of the time:
+- attach the debugger to the line containing ```var response = await client..```
+- debug the failing test
+- add an Watch for ``` response.Content.ReadAsStringAsync().Result ``` and see the actual response content
+
+**And this can be avoided**, if the *Test Detail Summary* contains the request and the response information, providing a similar experience as with an HTTP interceptor like Fiddler. 
+
 ![FailedTest1](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest1.png?raw=true)
 
-### Other examples
+### FluentAssertions.Web Examples
+
+- Asserting that the response content of a HTTP POST request is equivalent to a certain object
+
+```csharp
+[Fact]
+public async Task Post_ReturnsOkAndWithContent()
+{
+    // Arrange
+    var client = _factory.CreateClient();
+
+    // Act
+    var response = await client.PostAsync("/api/comments", new StringContent(@"{
+                ""author"": ""John"",
+                ""content"": ""Hey, you...""
+            }", Encoding.UTF8, "application/json"));
+
+    // Assert
+    response.Should().BeAs(new
+    {
+        Author = "John",
+        Content = "Hey, you..."
+    });
+}
+```
+
+- Asserting that the response is 200 OK and the content is like an array of specific objects:
 
 ```csharp
 [Fact]
@@ -67,28 +90,11 @@ public async Task Get_Returns_Ok_With_CommentsList()
         new { Author = "Adrian", Content = "Hey" }
     });
 }
+```
 
+- Asserting that the response is a HTTP 400 BadRequest and contains a single error message
 
-[Fact]
-public async Task Post_ReturnsOkAndWithContent()
-{
-    // Arrange
-    var client = _factory.CreateClient();
-
-    // Act
-    var response = await client.PostAsync("/api/comments", new StringContent(@"{
-                ""author"": ""John"",
-                ""content"": ""Hey, you...""
-            }", Encoding.UTF8, "application/json"));
-
-    // Assert
-    response.Should().Be200Ok().And.BeAs(new
-    {
-        Author = "John",
-        Content = "Hey, you..."
-    });
-}
-
+```csharp
 [Fact]
 public async Task Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMessageRelatedToAuthorOnly()
 {
@@ -104,7 +110,11 @@ public async Task Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMe
     response.Should().Be400BadRequest()
         .And.OnlyHaveError("Author", "The Author field is required.");
 }
+```
 
+- Asserting the response content once deserialized into a strongly typed object it satisfies a certain assertion
+
+```csharp
 [Fact]
 public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
 {
@@ -115,15 +125,14 @@ public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
     var response = await client.GetAsync("/api/comments");
 
     // Assert
-    response.Should().Satisfy<IReadOnlyCollection<Comment>>(
-        model =>
-        {
-            model.Should().HaveCount(2);
-            model.Should().OnlyHaveUniqueItems(c => c.CommentId);
-        }
-    );
+    response.Should().Satisfy<IEnumerable<Comment>>(model => 
+            model.Should().HaveCount(2).And.OnlyHaveUniqueItems(c => c.CommentId));
 }
+```
 
+- Asserting the response content once deserialized into a anonymous object it satisfies a certain assertion
+
+```csharp
 [Fact]
 public async Task Get_WithCommentId_Returns_A_NonSpam_Comment()
 {
@@ -143,6 +152,23 @@ public async Task Get_WithCommentId_Returns_A_NonSpam_Comment()
             model.Author.Should().NotBe("I DO SPAM!");
             model.Content.Should().NotContain("BUY MORE");
         });
+}
+```
+
+- Asserting the response has a header like `X-Correlation-ID` header of `application/json; charset=utf-8`
+
+```csharp
+[Fact]
+public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
+{
+    // Arrange
+    var client = _factory.CreateClient();
+
+    // Act
+    var response = await client.GetAsync("/api/values");
+
+    // Assert
+    response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*", "we want to test the correlation id is a Guid like one");
 }
 ```
 
@@ -228,3 +254,18 @@ Many more examples can be found in the [Samples](https://github.com/adrianiftode
 | **Should().Be503ServiceUnavailable()**  | Asserts that a HTTP response has the HTTP status 503 Service Unavailable  | 
 | **Should().Be504GatewayTimeout()**  | Asserts that a HTTP response has the HTTP status 504 Gateway Timeout  | 
 | **Should().Be505HttpVersionNotSupported()**  | Asserts that a HTTP response has the HTTP status 505 Http Version Not Supported  | 
+
+
+### The HttpResponsesMessage assertions from FluentAssertions vs. FluentAssertions.Web
+
+In the [6.4.0](https://fluentassertions.com/releases/#640) release the main library introduced a set of related assertions: *BeSuccessful, BeRedirection, HaveClientError, HaveServerError, HaveError, HaveStatusCode, NotHaveStatusCode*. 
+
+This library can still be used with FluentAssertions and it did not become obsoleted, not only because of the rich set of assertions, but also for the comprehensive output messages that are displayed when the test fails, feature that is not present in the main library, but in FluentAssertions.Web one.
+
+### FluentAssertions.Web vs FluentAssertions.Mvc vs FluentAssertions.Http
+
+
+**FluentAssertions.Web** does not extend the ASP.NET Core Controllers assertions, if you are looking for that, then consider [FluentAssertions.Mvc](https://github.com/fluentassertions/fluentassertions.mvc).
+
+When FluentAssertions.Web was created, [FluentAssertions.Http](https://github.com/balanikas/FluentAssertions.Http) also existed at the time, solving the same problem when considering the asserting language.
+Besides the extra assertions added by FluentAssertions.Web, an important effort is put by this library on what happens when a test fails.
