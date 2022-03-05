@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+#if NETCOREAPP2_1 || NETCOREAPP2_2
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+#endif
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 #if NETCOREAPP3_0_OR_GREATER
@@ -20,7 +24,7 @@ namespace Sample.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
-#if NETCOREAPP2_2
+#if NETCOREAPP2_1 || NETCOREAPP2_2
             services.AddMvc();
 #endif
 #if NETCOREAPP3_0_OR_GREATER
@@ -30,7 +34,7 @@ namespace Sample.Api
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app,
-#if NETCOREAPP2_2
+#if NETCOREAPP2_1 || NETCOREAPP2_2
             IHostingEnvironment env
 #endif
 #if NETCOREAPP3_0_OR_GREATER
@@ -49,7 +53,7 @@ namespace Sample.Api
             }
 
             app.UseHttpsRedirection();
-#if NETCOREAPP2_2
+#if NETCOREAPP2_1 || NETCOREAPP2_2
             app.UseMvc();
 #endif
 #if NETCOREAPP3_0_OR_GREATER
