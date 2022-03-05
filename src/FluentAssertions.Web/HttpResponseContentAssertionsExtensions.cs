@@ -1,4 +1,6 @@
-﻿using FluentAssertions.Web;
+﻿using FluentAssertions.Equivalency;
+using FluentAssertions.Web;
+using System;
 using System.Diagnostics;
 
 namespace FluentAssertions
@@ -9,6 +11,32 @@ namespace FluentAssertions
     [DebuggerNonUserCode]
     public static class HttpResponseContentAssertionsExtensions
     {
+        /// <summary>
+        /// Asserts that HTTP response content can be an equivalent representation of the expected model.
+        /// </summary>
+        /// <param name="expectedModel">
+        /// The expected model.
+        /// </param>
+        /// <param name="options">
+        /// A reference to the <see cref="EquivalencyAssertionOptions{TExpectation}"/> configuration object that can be used
+        /// to influence the way the object graphs are compared. You can also provide an alternative instance of the
+        /// <see cref="EquivalencyAssertionOptions{TExpectation}"/> class. The global defaults are determined by the
+        /// <see cref="AssertionOptions"/> class.
+        /// </param>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public static AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(
+#pragma warning disable 1573
+            this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+#pragma warning restore 1573
+            TModel expectedModel, Func<EquivalencyAssertionOptions<TModel>, EquivalencyAssertionOptions<TModel>> options, string because = "", params object[] becauseArgs)
+            => new HttpResponseMessageAssertions(parent.Subject).BeAs(expectedModel, options, because, becauseArgs);
+
         /// <summary>
         /// Asserts that HTTP response content can be an equivalent representation of the expected model.
         /// </summary>

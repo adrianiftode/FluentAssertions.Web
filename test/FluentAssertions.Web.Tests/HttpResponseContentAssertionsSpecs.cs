@@ -1,4 +1,5 @@
-﻿using FluentAssertions.Web.Internal;
+﻿using FluentAssertions.Equivalency;
+using FluentAssertions.Web.Internal;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -189,6 +190,72 @@ namespace FluentAssertions.Web.Tests
             // Assert
             act.Should().Throw<XunitException>()
                 .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: ""The JSON value could not be converted to * Path: $.price | LineNumber: 0 | BytePositionInLine: 15.*");
+        }
+
+        [Fact]
+        public void When_asserting_with_equivalency_assertion_options_to_be_as_model_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent(@"{
+                                            ""author"": ""John"",
+                                            ""comment"": ""Hey"",
+                                            ""version"": ""version 1""
+                                        }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().BeAs(new
+                {
+                    author = "John",
+                    comment = "Hey",
+                    version = "version 2"
+                }, options => options.Excluding(model => model.version));
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
+        public void When_asserting_response_with_equivalency_assertion_options_and_with_differences_to_be_as_model_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent(@"{
+                                            ""comment"": ""Hey"",
+                                            ""author"": ""John"",
+                                        }", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().BeAs(new
+                {
+                    Comment = "Not Hey",
+                    Author = "John"
+                }, options => options.Excluding(model => model.Author), "we want to test the {0}", "reason");
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage("*Not Hey*with a length*reason*");
+        }
+
+        [Fact]
+        public void When_asserting_response_to_be_as_model_with_null_equivalency_assertion_options_it_should_throw_with_descriptive_message()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage();
+
+            // Act
+            Action act = () =>
+                subject.Should().BeAs(new { }, (Func<EquivalencyAssertionOptions<object>, EquivalencyAssertionOptions<object>>?)null);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+                .WithMessage("Value cannot be null. (Parameter 'options')");
         }
 
         [Fact]

@@ -6,9 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 #endif
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 #if NETCOREAPP3_0_OR_GREATER
 using Microsoft.Extensions.Hosting;
 #endif
+using Microsoft.Extensions.Primitives;
 
 namespace Sample.Api
 {
@@ -42,6 +45,26 @@ namespace Sample.Api
 #endif
             )
         {
+            app.Use(async (context, next) =>
+            {
+                const string XCorrelationIdHeaderName = "X-Correlation-ID";
+                if (!context.Request.Headers.TryGetValue(XCorrelationIdHeaderName, out StringValues correlationId))
+                {
+                    correlationId = Guid.NewGuid().ToString();
+                }
+
+                context.Response.OnStarting(() =>
+                {
+                    if (!context.Response.Headers.ContainsKey(XCorrelationIdHeaderName))
+                    {
+                        context.Response.Headers.Add(XCorrelationIdHeaderName, correlationId);
+                    }
+                    return Task.CompletedTask;
+                });
+
+                await next.Invoke();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

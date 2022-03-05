@@ -1,4 +1,5 @@
-﻿using FluentAssertions.Execution;
+﻿using FluentAssertions.Equivalency;
+using FluentAssertions.Execution;
 using FluentAssertions.Web.Internal;
 using System;
 using System.Net.Http;
@@ -24,7 +25,31 @@ namespace FluentAssertions.Web
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, string because = "", params object[] becauseArgs)
+            => BeAs(expectedModel, options => options, because, becauseArgs);
+
+        /// <summary>
+        /// Asserts that HTTP response content can be an equivalent representation of the expected model.
+        /// </summary>
+        /// <param name="expectedModel">
+        /// The expected model.
+        /// </param>
+        /// <param name="options">
+        /// A reference to the <see cref="EquivalencyAssertionOptions{TExpectation}"/> configuration object that can be used
+        /// to influence the way the object graphs are compared. You can also provide an alternative instance of the
+        /// <see cref="EquivalencyAssertionOptions{TExpectation}"/> class. The global defaults are determined by the
+        /// <see cref="AssertionOptions"/> class.
+        /// </param>
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, Func<EquivalencyAssertionOptions<TModel>, EquivalencyAssertionOptions<TModel>> options, string because = "", params object[] becauseArgs)
         {
+            Guard.ThrowIfArgumentIsNull(options, nameof(options));
+
             ExecuteSubjectNotNull(because, becauseArgs);
 
             if (expectedModel == null)
@@ -42,7 +67,14 @@ namespace FluentAssertions.Web
 
             using (var scope = new AssertionScope())
             {
-                subjectModel.Should().BeEquivalentTo(expectedModel);
+                if (options != null)
+                {
+                    subjectModel.Should().BeEquivalentTo(expectedModel, options);
+                }
+                else
+                {
+                    subjectModel.Should().BeEquivalentTo(expectedModel);
+                }
 
                 failures = scope.Discard();
             }

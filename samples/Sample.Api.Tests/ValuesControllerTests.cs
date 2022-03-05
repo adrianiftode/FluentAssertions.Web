@@ -119,5 +119,18 @@ namespace Sample.Api.Tests
                 .And.HaveErrorMessage("*The input does not contain any JSON tokens*");
 #endif
         }
+
+        [Fact]
+        public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/api/values");
+
+            // Assert
+            response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*", "we want to test the correlation id is a Guid like one");
+        }
     }
 }
