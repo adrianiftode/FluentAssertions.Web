@@ -5,7 +5,6 @@ using FluentAssertions.Web.Internal;
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FluentAssertions.Web
@@ -67,31 +66,29 @@ namespace FluentAssertions.Web
 
         private protected (bool success, string? errorMessage) TryGetSubjectModel<TModel>(out TModel? model)
         {
-            Func<Task<TModel?>> readModel = () => Subject.Content.ReadAsAsync<TModel>();
-            try
-            {
-                model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
-                return (true, null);
-            }
-            catch (Exception ex) when (ex is JsonException || ex is NotSupportedException)
-            {
-                model = default;
-                return (false, ex.Message);
-            }
+            var (success, errorMessage) = TryGetSubjectModel(out var subjectModel, typeof(TModel));
+            model = (TModel?)subjectModel;
+            return (success, errorMessage);
         }
 
         private protected (bool success, string? errorMessage) TryGetSubjectModel(out object? model, Type modelType)
         {
-            Func<Task<object?>> readModel = () => Subject.Content.ReadAsAsync(modelType);
+            Func<Task<object?>> readModel = () => Subject.Content.ReadAsAsync(modelType, FluentAssertionsWebConfig.Serializer);
             try
             {
                 model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
                 return (true, null);
             }
-            catch (Exception ex) when (ex is JsonException || ex is NotSupportedException)
+            catch (Exception ex) when (ex is DeserializationException || ex is NotSupportedException)
             {
                 model = default;
-                return (false, ex.Message);
+                var message = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    message += $": {ex.InnerException.Message}";
+                }
+
+                return (false, message);
             }
         }
 

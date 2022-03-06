@@ -1,43 +1,30 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http;
-using System.Reflection;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal
 {
     internal static class HttpContentExtensions
     {
-        private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+        public static async Task<T?> ReadAsAsync<T>(this HttpContent content, ISerializer serializer)
         {
-            AllowTrailingCommas = true,
-            PropertyNameCaseInsensitive = true,
-            Converters = { new JsonStringEnumConverter(), new NullableConverterFactory() },
-            NumberHandling = JsonNumberHandling.AllowReadingFromString
-        };
+            var model = await ReadAsAsync(content, typeof(T), serializer);
+            return (T?)model;
+        }
 
-        public static async Task<T?> ReadAsAsync<T>(this HttpContent content)
+        public static async Task<object?> ReadAsAsync(this HttpContent content, Type modelType, ISerializer serializer)
         {
             var contentStream = await content.ReadAsStreamAsync();
             contentStream.Seek(0, SeekOrigin.Begin);
-            var result = await JsonSerializer.DeserializeAsync<T>(contentStream, JsonSerializerOptions);
+            var result = await serializer.Deserialize(contentStream, modelType);
             contentStream.Seek(0, SeekOrigin.Begin);
             return result;
         }
 
-        public static async Task<object?> ReadAsAsync(this HttpContent content, Type modelType)
-        {
-            var contentStream = await content.ReadAsStreamAsync();
-            contentStream.Seek(0, SeekOrigin.Begin);
-            var result = await JsonSerializer.DeserializeAsync(contentStream, modelType, JsonSerializerOptions);
-            contentStream.Seek(0, SeekOrigin.Begin);
-            return result;
-        }
-
-        public static Task<T?> ReadAsAsync<T>(this HttpContent content, T _) => content.ReadAsAsync<T>();
+        public static Task<T?> ReadAsAsync<T>(this HttpContent content, T _, ISerializer serializer) 
+            => content.ReadAsAsync<T>(serializer);
 
         public static bool IsDisposed(this HttpContent content)
         {
@@ -85,44 +72,6 @@ namespace FluentAssertions.Web.Internal
             {
                 return defaultMessage ?? ContentFormatterOptions.WarningMessageWhenDisposed;
             }
-        }
-    }
-
-    //https://stackoverflow.com/a/65025191/782754
-    internal class NullableConverterFactory : JsonConverterFactory
-    {
-        static readonly byte[] Empty = Array.Empty<byte>();
-
-        public override bool CanConvert(Type typeToConvert) => Nullable.GetUnderlyingType(typeToConvert) != null;
-
-        public override JsonConverter CreateConverter(Type type, JsonSerializerOptions options) =>
-            (JsonConverter)Activator.CreateInstance(
-                typeof(NullableConverter<>).MakeGenericType(
-                    new Type[] { Nullable.GetUnderlyingType(type) }),
-                BindingFlags.Instance | BindingFlags.Public,
-                binder: null,
-                args: new object[] { options },
-                culture: null);
-
-        class NullableConverter<T> : JsonConverter<T?> where T : struct
-        {
-            // DO NOT CACHE the return of (JsonConverter<T>)options.GetConverter(typeof(T)) as DoubleConverter.Read() and DoubleConverter.Write()
-            // DO NOT WORK for nondefault values of JsonSerializerOptions.NumberHandling which was introduced in .NET 5
-            public NullableConverter(JsonSerializerOptions options) { }
-
-            public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-            {
-                if (reader.TokenType == JsonTokenType.String)
-                {
-                    if (reader.ValueTextEquals(Empty))
-                        return null;
-                }
-
-                return JsonSerializer.Deserialize<T>(ref reader, options);
-            }
-
-            public override void Write(Utf8JsonWriter writer, T? value, JsonSerializerOptions options) =>
-                JsonSerializer.Serialize(writer, value.Value, options);
         }
     }
 }
