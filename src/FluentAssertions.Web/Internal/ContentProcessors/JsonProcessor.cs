@@ -42,7 +42,10 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
                 jsonDocument.WriteTo(writer);
                 await writer.FlushAsync();
 
-                stream.Seek(0, SeekOrigin.Begin);
+                if (stream.CanSeek)
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                }
 
                 // get the string Json from the MemoryStream
                 using var streamReader = new StreamReader(stream, Encoding.UTF8);

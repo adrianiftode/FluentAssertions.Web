@@ -255,7 +255,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
-                .WithMessage("Value cannot be null. (Parameter 'options')");
+                .WithMessage("Value cannot be null*options*");
         }
 
         [Fact]
