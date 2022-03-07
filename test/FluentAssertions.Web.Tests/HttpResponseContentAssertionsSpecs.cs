@@ -189,7 +189,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: ""The JSON value could not be converted to * Path: $.price | LineNumber: 0 | BytePositionInLine: 15.*");
+                .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: ""Exception while deserializing the model with SystemTextJsonSerializer: The JSON value could not be converted to * Path: $.price | LineNumber: 0 | BytePositionInLine: 15.*");
         }
 
         [Fact]

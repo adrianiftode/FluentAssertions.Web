@@ -1,4 +1,5 @@
 ﻿using FluentAssertions.Web.Internal;
+using FluentAssertions.Web.Internal.Serializers;
 using FluentAssertions.Web.Tests.TestModels;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -9,8 +10,15 @@ namespace FluentAssertions.Web.Tests.Internal
 {
     public class HttpContentExtensionsTests
     {
-        [Fact]
-        public async Task Reads_A_Json_As_Expected()
+        public static IEnumerable<object[]> TestSerializers() => new List<object[]>
+                {
+                    new object[] { new SystemTextJsonSerializer() },
+                    new object[] { new NewtonsoftJsonSerializer() }
+                };
+
+        [Theory]
+        [MemberData(nameof(TestSerializers))]
+        public async Task Reads_A_Json_As_Expected(ISerializer serializer)
         {
             // Arrange
             var content = new StringContent(@"{
@@ -25,15 +33,16 @@ namespace FluentAssertions.Web.Tests.Internal
             var result = await content.ReadAsAsync(new
             {
                 errors = new Dictionary<string, string[]>()
-            });
+            }, serializer);
 
             // Assert
             result.Should().NotBeNull();
             result!.errors.Should().ContainKey("Author");
         }
 
-        [Fact]
-        public async Task Reads_A_Json_With_Numbered_Enum_Value()
+        [Theory]
+        [MemberData(nameof(TestSerializers))]
+        public async Task Reads_A_Json_With_Numbered_Enum_Value(ISerializer serializer)
         {
             // Arrange
             var content = new StringContent(@"{ ""type"" : 2 }");
@@ -42,15 +51,16 @@ namespace FluentAssertions.Web.Tests.Internal
             var result = await content.ReadAsAsync(new
             {
                 type = default(TestEnum)
-            });
+            }, serializer);
 
             // Assert
             result.Should().NotBeNull();
             result!.type.Should().Be(TestEnum.Type1);
         }
 
-        [Fact]
-        public async Task Reads_A_Json_With_Quoted_Numbered_Enum_Value()
+        [Theory]
+        [MemberData(nameof(TestSerializers))]
+        public async Task Reads_A_Json_With_Quoted_Numbered_Enum_Value(ISerializer serializer)
         {
             // Arrange
             var content = new StringContent(@"{ ""type"" : ""2"" }");
@@ -59,15 +69,16 @@ namespace FluentAssertions.Web.Tests.Internal
             var result = await content.ReadAsAsync(new
             {
                 type = default(TestEnum)
-            });
+            }, serializer);
 
             // Assert
             result.Should().NotBeNull();
             result!.type.Should().Be(TestEnum.Type1);
         }
 
-        [Fact]
-        public async Task Reads_A_Json_With_String_CamelCase_Enum_Value()
+        [Theory]
+        [MemberData(nameof(TestSerializers))]
+        public async Task Reads_A_Json_With_String_CamelCase_Enum_Value(ISerializer serializer)
         {
             // Arrange
             var content = new StringContent(@"{ ""type"" : ""Type1"" }");
@@ -76,15 +87,16 @@ namespace FluentAssertions.Web.Tests.Internal
             var result = await content.ReadAsAsync(new
             {
                 type = default(TestEnum)
-            });
+            }, serializer);
 
             // Assert
             result.Should().NotBeNull();
             result!.type.Should().Be(TestEnum.Type1);
         }
 
-        [Fact]
-        public async Task Reads_A_Json_With_String_PascalCase_Enum_Value()
+        [Theory]
+        [MemberData(nameof(TestSerializers))]
+        public async Task Reads_A_Json_With_String_PascalCase_Enum_Value(ISerializer serializer)
         {
             // Arrange
             var content = new StringContent(@"{ ""type"" : ""type2"" }");
@@ -93,15 +105,16 @@ namespace FluentAssertions.Web.Tests.Internal
             var result = await content.ReadAsAsync(new
             {
                 type = default(TestEnum)
-            });
+            }, serializer);
 
             // Assert
             result.Should().NotBeNull();
             result!.type.Should().Be(TestEnum.Type2);
         }
 
-        [Fact]
-        public async Task Reads_A_Json_With_Empty_String_Enum_Value()
+        [Theory]
+        [MemberData(nameof(TestSerializers))]
+        public async Task Reads_A_Json_With_Empty_String_Enum_Value(ISerializer serializer)
         {
             // Arrange
             var content = new StringContent(@"{ ""type"" : """" }");
@@ -110,15 +123,16 @@ namespace FluentAssertions.Web.Tests.Internal
             var result = await content.ReadAsAsync(new
             {
                 type = default(TestEnum?)
-            });
+            }, serializer);
 
             // Assert
             result.Should().NotBeNull();
             result!.type.Should().Be(default(TestEnum?));
         }
 
-        [Fact]
-        public async Task Reads_A_Json_With_Different_Property_Case()
+        [Theory]
+        [MemberData(nameof(TestSerializers))]
+        public async Task Reads_A_Json_With_Different_Property_Case(ISerializer serializer)
         {
             // Arrange
             var content = new StringContent(@"{ ""name"" : ""John"" }");
@@ -127,15 +141,16 @@ namespace FluentAssertions.Web.Tests.Internal
             var result = await content.ReadAsAsync(new
             {
                 Name = default(string)
-            });
+            }, serializer);
 
             // Assert
             result.Should().NotBeNull();
             result!.Name.Should().Be("John");
         }
 
-        [Fact]
-        public async Task Reads_A_Json_With_Quoted_Integer_Value()
+        [Theory]
+        [MemberData(nameof(TestSerializers))]
+        public async Task Reads_A_Json_With_Quoted_Integer_Value(ISerializer serializer)
         {
             // Arrange
             var content = new StringContent(@"{ ""number"" : ""100"" }");
@@ -144,7 +159,7 @@ namespace FluentAssertions.Web.Tests.Internal
             var result = await content.ReadAsAsync(new
             {
                 number = default(int)
-            });
+            }, serializer);
 
             // Assert
             result.Should().NotBeNull();

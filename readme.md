@@ -174,6 +174,40 @@ public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
 
 Many more examples can be found in the [Samples](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/samples) projects and in the Specs files from the [FluentAssertions.Web.Tests](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/FluentAssertions.Web.Tests) project
 
+## Optional Global Configuration
+
+### Deserialization
+
+#### System.Text.Json
+
+By default `System.Text.Json` is used to deserialize the response content. The related `System.Text.Json.JsonSerializerOptions` used to configure the serializer is accessible via the `SystemTextJsonSerializerConfig.Options` static field from FluentAssertions.Web. So if you want to make the serializer case sensitive, then the related setting is changed like this:
+
+```csharp
+SystemTextJsonSerializerConfig.Options.PropertyNameCaseInsensitive = false; 
+```
+
+The change must be done before the test is run and this depends on the testing framework. Check the NewtonsoftSerializerTests from this repo to see how it can be done with xUnit.
+
+#### Newtonsoft.Json
+
+The serializer itself is replaceable, so you can implement your own, by implementing the `ISerialize` interface. The serializer is shipped via the **FluentAssertions.Web.Serializers.NewtonsoftJson** package.
+
+[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.Serializers.NewtonsoftJson.svg)](https://www.nuget.org/packages/FluentAssertions.Web.Serializers.NewtonsoftJson)
+
+
+To set the default serializer to **Newtonsoft.Json** one, use the following configuration:
+
+```csharp
+FluentAssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
+
+```
+
+The related `Newtonsoft.Json.JsonSerializerSetttings` used to configure the Newtonsoft.Json serializer is accesible via the `NewtonsoftJsonSerializerConfig.Options` static field. So if you want to add a custom converter, then the related setting is changed like this:
+
+```csharp
+NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConverter());
+```
+
 ## Full API
 
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to the HTTP content. | 
