@@ -1,0 +1,13 @@
+<Project>
+
+  <PropertyGroup>
+    <Authors>Adrian Iftode</Authors>
+    <PackageTags>fluentassertions;httpresponsemessage;fluentassertionsweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
+    <VersionPrefix>1.1.0</VersionPrefix>
+    <PackageProjectUrl>https://github.com/adrianiftode/FluentAssertions.Web</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/adrianiftode/FluentAssertions.Web</RepositoryUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+</Project>

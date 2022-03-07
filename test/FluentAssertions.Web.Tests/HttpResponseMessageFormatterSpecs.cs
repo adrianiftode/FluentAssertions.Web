@@ -309,7 +309,7 @@ The originated HTTP request was <null>.*");
 HTTP/1.1 200 OK*
 Content-Length: 0*
 The originated HTTP request was:*
-POST http://localhost:5001/ HTTP 1.1*
+POST http://localhost:5001/ HTTP*
 Authorization: Bearer xyz*
 Content-Type: text/plain; charset=utf-8*
 Content-Length: *
@@ -343,7 +343,7 @@ Some content.*");
 HTTP/1.1 200 OK*
 Content-Length: 0*
 The originated HTTP request was:*
-POST http://localhost:5001/ HTTP 1.1*
+POST http://localhost:5001/ HTTP*
 Authorization: Bearer xyz*
 Content-Type: text/plain; charset=utf-8*
 Content-Length: *
