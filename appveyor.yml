@@ -67,11 +67,11 @@ artifacts:
   - path: '**\*.nupkg'
     name: NuGet
 
-#deploy:
-#  - provider: NuGet
-#    api_key:
-#        secure: 10kb6vZ2gElrxxz+w9R1HHXKllKB2eX1jn+08B46Z3kE9jofD14d9f41+I2DOnW1
-#    skip_symbols: true
-#    artifact: /.*\.nupkg/
-#    on:
-#        appveyor_repo_tag: true
+deploy:
+ - provider: NuGet
+   api_key:
+       secure: 10kb6vZ2gElrxxz+w9R1HHXKllKB2eX1jn+08B46Z3kE9jofD14d9f41+I2DOnW1
+   skip_symbols: true
+   artifact: /.*\.nupkg/
+   on:
+       appveyor_repo_tag: true
