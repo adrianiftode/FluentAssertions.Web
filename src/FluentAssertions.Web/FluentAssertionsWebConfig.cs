@@ -18,9 +18,18 @@ namespace FluentAssertions
         /// <summary>
         /// The serializer instance used to deserialize the responses into a model of a specified typed
         /// </summary>
-        public static ISerializer? Serializer
+        public static ISerializer Serializer
         {
-            get => serializer;
+            get
+            {
+                if (serializer == null)
+                {
+                    throw new InvalidOperationException("Serializer cannot be null");
+                }    
+
+                return serializer;
+            }
+
             set
             {
                 serializer = value ?? throw new ArgumentNullException(nameof(value), "Serializer cannot be null.");
