@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace FluentAssertions
 {
     /// <summary>
-    /// Holder of the global <see cref="JsonSerializerOptions"/>
+    /// Holder of the global <see cref="Newtonsoft.Json.JsonSerializerOptions"/>
     /// </summary>
     public static class NewtonsoftJsonSerializerConfig
     {

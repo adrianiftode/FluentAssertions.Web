@@ -12,6 +12,7 @@ namespace FluentAssertions
     /// </summary>
     public class NewtonsoftJsonSerializer : ISerializer
     {
+        /// <inheritdoc/>
         public Task<object?> Deserialize(Stream content, Type modelType)
         {
             try
