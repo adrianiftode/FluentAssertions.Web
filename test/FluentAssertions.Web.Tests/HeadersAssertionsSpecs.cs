@@ -257,7 +257,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage("*the HTTP header*custom-header*other-than-value1*reason*");
+                .WithMessage("*the HTTP header*custom-header* having a value matching *other-than-value1*, but there was no match*reason*");
         }
 
         [Fact]
