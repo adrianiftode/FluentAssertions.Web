@@ -54,7 +54,7 @@ namespace FluentAssertions.Web
                          .BecauseOf(because, becauseArgs)
                          .ForCondition(matchFound)
                          .FailWith("Expected {context:value} to contain " +
-                                   "the HTTP header {0} having value {1}, but no such header was found in the actual response{reason}. {2}",
+                                   "the HTTP header {0} having a value matching {1}, but there was no match{reason}. {2}",
                              _header,
                              expectedWildcardValue,
                              Subject);
