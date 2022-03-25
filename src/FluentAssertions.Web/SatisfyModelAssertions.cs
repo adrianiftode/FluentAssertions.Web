@@ -81,7 +81,9 @@ namespace FluentAssertions.Web
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         [CustomAssertion]
+#pragma warning disable IDE0060 // Remove unused parameter
         public AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(TModel givenModelStructure,
+#pragma warning restore IDE0060 // Remove unused parameter
             Action<TModel> assertion,
             string because = "", params object[] becauseArgs)
         {
@@ -146,7 +148,9 @@ namespace FluentAssertions.Web
                 .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             // ReSharper disable once ConvertToLocalFunction
+#pragma warning disable IDE0039 // Use local function
             Action<TModel> assertionCaller = asserted =>
+#pragma warning restore IDE0039 // Use local function
             {
                 Func<Task> assertionExecutor = () => assertion(asserted);
                 assertionExecutor.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
@@ -195,7 +199,9 @@ namespace FluentAssertions.Web
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
         [CustomAssertion]
+#pragma warning disable IDE0060 // Remove unused parameter
         public AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(TModel givenModelStructure,
+#pragma warning restore IDE0060 // Remove unused parameter
             Func<TModel, Task> assertion,
             string because = "", params object[] becauseArgs)
         {
@@ -207,7 +213,9 @@ namespace FluentAssertions.Web
                 .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             // ReSharper disable once ConvertToLocalFunction
+#pragma warning disable IDE0039 // Use local function
             Action<TModel> assertionCaller = model =>
+#pragma warning restore IDE0039 // Use local function
             {
                 Func<Task> assertionExecutor = () => assertion(model);
                 assertionExecutor.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
