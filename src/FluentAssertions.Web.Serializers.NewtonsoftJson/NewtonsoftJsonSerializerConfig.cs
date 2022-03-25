@@ -1,10 +1,11 @@
-﻿// ReSharper disable once CheckNamespace
+﻿using System.Text.Json;
 using Newtonsoft.Json;
 
+// ReSharper disable once CheckNamespace
 namespace FluentAssertions
 {
     /// <summary>
-    /// Holder of the global <see cref="Newtonsoft.Json.JsonSerializerOptions"/>
+    /// Holder of the global <see cref="JsonSerializerOptions"/>
     /// </summary>
     public static class NewtonsoftJsonSerializerConfig
     {
