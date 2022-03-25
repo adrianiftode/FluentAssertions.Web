@@ -251,7 +251,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().BeAs(new { }, (Func<EquivalencyAssertionOptions<object>, EquivalencyAssertionOptions<object>>?)null);
+                subject.Should().BeAs(new { }, options: (Func<EquivalencyAssertionOptions<object>, EquivalencyAssertionOptions<object>>)(null!));
 
             // Assert
             act.Should().Throw<ArgumentNullException>()

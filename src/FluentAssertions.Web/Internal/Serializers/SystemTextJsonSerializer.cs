@@ -58,7 +58,7 @@ namespace FluentAssertions.Web.Internal.Serializers
             }
 
             public override void Write(Utf8JsonWriter writer, T? value, JsonSerializerOptions options) =>
-                JsonSerializer.Serialize(writer, value.Value, options);
+                JsonSerializer.Serialize(writer, value != null ? value.Value : default, options);
         }
     }
 }

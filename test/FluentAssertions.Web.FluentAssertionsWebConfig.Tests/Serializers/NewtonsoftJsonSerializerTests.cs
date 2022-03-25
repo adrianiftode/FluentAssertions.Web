@@ -4,9 +4,9 @@ using Xunit;
 namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests
 {
     [Collection("Serializers Tests")]
-    public class NewtonsoftJsonSerializerTests : IDisposable
+    public sealed class NewtonsoftJsonSerializerTests : IDisposable
     {
-        private ISerializer _initialSerializer;
+        private readonly ISerializer _initialSerializer;
         public NewtonsoftJsonSerializerTests()
         {
             _initialSerializer = FluentAssertions.FluentAssertionsWebConfig.Serializer;

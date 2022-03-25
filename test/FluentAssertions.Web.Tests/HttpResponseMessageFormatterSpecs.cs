@@ -1118,11 +1118,10 @@ Host: localhost
             {
                 RequestMessage = new HttpRequestMessage
                 {
-
                     Content = new FormUrlEncodedContent(new[]
                     {
-                        new KeyValuePair<string, string>("key1", "value1"),
-                        new KeyValuePair<string, string>("key2", "value2")
+                        new KeyValuePair<string?, string?>("key1", "value1"),
+                        new KeyValuePair<string?, string?>("key2", "value2")
                     })
                 }
             };
@@ -1147,8 +1146,8 @@ Host: localhost
             {
                 new FormUrlEncodedContent(new[]
                 {
-                    new KeyValuePair<string, string>("key1", "value1"),
-                    new KeyValuePair<string, string>("key2", "value2")
+                    new KeyValuePair<string?, string?>("key1", "value1"),
+                    new KeyValuePair<string?, string?>("key2", "value2")
                 }),
                 {new ByteArrayContent(new byte[1]), "ByteArray"},
                 {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
@@ -1184,8 +1183,8 @@ Host: localhost
             {
                 new FormUrlEncodedContent(new[]
                 {
-                    new KeyValuePair<string, string>("key1", "value1"),
-                    new KeyValuePair<string, string>("key2", "value2")
+                    new KeyValuePair<string?, string?>("key1", "value1"),
+                    new KeyValuePair<string?, string?>("key2", "value2")
                 }),
                 {new ByteArrayContent(new byte[1]), "ByteArray"},
                 {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},

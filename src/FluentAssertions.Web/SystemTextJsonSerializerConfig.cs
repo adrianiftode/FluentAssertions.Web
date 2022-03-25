@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 namespace FluentAssertions
 {
     /// <summary>
-    /// Holder of the global <see cref="JsonSerializerOptions"/>
+    /// Holder of the global <see cref="System.Text.Json.JsonSerializerOptions"/>
     /// </summary>
     public static class SystemTextJsonSerializerConfig
     {

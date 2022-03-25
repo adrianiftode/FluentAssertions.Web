@@ -32,11 +32,11 @@ namespace FluentAssertions.Web
             Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion), "Cannot verify the subject satisfies a `null` assertion.");
 
             Execute.Assertion
-                .ForCondition(!ReferenceEquals(Subject, null))
+                .ForCondition(Subject is not null)
                 .BecauseOf(because, becauseArgs)
                 .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-            var failuresFromAssertions = CollectFailuresFromAssertion(assertion, Subject);
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertion!, Subject);
 
             if (failuresFromAssertions.Any())
             {
@@ -73,13 +73,13 @@ namespace FluentAssertions.Web
             Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion), "Cannot verify the subject satisfies a `null` assertion.");
 
             Execute.Assertion
-                .ForCondition(!ReferenceEquals(Subject, null))
+                .ForCondition(Subject is not null)
                 .BecauseOf(because, becauseArgs)
                 .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             var failuresFromAssertions = CollectFailuresFromAssertion(asserted =>
             {
-                Func<Task> assertionExecutor = () => assertion(asserted);
+                Func<Task> assertionExecutor = () => assertion(asserted!);
                 assertionExecutor.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
             }, Subject);
 

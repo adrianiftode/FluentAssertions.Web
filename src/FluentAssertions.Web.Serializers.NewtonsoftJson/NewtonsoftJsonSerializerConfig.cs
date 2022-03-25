@@ -1,6 +1,7 @@
-﻿// ReSharper disable once CheckNamespace
+﻿using System.Text.Json;
 using Newtonsoft.Json;
 
+// ReSharper disable once CheckNamespace
 namespace FluentAssertions
 {
     /// <summary>

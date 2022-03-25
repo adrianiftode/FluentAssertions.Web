@@ -25,7 +25,7 @@ namespace FluentAssertions.Web
         /// class.
         /// </summary>
         /// <param name="value">The subject value to be asserted.</param>
-        public HttpResponseMessageAssertions(HttpResponseMessage? value) : base(value) { }
+        public HttpResponseMessageAssertions(HttpResponseMessage value) : base(value) { }
 
         /// <summary>
         /// Returns the type of the subject the assertion applies on.
