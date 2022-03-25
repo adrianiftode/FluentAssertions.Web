@@ -21,6 +21,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public static AndConstraint<HttpResponseMessageAssertions> Be1XXInformational(
 #pragma warning disable 1573
@@ -42,6 +43,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public static AndConstraint<HttpResponseMessageAssertions> Be2XXSuccessful(
 #pragma warning disable 1573
@@ -63,6 +65,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public static AndConstraint<HttpResponseMessageAssertions> Be3XXRedirection(
 #pragma warning disable 1573
@@ -84,6 +87,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public static AndConstraint<HttpResponseMessageAssertions> Be4XXClientError(
 #pragma warning disable 1573
@@ -105,6 +109,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public static AndConstraint<HttpResponseMessageAssertions> Be5XXServerError(
 #pragma warning disable 1573
@@ -128,6 +133,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> HaveHttpStatusCode(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -150,6 +156,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> NotHaveHttpStatusCode(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -169,6 +176,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be100Continue(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -186,6 +194,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be101SwitchingProtocols(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -203,6 +212,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be200Ok(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -220,6 +230,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be201Created(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -237,6 +248,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be202Accepted(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -254,6 +266,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be203NonAuthoritativeInformation(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -271,6 +284,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be204NoContent(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -288,6 +302,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be205ResetContent(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -305,6 +320,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be206PartialContent(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -322,6 +338,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be300MultipleChoices(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -339,6 +356,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be300Ambiguous(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -356,6 +374,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be301MovedPermanently(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -373,6 +392,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be301Moved(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -390,6 +410,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be302Found(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -407,6 +428,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be302Redirect(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -424,6 +446,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be303SeeOther(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -441,6 +464,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be303RedirectMethod(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -458,6 +482,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be304NotModified(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -475,6 +500,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be305UseProxy(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -492,6 +518,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be306Unused(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -509,6 +536,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be307TemporaryRedirect(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -526,6 +554,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be307RedirectKeepVerb(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -543,6 +572,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<BadRequestAssertions> Be400BadRequest(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -560,6 +590,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be401Unauthorized(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -577,6 +608,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be402PaymentRequired(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -594,6 +626,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be403Forbidden(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -611,6 +644,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be404NotFound(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -628,6 +662,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be405MethodNotAllowed(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -645,6 +680,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be406NotAcceptable(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -662,6 +698,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be407ProxyAuthenticationRequired(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -679,6 +716,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be408RequestTimeout(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -696,6 +734,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be409Conflict(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -713,6 +752,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be410Gone(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -730,6 +770,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be411LengthRequired(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -747,6 +788,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be412PreconditionFailed(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -764,6 +806,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be413RequestEntityTooLarge(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -781,6 +824,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be414RequestUriTooLong(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -798,6 +842,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be415UnsupportedMediaType(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -815,6 +860,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be416RequestedRangeNotSatisfiable(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -832,6 +878,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be417ExpectationFailed(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -849,6 +896,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be426UpgradeRequired(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -866,6 +914,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be500InternalServerError(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -883,6 +932,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be501NotImplemented(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -900,6 +950,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be502BadGateway(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -917,6 +968,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be503ServiceUnavailable(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -934,6 +986,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be504GatewayTimeout(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -951,6 +1004,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Be505HttpVersionNotSupported(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,

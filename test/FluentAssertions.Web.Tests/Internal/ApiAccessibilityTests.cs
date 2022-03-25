@@ -60,7 +60,8 @@ namespace FluentAssertions.Web.Tests.Internal
             var baseAssertionsType = typeof(ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>);
             var httpResponseMessageAssertions = typeof(HttpResponseMessageAssertions).Assembly
                 .GetTypes()
-                .Where(c => c.BaseType == baseAssertionsType);
+                .Where(c => c.BaseType == baseAssertionsType)
+                .ToList();
             httpResponseMessageAssertions.Should().NotBeEmpty();
 
             var allExtensions = typeof(HttpResponseMessageAssertions).Assembly
@@ -90,6 +91,37 @@ namespace FluentAssertions.Web.Tests.Internal
                         string.Join(", ", assertionMethod.GetParameters().Select(c => $"{c.Name} of type {c.ParameterType.FullName}")));
                 }
             }
+        }
+
+        [Fact]
+        public void Each_HttpResponseMessage_Assertion_Should_Have_The_CustomAssertion_Attribute()
+        {
+            // Arrange
+            var baseAssertionsType = typeof(ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>);
+            var httpResponseMessageAssertions = typeof(HttpResponseMessageAssertions).Assembly
+                .GetTypes()
+                .Where(c => c.BaseType == baseAssertionsType)
+                .SelectMany(assertionType =>
+                    assertionType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+                .ToList();
+
+            // Assert
+            httpResponseMessageAssertions
+                .Should().AllSatisfy(method => method.Should().BeDecoratedWith<CustomAssertionAttribute>());
+        }
+
+        [Fact]
+        public void Each_HttpResponseMessage_Assertion_Extension_Should_Have_The_CustomAssertion_Attribute()
+        {
+            // Arrange
+            var allExtensions = typeof(HttpResponseMessageAssertions).Assembly
+                .GetTypes()
+                .Where(c => c.Name.EndsWith("AssertionsExtensions"))
+                .SelectMany(c => c.GetMethods(BindingFlags.Static | BindingFlags.Public))
+                .ToList();
+
+            // Assert
+            allExtensions.Should().AllSatisfy(method => method.Should().BeDecoratedWith<CustomAssertionAttribute>());
         }
 
         private static bool SameParameters(MethodInfo extensionMethod, MethodInfo assertionMethod)

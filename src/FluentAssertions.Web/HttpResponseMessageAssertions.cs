@@ -32,32 +32,6 @@ namespace FluentAssertions.Web
         /// </summary>
         protected override string Identifier => $"{nameof(HttpResponseMessage)}";
 
-        private protected void ExecuteSubjectNotNull(string because, object[] becauseArgs)
-        {
-            Execute.Assertion
-                .ForCondition(!ReferenceEquals(Subject, null))
-                .BecauseOf(because, becauseArgs)
-                .FailWith("Expected an HTTP {context:response} to assert{reason}, but found <null>.");
-        }
-
-        private void ExecuteStatusAssertion(string because, object[] becauseArgs, HttpStatusCode expected, string? otherName = null)
-        {
-            Execute.Assertion
-                .BecauseOf(because, becauseArgs)
-                .ForCondition(expected == Subject.StatusCode)
-                .FailWith("Expected HTTP {context:response} to be {0}{reason}, but found {1}.{2}"
-                    , otherName ?? expected.ToString(), Subject.StatusCode, Subject);
-        }
-
-        private void ExecuteModelExtractedAssertion(bool success, string? errorMessage, Type? modelType, string because, object[] becauseArgs)
-        {
-            Execute.Assertion
-                .BecauseOf(because, becauseArgs)
-                .ForCondition(success)
-                .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
-                    modelType?.ToString() ?? "unknown type", Subject, errorMessage);
-        }
-
         private protected string? GetContent()
         {
             Func<Task<string?>> content = () => Subject.GetStringContent();

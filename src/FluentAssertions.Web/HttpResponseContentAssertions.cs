@@ -24,6 +24,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, string because = "", params object[] becauseArgs)
             => BeAs(expectedModel, options => options, because, becauseArgs);
 
@@ -46,11 +47,15 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, Func<EquivalencyAssertionOptions<TModel>, EquivalencyAssertionOptions<TModel>> options, string because = "", params object[] becauseArgs)
         {
             Guard.ThrowIfArgumentIsNull(options, nameof(options));
 
-            ExecuteSubjectNotNull(because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             if (expectedModel == null)
             {
@@ -61,7 +66,11 @@ namespace FluentAssertions.Web
 
             var (success, errorMessage) = TryGetSubjectModel(out var subjectModel, expectedModelType);
 
-            ExecuteModelExtractedAssertion(success, errorMessage, expectedModelType, because, becauseArgs);
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(success)
+                .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
+                    expectedModelType?.ToString() ?? "unknown type", Subject, errorMessage);
 
             string[] failures;
 
@@ -102,10 +111,15 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> MatchInContent(string expectedWildcardText, string because = "", params object[] becauseArgs)
         {
             Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify a HTTP response content match a <null> wildcard pattern.");
-            ExecuteSubjectNotNull(because, becauseArgs);
+
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             var content = GetContent();
 

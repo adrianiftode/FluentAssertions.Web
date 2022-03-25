@@ -29,6 +29,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Satisfy(
 #pragma warning disable 1573
             this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
@@ -53,6 +54,7 @@ namespace FluentAssertions
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public static AndConstraint<HttpResponseMessageAssertions> Satisfy(
 #pragma warning disable 1573
                 this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,

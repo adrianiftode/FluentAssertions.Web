@@ -17,16 +17,20 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public AndConstraint<HttpResponseMessageAssertions> Be1XXInformational(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-                .ForCondition(Subject.StatusCode < HttpStatusCode.OK)
+                .ForCondition(Subject!.StatusCode < HttpStatusCode.OK)
                 .FailWith("Expected {context:response} to have a HTTP status code representing an informational error, but it was {0}{reason}.{1}",
-                    Subject.StatusCode, Subject);
+                    Subject!.StatusCode, Subject);
 
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
@@ -44,16 +48,20 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public AndConstraint<HttpResponseMessageAssertions> Be2XXSuccessful(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-                .ForCondition(Subject.IsSuccessStatusCode)
+                .ForCondition(Subject!.IsSuccessStatusCode)
                 .FailWith("Expected {context:response} to have a successful HTTP status code, but it was {0}{reason}.{1}",
-                    Subject.StatusCode, Subject);
+                    Subject!.StatusCode, Subject);
 
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
@@ -71,16 +79,20 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public AndConstraint<HttpResponseMessageAssertions> Be3XXRedirection(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-                .ForCondition(Subject.StatusCode >= HttpStatusCode.Moved && Subject.StatusCode < HttpStatusCode.BadRequest)
+                .ForCondition(Subject!.StatusCode >= HttpStatusCode.Moved && Subject!.StatusCode < HttpStatusCode.BadRequest)
                 .FailWith("Expected {context:response} to have a HTTP status code representing a redirection, but it was {0}{reason}.{1}",
-                    Subject.StatusCode, Subject);
+                    Subject!.StatusCode, Subject);
 
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
@@ -98,16 +110,20 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public AndConstraint<HttpResponseMessageAssertions> Be4XXClientError(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-                .ForCondition(Subject.StatusCode >= HttpStatusCode.BadRequest && Subject.StatusCode < HttpStatusCode.InternalServerError)
+                .ForCondition(Subject!.StatusCode >= HttpStatusCode.BadRequest && Subject!.StatusCode < HttpStatusCode.InternalServerError)
                 .FailWith("Expected {context:response} to have a HTTP status code representing a client error, but it was {0}{reason}.{1}",
-                    Subject.StatusCode, Subject);
+                    Subject!.StatusCode, Subject);
 
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
@@ -125,16 +141,20 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         // ReSharper disable once InconsistentNaming
         public AndConstraint<HttpResponseMessageAssertions> Be5XXServerError(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-                .ForCondition(Subject.StatusCode >= HttpStatusCode.InternalServerError)
+                .ForCondition(Subject!.StatusCode >= HttpStatusCode.InternalServerError)
                 .FailWith("Expected {context:response} to have a HTTP status code representing a server error, but it was {0}{reason}.{1}",
-                    Subject.StatusCode, Subject);
+                    Subject!.StatusCode, Subject);
 
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
@@ -154,10 +174,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> HaveHttpStatusCode(HttpStatusCode expected, string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, expected);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(expected == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , expected, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
         #endregion
@@ -176,14 +205,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> NotHaveHttpStatusCode(HttpStatusCode unexpected, string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
-                .ForCondition(unexpected != Subject.StatusCode)
+                .ForCondition(unexpected != Subject!.StatusCode)
                 .FailWith("Did not expect {context:response} to have status {0}{reason}.{1}",
-                    Subject.StatusCode, Subject);
+                    Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
         #endregion
@@ -199,10 +233,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be100Continue(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Continue);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Continue == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Continue, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -216,10 +259,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be101SwitchingProtocols(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.SwitchingProtocols);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.SwitchingProtocols == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.SwitchingProtocols, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -233,10 +285,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be200Ok(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.OK);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.OK == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.OK, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -250,10 +311,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be201Created(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Created);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Created == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Created, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -267,10 +337,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be202Accepted(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Accepted);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Accepted == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Accepted, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -284,10 +363,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be203NonAuthoritativeInformation(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.NonAuthoritativeInformation);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.NonAuthoritativeInformation == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.NonAuthoritativeInformation, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -301,10 +389,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be204NoContent(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.NoContent);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.NoContent == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.NoContent, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -318,10 +415,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be205ResetContent(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.ResetContent);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.ResetContent == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.ResetContent, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -335,10 +441,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be206PartialContent(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.PartialContent);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.PartialContent == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.PartialContent, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -352,10 +467,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be300MultipleChoices(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.MultipleChoices, "MultipleChoices");
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.MultipleChoices == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , "HttpStatusCode.MultipleChoices {value: 300}", Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -369,10 +493,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be300Ambiguous(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Ambiguous);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Ambiguous == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Ambiguous, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -386,10 +519,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be301MovedPermanently(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.MovedPermanently, "MovedPermanently");
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.MovedPermanently == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , "HttpStatusCode.MovedPermanently {value: 301}", Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -403,10 +545,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be301Moved(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Moved);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Moved == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Moved, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -420,10 +571,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be302Found(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Found, "Found");
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Found == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , "HttpStatusCode.Found {value: 302}", Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -437,10 +597,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be302Redirect(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Redirect, "Redirect");
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Redirect == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Redirect, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -454,10 +623,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be303SeeOther(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.SeeOther, "SeeOther");
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.SeeOther == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , "HttpStatusCode.SeeOther {value: 303}", Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -471,10 +649,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be303RedirectMethod(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.RedirectMethod);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.RedirectMethod == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.RedirectMethod, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -488,10 +675,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be304NotModified(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.NotModified);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.NotModified == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.NotModified, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -505,10 +701,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be305UseProxy(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.UseProxy);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.UseProxy == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.UseProxy, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -522,10 +727,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be306Unused(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Unused);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Unused == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Unused, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -539,10 +753,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be307TemporaryRedirect(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.TemporaryRedirect);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.TemporaryRedirect == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.TemporaryRedirect, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -556,10 +779,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be307RedirectKeepVerb(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.RedirectKeepVerb, "RedirectKeepVerb");
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.RedirectKeepVerb == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , "HttpStatusCode.RedirectKeepVerb {value: 307}", Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -573,10 +805,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<BadRequestAssertions> Be400BadRequest(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.BadRequest);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.BadRequest == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.BadRequest, Subject!.StatusCode, Subject);
             return new AndConstraint<BadRequestAssertions>(new BadRequestAssertions(Subject));
         }
 
@@ -590,10 +831,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be401Unauthorized(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Unauthorized);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Unauthorized == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Unauthorized, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -607,10 +857,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be402PaymentRequired(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.PaymentRequired);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.PaymentRequired == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.PaymentRequired, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -624,10 +883,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be403Forbidden(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Forbidden);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Forbidden == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Forbidden, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -641,10 +909,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be404NotFound(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.NotFound);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.NotFound == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.NotFound, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -658,10 +935,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be405MethodNotAllowed(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.MethodNotAllowed);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.MethodNotAllowed == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.MethodNotAllowed, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -675,10 +961,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be406NotAcceptable(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.NotAcceptable);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.NotAcceptable == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.NotAcceptable, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -692,10 +987,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be407ProxyAuthenticationRequired(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.ProxyAuthenticationRequired);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.ProxyAuthenticationRequired == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.ProxyAuthenticationRequired, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -709,10 +1013,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be408RequestTimeout(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.RequestTimeout);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.RequestTimeout == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.RequestTimeout, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -726,10 +1039,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be409Conflict(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Conflict);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Conflict == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Conflict, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -743,10 +1065,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be410Gone(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.Gone);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.Gone == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.Gone, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -760,10 +1091,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be411LengthRequired(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.LengthRequired);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.LengthRequired == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.LengthRequired, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -777,10 +1117,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be412PreconditionFailed(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.PreconditionFailed);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.PreconditionFailed == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.PreconditionFailed, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -794,10 +1143,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be413RequestEntityTooLarge(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.RequestEntityTooLarge);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.RequestEntityTooLarge == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.RequestEntityTooLarge, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -811,10 +1169,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be414RequestUriTooLong(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.RequestUriTooLong);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.RequestUriTooLong == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.RequestUriTooLong, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -828,10 +1195,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be415UnsupportedMediaType(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.UnsupportedMediaType);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.UnsupportedMediaType == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.UnsupportedMediaType, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -845,10 +1221,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be416RequestedRangeNotSatisfiable(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.RequestedRangeNotSatisfiable);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.RequestedRangeNotSatisfiable == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.RequestedRangeNotSatisfiable, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -862,10 +1247,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be417ExpectationFailed(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.ExpectationFailed);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.ExpectationFailed == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.ExpectationFailed, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -879,10 +1273,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be426UpgradeRequired(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.UpgradeRequired);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.UpgradeRequired == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.UpgradeRequired, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -896,10 +1299,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be500InternalServerError(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.InternalServerError);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.InternalServerError == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.InternalServerError, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -913,10 +1325,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be501NotImplemented(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.NotImplemented);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.NotImplemented == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.NotImplemented, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -930,10 +1351,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be502BadGateway(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.BadGateway);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.BadGateway == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.BadGateway, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -947,10 +1377,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be503ServiceUnavailable(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.ServiceUnavailable);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.ServiceUnavailable == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.ServiceUnavailable, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -964,10 +1403,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be504GatewayTimeout(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.GatewayTimeout);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.GatewayTimeout == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.GatewayTimeout, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -981,10 +1429,19 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Be505HttpVersionNotSupported(string because = "", params object[] becauseArgs)
         {
-            ExecuteSubjectNotNull(because, becauseArgs);
-            ExecuteStatusAssertion(because, becauseArgs, HttpStatusCode.HttpVersionNotSupported);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(HttpStatusCode.HttpVersionNotSupported == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.HttpVersionNotSupported, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
         #endregion
