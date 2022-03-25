@@ -45,7 +45,7 @@ namespace FluentAssertions.Web
                 .BecauseOf(because, becauseArgs)
                 .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-            IEnumerable<string> headerValues = Subject.GetHeaderValues(_header);
+            IEnumerable<string> headerValues = Subject!.GetHeaderValues(_header);
 
             var matchFound = headerValues.Any(headerValue =>
             {

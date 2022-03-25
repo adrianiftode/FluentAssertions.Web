@@ -47,7 +47,7 @@ namespace FluentAssertions.Web
                 .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
                     modelType?.ToString() ?? "unknown type", Subject, errorMessage);
 
-            var failuresFromAssertions = CollectFailuresFromAssertion(assertion, model);
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertion!, model);
 
             if (failuresFromAssertions.Any())
             {
@@ -102,7 +102,7 @@ namespace FluentAssertions.Web
                 .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
                     modelType?.ToString() ?? "unknown type", Subject, errorMessage);
 
-            var failuresFromAssertions = CollectFailuresFromAssertion(assertion, model);
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertion!, model);
 
             if (failuresFromAssertions.Any())
             {
@@ -145,7 +145,8 @@ namespace FluentAssertions.Web
                 .BecauseOf(because, becauseArgs)
                 .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-            Action<TModel> assertion1 = asserted =>
+            // ReSharper disable once ConvertToLocalFunction
+            Action<TModel> assertionCaller = asserted =>
             {
                 Func<Task> assertionExecutor = () => assertion(asserted);
                 assertionExecutor.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
@@ -160,7 +161,7 @@ namespace FluentAssertions.Web
                 .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
                     modelType?.ToString() ?? "unknown type", Subject, errorMessage);
 
-            var failuresFromAssertions = CollectFailuresFromAssertion(assertion1, model);
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertionCaller!, model);
 
             if (failuresFromAssertions.Any())
             {
@@ -205,12 +206,13 @@ namespace FluentAssertions.Web
                 .BecauseOf(because, becauseArgs)
                 .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-            Action<TModel> assertion1 = model =>
+            // ReSharper disable once ConvertToLocalFunction
+            Action<TModel> assertionCaller = model =>
             {
                 Func<Task> assertionExecutor = () => assertion(model);
                 assertionExecutor.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
             };
-            var (success, errorMessage) = TryGetSubjectModel<TModel>(out var model1);
+            var (success, errorMessage) = TryGetSubjectModel<TModel>(out var subjectModel);
 
             Type? modelType = typeof(TModel);
 
@@ -220,7 +222,7 @@ namespace FluentAssertions.Web
                 .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
                     modelType?.ToString() ?? "unknown type", Subject, errorMessage);
 
-            var failuresFromAssertions = CollectFailuresFromAssertion(assertion1, model1);
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertionCaller!, subjectModel);
 
             if (failuresFromAssertions.Any())
             {

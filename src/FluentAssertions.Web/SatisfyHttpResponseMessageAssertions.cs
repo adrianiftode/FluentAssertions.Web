@@ -36,7 +36,7 @@ namespace FluentAssertions.Web
                 .BecauseOf(because, becauseArgs)
                 .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-            var failuresFromAssertions = CollectFailuresFromAssertion(assertion, Subject);
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertion!, Subject);
 
             if (failuresFromAssertions.Any())
             {
@@ -79,7 +79,7 @@ namespace FluentAssertions.Web
 
             var failuresFromAssertions = CollectFailuresFromAssertion(asserted =>
             {
-                Func<Task> assertionExecutor = () => assertion(asserted);
+                Func<Task> assertionExecutor = () => assertion(asserted!);
                 assertionExecutor.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
             }, Subject);
 
