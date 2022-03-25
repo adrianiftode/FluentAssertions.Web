@@ -285,7 +285,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -373,7 +373,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
     }

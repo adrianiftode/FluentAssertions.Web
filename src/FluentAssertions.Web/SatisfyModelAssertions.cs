@@ -24,15 +24,39 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(
             Action<TModel> assertion,
             string because = "", params object[] becauseArgs)
         {
             Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion),
                 "Cannot verify the subject satisfies a `null` assertion.");
-            ExecuteSubjectNotNull(because, becauseArgs);
 
-            ExecuteSatisfyModelAssertions(assertion, because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            var (success, errorMessage) = TryGetSubjectModel<TModel>(out var model);
+
+            Type? modelType = typeof(TModel);
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(success)
+                .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
+                    modelType?.ToString() ?? "unknown type", Subject, errorMessage);
+
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertion, model);
+
+            if (failuresFromAssertions.Any())
+            {
+                Execute.Assertion
+                    .BecauseOf(because, becauseArgs)
+                    .FailWith(
+                        "Expected {context:response} to satisfy one or more model assertions, but it wasn't{reason}: {0}{1}",
+                        new AssertionsFailures(failuresFromAssertions), Subject);
+            }
 
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
@@ -56,14 +80,38 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(TModel givenModelStructure,
             Action<TModel> assertion,
             string because = "", params object[] becauseArgs)
         {
             Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion), "Cannot verify the subject satisfies a `null` assertion.");
-            ExecuteSubjectNotNull(because, becauseArgs);
 
-            ExecuteSatisfyModelAssertions(assertion, because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            var (success, errorMessage) = TryGetSubjectModel<TModel>(out var model);
+
+            Type? modelType = typeof(TModel);
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(success)
+                .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
+                    modelType?.ToString() ?? "unknown type", Subject, errorMessage);
+
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertion, model);
+
+            if (failuresFromAssertions.Any())
+            {
+                Execute.Assertion
+                    .BecauseOf(because, becauseArgs)
+                    .FailWith(
+                        "Expected {context:response} to satisfy one or more model assertions, but it wasn't{reason}: {0}{1}",
+                        new AssertionsFailures(failuresFromAssertions), Subject);
+            }
 
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
@@ -84,19 +132,44 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(
             Func<TModel, Task> assertion,
             string because = "", params object[] becauseArgs)
         {
             Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion),
                 "Cannot verify the subject satisfies a `null` assertion.");
-            ExecuteSubjectNotNull(because, becauseArgs);
 
-            ExecuteSatisfyModelAssertions<TModel>(asserted =>
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Action<TModel> assertion1 = asserted =>
             {
                 Func<Task> assertionExecutor = () => assertion(asserted);
                 assertionExecutor.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
-            }, because, becauseArgs);
+            };
+            var (success, errorMessage) = TryGetSubjectModel<TModel>(out var model);
+
+            Type? modelType = typeof(TModel);
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(success)
+                .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
+                    modelType?.ToString() ?? "unknown type", Subject, errorMessage);
+
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertion1, model);
+
+            if (failuresFromAssertions.Any())
+            {
+                Execute.Assertion
+                    .BecauseOf(because, becauseArgs)
+                    .FailWith(
+                        "Expected {context:response} to satisfy one or more model assertions, but it wasn't{reason}: {0}{1}",
+                        new AssertionsFailures(failuresFromAssertions), Subject);
+            }
 
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
@@ -120,38 +193,45 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(TModel givenModelStructure,
             Func<TModel, Task> assertion,
             string because = "", params object[] becauseArgs)
         {
             Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion), "Cannot verify the subject satisfies a `null` assertion.");
-            ExecuteSubjectNotNull(because, becauseArgs);
 
-            ExecuteSatisfyModelAssertions<TModel>(model =>
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Action<TModel> assertion1 = model =>
             {
                 Func<Task> assertionExecutor = () => assertion(model);
                 assertionExecutor.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
-            }, because, becauseArgs);
+            };
+            var (success, errorMessage) = TryGetSubjectModel<TModel>(out var model1);
 
-            return new AndConstraint<HttpResponseMessageAssertions>(this);
-        }
-        
-        private protected void ExecuteSatisfyModelAssertions<TModel>(Action<TModel> assertion, string because, object[] becauseArgs)
-        {
-            var (success, errorMessage) = TryGetSubjectModel<TModel>(out var model);
+            Type? modelType = typeof(TModel);
 
-            ExecuteModelExtractedAssertion(success, errorMessage, typeof(TModel), because, becauseArgs);
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(success)
+                .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
+                    modelType?.ToString() ?? "unknown type", Subject, errorMessage);
 
-            var failuresFromAssertions = CollectFailuresFromAssertion(assertion, model);
+            var failuresFromAssertions = CollectFailuresFromAssertion(assertion1, model1);
 
             if (failuresFromAssertions.Any())
             {
                 Execute.Assertion
                     .BecauseOf(because, becauseArgs)
                     .FailWith(
-                        "Expected {context:value} to satisfy one or more model assertions, but it wasn't{reason}: {0}{1}",
+                        "Expected {context:response} to satisfy one or more model assertions, but it wasn't{reason}: {0}{1}",
                         new AssertionsFailures(failuresFromAssertions), Subject);
             }
+
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
     }
 }

@@ -35,11 +35,15 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HeadersAssertions> Match(string expectedWildcardValue, string because = "", params object[] becauseArgs)
         {
             Guard.ThrowIfArgumentIsNull(expectedWildcardValue, nameof(expectedWildcardValue), "Cannot verify a HTTP header to be a value against a <null> value. Use And.BeEmpty to test if the HTTP header has no values.");
 
-            ExecuteSubjectNotNull(because, becauseArgs);
+            Execute.Assertion
+                .ForCondition(!ReferenceEquals(Subject, null))
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
             IEnumerable<string> headerValues = Subject.GetHeaderValues(_header);
 
@@ -53,7 +57,7 @@ namespace FluentAssertions.Web
             Execute.Assertion
                          .BecauseOf(because, becauseArgs)
                          .ForCondition(matchFound)
-                         .FailWith("Expected {context:value} to contain " +
+                         .FailWith("Expected {context:response} to contain " +
                                    "the HTTP header {0} having a value matching {1}, but there was no match{reason}. {2}",
                              _header,
                              expectedWildcardValue,
@@ -72,6 +76,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HeadersAssertions> BeEmpty(string because = "", params object[] becauseArgs)
         {
             var headerValues = Subject.GetHeaderValues(_header);
@@ -79,7 +84,7 @@ namespace FluentAssertions.Web
             Execute.Assertion
                         .BecauseOf(because, becauseArgs)
                         .ForCondition(!headerValues.Any())
-                        .FailWith("Expected {context:value} to contain " +
+                        .FailWith("Expected {context:response} to contain " +
                                   "the HTTP header {0} with no header values, but the found the header and it has values {1} in the actual response{reason}. {2}",
                             _header,
                             headerValues,
@@ -101,6 +106,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HeadersAssertions> BeValues(IEnumerable<string> expectedValues,
             string because = "", params object[] becauseArgs)
         {
@@ -124,7 +130,7 @@ namespace FluentAssertions.Web
             Execute.Assertion
                         .BecauseOf(because, becauseArgs)
                         .ForCondition(failures.Length == 0)
-                        .FailWith("Expected {context:value} to contain " +
+                        .FailWith("Expected {context:response} to contain " +
                                   "the HTTP header {0} having values {1}, but the found values have differences{reason}. {2}",
                             _header,
                             expectedValues,
@@ -156,6 +162,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HeadersAssertions> HaveHeader(string expectedHeader,
             string because = "", params object[] becauseArgs)
         {
@@ -164,7 +171,7 @@ namespace FluentAssertions.Web
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
                 .ForCondition(IsHeaderPresent(expectedHeader))
-                .FailWith("Expected {context:value} to contain " +
+                .FailWith("Expected {context:response} to contain " +
                           "the HTTP header {0}, but no such header was found in the actual response{reason}.{1}",
                     expectedHeader,
                     Subject);
@@ -185,6 +192,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<HttpResponseMessageAssertions> NotHaveHeader(string expectedHeader,
             string because = "", params object[] becauseArgs)
         {
@@ -193,7 +201,7 @@ namespace FluentAssertions.Web
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
                 .ForCondition(!IsHeaderPresent(expectedHeader))
-                .FailWith("Expected {context:value} to not to contain " +
+                .FailWith("Expected {context:response} to not to contain " +
                           "the HTTP header {0}, but the header was found in the actual response{reason}.{1}",
                     expectedHeader,
                     Subject);

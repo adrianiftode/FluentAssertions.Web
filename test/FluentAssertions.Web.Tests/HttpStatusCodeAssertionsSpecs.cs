@@ -55,7 +55,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -106,7 +106,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -158,7 +158,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -209,7 +209,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -260,7 +260,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -291,7 +291,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*BadRequest"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.BadRequest*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -306,7 +306,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -337,7 +337,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Did not expect *to have status HttpStatusCode.OK {value: 200}*message*");
+                .WithMessage(@"*Did not expect*to have status HttpStatusCode.OK {value: 200}*message*");
         }
 
         [Fact]
@@ -352,7 +352,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -383,7 +383,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Continue"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Continue*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -398,7 +398,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -429,7 +429,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*SwitchingProtocols"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.SwitchingProtocols*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -444,7 +444,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion 
 
@@ -475,7 +475,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*OK"" because we want to test the failure message, but found HttpStatusCode.BadRequest {value: 400}*");
+                .WithMessage(@"*HttpStatusCode.OK*because we want to test the failure message, but found HttpStatusCode.BadRequest {value: 400}*");
         }
 
         [Fact]
@@ -490,7 +490,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -521,7 +521,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Created"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Created*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -536,7 +536,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -567,7 +567,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Accepted"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Accepted*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -582,7 +582,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -613,7 +613,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*NonAuthoritativeInformation"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.NonAuthoritativeInformation*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -628,7 +628,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -659,7 +659,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*NoContent"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.NoContent*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -674,7 +674,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -705,7 +705,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*ResetContent"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.ResetContent*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -720,7 +720,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -751,7 +751,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*PartialContent"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.PartialContent*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -766,7 +766,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -797,7 +797,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*MultipleChoices"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.MultipleChoices*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -812,7 +812,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -843,7 +843,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Ambiguous"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Ambiguous*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -858,7 +858,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -889,7 +889,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*MovedPermanently"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.MovedPermanently*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -904,7 +904,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -935,7 +935,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Moved"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Moved*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -950,7 +950,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -981,7 +981,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Found"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Found*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -996,7 +996,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1027,7 +1027,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Redirect"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Redirect*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1042,7 +1042,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1073,7 +1073,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*SeeOther"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.SeeOther*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1088,7 +1088,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1119,7 +1119,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*RedirectMethod"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.RedirectMethod*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1134,7 +1134,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1165,7 +1165,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*NotModified"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.NotModified*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1180,7 +1180,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1211,7 +1211,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*UseProxy"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.UseProxy*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1226,7 +1226,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1257,7 +1257,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Unused"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Unused*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1272,7 +1272,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1303,7 +1303,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*TemporaryRedirect"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.TemporaryRedirect*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1318,7 +1318,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1349,7 +1349,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*RedirectKeepVerb"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.RedirectKeepVerb*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1364,7 +1364,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion 
 
@@ -1395,7 +1395,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*BadRequest"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.BadRequest*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1410,7 +1410,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1441,7 +1441,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Unauthorized"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Unauthorized*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1456,7 +1456,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1487,7 +1487,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*PaymentRequired"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.PaymentRequired*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1502,7 +1502,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1533,7 +1533,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Forbidden"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Forbidden*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1548,7 +1548,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1579,7 +1579,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*NotFound"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.NotFound*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1594,7 +1594,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1625,7 +1625,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*MethodNotAllowed"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.MethodNotAllowed*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1640,7 +1640,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1671,7 +1671,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*NotAcceptable"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.NotAcceptable*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1686,7 +1686,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1717,7 +1717,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*ProxyAuthenticationRequired"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.ProxyAuthenticationRequired*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1732,7 +1732,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1763,7 +1763,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*RequestTimeout"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.RequestTimeout*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1778,7 +1778,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1809,7 +1809,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Conflict"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Conflict*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1824,7 +1824,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1855,7 +1855,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Gone"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.Gone*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1870,7 +1870,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1901,7 +1901,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*LengthRequired"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.LengthRequired*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1916,7 +1916,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1947,7 +1947,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*PreconditionFailed"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.PreconditionFailed*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -1962,7 +1962,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -1993,7 +1993,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*RequestEntityTooLarge"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.RequestEntityTooLarge*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2008,7 +2008,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2039,7 +2039,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*RequestUriTooLong"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.RequestUriTooLong*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2054,7 +2054,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2085,7 +2085,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*UnsupportedMediaType"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.UnsupportedMediaType*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2100,7 +2100,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2131,7 +2131,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*RequestedRangeNotSatisfiable"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.RequestedRangeNotSatisfiable*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2146,7 +2146,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2177,7 +2177,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*ExpectationFailed"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.ExpectationFailed*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2192,7 +2192,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2223,7 +2223,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*UpgradeRequired"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.UpgradeRequired*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2238,7 +2238,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2269,7 +2269,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*InternalServerError"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.InternalServerError*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2284,7 +2284,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2315,7 +2315,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*NotImplemented"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.NotImplemented*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2330,7 +2330,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2361,7 +2361,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*BadGateway"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.BadGateway*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2376,7 +2376,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2407,7 +2407,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*ServiceUnavailable"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.ServiceUnavailable*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2422,7 +2422,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2453,7 +2453,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*GatewayTimeout"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.GatewayTimeout*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2468,7 +2468,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion
 
@@ -2499,7 +2499,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*HttpVersionNotSupported"" because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+                .WithMessage(@"*HttpStatusCode.HttpVersionNotSupported*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
         }
 
         [Fact]
@@ -2514,7 +2514,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
         #endregion 
     }

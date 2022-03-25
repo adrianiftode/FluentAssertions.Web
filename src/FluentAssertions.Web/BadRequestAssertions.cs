@@ -48,6 +48,7 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+        [CustomAssertion]
         public AndConstraint<BadRequestAssertions> HaveError(string expectedErrorField, string expectedWildcardErrorMessage,
             string because = "", params object[] becauseArgs)
         {
@@ -112,6 +113,8 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+
+        [CustomAssertion]
         public AndConstraint<BadRequestAssertions> OnlyHaveError(string expectedErrorField, string expectedWildcardErrorMessage,
             string because = "", params object[] becauseArgs)
         {
@@ -192,6 +195,8 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+
+        [CustomAssertion]
         public AndConstraint<BadRequestAssertions> NotHaveError(string expectedErrorField, string because = "", params object[] becauseArgs)
         {
             Guard.ThrowIfArgumentIsNullOrEmpty(expectedErrorField, nameof(expectedErrorField), "Cannot verify not having an error against a <null> or empty field name.");
@@ -228,6 +233,8 @@ namespace FluentAssertions.Web
         /// <param name="becauseArgs">
         /// Zero or more objects to format using the placeholders in <see paramref="because" />.
         /// </param>
+
+        [CustomAssertion]
         public AndConstraint<BadRequestAssertions> HaveErrorMessage(string expectedWildcardErrorMessage,
             string because = "", params object[] becauseArgs)
         {

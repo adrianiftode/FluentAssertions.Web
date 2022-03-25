@@ -46,7 +46,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage("Expected value to satisfy one or more assertions, but it wasn't because we want to test the reason:*expected*{empty} to contain \"byte\"*HTTP response*");
+                .WithMessage("Expected * to satisfy one or more assertions, but it wasn't because we want to test the reason:*expected*{empty} to contain \"byte\"*HTTP response*");
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"Expected value to satisfy one or more assertions, but it wasn't because we want to test the reason:*expected*""byte""*expected*to be <null>*The HTTP response was:*");
+                .WithMessage(@"Expected * to satisfy one or more assertions, but it wasn't because we want to test the reason:*expected*""byte""*expected*to be <null>*The HTTP response was:*");
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace FluentAssertions.Web.Tests
 
             // Assert
             act.Should().Throw<XunitException>()
-                .WithMessage(@"*Expected an HTTP response to assert because we want to test the failure message, but found <null>.");
+                .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
         }
     }
 }
