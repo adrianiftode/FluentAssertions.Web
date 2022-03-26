@@ -88,6 +88,27 @@ namespace FluentAssertions.Web.Tests.Internal.ContentProcessors
                 .And.NotContain("HEADERS");
         }
 
+        [Fact]
+        public async Task GivenHttpResponseWithDisposedContent_WhenGetContentInfo_ThenIsEmpty()
+        {
+            // Arrange
+            var content = new StringContent(RawTextInternalServerErrorResponse);
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = content
+            };
+            var sut = new InternalServerErrorProcessor(response, response.Content);
+            var contentBuilder = new StringBuilder();
+            content.Dispose();
+
+            // Act
+            await sut.GetContentInfo(contentBuilder);
+
+            // Assert
+            contentBuilder.ToString().Should().BeEmpty();
+        }
+
         private const string HtmlPageInternalServerErrorResponse = @"<!DOCTYPE html>
 <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
     <head>

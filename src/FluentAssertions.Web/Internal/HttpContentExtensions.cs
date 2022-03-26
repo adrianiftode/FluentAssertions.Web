@@ -43,7 +43,7 @@ namespace FluentAssertions.Web.Internal
         {
             try
             {
-                length = content?.Headers?.ContentLength ?? 0;
+                length = content.Headers?.ContentLength ?? 0;
                 return true;
             }
             catch (Exception)
@@ -53,7 +53,21 @@ namespace FluentAssertions.Web.Internal
             }
         }
 
-        public static async Task<string> SafeReadAsStringAsync(this HttpContent content, string? defaultMessage = null)
+        public static bool TryGetContentTypeMediaType(this HttpContent content, out string? mediaType)
+        {
+            try
+            {
+                mediaType = content.Headers?.ContentType?.MediaType;
+                return true;
+            }
+            catch (Exception)
+            {
+                mediaType = null;
+                return false;
+            }
+        }
+
+        public static async Task<string?> SafeReadAsStringAsync(this HttpContent content, string? defaultMessage = null)
         {
             try
             {

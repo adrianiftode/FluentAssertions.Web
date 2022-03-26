@@ -63,5 +63,26 @@ namespace FluentAssertions.Web.Tests.Internal.ContentProcessors
             // Assert
             contentBuilder.ToString().Should().Match("*too large*");
         }
+
+        [Fact]
+        public async Task GivenHttpResponseWithDisposedContent_WhenGetContentInfo_ThenIsEmpty()
+        {
+            // Arrange
+            var content = new StringContent("the content");
+            using var response = new HttpResponseMessage
+            {
+                Content = content
+            };
+            var sut = new FallbackProcessor(response.Content);
+            var contentBuilder = new StringBuilder();
+            content.Dispose();
+
+            // Act
+            await sut.GetContentInfo(contentBuilder);
+
+            // Assert
+            contentBuilder.ToString().Should().Match(
+                @"*Content is disposed so it cannot be read.*");
+        }
     }
 }

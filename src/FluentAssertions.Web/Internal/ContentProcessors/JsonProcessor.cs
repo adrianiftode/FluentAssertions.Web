@@ -21,10 +21,13 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             JsonDocument? jsonDocument = null;
             try
             {
-                jsonDocument = await JsonDocument.ParseAsync(content, new JsonDocumentOptions
+                if (content != null)
                 {
-                    AllowTrailingCommas = true
-                });
+                    jsonDocument = await JsonDocument.ParseAsync(content, new JsonDocumentOptions
+                    {
+                        AllowTrailingCommas = true
+                    });
+                }
             }
             catch
             {
@@ -63,13 +66,14 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
         protected override bool CanHandle()
         {
-            if (_httpContent == null)
+            if (_httpContent == null || _httpContent.IsDisposed())
             {
                 return false;
             }
 
             _httpContent.TryGetContentLength(out long length);
-            var mediaType = _httpContent.Headers.ContentType?.MediaType;
+            _httpContent.TryGetContentTypeMediaType(out var mediaType);
+
             return length <= ContentFormatterOptions.MaximumReadableBytes
                    && (mediaType.EqualsCaseInsensitive("application/json") || mediaType.EqualsCaseInsensitive("application/problem+json"));
         }
