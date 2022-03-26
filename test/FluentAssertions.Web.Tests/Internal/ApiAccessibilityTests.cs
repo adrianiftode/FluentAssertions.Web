@@ -124,6 +124,20 @@ namespace FluentAssertions.Web.Tests.Internal
             allExtensions.Should().AllSatisfy(method => method.Should().BeDecoratedWith<CustomAssertionAttribute>());
         }
 
+        [Fact]
+        public void Each_HttpResponseMessage_Assertion_Extension_Should_Be_In_The_Fluent_Assertions_Namespace_Only()
+        {
+            // Arrange
+            var httpResponseMessageAssertionsExtensionsTypes = typeof(HttpResponseMessageAssertions).Assembly
+                .GetTypes()
+                .Where(c => c.Name.EndsWith("AssertionsExtensions"))
+                .ToList();
+
+            // Assert
+            httpResponseMessageAssertionsExtensionsTypes
+                .Should().OnlyContain(type => type.Namespace == "FluentAssertions");
+        }
+
         private static bool SameParameters(MethodInfo extensionMethod, MethodInfo assertionMethod)
         {
             var extensionMethodParameters = extensionMethod.GetParameters();
