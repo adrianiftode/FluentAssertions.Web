@@ -281,7 +281,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().BeAs((object?)null, "because we want to test the failure {0}", "message"); ;
+                subject.Should().BeAs((object?)null, "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -324,7 +324,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().MatchInContent("*notes*", "because we want to test the failure {0}", "message"); ;
+                subject.Should().MatchInContent("*notes*", "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -339,7 +339,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().MatchInContent("*notes*", "because we want to test the failure {0}", "message"); ;
+                subject.Should().MatchInContent("*notes*", "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -369,7 +369,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().MatchInContent("wildcard", "because we want to test the failure {0}", "message"); ;
+                subject.Should().MatchInContent("wildcard", "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()

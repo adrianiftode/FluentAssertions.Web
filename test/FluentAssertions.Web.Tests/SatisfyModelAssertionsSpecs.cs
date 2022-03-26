@@ -136,7 +136,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Satisfy<Model>(model => true.Should().BeTrue(), "because we want to test the failure {0}", "message"); ;
+                subject.Should().Satisfy<Model>(model => true.Should().BeTrue(), "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()

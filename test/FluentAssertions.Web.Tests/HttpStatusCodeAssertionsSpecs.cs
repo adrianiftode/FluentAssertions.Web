@@ -36,7 +36,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be1XXInformational("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be1XXInformational("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -51,7 +51,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be1XXInformational("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be1XXInformational("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -87,7 +87,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be2XXSuccessful("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be2XXSuccessful("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -102,7 +102,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be2XXSuccessful("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be2XXSuccessful("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -139,7 +139,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be3XXRedirection("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be3XXRedirection("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -154,7 +154,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be3XXRedirection("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be3XXRedirection("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -190,7 +190,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be4XXClientError("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be4XXClientError("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -205,7 +205,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be4XXClientError("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be4XXClientError("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -241,7 +241,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be5XXServerError("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be5XXServerError("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -256,7 +256,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be5XXServerError("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be5XXServerError("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -287,7 +287,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveHttpStatusCode(HttpStatusCode.BadRequest, "because we want to test the failure {0}", "message"); ;
+                subject.Should().HaveHttpStatusCode(HttpStatusCode.BadRequest, "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -302,7 +302,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().HaveHttpStatusCode(HttpStatusCode.InternalServerError, "because we want to test the failure {0}", "message"); ;
+                subject.Should().HaveHttpStatusCode(HttpStatusCode.InternalServerError, "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -333,7 +333,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().NotHaveHttpStatusCode(HttpStatusCode.OK, "because we want to test the failure {0}", "message"); ;
+                subject.Should().NotHaveHttpStatusCode(HttpStatusCode.OK, "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -348,7 +348,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().NotHaveHttpStatusCode(HttpStatusCode.InternalServerError, "because we want to test the failure {0}", "message"); ;
+                subject.Should().NotHaveHttpStatusCode(HttpStatusCode.InternalServerError, "because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -379,7 +379,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be100Continue("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be100Continue("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -394,7 +394,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be100Continue("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be100Continue("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -425,7 +425,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be101SwitchingProtocols("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be101SwitchingProtocols("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -440,7 +440,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be101SwitchingProtocols("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be101SwitchingProtocols("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -471,7 +471,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be200Ok("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be200Ok("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -486,7 +486,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be200Ok("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be200Ok("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -517,7 +517,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be201Created("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be201Created("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -532,7 +532,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be201Created("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be201Created("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -563,7 +563,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be202Accepted("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be202Accepted("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -578,7 +578,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be202Accepted("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be202Accepted("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -609,7 +609,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be203NonAuthoritativeInformation("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be203NonAuthoritativeInformation("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -624,7 +624,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be203NonAuthoritativeInformation("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be203NonAuthoritativeInformation("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -655,7 +655,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be204NoContent("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be204NoContent("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -670,7 +670,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be204NoContent("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be204NoContent("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -701,7 +701,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be205ResetContent("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be205ResetContent("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -716,7 +716,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be205ResetContent("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be205ResetContent("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -747,7 +747,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be206PartialContent("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be206PartialContent("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -762,7 +762,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be206PartialContent("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be206PartialContent("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -793,7 +793,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be300MultipleChoices("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be300MultipleChoices("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -808,7 +808,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be300MultipleChoices("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be300MultipleChoices("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -839,7 +839,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be300Ambiguous("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be300Ambiguous("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -854,7 +854,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be300Ambiguous("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be300Ambiguous("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -885,7 +885,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be301MovedPermanently("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be301MovedPermanently("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -900,7 +900,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be301MovedPermanently("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be301MovedPermanently("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -931,7 +931,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be301Moved("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be301Moved("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -946,7 +946,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be301Moved("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be301Moved("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -977,7 +977,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be302Found("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be302Found("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -992,7 +992,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be302Found("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be302Found("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1023,7 +1023,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be302Redirect("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be302Redirect("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1038,7 +1038,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be302Redirect("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be302Redirect("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1069,7 +1069,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be303SeeOther("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be303SeeOther("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1084,7 +1084,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be303SeeOther("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be303SeeOther("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1115,7 +1115,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be303RedirectMethod("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be303RedirectMethod("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1130,7 +1130,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be303RedirectMethod("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be303RedirectMethod("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1161,7 +1161,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be304NotModified("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be304NotModified("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1176,7 +1176,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be304NotModified("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be304NotModified("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1207,7 +1207,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be305UseProxy("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be305UseProxy("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1222,7 +1222,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be305UseProxy("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be305UseProxy("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1253,7 +1253,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be306Unused("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be306Unused("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1268,7 +1268,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be306Unused("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be306Unused("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1299,7 +1299,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be307TemporaryRedirect("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be307TemporaryRedirect("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1314,7 +1314,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be307TemporaryRedirect("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be307TemporaryRedirect("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1345,7 +1345,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be307RedirectKeepVerb("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be307RedirectKeepVerb("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1360,7 +1360,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be307RedirectKeepVerb("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be307RedirectKeepVerb("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1391,7 +1391,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be400BadRequest("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be400BadRequest("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1406,7 +1406,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be400BadRequest("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be400BadRequest("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1437,7 +1437,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be401Unauthorized("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be401Unauthorized("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1452,7 +1452,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be401Unauthorized("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be401Unauthorized("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1483,7 +1483,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be402PaymentRequired("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be402PaymentRequired("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1498,7 +1498,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be402PaymentRequired("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be402PaymentRequired("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1529,7 +1529,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be403Forbidden("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be403Forbidden("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1544,7 +1544,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be403Forbidden("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be403Forbidden("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1575,7 +1575,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be404NotFound("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be404NotFound("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1590,7 +1590,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be404NotFound("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be404NotFound("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1621,7 +1621,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be405MethodNotAllowed("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be405MethodNotAllowed("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1636,7 +1636,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be405MethodNotAllowed("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be405MethodNotAllowed("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1667,7 +1667,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be406NotAcceptable("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be406NotAcceptable("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1682,7 +1682,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be406NotAcceptable("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be406NotAcceptable("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1713,7 +1713,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be407ProxyAuthenticationRequired("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be407ProxyAuthenticationRequired("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1728,7 +1728,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be407ProxyAuthenticationRequired("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be407ProxyAuthenticationRequired("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1759,7 +1759,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be408RequestTimeout("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be408RequestTimeout("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1774,7 +1774,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be408RequestTimeout("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be408RequestTimeout("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1805,7 +1805,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be409Conflict("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be409Conflict("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1820,7 +1820,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be409Conflict("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be409Conflict("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1851,7 +1851,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be410Gone("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be410Gone("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1866,7 +1866,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be410Gone("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be410Gone("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1897,7 +1897,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be411LengthRequired("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be411LengthRequired("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1912,7 +1912,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be411LengthRequired("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be411LengthRequired("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1943,7 +1943,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be412PreconditionFailed("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be412PreconditionFailed("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1958,7 +1958,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be412PreconditionFailed("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be412PreconditionFailed("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -1989,7 +1989,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be413RequestEntityTooLarge("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be413RequestEntityTooLarge("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2004,7 +2004,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be413RequestEntityTooLarge("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be413RequestEntityTooLarge("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2035,7 +2035,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be414RequestUriTooLong("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be414RequestUriTooLong("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2050,7 +2050,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be414RequestUriTooLong("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be414RequestUriTooLong("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2081,7 +2081,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be415UnsupportedMediaType("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be415UnsupportedMediaType("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2096,7 +2096,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be415UnsupportedMediaType("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be415UnsupportedMediaType("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2127,7 +2127,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be416RequestedRangeNotSatisfiable("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be416RequestedRangeNotSatisfiable("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2142,7 +2142,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be416RequestedRangeNotSatisfiable("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be416RequestedRangeNotSatisfiable("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2173,7 +2173,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be417ExpectationFailed("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be417ExpectationFailed("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2188,7 +2188,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be417ExpectationFailed("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be417ExpectationFailed("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2219,7 +2219,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be426UpgradeRequired("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be426UpgradeRequired("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2234,7 +2234,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be426UpgradeRequired("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be426UpgradeRequired("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2265,7 +2265,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be500InternalServerError("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be500InternalServerError("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2280,7 +2280,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be500InternalServerError("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be500InternalServerError("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2311,7 +2311,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be501NotImplemented("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be501NotImplemented("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2326,7 +2326,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be501NotImplemented("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be501NotImplemented("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2357,7 +2357,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be502BadGateway("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be502BadGateway("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2372,7 +2372,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be502BadGateway("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be502BadGateway("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2403,7 +2403,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be503ServiceUnavailable("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be503ServiceUnavailable("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2418,7 +2418,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be503ServiceUnavailable("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be503ServiceUnavailable("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2449,7 +2449,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be504GatewayTimeout("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be504GatewayTimeout("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2464,7 +2464,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be504GatewayTimeout("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be504GatewayTimeout("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2495,7 +2495,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be505HttpVersionNotSupported("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be505HttpVersionNotSupported("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
@@ -2510,7 +2510,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().Be505HttpVersionNotSupported("because we want to test the failure {0}", "message"); ;
+                subject.Should().Be505HttpVersionNotSupported("because we want to test the failure {0}", "message");
 
             // Assert
             act.Should().Throw<XunitException>()
