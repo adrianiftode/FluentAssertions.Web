@@ -69,5 +69,21 @@ namespace FluentAssertions.Web.Tests.Internal.ContentProcessors
 *""a"": ""json""*
 }*");
         }
+
+        [Fact]
+        public async Task GivenHttpResponseWithDisposedContent_WhenGetContentInfo_ThenIsEmpty()
+        {
+            // Arrange
+            var content = new StringContent(@"giberish", Encoding.UTF8, "application/json");
+            var sut = new JsonProcessor(content);
+            var contentBuilder = new StringBuilder();
+            content.Dispose();
+
+            // Act
+            await sut.GetContentInfo(contentBuilder);
+
+            // Assert
+            contentBuilder.ToString().Should().BeEmpty();
+        }
     }
 }

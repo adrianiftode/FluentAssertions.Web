@@ -924,7 +924,7 @@ Host: localhost
                 Content = new StringContent("", Encoding.UTF8),
                 RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
                 {
-                    Content = new StringContent("Some content."),
+                    Content = new StringContent("Some content.", Encoding.UTF8, "application/json"),
                 }
             };
             subject.RequestMessage.Content.Dispose();
@@ -949,7 +949,7 @@ Host: localhost
                 Content = new StringContent("", Encoding.UTF8),
                 RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
                 {
-                    Content = new StringContent("Some content."),
+                    Content = new StringContent("Some content.", Encoding.UTF8, "application/json")
                 }
             };
             subject.RequestMessage.Dispose();

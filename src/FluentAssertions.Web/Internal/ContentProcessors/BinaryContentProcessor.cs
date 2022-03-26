@@ -33,11 +33,11 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
     internal class BinaryContentProcessor : ProcessorBase
     {
-        private readonly HttpContent _httpContent;
+        private readonly HttpContent? _httpContent;
         private readonly Func<HttpContent, bool> _canHandlePredicate;
         private readonly string _dataType;
 
-        public BinaryContentProcessor(HttpContent httpContent, Func<HttpContent, bool> canHandlePredicate, string dataType)
+        public BinaryContentProcessor(HttpContent? httpContent, Func<HttpContent, bool> canHandlePredicate, string dataType)
         {
             _httpContent = httpContent;
             _canHandlePredicate = canHandlePredicate;
@@ -46,14 +46,16 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
         protected override Task Handle(StringBuilder contentBuilder)
         {
-            var contentLength = _httpContent.Headers?.ContentLength ?? (_httpContent.TryGetContentLength(out var length) ? length : 0);
+            _httpContent!.TryGetContentLength(out var contentLength);
 
             contentBuilder.AppendLine(string.Format(ContentFormatterOptions.ContentIsSomeTypeHavingLength, _dataType, contentLength));
 
             return Task.CompletedTask;
         }
 
-        protected override bool CanHandle() => _canHandlePredicate(_httpContent);
+        protected override bool CanHandle() => _httpContent != null 
+                                               && !_httpContent.IsDisposed() 
+                                               && _canHandlePredicate(_httpContent);
 
         protected static bool? IsApplicationOctetStream(HttpContent? content)
         {

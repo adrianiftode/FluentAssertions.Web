@@ -3,7 +3,6 @@ using FluentAssertions.Web.Internal;
 using FluentAssertions.Web.Internal.ContentProcessors;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +42,7 @@ namespace FluentAssertions.Web
         {
             AppendProtocolAndStatusCode(messageBuilder, response);
             Appender.AppendHeaders(messageBuilder, response.GetHeaders());
-            AppendContentLength(messageBuilder, response);
+            AppendContentLength(messageBuilder, response.Content);
             await AppendResponseContent(messageBuilder, response);
         }
 
@@ -62,7 +61,7 @@ namespace FluentAssertions.Web
             messageBuilder.AppendLine($"{request.Method.ToString().ToUpper()} {request.RequestUri} HTTP {request.Version}");
 
             Appender.AppendHeaders(messageBuilder, request.GetHeaders());
-            AppendContentLength(messageBuilder, request);
+            AppendContentLength(messageBuilder, request.Content);
 
             messageBuilder.AppendLine();
 
@@ -98,23 +97,10 @@ namespace FluentAssertions.Web
             messageBuilder.AppendLine($@"HTTP/{response.Version} {(int)response.StatusCode} {response.StatusCode}");
         }
 
-        private static void AppendContentLength(StringBuilder messageBuilder, HttpResponseMessage response)
+        private static void AppendContentLength(StringBuilder messageBuilder, HttpContent content)
         {
-            if (!response.GetHeaders().Any(c => string.Equals(c.Key, "Content-Length", StringComparison.OrdinalIgnoreCase)))
-            {
-                messageBuilder.AppendLine($"Content-Length: {response.Content?.Headers.ContentLength ?? 0}");
-            }
-        }
-
-        private static void AppendContentLength(StringBuilder messageBuilder, HttpRequestMessage request)
-        {
-            if (!request.GetHeaders()
-                .Any(c => string.Equals(c.Key, "Content-Length", StringComparison.OrdinalIgnoreCase))
-            )
-            {
-                request.Content.TryGetContentLength(out long contentLength);
-                messageBuilder.AppendLine($"Content-Length: {contentLength}");
-            }
+            content.TryGetContentLength(out var length);
+            messageBuilder.AppendLine($"Content-Length: {length}");
         }
     }
 }

@@ -7,15 +7,15 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 {
     internal class MultipartProcessor : ProcessorBase
     {
-        private readonly HttpContent _httpContent;
-        public MultipartProcessor(HttpContent httpContent)
+        private readonly HttpContent? _httpContent;
+        public MultipartProcessor(HttpContent? httpContent)
         {
             _httpContent = httpContent;
         }
 
         protected override async Task Handle(StringBuilder contentBuilder)
         {
-            var multipartContent = (MultipartFormDataContent)_httpContent;
+            var multipartContent = (MultipartFormDataContent)_httpContent!;
             var boundary = multipartContent.Headers?.ContentType?.Parameters.FirstOrDefault(c => c.Name == "boundary")?.Value?.Trim('\"');
 
             foreach (var content in multipartContent)
