@@ -1,4 +1,4 @@
-﻿using FluentAssertions.Formatting;
+using FluentAssertions.Formatting;
 using FluentAssertions.Web.Internal;
 using System;
 using System.Collections.Generic;
@@ -166,6 +166,35 @@ Content-Length:*
 The originated HTTP request was <null>.*");
         }
 
+        [Fact]
+        public void GivenResponseWithJsonContainsNonEnglishChars_ShouldNotEscaped()
+        {
+            // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(
+                    @"{""message"":""папка""}",
+                    Encoding.UTF8, "application/json")
+            };
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            sut.Format(subject, formattedGraph, null!, null!);
+
+            // Assert
+            var formatted = formattedGraph.ToString();
+            formatted.Should().Match(@"*
+The HTTP response was:*
+HTTP/1.1 200 OK*
+Content-Type: application/json; charset=utf-8*
+Content-Length:*
+{*
+  ""message"": ""папка""
+}*
+The originated HTTP request was <null>.*");
+        }
+        
         [Fact]
         public void GivenResponseWithMinifiedJson_ShouldPrintFormattedJson()
         {
