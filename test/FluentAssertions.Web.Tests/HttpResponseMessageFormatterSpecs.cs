@@ -3,10 +3,12 @@ using FluentAssertions.Web.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace FluentAssertions.Web.Tests
@@ -981,7 +983,7 @@ Host: localhost
             // Assert
             var formatted = formattedGraph.ToString();
             formatted.Should().Match(
-                @"*Content is of a binary data type having the length 1.*");
+                @"*Content is of a binary encoded like type having the length 1.*");
         }
 
         [Fact]
@@ -1004,7 +1006,7 @@ Host: localhost
             // Assert
             var formatted = formattedGraph.ToString();
             formatted.Should().Match(
-                @"*Content is of a binary data type having the length 1.*");
+                @"*Content is of a binary encoded like type having the length 1.*");
         }
 
         [Fact]
@@ -1031,7 +1033,7 @@ Host: localhost
             // Assert
             var formatted = formattedGraph.ToString();
             formatted.Should().Match(
-                @"*Content is of a stream type having the length 1.*");
+                @"*Content is of a binary encoded like type having the length 1.*");
         }
 
         [Fact]
@@ -1061,7 +1063,7 @@ Host: localhost
             // Assert
             var formatted = formattedGraph.ToString();
             formatted.Should().Match(
-                @"*Content is of a stream type having the length 1.*");
+                @"*Content is of a binary encoded like type having the length 1.*");
         }
 
         [Fact(Skip = "Don't know how to handle this yet.")]
@@ -1082,7 +1084,7 @@ Host: localhost
             // Assert
             var formatted = formattedGraph.ToString();
             formatted.Should().Match(
-                @"*Content is of a binary data type having the length 1.*");
+                @"*Content is of a binary encoded like type having the length 1.*");
         }
 
         [Fact(Skip = "Don't know how to handle this yet.")]
@@ -1106,7 +1108,7 @@ Host: localhost
             // Assert
             var formatted = formattedGraph.ToString();
             formatted.Should().Match(
-                @"*Content is of a binary data type having the length 1.*");
+                @"*Content is of a binary encoded like type having the length 1.*");
         }
 
         [Fact]
@@ -1168,8 +1170,57 @@ Host: localhost
             var formatted = formattedGraph.ToString();
             formatted.Should()
                 .Match(@"*key1=value1&key2=value2*")
-                .And.Match(@"*Content is of a binary data type having the length 1.*")
-                .And.Match(@"*a-file-name.jpg*Content is of a binary data type having the length 2.*")
+                .And.Match(@"*Content is of a binary encoded like type having the length 1.*")
+                .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
+                .And.Match(@"*plain/text*some string content*")
+                ;
+        }
+
+        [Fact]
+        public async Task GivenMultipartFormDataResponse_AsStreamContent_ShouldPrintAsSingleParts()
+        {
+            // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+            var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
+            {
+                new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string?, string?>("key1", "value1"),
+                    new KeyValuePair<string?, string?>("key2", "value2")
+                }),
+                {new ByteArrayContent(new byte[1]), "ByteArray"},
+                {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
+                new StringContent("some string content", Encoding.UTF8, "plain/text")
+            };
+
+            var stream = await content.ReadAsStreamAsync();
+            var streamContent = new StreamContent(stream);
+
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = content
+            };
+
+            var contentHeaders = subject.Content.Headers.Select(c => new { c.Key, c.Value }).ToArray();
+
+            subject.Content = streamContent;
+
+            foreach (var header in contentHeaders)
+            {
+                subject.Content.Headers.Add(header.Key, header.Value);
+            }
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            sut.Format(subject, formattedGraph, null!, null!);
+
+            // Assert
+            var formatted = formattedGraph.ToString();
+            formatted.Should()
+                .Match(@"*key1=value1&key2=value2*")
+                .And.Match(@"*Content-Disposition: form-data; name=ByteArray*") // ByteArrayContent is also presented as a StreamContent so the FallbackProcessor will handle it
+                .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
                 .And.Match(@"*plain/text*some string content*")
                 ;
         }
@@ -1208,10 +1259,61 @@ Host: localhost
             var formatted = formattedGraph.ToString();
             formatted.Should()
                 .Match(@"*key1=value1&key2=value2*")
-                .And.Match(@"*Content is of a binary data type having the length 1.*")
-                .And.Match(@"*a-file-name.jpg*Content is of a binary data type having the length 2.*")
+                .And.Match(@"*Content is of a binary encoded like type having the length 1.*")
+                .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
                 .And.Match(@"*plain/text*some string content*")
                 ;
+        }
+
+        [Fact]
+        public async Task GivenMultipartFormDataRequest_AsStreamContent_ShouldPrintAsSingleParts()
+        {
+            // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+            var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
+            {
+                new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string?, string?>("key1", "value1"),
+                    new KeyValuePair<string?, string?>("key2", "value2")
+                }),
+                {new ByteArrayContent(new byte[1]), "ByteArray"},
+                {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
+                new StringContent("some string content", Encoding.UTF8, "plain/text")
+            };
+
+            var stream = await content.ReadAsStreamAsync();
+            var streamContent = new StreamContent(stream);
+
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                RequestMessage = new HttpRequestMessage
+                {
+                    Content = content
+                }
+            };
+
+            var contentHeaders = subject.RequestMessage.Content.Headers.Select(c => new { c.Key, c.Value }).ToArray();
+
+            subject.RequestMessage.Content = streamContent;
+
+            foreach (var header in contentHeaders)
+            {
+                subject.RequestMessage.Content.Headers.Add(header.Key, header.Value);
+            }
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            sut.Format(subject, formattedGraph, null!, null!);
+
+            // Assert
+            var formatted = formattedGraph.ToString();
+            formatted.Should()
+                .Match(@"*key1=value1&key2=value2*")
+                .And.Match(@"*Content-Disposition: form-data; name=ByteArray*") // ByteArrayContent is also presented as a StreamContent so the FallbackProcessor will handle it
+                .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
+                .And.Match(@"*plain/text*some string content*");
         }
 
         [Fact]
@@ -1219,9 +1321,11 @@ Host: localhost
         {
             // Arrange
             var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+            var whatShouldBePrinted = new string('-', ContentFormatterOptions.MaximumReadableBytes);
+            var whatNotShouldBePrinted = new string('+', 100);
             using var subject = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(new string('-', ContentFormatterOptions.MaximumReadableBytes + 1) + "end")
+                Content = new StringContent(whatShouldBePrinted + whatNotShouldBePrinted)
             };
 
             var sut = new HttpResponseMessageFormatter();
@@ -1232,7 +1336,8 @@ Host: localhost
             // Assert
             var formatted = formattedGraph.ToString();
             formatted.Should().Match("*Content is too large to display*")
-                .And.Contain(new string('-', 500));
+                .And.Contain(whatShouldBePrinted)
+                .And.NotContain(whatNotShouldBePrinted);
         }
     }
 }

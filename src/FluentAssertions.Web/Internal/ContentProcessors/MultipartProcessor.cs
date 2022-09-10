@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +17,31 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
         protected override async Task Handle(StringBuilder contentBuilder)
         {
-            var multipartContent = (MultipartFormDataContent)_httpContent!;
-            var boundary = multipartContent.Headers?.ContentType?.Parameters.FirstOrDefault(c => c.Name == "boundary")?.Value?.Trim('\"');
+            IEnumerable<HttpContent>? multipartContent = null;
+            if (_httpContent is MultipartFormDataContent dataContent)
+            {
+                multipartContent = dataContent;
+            }
+            else
+            {
+                if (_httpContent is StreamContent streamContent)
+                {
+                    var stream = await streamContent.ReadAsStreamAsync();
+                    if (stream.CanSeek)
+                    {
+                        stream.Seek(0, SeekOrigin.Begin);
+                    }
+
+                    multipartContent = (await _httpContent.ReadAsMultipartAsync(new MultipartMemoryStreamProvider())).Contents;
+                }
+            }
+
+            if (multipartContent == null)
+            {
+                return;
+            }
+
+            var boundary = GetBoundary();
 
             foreach (var content in multipartContent)
             {
@@ -25,15 +50,25 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
                 Appender.AppendHeaders(contentBuilder, content.Headers);
 
-                await Appender.AppendContent(contentBuilder, content);
-
-                contentBuilder.AppendLine();
+                await Appender.AppendContent(contentBuilder, content, true);
             }
 
             contentBuilder.AppendLine();
             contentBuilder.AppendLine($"{boundary}--");
         }
 
-        protected override bool CanHandle() => _httpContent is MultipartContent;
+        protected override bool CanHandle()
+        {
+            if (_httpContent is MultipartContent)
+            {
+                return true;
+            }
+
+            var boundary = GetBoundary();
+
+            return !string.IsNullOrEmpty(boundary);
+        }
+
+        private string? GetBoundary() => _httpContent?.Headers?.ContentType?.Parameters.FirstOrDefault(c => c.Name == "boundary")?.Value?.Trim('\"');
     }
 }

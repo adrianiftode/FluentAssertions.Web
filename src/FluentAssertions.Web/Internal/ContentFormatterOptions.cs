@@ -2,11 +2,9 @@
 {
     internal static class ContentFormatterOptions
     {
-        private const int KilobytesInMegabyte = 1024;
-        public const int MaximumReadableBytes = (int)(0.25 * 1000) * KilobytesInMegabyte;
-        public const int MaximumPrintableBytes = 10 * KilobytesInMegabyte;
+        public const int MaximumReadableBytes = 1024; // 1KB holds like 500 words
         public const string WarningMessageWhenDisposed = "***** Content is disposed so it cannot be read. *****";
-        public const string WarningMessageWhenContentIsTooLarge = "***** Content is too large to display and only a part of it it is printed. *****";
-        public const string ContentIsSomeTypeHavingLength = "***** Content is of a {0} type having the length {1}. *****";
+        public const string WarningMessageWhenContentIsTooLarge = "***** Content is too large to display and only a part is printed. *****";
+        public const string ContentIsOfABinaryEncodedTypeHavingLength = "***** Content is of a binary encoded like type having the length {0}. *****";
     }
 }

@@ -1,7 +1,10 @@
-﻿using FluentAssertions.Web.Internal;
+﻿using System.IO;
+using FluentAssertions.Web.Internal;
 using FluentAssertions.Web.Internal.ContentProcessors;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -83,6 +86,48 @@ namespace FluentAssertions.Web.Tests.Internal.ContentProcessors
             // Assert
             contentBuilder.ToString().Should().Match(
                 @"*Content is disposed so it cannot be read.*");
+        }
+
+        [Fact]
+        public async Task GivenStreamResponse_WhenGetContentInfo_ThenTryToPrint()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StreamContent(new MemoryStream(new byte[1]))
+                {
+                    Headers =
+                    {
+                        ContentType = new MediaTypeHeaderValue("image/jpeg")
+                    }
+                }
+            };
+            var sut = new FallbackProcessor(subject.Content);
+            var contentBuilder = new StringBuilder();
+
+            // Act
+            await sut.GetContentInfo(contentBuilder);
+
+            // Assert
+            contentBuilder.ToString().Should().NotBeNullOrEmpty();
+        }
+
+        [Fact]
+        public async Task GivenByteArrayResponse_WhenGetContentInfo_ThenTryToPrint()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(new byte[1])
+            };
+            var sut = new FallbackProcessor(subject.Content);
+            var contentBuilder = new StringBuilder();
+
+            // Act
+            await sut.GetContentInfo(contentBuilder);
+
+            // Assert
+            contentBuilder.ToString().Should().NotBeNullOrEmpty();
         }
     }
 }

@@ -11,19 +11,27 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
         {
             foreach (var header in headers)
             {
-                foreach (var headerValue in header.Value)
+                if (header.Key != "Content-Length")
                 {
-                    messageBuilder.AppendLine($"{header.Key}: {headerValue}");
+                    foreach (var headerValue in header.Value)
+                    {
+                        messageBuilder.AppendLine($"{header.Key}: {headerValue}");
+                    }
                 }
             }
         }
-        public static async Task AppendContent(StringBuilder contentBuilder, HttpContent content)
+
+        public static async Task AppendContent(StringBuilder contentBuilder, HttpContent content, bool appendLineBeforeContent)
         {
             var partContentBuilder = await ProcessorsRunner.RunProcessors(ProcessorsRunner.CommonProcessors(content));
 
             if (partContentBuilder.Length > 0)
             {
-                contentBuilder.AppendLine();
+                if (appendLineBeforeContent)
+                {
+                    contentBuilder.AppendLine();
+                }
+
                 contentBuilder.Append(partContentBuilder);
             }
         }

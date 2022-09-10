@@ -1,4 +1,6 @@
 <Project>
+  <Import Project="common.dependencies.props" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IsPackable>true</IsPackable>
@@ -10,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.5.1" />
+    <PackageReference Include="FluentAssertions" Version="$(Fluent-Assertions)" />
   </ItemGroup>
 
 </Project>

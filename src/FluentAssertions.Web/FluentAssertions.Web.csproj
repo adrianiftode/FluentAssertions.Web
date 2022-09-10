@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="5.0.1" />
+    <PackageReference Include="System.Text.Json" Version="$(System-Text-Json)" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="$(Microsoft-AspNet-WebApi-Client)" />
   </ItemGroup>
+
 </Project>
