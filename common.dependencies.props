@@ -4,7 +4,7 @@
     <Fluent-Assertions>6.5.1</Fluent-Assertions>
     <Microsoft-AspNet-WebApi-Client>5.2.4</Microsoft-AspNet-WebApi-Client>
     <Newtonsoft-Json>10.0.1</Newtonsoft-Json>
-    <System-Text-Json>5.0.1</System-Text-Json>
+    <System-Text-Json>5.0.2</System-Text-Json>
   </PropertyGroup>
 
 </Project>
