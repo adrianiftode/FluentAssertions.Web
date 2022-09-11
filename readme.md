@@ -281,7 +281,9 @@ NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConver
 | **Should().Be415UnsupportedMediaType()**  | Asserts that a HTTP response has the HTTP status 415 Unsupported Media Type  | 
 | **Should().Be416RequestedRangeNotSatisfiable()**  | Asserts that a HTTP response has the HTTP status 416 Requested Range Not Satisfiable  | 
 | **Should().Be417ExpectationFailed()**  | Asserts that a HTTP response has the HTTP status 417 Expectation Failed  | 
+| **Should().Be422UnprocessableEntity()**  | Asserts that a HTTP response has the HTTP status 422 Unprocessable Entity  | 
 | **Should().Be426UpgradeRequired()**  | Asserts that a HTTP response has the HTTP status 426 UpgradeRequired  | 
+| **Should().Be429TooManyRequests()**  | Asserts that a HTTP response has the HTTP status 422 Too Many Requests  | 
 | **Should().Be500InternalServerError()**  | Asserts that a HTTP response has the HTTP status 500 Internal Server Error  | 
 | **Should().Be501NotImplemented()**  | Asserts that a HTTP response has the HTTP status 501 Not Implemented  | 
 | **Should().Be502BadGateway()**  | Asserts that a HTTP response has the HTTP status 502 Bad Gateway  | 
