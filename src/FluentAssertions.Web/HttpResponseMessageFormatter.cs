@@ -24,8 +24,6 @@ namespace FluentAssertions.Web
             var messageBuilder = new StringBuilder();
             messageBuilder.AppendLine();
             messageBuilder.AppendLine();
-            messageBuilder.AppendLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            messageBuilder.AppendLine();
             messageBuilder.AppendLine("The HTTP response was:");
 
             Func<Task> contentResolver = async () => await AppendHttpResponseMessage(messageBuilder, response);
@@ -54,7 +52,6 @@ namespace FluentAssertions.Web
                 messageBuilder.AppendLine();
                 messageBuilder.AppendLine($"An exception occurred while trying to output some of the request details: {e}");
             }
-            messageBuilder.AppendLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         }
 
         private static async Task AppendResponse(StringBuilder messageBuilder, HttpResponseMessage response)
@@ -67,9 +64,6 @@ namespace FluentAssertions.Web
 
         private static async Task AppendRequest(StringBuilder messageBuilder, HttpResponseMessage response)
         {
-            messageBuilder.AppendLine();
-            messageBuilder.AppendLine();
-            messageBuilder.AppendLine("~~~~~~~~~~~~~~~");
             messageBuilder.AppendLine();
             var request = response.RequestMessage;
             if (request == null)
