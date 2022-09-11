@@ -186,15 +186,7 @@ The originated HTTP request was <null>.*");
 
             // Assert
             var formatted = formattedGraph.ToString();
-            formatted.Should().Match(@"*
-The HTTP response was:*
-HTTP/1.1 200 OK*
-Content-Type: application/json; charset=utf-8*
-Content-Length:*
-{*
-  ""message"": ""папка""
-}*
-The originated HTTP request was <null>.*");
+            formatted.Should().Match(@"*The HTTP response wa*""папка""*The originated HTTP request was <null>.*");
         }
         
         [Fact]
