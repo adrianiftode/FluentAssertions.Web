@@ -160,7 +160,7 @@ namespace FluentAssertions.Web
         }
         #endregion
 
-        #region HaveHtppStatus
+        #region HaveHttpStatus
         /// <summary>
         /// Asserts that a HTTP response has a HTTP status with the specified code.
         /// </summary>
@@ -191,7 +191,7 @@ namespace FluentAssertions.Web
         }
         #endregion
 
-        #region NotHaveHtppStatus
+        #region NotHaveHttpStatus
         /// <summary>
         /// Asserts that a HTTP response does not have a HTTP status with the specified code.
         /// </summary>
@@ -1258,6 +1258,58 @@ namespace FluentAssertions.Web
             Execute.Assertion
                 .BecauseOf(because, becauseArgs)
                 .ForCondition(HttpStatusCode.ExpectationFailed == Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.ExpectationFailed, Subject!.StatusCode, Subject);
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+
+        /// <summary>
+        /// Asserts that a HTTP response has the HTTP status 422 UnprocessableEntity
+        /// </summary>        
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        [CustomAssertion]
+        public AndConstraint<HttpResponseMessageAssertions> Be422UnprocessableEntity(string because = "", params object[] becauseArgs)
+        {
+            Execute.Assertion
+                .ForCondition(Subject is not null)
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(422 == (int)Subject!.StatusCode)
+                .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                    , HttpStatusCode.ExpectationFailed, Subject!.StatusCode, Subject);
+            return new AndConstraint<HttpResponseMessageAssertions>(this);
+        }
+
+        /// <summary>
+        /// Asserts that a HTTP response has the HTTP status 429 TooManyRequests
+        /// </summary>        
+        /// <param name="because">
+        /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+        /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+        /// </param>
+        /// <param name="becauseArgs">
+        /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+        /// </param>
+        [CustomAssertion]
+        public AndConstraint<HttpResponseMessageAssertions> Be429TooManyRequests(string because = "", params object[] becauseArgs)
+        {
+            Execute.Assertion
+                .ForCondition(Subject is not null)
+                .BecauseOf(because, becauseArgs)
+                .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+            Execute.Assertion
+                .BecauseOf(because, becauseArgs)
+                .ForCondition(429 == (int)Subject!.StatusCode)
                 .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                     , HttpStatusCode.ExpectationFailed, Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
