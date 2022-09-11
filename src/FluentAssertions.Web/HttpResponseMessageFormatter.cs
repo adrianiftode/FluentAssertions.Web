@@ -24,6 +24,8 @@ namespace FluentAssertions.Web
             var messageBuilder = new StringBuilder();
             messageBuilder.AppendLine();
             messageBuilder.AppendLine();
+            messageBuilder.AppendLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            messageBuilder.AppendLine();
             messageBuilder.AppendLine("The HTTP response was:");
 
             Func<Task> contentResolver = async () => await AppendHttpResponseMessage(messageBuilder, response);
@@ -34,8 +36,25 @@ namespace FluentAssertions.Web
 
         private static async Task AppendHttpResponseMessage(StringBuilder messageBuilder, HttpResponseMessage response)
         {
-            await AppendResponse(messageBuilder, response);
-            await AppendRequest(messageBuilder, response);
+            try
+            {
+                await AppendResponse(messageBuilder, response);
+            }
+            catch (Exception e)
+            {
+                messageBuilder.AppendLine();
+                messageBuilder.AppendLine($"An exception occurred while trying to output the some of the response details: {e}");
+            }
+            try
+            {
+                await AppendRequest(messageBuilder, response);
+            }
+            catch (Exception e)
+            {
+                messageBuilder.AppendLine();
+                messageBuilder.AppendLine($"An exception occurred while trying to output some of the request details: {e}");
+            }
+            messageBuilder.AppendLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         }
 
         private static async Task AppendResponse(StringBuilder messageBuilder, HttpResponseMessage response)
@@ -48,8 +67,11 @@ namespace FluentAssertions.Web
 
         private static async Task AppendRequest(StringBuilder messageBuilder, HttpResponseMessage response)
         {
-            var request = response.RequestMessage;
             messageBuilder.AppendLine();
+            messageBuilder.AppendLine();
+            messageBuilder.AppendLine("~~~~~~~~~~~~~~~");
+            messageBuilder.AppendLine();
+            var request = response.RequestMessage;
             if (request == null)
             {
                 messageBuilder.AppendLine("The originated HTTP request was <null>.");
@@ -62,8 +84,6 @@ namespace FluentAssertions.Web
 
             Appender.AppendHeaders(messageBuilder, request.GetHeaders());
             AppendContentLength(messageBuilder, request.Content);
-
-            messageBuilder.AppendLine();
 
             await AppendRequestContent(messageBuilder, request.Content);
         }
@@ -87,9 +107,8 @@ namespace FluentAssertions.Web
 
         private static async Task AppendRequestContent(StringBuilder messageBuilder, HttpContent content)
         {
-            await Appender.AppendContent(messageBuilder, content);
+            await Appender.AppendContent(messageBuilder, content, false);
         }
-
 
         private static void AppendProtocolAndStatusCode(StringBuilder messageBuilder, HttpResponseMessage response)
         {

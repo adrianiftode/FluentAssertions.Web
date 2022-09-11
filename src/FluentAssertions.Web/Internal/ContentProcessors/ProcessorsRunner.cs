@@ -21,8 +21,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
         public static IReadOnlyCollection<IContentProcessor> CommonProcessors(HttpContent content) => new IContentProcessor[]
         {
             new JsonProcessor(content),
-            new StreamProcessor(content),
-            new ByteArrayContentProcessor(content),
+            new BinaryProcessor(content),
             new MultipartProcessor(content),
             new FallbackProcessor(content)
         };

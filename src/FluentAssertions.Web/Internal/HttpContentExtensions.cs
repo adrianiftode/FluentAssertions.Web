@@ -26,8 +26,13 @@ namespace FluentAssertions.Web.Internal
         public static Task<T?> ReadAsAsync<T>(this HttpContent content, T _, ISerializer serializer) 
             => content.ReadAsAsync<T>(serializer);
 
-        public static bool IsDisposed(this HttpContent content)
+        public static bool IsDisposed(this HttpContent? content)
         {
+            if (content == null)
+            {
+                return true;
+            }
+
             try
             {
                 var _ = content?.Headers?.ContentLength;
@@ -39,11 +44,11 @@ namespace FluentAssertions.Web.Internal
             }
         }
 
-        public static bool TryGetContentLength(this HttpContent content, out long length)
+        public static bool TryGetContentLength(this HttpContent? content, out long length)
         {
             try
             {
-                length = content.Headers?.ContentLength ?? 0;
+                length = content?.Headers?.ContentLength ?? 0;
                 return true;
             }
             catch (Exception)
@@ -53,11 +58,11 @@ namespace FluentAssertions.Web.Internal
             }
         }
 
-        public static bool TryGetContentTypeMediaType(this HttpContent content, out string? mediaType)
+        public static bool TryGetContentTypeMediaType(this HttpContent? content, out string? mediaType)
         {
             try
             {
-                mediaType = content.Headers?.ContentType?.MediaType;
+                mediaType = content?.Headers?.ContentType?.MediaType;
                 return true;
             }
             catch (Exception)
@@ -67,8 +72,13 @@ namespace FluentAssertions.Web.Internal
             }
         }
 
-        public static async Task<string?> SafeReadAsStringAsync(this HttpContent content, string? defaultMessage = null)
+        public static async Task<string?> SafeReadAsStringAsync(this HttpContent? content, string? defaultMessage = null)
         {
+            if (content == null)
+            {
+                return null;
+            }
+
             try
             {
                 var stream = await content.ReadAsStreamAsync();
