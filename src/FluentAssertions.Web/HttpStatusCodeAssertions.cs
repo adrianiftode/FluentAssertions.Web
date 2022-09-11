@@ -1285,7 +1285,7 @@ namespace FluentAssertions.Web
                 .BecauseOf(because, becauseArgs)
                 .ForCondition(422 == (int)Subject!.StatusCode)
                 .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
-                    , HttpStatusCode.ExpectationFailed, Subject!.StatusCode, Subject);
+                    , "HttpStatusCode.UnprocessableEntity", Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
@@ -1311,7 +1311,7 @@ namespace FluentAssertions.Web
                 .BecauseOf(because, becauseArgs)
                 .ForCondition(429 == (int)Subject!.StatusCode)
                 .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
-                    , HttpStatusCode.ExpectationFailed, Subject!.StatusCode, Subject);
+                    , "HttpStatusCode.TooManyRequests", Subject!.StatusCode, Subject);
             return new AndConstraint<HttpResponseMessageAssertions>(this);
         }
 
