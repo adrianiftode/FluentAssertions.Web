@@ -1,13 +1,16 @@
-﻿using System.IO;
+using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal.ContentProcessors
 {
     internal class JsonProcessor : ProcessorBase
     {
+        private static readonly JavaScriptEncoder JavaScriptEncoder = JavaScriptEncoder.Create(UnicodeRanges.All);
         private readonly HttpContent? _httpContent;
         public JsonProcessor(HttpContent? httpContent)
         {
@@ -40,7 +43,8 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
                 using var stream = new MemoryStream();
                 var writer = new Utf8JsonWriter(stream, new JsonWriterOptions
                 {
-                    Indented = true
+                    Indented = true,
+                    Encoder = JavaScriptEncoder,
                 });
                 jsonDocument.WriteTo(writer);
                 await writer.FlushAsync();
