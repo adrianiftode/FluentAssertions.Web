@@ -30,6 +30,25 @@ namespace Sample.Api.Tests
             response.Should().Be200Ok();
         }
 
+        [Theory]
+        [InlineData(1)]
+        [InlineData(10)]
+        [InlineData(50)]
+        [InlineData(100)]
+        [InlineData(1000)] // this is not truncated
+        [InlineData(2000)] // this is not truncated
+        public async Task GetData_ReturnsOkResponse(int howMuchData)
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync($"/api/values/generated/{howMuchData}");
+
+            // Assert
+            response.Should().Be200Ok();
+        }
+
         [Fact]
         public async Task Get_WithId_ReturnsOkResponse()
         {
@@ -49,7 +68,7 @@ namespace Sample.Api.Tests
             // Arrange
             var client = _factory.CreateClient();
             client.DefaultRequestHeaders
-                .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // Act
             var response = await client.GetAsync("/api/values/1");
@@ -74,18 +93,18 @@ namespace Sample.Api.Tests
 #endif
 
 #if NETCOREAPP3_0 || NETCOREAPP3_1
-        [Fact]
-        public async Task Patch_ReturnsMethodNotAllowed()
-        {
-            // Arrange
-            var client = _factory.CreateClient();
+                [Fact]
+                public async Task Patch_ReturnsMethodNotAllowed()
+                {
+                        // Arrange
+                        var client = _factory.CreateClient();
 
-            // Act
-            var response = await client.PatchAsync("/api/values", new StringContent("", Encoding.UTF32, "application/json"));
+                        // Act
+                        var response = await client.PatchAsync("/api/values", new StringContent("", Encoding.UTF32, "application/json"));
 
-            // Assert
-            response.Should().Be405MethodNotAllowed();
-        }
+                        // Assert
+                        response.Should().Be405MethodNotAllowed();
+                }
 #endif
 
         [Fact]
@@ -112,11 +131,11 @@ namespace Sample.Api.Tests
 
             // Assert
 #if NETCOREAPP2_2 || NET5_0_OR_GREATER
-            response.Should().Be400BadRequest()
-                .And.HaveErrorMessage("A non-empty request body is required.");
+                        response.Should().Be400BadRequest()
+                                .And.HaveErrorMessage("A non-empty request body is required.");
 #elif NETCOREAPP3_0 || NETCOREAPP3_1
-            response.Should().Be400BadRequest()
-                .And.HaveErrorMessage("*The input does not contain any JSON tokens*");
+                        response.Should().Be400BadRequest()
+                                .And.HaveErrorMessage("*The input does not contain any JSON tokens*");
 #endif
         }
 
