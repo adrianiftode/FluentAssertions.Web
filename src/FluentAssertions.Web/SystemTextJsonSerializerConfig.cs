@@ -17,7 +17,7 @@ namespace FluentAssertions
         {
             AllowTrailingCommas = true,
             PropertyNameCaseInsensitive = true,
-            Converters = { new JsonStringEnumConverter(), new NullableConverterFactory() },
+            Converters = { new JsonStringEnumConverter(), new NullableConverterFactory(), new EmptyArrayToObjectConverterFactory() },
             NumberHandling = JsonNumberHandling.AllowReadingFromString
         };
     }

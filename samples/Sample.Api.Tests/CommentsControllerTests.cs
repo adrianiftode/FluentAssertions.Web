@@ -35,14 +35,14 @@ namespace Sample.Api.Tests
             });
         }
 
-        [Fact]
+    [Fact]
         public async Task Get_WithCommentId_Returns_Ok_With_The_Expected_Comment()
         {
             // Arrange
             var client = _factory.CreateClient();
 
             // Act
-            var response = await client.GetAsync("/api/comments/1");
+            var response = await client.GetAsync("/api/comments");
 
             // Assert
             response.Should().Be200Ok().And.BeAs(new
