@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sample.Api.Controllers
 {
@@ -10,6 +12,16 @@ namespace Sample.Api.Controllers
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get() => new string[] { "value1", "value2" };
+
+        // GET api/values/generated/1
+        [HttpGet("generated/{howMuchData}")]
+        public ActionResult<IEnumerable<object>> GetData(int howMuchData) => Enumerable.Range(0, howMuchData).Select(c =>
+          new
+          {
+            item1 = c,
+            item2 = Guid.NewGuid(),
+            item3 = $"item-{Guid.NewGuid()}"
+          }).ToList();
 
         // GET api/values/5
         [HttpGet("{id}")]
