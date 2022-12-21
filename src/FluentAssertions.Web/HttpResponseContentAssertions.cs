@@ -70,20 +70,13 @@ namespace FluentAssertions.Web
                 .BecauseOf(because, becauseArgs)
                 .ForCondition(success)
                 .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
-                    expectedModelType?.ToString() ?? "unknown type", Subject, errorMessage);
+                    expectedModelType.ToString() ?? "unknown type", Subject, errorMessage);
 
             string[] failures;
 
             using (var scope = new AssertionScope())
             {
-                if (options != null)
-                {
-                    subjectModel.Should().BeEquivalentTo(expectedModel, options);
-                }
-                else
-                {
-                    subjectModel.Should().BeEquivalentTo(expectedModel);
-                }
+                subjectModel.Should().BeEquivalentTo(expectedModel, options);
 
                 failures = scope.Discard();
             }

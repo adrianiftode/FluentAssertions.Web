@@ -26,6 +26,11 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             {
                 if (content != null)
                 {
+                    if (content.CanSeek)
+                    {
+                        content.Seek(0, SeekOrigin.Begin);
+                    }
+
                     jsonDocument = await JsonDocument.ParseAsync(content, new JsonDocumentOptions
                     {
                         AllowTrailingCommas = true
