@@ -6,84 +6,83 @@ using System.Text.Json;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 
-namespace FluentAssertions.Web.Internal.ContentProcessors
+namespace FluentAssertions.Web.Internal.ContentProcessors;
+
+internal class JsonProcessor : ProcessorBase
 {
-    internal class JsonProcessor : ProcessorBase
+    private static readonly JavaScriptEncoder JavaScriptEncoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+    private readonly HttpContent? _httpContent;
+    public JsonProcessor(HttpContent? httpContent)
     {
-        private static readonly JavaScriptEncoder JavaScriptEncoder = JavaScriptEncoder.Create(UnicodeRanges.All);
-        private readonly HttpContent? _httpContent;
-        public JsonProcessor(HttpContent? httpContent)
-        {
-            _httpContent = httpContent;
-        }
+        _httpContent = httpContent;
+    }
 
-        protected override async Task Handle(StringBuilder contentBuilder)
-        {
-            var content = await _httpContent!.ReadAsStreamAsync();
+    protected override async Task Handle(StringBuilder contentBuilder)
+    {
+        var content = await _httpContent!.ReadAsStreamAsync();
 
-            JsonDocument? jsonDocument = null;
-            try
+        JsonDocument? jsonDocument = null;
+        try
+        {
+            if (content != null)
             {
-                if (content != null)
+                if (content.CanSeek)
                 {
-                    if (content.CanSeek)
-                    {
-                        content.Seek(0, SeekOrigin.Begin);
-                    }
-
-                    jsonDocument = await JsonDocument.ParseAsync(content, new JsonDocumentOptions
-                    {
-                        AllowTrailingCommas = true
-                    });
+                    content.Seek(0, SeekOrigin.Begin);
                 }
-            }
-            catch
-            {
-                // ignored
-            }
 
-            if (jsonDocument != null)
-            {
-                // write the JsonDocument into a MemoryStream as indented
-                using var stream = new MemoryStream();
-                var writer = new Utf8JsonWriter(stream, new JsonWriterOptions
+                jsonDocument = await JsonDocument.ParseAsync(content, new JsonDocumentOptions
                 {
-                    Indented = true,
-                    Encoder = JavaScriptEncoder,
+                    AllowTrailingCommas = true
                 });
-                jsonDocument.WriteTo(writer);
-                await writer.FlushAsync();
-
-                if (stream.CanSeek)
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                }
-
-                // get the string Json from the MemoryStream
-                using var streamReader = new StreamReader(stream, Encoding.UTF8);
-
-                var jsonString = await streamReader.ReadToEndAsync();
-                AppendContentWithinLimits(contentBuilder, jsonString);
-            }
-            else
-            {
-                // append the content as it is if it cannot be parsed as a json
-                var stringContent = await _httpContent.ReadAsStringAsync();
-                AppendContentWithinLimits(contentBuilder, stringContent);
             }
         }
-
-        protected override bool CanHandle()
+        catch
         {
-            if (_httpContent == null || _httpContent.IsDisposed())
+            // ignored
+        }
+
+        if (jsonDocument != null)
+        {
+            // write the JsonDocument into a MemoryStream as indented
+            using var stream = new MemoryStream();
+            var writer = new Utf8JsonWriter(stream, new JsonWriterOptions
             {
-                return false;
+                Indented = true,
+                Encoder = JavaScriptEncoder,
+            });
+            jsonDocument.WriteTo(writer);
+            await writer.FlushAsync();
+
+            if (stream.CanSeek)
+            {
+                stream.Seek(0, SeekOrigin.Begin);
             }
 
-            _httpContent.TryGetContentLength(out long length);
-            _httpContent.TryGetContentTypeMediaType(out var mediaType);
+            // get the string Json from the MemoryStream
+            using var streamReader = new StreamReader(stream, Encoding.UTF8);
 
-            return mediaType.EqualsCaseInsensitive("application/json") || mediaType.EqualsCaseInsensitive("application/problem+json");
+            var jsonString = await streamReader.ReadToEndAsync();
+            AppendContentWithinLimits(contentBuilder, jsonString);
         }
+        else
+        {
+            // append the content as it is if it cannot be parsed as a json
+            var stringContent = await _httpContent.ReadAsStringAsync();
+            AppendContentWithinLimits(contentBuilder, stringContent);
+        }
+    }
+
+    protected override bool CanHandle()
+    {
+        if (_httpContent == null || _httpContent.IsDisposed())
+        {
+            return false;
+        }
+
+        _httpContent.TryGetContentLength(out long length);
+        _httpContent.TryGetContentTypeMediaType(out var mediaType);
+
+        return mediaType.EqualsCaseInsensitive("application/json") || mediaType.EqualsCaseInsensitive("application/problem+json");
     }
 }

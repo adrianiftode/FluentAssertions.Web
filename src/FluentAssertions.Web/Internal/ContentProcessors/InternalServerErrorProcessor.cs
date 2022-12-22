@@ -4,73 +4,72 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentAssertions.Web.Internal.ContentProcessors
+namespace FluentAssertions.Web.Internal.ContentProcessors;
+
+internal class InternalServerErrorProcessor : ProcessorBase
 {
-    internal class InternalServerErrorProcessor : ProcessorBase
+    private readonly HttpResponseMessage? _httpResponseMessage;
+    private readonly HttpContent? _httpContent;
+
+    public InternalServerErrorProcessor(HttpResponseMessage? httpResponseMessage, HttpContent? httpContent)
     {
-        private readonly HttpResponseMessage? _httpResponseMessage;
-        private readonly HttpContent? _httpContent;
+        _httpResponseMessage = httpResponseMessage;
+        _httpContent = httpContent;
+    }
 
-        public InternalServerErrorProcessor(HttpResponseMessage? httpResponseMessage, HttpContent? httpContent)
+    protected override bool CanHandle() => _httpContent != null
+    && _httpResponseMessage != null 
+    && _httpResponseMessage.StatusCode == HttpStatusCode.InternalServerError 
+    && !_httpContent.IsDisposed();
+
+    protected override async Task Handle(StringBuilder contentBuilder)
+    {
+        var content = await _httpContent!.ReadAsStringAsync();
+
+        AspNetCore30(contentBuilder, content);
+
+        AspNetCore22(contentBuilder, content);
+    }
+
+    private static void AspNetCore30(StringBuilder contentBuilder, string? content)
+    {
+        if (string.IsNullOrEmpty(content))
         {
-            _httpResponseMessage = httpResponseMessage;
-            _httpContent = httpContent;
+            return;
         }
 
-        protected override bool CanHandle() => _httpContent != null
-        && _httpResponseMessage != null 
-        && _httpResponseMessage.StatusCode == HttpStatusCode.InternalServerError 
-        && !_httpContent.IsDisposed();
-
-        protected override async Task Handle(StringBuilder contentBuilder)
+        const string headersText = "HEADERS";
+        var headersIndex = content!.IndexOf(headersText, StringComparison.Ordinal);
+        if (headersIndex >= 0)
         {
-            var content = await _httpContent!.ReadAsStringAsync();
+            var exceptionDetails = content.Substring(0, headersIndex).Trim();
+            contentBuilder.Append(exceptionDetails);
+        }
+    }
 
-            AspNetCore30(contentBuilder, content);
-
-            AspNetCore22(contentBuilder, content);
+    private static void AspNetCore22(StringBuilder contentBuilder, string? content)
+    {
+        if (string.IsNullOrEmpty(content))
+        {
+            return;
         }
 
-        private static void AspNetCore30(StringBuilder contentBuilder, string? content)
+        const string startTag = @"<pre class=""rawExceptionStackTrace"">";
+        if (content!.Contains(startTag))
         {
-            if (string.IsNullOrEmpty(content))
+            var startTagIndex = content.LastIndexOf(startTag, StringComparison.Ordinal);
+            var endTagIndex = content.IndexOf("</pre>", startTagIndex, StringComparison.Ordinal);
+            if (endTagIndex < 0)
             {
+                // there is no end tag
                 return;
             }
 
-            const string headersText = "HEADERS";
-            var headersIndex = content!.IndexOf(headersText, StringComparison.Ordinal);
-            if (headersIndex >= 0)
-            {
-                var exceptionDetails = content.Substring(0, headersIndex).Trim();
-                contentBuilder.Append(exceptionDetails);
-            }
-        }
+            var exceptionDetails = content.Substring(startTagIndex + startTag.Length, endTagIndex - startTagIndex - startTag.Length);
 
-        private static void AspNetCore22(StringBuilder contentBuilder, string? content)
-        {
-            if (string.IsNullOrEmpty(content))
-            {
-                return;
-            }
+            exceptionDetails = WebUtility.HtmlDecode(exceptionDetails);
 
-            const string startTag = @"<pre class=""rawExceptionStackTrace"">";
-            if (content!.Contains(startTag))
-            {
-                var startTagIndex = content.LastIndexOf(startTag, StringComparison.Ordinal);
-                var endTagIndex = content.IndexOf("</pre>", startTagIndex, StringComparison.Ordinal);
-                if (endTagIndex < 0)
-                {
-                    // there is no end tag
-                    return;
-                }
-
-                var exceptionDetails = content.Substring(startTagIndex + startTag.Length, endTagIndex - startTagIndex - startTag.Length);
-
-                exceptionDetails = WebUtility.HtmlDecode(exceptionDetails);
-
-                contentBuilder.Append(exceptionDetails);
-            }
+            contentBuilder.Append(exceptionDetails);
         }
     }
 }

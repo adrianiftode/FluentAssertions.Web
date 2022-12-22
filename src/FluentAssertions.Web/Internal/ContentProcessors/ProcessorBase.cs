@@ -1,40 +1,39 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
 
-namespace FluentAssertions.Web.Internal.ContentProcessors
+namespace FluentAssertions.Web.Internal.ContentProcessors;
+
+internal abstract class ProcessorBase : IContentProcessor
 {
-    internal abstract class ProcessorBase : IContentProcessor
+    public async Task GetContentInfo(StringBuilder contentBuilder)
     {
-        public async Task GetContentInfo(StringBuilder contentBuilder)
+        if (!CanHandle())
         {
-            if (!CanHandle())
-            {
-                return;
-            }
-
-            await Handle(contentBuilder);
+            return;
         }
 
-        protected abstract bool CanHandle();
-        protected abstract Task Handle(StringBuilder contentBuilder);
-        protected void AppendContentWithinLimits(StringBuilder contentBuilder, string? content)
+        await Handle(contentBuilder);
+    }
+
+    protected abstract bool CanHandle();
+    protected abstract Task Handle(StringBuilder contentBuilder);
+    protected void AppendContentWithinLimits(StringBuilder contentBuilder, string? content)
+    {
+        if (content == null)
         {
-            if (content == null)
-            {
-                return;
-            }
-
-            var toAppend = content;
-            var contentLength = content.Length;
-
-            if (contentLength >= ContentFormatterOptions.MaximumReadableBytes)
-            {
-                contentBuilder.AppendLine();
-                contentBuilder.AppendLine(ContentFormatterOptions.WarningMessageWhenContentIsTooLarge);
-                toAppend = content!.Substring(0, ContentFormatterOptions.MaximumReadableBytes);
-            }
-
-            contentBuilder.Append(toAppend);
+            return;
         }
+
+        var toAppend = content;
+        var contentLength = content.Length;
+
+        if (contentLength >= ContentFormatterOptions.MaximumReadableBytes)
+        {
+            contentBuilder.AppendLine();
+            contentBuilder.AppendLine(ContentFormatterOptions.WarningMessageWhenContentIsTooLarge);
+            toAppend = content!.Substring(0, ContentFormatterOptions.MaximumReadableBytes);
+        }
+
+        contentBuilder.Append(toAppend);
     }
 }

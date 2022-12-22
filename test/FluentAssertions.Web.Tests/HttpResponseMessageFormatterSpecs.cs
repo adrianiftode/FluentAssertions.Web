@@ -11,54 +11,54 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FluentAssertions.Web.Tests
+namespace FluentAssertions.Web.Tests;
+
+public class HttpResponseMessageFormatterSpecs
 {
-    public class HttpResponseMessageFormatterSpecs
+    [Fact]
+    public void GivenUnspecifiedResponse_ShouldPrintProtocolAndHaveContentLengthZero()
     {
-        [Fact]
-        public void GivenUnspecifiedResponse_ShouldPrintProtocolAndHaveContentLengthZero()
-        {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage();
-            var sut = new HttpResponseMessageFormatter();
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage();
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(@"*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(@"*
 The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Length: 0*
 The originated HTTP request was <null>.*");
-        }
+    }
 
-        [Fact]
-        public void GivenHeaders_ShouldPrintAllHeaders()
+    [Fact]
+    public void GivenHeaders_ShouldPrintAllHeaders()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent("", Encoding.UTF8, "text/html")
-            };
-            subject.Headers.Add("Cache-Control", "no-store, no-cache, max-age=0");
-            subject.Headers.Add("Pragma", "no-cache");
-            subject.Headers.Add("Request-Context", "appId=cid-v1:2e15fa14-72b6-44b3-a9b2-560e7b3234e5");
-            subject.Headers.Add("Strict-Transport-Security", "max-age=31536000");
-            subject.Headers.Add("Date", "Thu, 26 Sep 2019 22:33:34 GMT");
-            subject.Headers.Add("Connection", "close");
-            var sut = new HttpResponseMessageFormatter();
+            Content = new StringContent("", Encoding.UTF8, "text/html")
+        };
+        subject.Headers.Add("Cache-Control", "no-store, no-cache, max-age=0");
+        subject.Headers.Add("Pragma", "no-cache");
+        subject.Headers.Add("Request-Context", "appId=cid-v1:2e15fa14-72b6-44b3-a9b2-560e7b3234e5");
+        subject.Headers.Add("Strict-Transport-Security", "max-age=31536000");
+        subject.Headers.Add("Date", "Thu, 26 Sep 2019 22:33:34 GMT");
+        subject.Headers.Add("Connection", "close");
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*The HTTP response was:*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Cache-Control: no-store, no-cache, max-age=0*
 Pragma: no-cache*
@@ -69,41 +69,41 @@ Connection: close*
 Content-Type: text/html; charset=utf-8*
 Content-Length: 0*
 The originated HTTP request was <null>.*");
-        }
+    }
 
-        [Fact]
-        public void GivenDuplicatedHeaders_ShouldPrintOnNewLines()
+    [Fact]
+    public void GivenDuplicatedHeaders_ShouldPrintOnNewLines()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent("", Encoding.UTF8, "text/html")
-            };
-            subject.Headers.Add("Set-Cookie", "name1=value1");
-            subject.Headers.Add("Set-Cookie", "name2=value2");
-            var sut = new HttpResponseMessageFormatter();
+            Content = new StringContent("", Encoding.UTF8, "text/html")
+        };
+        subject.Headers.Add("Set-Cookie", "name1=value1");
+        subject.Headers.Add("Set-Cookie", "name2=value2");
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*The HTTP response was:*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Set-Cookie: name1=value1*
 Set-Cookie: name2=value2*");
-        }
+    }
 
-        [Fact]
-        public void GivenResponseWithContent_ShouldPrintContent()
+    [Fact]
+    public void GivenResponseWithContent_ShouldPrintContent()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(@"{
+            Content = new StringContent(@"{
     ""glossary"": {
         ""title"": ""example glossary"",
         ""GlossDiv"": {
@@ -128,15 +128,15 @@ Set-Cookie: name2=value2*");
         }
     }
 }", Encoding.UTF8, "application/json")
-            };
-            var sut = new HttpResponseMessageFormatter();
+        };
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(@"*The HTTP response was:*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(@"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Type: application/json; charset=utf-8*
 Content-Length:*
@@ -166,48 +166,48 @@ Content-Length:*
   }*
 }*
 The originated HTTP request was <null>.*");
-        }
+    }
 
-        [Fact]
-        public void GivenResponseWithJsonContainsNonEnglishChars_ShouldNotEscaped()
+    [Fact]
+    public void GivenResponseWithJsonContainsNonEnglishChars_ShouldNotEscaped()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(
-                    @"{""message"":""папка""}",
-                    Encoding.UTF8, "application/json")
-            };
-            var sut = new HttpResponseMessageFormatter();
+            Content = new StringContent(
+                @"{""message"":""папка""}",
+                Encoding.UTF8, "application/json")
+        };
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(@"*The HTTP response wa*""папка""*The originated HTTP request was <null>.*");
-        }
-        
-        [Fact]
-        public void GivenResponseWithMinifiedJson_ShouldPrintFormattedJson()
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(@"*The HTTP response wa*""папка""*The originated HTTP request was <null>.*");
+    }
+    
+    [Fact]
+    public void GivenResponseWithMinifiedJson_ShouldPrintFormattedJson()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(
-                    @"{""glossary"":{""title"":""example glossary"",""GlossDiv"":{""title"":""S"",""GlossList"":{""GlossEntry"":{""ID"":""SGML"",""SortAs"":""SGML"",""GlossTerm"":""Standard Generalized Markup Language"",""Acronym"":""SGML"",""Abbrev"":""ISO 8879:1986"",""GlossDef"":{""para"":""A meta-markup language, used to create markup languages such as DocBook."",""GlossSeeAlso"":[""GML"",""XML""]},""GlossSee"":""markup""}}}}}",
-                    Encoding.UTF8, "application/json")
-            };
-            var sut = new HttpResponseMessageFormatter();
+            Content = new StringContent(
+                @"{""glossary"":{""title"":""example glossary"",""GlossDiv"":{""title"":""S"",""GlossList"":{""GlossEntry"":{""ID"":""SGML"",""SortAs"":""SGML"",""GlossTerm"":""Standard Generalized Markup Language"",""Acronym"":""SGML"",""Abbrev"":""ISO 8879:1986"",""GlossDef"":{""para"":""A meta-markup language, used to create markup languages such as DocBook."",""GlossSeeAlso"":[""GML"",""XML""]},""GlossSee"":""markup""}}}}}",
+                Encoding.UTF8, "application/json")
+        };
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(@"*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(@"*
 The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Type: application/json; charset=utf-8*
@@ -238,17 +238,17 @@ Content-Length:*
   }*
 }*
 The originated HTTP request was <null>.*");
-        }
+    }
 
 
-        [Fact]
-        public void GivenHtmlResponse_ShouldPrintAsItIs()
+    [Fact]
+    public void GivenHtmlResponse_ShouldPrintAsItIs()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(@"<html>
+            Content = new StringContent(@"<html>
 <head>
 <title>Title of the document</title>
 </head>
@@ -258,15 +258,15 @@ The content of the document......
 </body>
 
 </html>", Encoding.UTF8, "text/html")
-            };
-            var sut = new HttpResponseMessageFormatter();
+        };
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(@"*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(@"*
 The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Type: text/html; charset=utf-8*
@@ -280,55 +280,55 @@ The content of the document......*
 </body>*
 </html>*
 The originated HTTP request was <null>.*");
-        }
+    }
 
-        [Fact]
-        public void GivenContentLengthInHeaders_ShouldNotPrintItTwice()
+    [Fact]
+    public void GivenContentLengthInHeaders_ShouldNotPrintItTwice()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent("")
-            };
-            subject.Content.Headers.Add("Content-Length", "0");
-            var sut = new HttpResponseMessageFormatter();
+            Content = new StringContent("")
+        };
+        subject.Content.Headers.Add("Content-Length", "0");
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*The HTTP response was:*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Type: text/plain; charset=utf-8*
 Content-Length: 0*
 The originated HTTP request was <null>.*");
-        }
+    }
 
-        [Fact]
-        public void GivenRequest_ShouldPrintRequestDetails()
+    [Fact]
+    public void GivenRequest_ShouldPrintRequestDetails()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
             {
-                RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
-                {
-                    Content = new StringContent("Some content."),
-                    Headers = { { "Authorization", "Bearer xyz" } }
-                }
-            };
-            var sut = new HttpResponseMessageFormatter();
+                Content = new StringContent("Some content."),
+                Headers = { { "Authorization", "Bearer xyz" } }
+            }
+        };
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*The HTTP response was:*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Length: 0*
 The originated HTTP request was:*
@@ -337,32 +337,32 @@ Authorization: Bearer xyz*
 Content-Type: text/plain; charset=utf-8*
 Content-Length: *
 Some content.*");
-        }
+    }
 
-        [Fact]
-        public void GivenRequest_WhenRequestStreamAtTheEnd_ShouldPrintRequestDetails()
+    [Fact]
+    public void GivenRequest_WhenRequestStreamAtTheEnd_ShouldPrintRequestDetails()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
             {
-                RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
-                {
-                    Content = new StringContent("Some content."),
-                    Headers = { { "Authorization", "Bearer xyz" } }
-                }
-            };
-            var readOnce = subject.RequestMessage.Content.ReadAsStreamAsync().GetAwaiter().GetResult();
-            readOnce.Seek(readOnce.Length, SeekOrigin.Begin);
-            var sut = new HttpResponseMessageFormatter();
+                Content = new StringContent("Some content."),
+                Headers = { { "Authorization", "Bearer xyz" } }
+            }
+        };
+        var readOnce = subject.RequestMessage.Content.ReadAsStreamAsync().GetAwaiter().GetResult();
+        readOnce.Seek(readOnce.Length, SeekOrigin.Begin);
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*The HTTP response was:*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Length: 0*
 The originated HTTP request was:*
@@ -371,59 +371,59 @@ Authorization: Bearer xyz*
 Content-Type: text/plain; charset=utf-8*
 Content-Length: *
 Some content.*");
-        }
+    }
 
-        [Fact]
-        public void GivenResponseWithNoContentType_ShouldPrint()
+    [Fact]
+    public void GivenResponseWithNoContentType_ShouldPrint()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent("", Encoding.UTF8)
-            };
-            subject.Content.Headers.ContentType = null;
-            var sut = new HttpResponseMessageFormatter();
+            Content = new StringContent("", Encoding.UTF8)
+        };
+        subject.Content.Headers.ContentType = null;
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*The HTTP response was:*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Length: 0*HTTP request*<null>*");
-        }
+    }
 
-        [Theory]
-        [InlineData(AspNetCore22InternalServerErrorResponse,
-            "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "<!DOCTYPE html>")]
-        [InlineData(AspNetCore30InternalServerErrorResponse,
-            "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "HEADERS")]
-        [InlineData(@"<pre class=""rawExceptionStackTrace"">", "*rawExceptionStackTrace*", "DOCTYPE")]
-        [InlineData(@"</pre>", "*</pre>*", "DOCTYPE")]
-        public void GivenInternalServerError_ShouldPrintExceptionDetails(string content, string expected,
-            string unexpected)
+    [Theory]
+    [InlineData(AspNetCore22InternalServerErrorResponse,
+        "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "<!DOCTYPE html>")]
+    [InlineData(AspNetCore30InternalServerErrorResponse,
+        "*System.Exception: Wow!*DeveloperExceptionPageMiddleware*", "HEADERS")]
+    [InlineData(@"<pre class=""rawExceptionStackTrace"">", "*rawExceptionStackTrace*", "DOCTYPE")]
+    [InlineData(@"</pre>", "*</pre>*", "DOCTYPE")]
+    public void GivenInternalServerError_ShouldPrintExceptionDetails(string content, string expected,
+        string unexpected)
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.InternalServerError)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.InternalServerError)
-            {
-                Content = new StringContent(content)
-            };
-            var sut = new HttpResponseMessageFormatter();
+            Content = new StringContent(content)
+        };
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(expected);
-            formatted.Should().NotContain(unexpected);
-        }
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(expected);
+        formatted.Should().NotContain(unexpected);
+    }
 
-        private const string AspNetCore22InternalServerErrorResponse = @"<!DOCTYPE html>
+    private const string AspNetCore22InternalServerErrorResponse = @"<!DOCTYPE html>
 <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
     <head>
         <meta charset=""utf-8"" />
@@ -926,7 +926,7 @@ a {
     </body>
 </html>";
 
-        private const string AspNetCore30InternalServerErrorResponse = @"System.Exception: Wow!
+    private const string AspNetCore30InternalServerErrorResponse = @"System.Exception: Wow!
    at Sample.Api.Tests.CustomStartupConfigurationsTests.<>c.<GetException_WhenDeveloperPageIsConfigured_ShouldBeInternalServerError>b__0_3(HttpContext context) in E:\projects\mine\FluentAssertions.Web\samples\Sample.Api.Net30.Tests\CustomStartupConfigurationsTests.cs:line 30
    at Microsoft.AspNetCore.Routing.EndpointMiddleware.Invoke(HttpContext httpContext)
 --- End of stack trace from previous location where exception was thrown ---
@@ -937,105 +937,134 @@ HEADERS
 Host: localhost
 ";
 
-        [Fact]
-        public void GivenDisposedRequestContent_ShouldPrintAndShowWarning()
+    [Fact]
+    public void GivenDisposedRequestContent_ShouldPrintAndShowWarning()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            Content = new StringContent("", Encoding.UTF8),
+            RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
             {
-                Content = new StringContent("", Encoding.UTF8),
-                RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
-                {
-                    Content = new StringContent("Some content.", Encoding.UTF8, "application/json"),
-                }
-            };
-            subject.RequestMessage.Content.Dispose();
-            var sut = new HttpResponseMessageFormatter();
+                Content = new StringContent("Some content.", Encoding.UTF8, "application/json"),
+            }
+        };
+        subject.RequestMessage.Content.Dispose();
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*Content is disposed so it cannot be read.*");
-        }
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*Content is disposed so it cannot be read.*");
+    }
 
-        [Fact]
-        public void GivenDisposedRequest_ShouldPrintAndShowWarning()
+    [Fact]
+    public void GivenDisposedRequest_ShouldPrintAndShowWarning()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            Content = new StringContent("", Encoding.UTF8),
+            RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
             {
-                Content = new StringContent("", Encoding.UTF8),
-                RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
-                {
-                    Content = new StringContent("Some content.", Encoding.UTF8, "application/json")
-                }
-            };
-            subject.RequestMessage.Dispose();
-            var sut = new HttpResponseMessageFormatter();
+                Content = new StringContent("Some content.", Encoding.UTF8, "application/json")
+            }
+        };
+        subject.RequestMessage.Dispose();
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*Content is disposed so it cannot be read*");
-        }
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*Content is disposed so it cannot be read*");
+    }
 
-        [Fact]
-        public void GivenByteArrayResponse_ShouldPrintMessageInfo()
+    [Fact]
+    public void GivenByteArrayResponse_ShouldPrintMessageInfo()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            Content = new ByteArrayContent(new byte[1])
+        };
+        var sut = new HttpResponseMessageFormatter();
+
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
+
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*Content is of a binary encoded like type having the length 1.*");
+    }
+
+    [Fact]
+    public void GivenByteArrayRequest_ShouldPrintMessageInfo()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            RequestMessage = new HttpRequestMessage
             {
                 Content = new ByteArrayContent(new byte[1])
-            };
-            var sut = new HttpResponseMessageFormatter();
+            }
+        };
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*Content is of a binary encoded like type having the length 1.*");
-        }
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*Content is of a binary encoded like type having the length 1.*");
+    }
 
-        [Fact]
-        public void GivenByteArrayRequest_ShouldPrintMessageInfo()
+    [Fact]
+    public void GivenStreamResponse_ShouldPrintMessageInfo()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            Content = new StreamContent(new MemoryStream(new byte[1]))
             {
-                RequestMessage = new HttpRequestMessage
+                Headers =
                 {
-                    Content = new ByteArrayContent(new byte[1])
+                    ContentType = new MediaTypeHeaderValue("image/jpeg")
                 }
-            };
-            var sut = new HttpResponseMessageFormatter();
+            }
+        };
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        var sut = new HttpResponseMessageFormatter();
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*Content is of a binary encoded like type having the length 1.*");
-        }
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-        [Fact]
-        public void GivenStreamResponse_ShouldPrintMessageInfo()
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*Content is of a binary encoded like type having the length 1.*");
+    }
+
+    [Fact]
+    public void GivenStreamRequest_ShouldPrintMessageInfo()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            RequestMessage = new HttpRequestMessage
             {
                 Content = new StreamContent(new MemoryStream(new byte[1]))
                 {
@@ -1044,365 +1073,336 @@ Host: localhost
                         ContentType = new MediaTypeHeaderValue("image/jpeg")
                     }
                 }
-            };
+            }
+        };
 
-            var sut = new HttpResponseMessageFormatter();
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*Content is of a binary encoded like type having the length 1.*");
-        }
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*Content is of a binary encoded like type having the length 1.*");
+    }
 
-        [Fact]
-        public void GivenStreamRequest_ShouldPrintMessageInfo()
+    [Fact(Skip = "Don't know how to handle this yet.")]
+    public void GivenReadOnlyMemoryResponse_ShouldPrintMessageInfo()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                RequestMessage = new HttpRequestMessage
-                {
-                    Content = new StreamContent(new MemoryStream(new byte[1]))
-                    {
-                        Headers =
-                        {
-                            ContentType = new MediaTypeHeaderValue("image/jpeg")
-                        }
-                    }
-                }
-            };
+            Content = new ReadOnlyMemoryContent(new ReadOnlyMemory<byte>(new byte[1]))
+        };
 
-            var sut = new HttpResponseMessageFormatter();
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*Content is of a binary encoded like type having the length 1.*");
-        }
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*Content is of a binary encoded like type having the length 1.*");
+    }
 
-        [Fact(Skip = "Don't know how to handle this yet.")]
-        public void GivenReadOnlyMemoryResponse_ShouldPrintMessageInfo()
+    [Fact(Skip = "Don't know how to handle this yet.")]
+    public void GivenReadOnlyMemoryRequest_ShouldPrintMessageInfo()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            RequestMessage = new HttpRequestMessage
             {
                 Content = new ReadOnlyMemoryContent(new ReadOnlyMemory<byte>(new byte[1]))
-            };
+            }
+        };
 
-            var sut = new HttpResponseMessageFormatter();
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*Content is of a binary encoded like type having the length 1.*");
-        }
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*Content is of a binary encoded like type having the length 1.*");
+    }
 
-        [Fact(Skip = "Don't know how to handle this yet.")]
-        public void GivenReadOnlyMemoryRequest_ShouldPrintMessageInfo()
+    [Fact]
+    public void GivenFormUrlEncodedRequest_ShouldPrintFormUrlEncodedData()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            RequestMessage = new HttpRequestMessage
             {
-                RequestMessage = new HttpRequestMessage
-                {
-                    Content = new ReadOnlyMemoryContent(new ReadOnlyMemory<byte>(new byte[1]))
-                }
-            };
-
-            var sut = new HttpResponseMessageFormatter();
-
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
-
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*Content is of a binary encoded like type having the length 1.*");
-        }
-
-        [Fact]
-        public void GivenFormUrlEncodedRequest_ShouldPrintFormUrlEncodedData()
-        {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                RequestMessage = new HttpRequestMessage
-                {
-                    Content = new FormUrlEncodedContent(new[]
-                    {
-                        new KeyValuePair<string?, string?>("key1", "value1"),
-                        new KeyValuePair<string?, string?>("key2", "value2")
-                    })
-                }
-            };
-
-            var sut = new HttpResponseMessageFormatter();
-
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
-
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(
-                @"*key1=value1&key2=value2*");
-        }
-
-        [Fact]
-        public void GivenMultipartFormDataResponse_ShouldPrintAsSingleParts()
-        {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
-            {
-                new FormUrlEncodedContent(new[]
+                Content = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string?, string?>("key1", "value1"),
                     new KeyValuePair<string?, string?>("key2", "value2")
-                }),
-                {new ByteArrayContent(new byte[1]), "ByteArray"},
-                {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
-                new StringContent("some string content", Encoding.UTF8, "plain/text")
-            };
+                })
+            }
+        };
 
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+        var sut = new HttpResponseMessageFormatter();
+
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
+
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(
+            @"*key1=value1&key2=value2*");
+    }
+
+    [Fact]
+    public void GivenMultipartFormDataResponse_ShouldPrintAsSingleParts()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
+        {
+            new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string?, string?>("key1", "value1"),
+                new KeyValuePair<string?, string?>("key2", "value2")
+            }),
+            {new ByteArrayContent(new byte[1]), "ByteArray"},
+            {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
+            new StringContent("some string content", Encoding.UTF8, "plain/text")
+        };
+
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = content
+        };
+
+        var sut = new HttpResponseMessageFormatter();
+
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
+
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should()
+            .Match(@"*key1=value1&key2=value2*")
+            .And.Match(@"*Content is of a binary encoded like type having the length 1.*")
+            .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
+            .And.Match(@"*plain/text*some string content*")
+            ;
+    }
+
+    [Fact]
+    public async Task GivenMultipartFormDataResponse_AsStreamContent_ShouldPrintAsSingleParts()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
+        {
+            new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string?, string?>("key1", "value1"),
+                new KeyValuePair<string?, string?>("key2", "value2")
+            }),
+            {new ByteArrayContent(new byte[1]), "ByteArray"},
+            {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
+            new StringContent("some string content", Encoding.UTF8, "plain/text")
+        };
+
+        var stream = await content.ReadAsStreamAsync();
+        var streamContent = new StreamContent(stream);
+
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = content
+        };
+
+        var contentHeaders = subject.Content.Headers.Select(c => new { c.Key, c.Value }).ToArray();
+
+        subject.Content = streamContent;
+
+        foreach (var header in contentHeaders)
+        {
+            subject.Content.Headers.Add(header.Key, header.Value);
+        }
+
+        var sut = new HttpResponseMessageFormatter();
+
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
+
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should()
+            .Match(@"*key1=value1&key2=value2*")
+            .And.Match(@"*Content-Disposition: form-data; name=ByteArray*") // ByteArrayContent is also presented as a StreamContent so the FallbackProcessor will handle it
+            .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
+            .And.Match(@"*plain/text*some string content*")
+            ;
+    }
+
+    [Fact]
+    public void GivenMultipartFormDataRequest_ShouldPrintAsSingleParts()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
+        {
+            new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string?, string?>("key1", "value1"),
+                new KeyValuePair<string?, string?>("key2", "value2")
+            }),
+            {new ByteArrayContent(new byte[1]), "ByteArray"},
+            {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
+            new StringContent("some string content", Encoding.UTF8, "plain/text")
+        };
+
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            RequestMessage = new HttpRequestMessage
             {
                 Content = content
-            };
+            }
+        };
 
-            var sut = new HttpResponseMessageFormatter();
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should()
-                .Match(@"*key1=value1&key2=value2*")
-                .And.Match(@"*Content is of a binary encoded like type having the length 1.*")
-                .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
-                .And.Match(@"*plain/text*some string content*")
-                ;
-        }
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should()
+            .Match(@"*key1=value1&key2=value2*")
+            .And.Match(@"*Content is of a binary encoded like type having the length 1.*")
+            .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
+            .And.Match(@"*plain/text*some string content*")
+            ;
+    }
 
-        [Fact]
-        public async Task GivenMultipartFormDataResponse_AsStreamContent_ShouldPrintAsSingleParts()
+    [Fact]
+    public async Task GivenMultipartFormDataRequest_AsStreamContent_ShouldPrintAsSingleParts()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
+            new FormUrlEncodedContent(new[]
             {
-                new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string?, string?>("key1", "value1"),
-                    new KeyValuePair<string?, string?>("key2", "value2")
-                }),
-                {new ByteArrayContent(new byte[1]), "ByteArray"},
-                {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
-                new StringContent("some string content", Encoding.UTF8, "plain/text")
-            };
+                new KeyValuePair<string?, string?>("key1", "value1"),
+                new KeyValuePair<string?, string?>("key2", "value2")
+            }),
+            {new ByteArrayContent(new byte[1]), "ByteArray"},
+            {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
+            new StringContent("some string content", Encoding.UTF8, "plain/text")
+        };
 
-            var stream = await content.ReadAsStreamAsync();
-            var streamContent = new StreamContent(stream);
+        var stream = await content.ReadAsStreamAsync();
+        var streamContent = new StreamContent(stream);
 
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            RequestMessage = new HttpRequestMessage
             {
                 Content = content
-            };
-
-            var contentHeaders = subject.Content.Headers.Select(c => new { c.Key, c.Value }).ToArray();
-
-            subject.Content = streamContent;
-
-            foreach (var header in contentHeaders)
-            {
-                subject.Content.Headers.Add(header.Key, header.Value);
             }
+        };
 
-            var sut = new HttpResponseMessageFormatter();
+        var contentHeaders = subject.RequestMessage.Content.Headers.Select(c => new { c.Key, c.Value }).ToArray();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        subject.RequestMessage.Content = streamContent;
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should()
-                .Match(@"*key1=value1&key2=value2*")
-                .And.Match(@"*Content-Disposition: form-data; name=ByteArray*") // ByteArrayContent is also presented as a StreamContent so the FallbackProcessor will handle it
-                .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
-                .And.Match(@"*plain/text*some string content*")
-                ;
+        foreach (var header in contentHeaders)
+        {
+            subject.RequestMessage.Content.Headers.Add(header.Key, header.Value);
         }
 
-        [Fact]
-        public void GivenMultipartFormDataRequest_ShouldPrintAsSingleParts()
+        var sut = new HttpResponseMessageFormatter();
+
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
+
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should()
+            .Match(@"*key1=value1&key2=value2*")
+            .And.Match(@"*Content-Disposition: form-data; name=ByteArray*") // ByteArrayContent is also presented as a StreamContent so the FallbackProcessor will handle it
+            .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
+            .And.Match(@"*plain/text*some string content*");
+    }
+
+    [Fact]
+    public void GivenLargeStringContent_ShouldNotPrintEverything()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        var whatShouldBePrinted = new string('-', ContentFormatterOptions.MaximumReadableBytes);
+        var whatNotShouldBePrinted = new string('+', 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
-            {
-                new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string?, string?>("key1", "value1"),
-                    new KeyValuePair<string?, string?>("key2", "value2")
-                }),
-                {new ByteArrayContent(new byte[1]), "ByteArray"},
-                {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
-                new StringContent("some string content", Encoding.UTF8, "plain/text")
-            };
+            Content = new StringContent(whatShouldBePrinted + whatNotShouldBePrinted)
+        };
 
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                RequestMessage = new HttpRequestMessage
-                {
-                    Content = content
-                }
-            };
+        var sut = new HttpResponseMessageFormatter();
 
-            var sut = new HttpResponseMessageFormatter();
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match("*Content is too large to display*")
+            .And.Contain(whatShouldBePrinted)
+            .And.NotContain(whatNotShouldBePrinted);
+    }
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should()
-                .Match(@"*key1=value1&key2=value2*")
-                .And.Match(@"*Content is of a binary encoded like type having the length 1.*")
-                .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
-                .And.Match(@"*plain/text*some string content*")
-                ;
-        }
-
-        [Fact]
-        public async Task GivenMultipartFormDataRequest_AsStreamContent_ShouldPrintAsSingleParts()
+    [Fact]
+    public void GivenLargeJsonStringContent_ShouldNotPrintEverything()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        var whatNotShouldBePrinted = new string('+', 100);
+        var bigPropertyValue = new string('-', ContentFormatterOptions.MaximumReadableBytes);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            var content = new MultipartFormDataContent("-----------------------------9051914041544843365972754266")
-            {
-                new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string?, string?>("key1", "value1"),
-                    new KeyValuePair<string?, string?>("key2", "value2")
-                }),
-                {new ByteArrayContent(new byte[1]), "ByteArray"},
-                {new ByteArrayContent(new byte[2]), "ByteArray", "a-file-name.jpg"},
-                new StringContent("some string content", Encoding.UTF8, "plain/text")
-            };
+            Content = new StringContent(@"{ ""title"": """ + bigPropertyValue + @""", ""description"": """ + whatNotShouldBePrinted +  "\" }", Encoding.UTF8, "application/json")
+        };
 
-            var stream = await content.ReadAsStreamAsync();
-            var streamContent = new StreamContent(stream);
+        var sut = new HttpResponseMessageFormatter();
 
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                RequestMessage = new HttpRequestMessage
-                {
-                    Content = content
-                }
-            };
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            var contentHeaders = subject.RequestMessage.Content.Headers.Select(c => new { c.Key, c.Value }).ToArray();
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match("*Content is too large to display*")
+            .And.Contain("---")
+            .And.NotContain(whatNotShouldBePrinted);
+    }
 
-            subject.RequestMessage.Content = streamContent;
-
-            foreach (var header in contentHeaders)
-            {
-                subject.RequestMessage.Content.Headers.Add(header.Key, header.Value);
-            }
-
-            var sut = new HttpResponseMessageFormatter();
-
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
-
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should()
-                .Match(@"*key1=value1&key2=value2*")
-                .And.Match(@"*Content-Disposition: form-data; name=ByteArray*") // ByteArrayContent is also presented as a StreamContent so the FallbackProcessor will handle it
-                .And.Match(@"*a-file-name.jpg*Content is of a binary encoded like type having the length 2.*")
-                .And.Match(@"*plain/text*some string content*");
-        }
-
-        [Fact]
-        public void GivenLargeStringContent_ShouldNotPrintEverything()
+    [Fact]
+    public void GivenLargeNonPrettifiedJson_ShouldPrintPrettified()
+    {
+        // Arrange
+        var bigPropertyValue = new string('-', ContentFormatterOptions.MaximumReadableBytes);
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            var whatShouldBePrinted = new string('-', ContentFormatterOptions.MaximumReadableBytes);
-            var whatNotShouldBePrinted = new string('+', 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(whatShouldBePrinted + whatNotShouldBePrinted)
-            };
+            Content = new StringContent(@"{ ""glossary"": { ""title"": """ + bigPropertyValue + @""" } }", Encoding.UTF8, "application/json")
+        };
+        var sut = new HttpResponseMessageFormatter();
 
-            var sut = new HttpResponseMessageFormatter();
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
-
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match("*Content is too large to display*")
-                .And.Contain(whatShouldBePrinted)
-                .And.NotContain(whatNotShouldBePrinted);
-        }
-
-        [Fact]
-        public void GivenLargeJsonStringContent_ShouldNotPrintEverything()
-        {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            var whatNotShouldBePrinted = new string('+', 100);
-            var bigPropertyValue = new string('-', ContentFormatterOptions.MaximumReadableBytes);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(@"{ ""title"": """ + bigPropertyValue + @""", ""description"": """ + whatNotShouldBePrinted +  "\" }", Encoding.UTF8, "application/json")
-            };
-
-            var sut = new HttpResponseMessageFormatter();
-
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
-
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match("*Content is too large to display*")
-                .And.Contain("---")
-                .And.NotContain(whatNotShouldBePrinted);
-        }
-
-        [Fact]
-        public void GivenLargeNonPrettifiedJson_ShouldPrintPrettified()
-        {
-            // Arrange
-            var bigPropertyValue = new string('-', ContentFormatterOptions.MaximumReadableBytes);
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(@"{ ""glossary"": { ""title"": """ + bigPropertyValue + @""" } }", Encoding.UTF8, "application/json")
-            };
-            var sut = new HttpResponseMessageFormatter();
-
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
-
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(@"*The HTTP response was:*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(@"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Type: application/json; charset=utf-8*
 Content-Length:*
@@ -1411,25 +1411,25 @@ Content-Length:*
   ""glossary"": {*
     ""title"": ""----*
 The originated HTTP request was <null>.*");
-        }
+    }
 
-        [Fact (Skip = "Nice to have, but not really possible until this one is closed https://github.com/dotnet/runtime/issues/32291")]
-        public void GivenSyntacticallyMalformedNonPrettifiedJson_ShouldPrintPrettified()
+    [Fact (Skip = "Nice to have, but not really possible until this one is closed https://github.com/dotnet/runtime/issues/32291")]
+    public void GivenSyntacticallyMalformedNonPrettifiedJson_ShouldPrintPrettified()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            // Arrange
-            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
-            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(@"{ ""glossary"": { ""title"": }", Encoding.UTF8, "application/json")
-            };
-            var sut = new HttpResponseMessageFormatter();
+            Content = new StringContent(@"{ ""glossary"": { ""title"": }", Encoding.UTF8, "application/json")
+        };
+        var sut = new HttpResponseMessageFormatter();
 
-            // Act
-            sut.Format(subject, formattedGraph, null!, null!);
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
 
-            // Assert
-            var formatted = formattedGraph.ToString();
-            formatted.Should().Match(@"*The HTTP response was:*
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().Match(@"*The HTTP response was:*
 HTTP/1.1 200 OK*
 Content-Type: application/json; charset=utf-8*
 Content-Length:*
@@ -1438,6 +1438,5 @@ Content-Length:*
         ""title"":*
 }*
 The originated HTTP request was <null>.*");
-        }
     }
 }
