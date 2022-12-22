@@ -1360,5 +1360,84 @@ Host: localhost
                 .And.Contain(whatShouldBePrinted)
                 .And.NotContain(whatNotShouldBePrinted);
         }
+
+        [Fact]
+        public void GivenLargeJsonStringContent_ShouldNotPrintEverything()
+        {
+            // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+            var whatNotShouldBePrinted = new string('+', 100);
+            var bigPropertyValue = new string('-', ContentFormatterOptions.MaximumReadableBytes);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(@"{ ""title"": """ + bigPropertyValue + @""", ""description"": """ + whatNotShouldBePrinted +  "\" }", Encoding.UTF8, "application/json")
+            };
+
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            sut.Format(subject, formattedGraph, null!, null!);
+
+            // Assert
+            var formatted = formattedGraph.ToString();
+            formatted.Should().Match("*Content is too large to display*")
+                .And.Contain("---")
+                .And.NotContain(whatNotShouldBePrinted);
+        }
+
+        [Fact]
+        public void GivenLargeNonPrettifiedJson_ShouldPrintPrettified()
+        {
+            // Arrange
+            var bigPropertyValue = new string('-', ContentFormatterOptions.MaximumReadableBytes);
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(@"{ ""glossary"": { ""title"": """ + bigPropertyValue + @""" } }", Encoding.UTF8, "application/json")
+            };
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            sut.Format(subject, formattedGraph, null!, null!);
+
+            // Assert
+            var formatted = formattedGraph.ToString();
+            formatted.Should().Match(@"*The HTTP response was:*
+HTTP/1.1 200 OK*
+Content-Type: application/json; charset=utf-8*
+Content-Length:*
+*Content is too large to display and only a part is printed*
+{*
+  ""glossary"": {*
+    ""title"": ""----*
+The originated HTTP request was <null>.*");
+        }
+
+        [Fact (Skip = "Nice to have, but not really possible until this one is closed https://github.com/dotnet/runtime/issues/32291")]
+        public void GivenSyntacticallyMalformedNonPrettifiedJson_ShouldPrintPrettified()
+        {
+            // Arrange
+            var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+            using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(@"{ ""glossary"": { ""title"": }", Encoding.UTF8, "application/json")
+            };
+            var sut = new HttpResponseMessageFormatter();
+
+            // Act
+            sut.Format(subject, formattedGraph, null!, null!);
+
+            // Assert
+            var formatted = formattedGraph.ToString();
+            formatted.Should().Match(@"*The HTTP response was:*
+HTTP/1.1 200 OK*
+Content-Type: application/json; charset=utf-8*
+Content-Length:*
+{*
+    ""glossary"": {*
+        ""title"":*
+}*
+The originated HTTP request was <null>.*");
+        }
     }
 }
