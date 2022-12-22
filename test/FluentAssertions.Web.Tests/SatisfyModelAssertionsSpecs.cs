@@ -53,6 +53,43 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
+        public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_named_tuple_type_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().Satisfy<(string Property, object _)>(
+                    model => model.Property.Should().NotBeEmpty());
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+
+        [Fact]
+        public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_non_named_tuple_type_it_should_succeed()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().Satisfy<Tuple<string, string>>(
+                    model => model.Item1.Should().NotBeEmpty());
+
+            // Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
         public void When_asserting_response_content_without_having_satisfiable_assertion_to_satisfy_assertion_it_should_throw_with_descriptive_message()
         {
             // Arrange
