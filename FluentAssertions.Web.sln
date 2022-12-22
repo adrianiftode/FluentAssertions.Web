@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssertions.Web.Serial
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssertions.Web.FluentAssertionsWebConfig.Tests", "test\FluentAssertions.Web.FluentAssertionsWebConfig.Tests\FluentAssertions.Web.FluentAssertionsWebConfig.Tests.csproj", "{538479CE-5922-4FF9-A09D-80C9E91FFFF1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net70", "samples\Sample.Api.Net70\Sample.Api.Net70.csproj", "{DCC4B007-DCE3-443E-BC9D-635EE367882B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{538479CE-5922-4FF9-A09D-80C9E91FFFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{538479CE-5922-4FF9-A09D-80C9E91FFFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{538479CE-5922-4FF9-A09D-80C9E91FFFF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCC4B007-DCE3-443E-BC9D-635EE367882B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCC4B007-DCE3-443E-BC9D-635EE367882B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCC4B007-DCE3-443E-BC9D-635EE367882B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCC4B007-DCE3-443E-BC9D-635EE367882B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +125,7 @@ Global
 		{1BDE8312-1789-40EA-86B2-83784E560740} = {14FDD52D-B83A-445B-BD2F-04B3E7B8033C}
 		{F2C0B6F2-4ACE-4688-8F96-9EB1D5718B60} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 		{538479CE-5922-4FF9-A09D-80C9E91FFFF1} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
+		{DCC4B007-DCE3-443E-BC9D-635EE367882B} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81F41C75-2F8A-4E70-BA17-38146C4BB6E6}
@@ -130,6 +137,7 @@ Global
 		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{a0b5b518-714a-4731-b371-996d5fbc72a0}*SharedItemsImports = 5
 		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{a62abbae-bfb8-467a-9fbc-974172c718e2}*SharedItemsImports = 5
 		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{bae9e107-74fe-4c37-a528-857ac73d2c55}*SharedItemsImports = 5
+		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{dcc4b007-dce3-443e-bc9d-635ee367882b}*SharedItemsImports = 5
 		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{facc5aed-9978-441d-a359-dcd83f924bf8}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

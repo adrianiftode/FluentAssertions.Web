@@ -36,6 +36,11 @@
     <ProjectReference Include="..\..\samples\Sample.Api.Net60\Sample.Api.Net60.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.1" />
+    <ProjectReference Include="..\..\samples\Sample.Api.Net70\Sample.Api.Net70.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentAssertions.Web\FluentAssertions.Web.csproj" />
   </ItemGroup>
