@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
+﻿namespace FluentAssertions.Web.Internal;
 
-namespace FluentAssertions.Web.Internal
+internal class AssertionsFailures
 {
-    internal class AssertionsFailures
+    public AssertionsFailures(string[] failuresMessages)
     {
-        public AssertionsFailures(string[] failuresMessages)
-        {
-            FailuresMessages = failuresMessages;
-        }
-        public IReadOnlyCollection<string> FailuresMessages { get; }
+        FailuresMessages = failuresMessages;
     }
+    public IReadOnlyCollection<string> FailuresMessages { get; }
 }

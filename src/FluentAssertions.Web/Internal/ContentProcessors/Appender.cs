@@ -1,39 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
-namespace FluentAssertions.Web.Internal.ContentProcessors
+namespace FluentAssertions.Web.Internal.ContentProcessors;
+
+internal static class Appender
 {
-    internal static class Appender
+    public static void AppendHeaders(StringBuilder messageBuilder, IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
     {
-        public static void AppendHeaders(StringBuilder messageBuilder, IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
+        foreach (var header in headers)
         {
-            foreach (var header in headers)
+            if (header.Key != "Content-Length")
             {
-                if (header.Key != "Content-Length")
+                foreach (var headerValue in header.Value)
                 {
-                    foreach (var headerValue in header.Value)
-                    {
-                        messageBuilder.AppendLine($"{header.Key}: {headerValue}");
-                    }
+                    messageBuilder.AppendLine($"{header.Key}: {headerValue}");
                 }
             }
         }
+    }
 
-        public static async Task AppendContent(StringBuilder contentBuilder, HttpContent content, bool appendLineBeforeContent)
+    public static async Task AppendContent(StringBuilder contentBuilder, HttpContent content, bool appendLineBeforeContent)
+    {
+        var partContentBuilder = await ProcessorsRunner.RunProcessors(ProcessorsRunner.CommonProcessors(content));
+
+        if (partContentBuilder.Length > 0)
         {
-            var partContentBuilder = await ProcessorsRunner.RunProcessors(ProcessorsRunner.CommonProcessors(content));
-
-            if (partContentBuilder.Length > 0)
+            if (appendLineBeforeContent)
             {
-                if (appendLineBeforeContent)
-                {
-                    contentBuilder.AppendLine();
-                }
-
-                contentBuilder.Append(partContentBuilder);
+                contentBuilder.AppendLine();
             }
+
+            contentBuilder.Append(partContentBuilder);
         }
     }
 }

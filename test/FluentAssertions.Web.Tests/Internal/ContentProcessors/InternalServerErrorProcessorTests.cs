@@ -1,115 +1,110 @@
 ﻿using FluentAssertions.Web.Internal.ContentProcessors;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
-namespace FluentAssertions.Web.Tests.Internal.ContentProcessors
+namespace FluentAssertions.Web.Tests.Internal.ContentProcessors;
+
+public class InternalServerErrorProcessorTests
 {
-    public class InternalServerErrorProcessorTests
+    [Fact]
+    public async Task GivenHttpResponseOtherThanInternalServerError_WhenGetContentInfo_ThenIsEmpty()
     {
-        [Fact]
-        public async Task GivenHttpResponseOtherThanInternalServerError_WhenGetContentInfo_ThenIsEmpty()
+        // Arrange
+        var response = new HttpResponseMessage
         {
-            // Arrange
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK
-            };
-            var sut = new InternalServerErrorProcessor(response, response.Content);
-            var contentBuilder = new StringBuilder();
+            StatusCode = HttpStatusCode.OK
+        };
+        var sut = new InternalServerErrorProcessor(response, response.Content);
+        var contentBuilder = new StringBuilder();
 
-            // Act
-            await sut.GetContentInfo(contentBuilder);
+        // Act
+        await sut.GetContentInfo(contentBuilder);
 
-            // Assert
-            contentBuilder.ToString().Should().BeEmpty();
-        }
+        // Assert
+        contentBuilder.ToString().Should().BeEmpty();
+    }
 
-        [Fact]
-        public async Task GivenHttpResponseWithContentThatDoesNotDescribeAKnownError_WhenGetContentInfo_ThenIsEmpty()
+    [Fact]
+    public async Task GivenHttpResponseWithContentThatDoesNotDescribeAKnownError_WhenGetContentInfo_ThenIsEmpty()
+    {
+        // Arrange
+        var response = new HttpResponseMessage
         {
-            // Arrange
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.InternalServerError,
-                Content = new StringContent("the content")
-            };
-            var sut = new InternalServerErrorProcessor(response, response.Content);
-            var contentBuilder = new StringBuilder();
+            StatusCode = HttpStatusCode.InternalServerError,
+            Content = new StringContent("the content")
+        };
+        var sut = new InternalServerErrorProcessor(response, response.Content);
+        var contentBuilder = new StringBuilder();
 
-            // Act
-            await sut.GetContentInfo(contentBuilder);
+        // Act
+        await sut.GetContentInfo(contentBuilder);
 
-            // Assert
-            contentBuilder.ToString().Should().BeEmpty();
-        }
+        // Assert
+        contentBuilder.ToString().Should().BeEmpty();
+    }
 
-        [Fact]
-        public async Task GivenHttpResponseWithDeveloperPage_WhenGetContentInfo_ThenExceptionDetailsAreExtracted()
+    [Fact]
+    public async Task GivenHttpResponseWithDeveloperPage_WhenGetContentInfo_ThenExceptionDetailsAreExtracted()
+    {
+        // Arrange
+        var response = new HttpResponseMessage
         {
-            // Arrange
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.InternalServerError,
-                Content = new StringContent(HtmlPageInternalServerErrorResponse)
-            };
-            var sut = new InternalServerErrorProcessor(response, response.Content);
-            var contentBuilder = new StringBuilder();
+            StatusCode = HttpStatusCode.InternalServerError,
+            Content = new StringContent(HtmlPageInternalServerErrorResponse)
+        };
+        var sut = new InternalServerErrorProcessor(response, response.Content);
+        var contentBuilder = new StringBuilder();
 
-            // Act
-            await sut.GetContentInfo(contentBuilder);
+        // Act
+        await sut.GetContentInfo(contentBuilder);
 
-            // Assert
-            contentBuilder.ToString().Should()
-                .Match("*System.Exception: Wow!*DeveloperExceptionPageMiddleware*")
-                .And.NotContain("<!DOCTYPE html>");
-        }
+        // Assert
+        contentBuilder.ToString().Should()
+            .Match("*System.Exception: Wow!*DeveloperExceptionPageMiddleware*")
+            .And.NotContain("<!DOCTYPE html>");
+    }
 
-        [Fact]
-        public async Task GivenHttpResponseWithRawTextDeveloperPage_WhenGetContentInfo_ThenExceptionDetailsAreExtracted()
+    [Fact]
+    public async Task GivenHttpResponseWithRawTextDeveloperPage_WhenGetContentInfo_ThenExceptionDetailsAreExtracted()
+    {
+        // Arrange
+        var response = new HttpResponseMessage
         {
-            // Arrange
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.InternalServerError,
-                Content = new StringContent(RawTextInternalServerErrorResponse)
-            };
-            var sut = new InternalServerErrorProcessor(response, response.Content);
-            var contentBuilder = new StringBuilder();
+            StatusCode = HttpStatusCode.InternalServerError,
+            Content = new StringContent(RawTextInternalServerErrorResponse)
+        };
+        var sut = new InternalServerErrorProcessor(response, response.Content);
+        var contentBuilder = new StringBuilder();
 
-            // Act
-            await sut.GetContentInfo(contentBuilder);
+        // Act
+        await sut.GetContentInfo(contentBuilder);
 
-            // Assert
-            contentBuilder.ToString().Should()
-                .Match("*System.Exception: Wow!*DeveloperExceptionPageMiddleware*")
-                .And.NotContain("HEADERS");
-        }
+        // Assert
+        contentBuilder.ToString().Should()
+            .Match("*System.Exception: Wow!*DeveloperExceptionPageMiddleware*")
+            .And.NotContain("HEADERS");
+    }
 
-        [Fact]
-        public async Task GivenHttpResponseWithDisposedContent_WhenGetContentInfo_ThenIsEmpty()
+    [Fact]
+    public async Task GivenHttpResponseWithDisposedContent_WhenGetContentInfo_ThenIsEmpty()
+    {
+        // Arrange
+        var content = new StringContent(RawTextInternalServerErrorResponse);
+        var response = new HttpResponseMessage
         {
-            // Arrange
-            var content = new StringContent(RawTextInternalServerErrorResponse);
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.InternalServerError,
-                Content = content
-            };
-            var sut = new InternalServerErrorProcessor(response, response.Content);
-            var contentBuilder = new StringBuilder();
-            content.Dispose();
+            StatusCode = HttpStatusCode.InternalServerError,
+            Content = content
+        };
+        var sut = new InternalServerErrorProcessor(response, response.Content);
+        var contentBuilder = new StringBuilder();
+        content.Dispose();
 
-            // Act
-            await sut.GetContentInfo(contentBuilder);
+        // Act
+        await sut.GetContentInfo(contentBuilder);
 
-            // Assert
-            contentBuilder.ToString().Should().BeEmpty();
-        }
+        // Assert
+        contentBuilder.ToString().Should().BeEmpty();
+    }
 
-        private const string HtmlPageInternalServerErrorResponse = @"<!DOCTYPE html>
+    private const string HtmlPageInternalServerErrorResponse = @"<!DOCTYPE html>
 <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
     <head>
         <meta charset=""utf-8"" />
@@ -611,7 +606,7 @@ a {
         </script>
     </body>
 </html>";
-        private const string RawTextInternalServerErrorResponse = @"System.Exception: Wow!
+    private const string RawTextInternalServerErrorResponse = @"System.Exception: Wow!
    at Sample.Api.Tests.CustomStartupConfigurationsTests.<>c.<GetException_WhenDeveloperPageIsConfigured_ShouldBeInternalServerError>b__0_3(HttpContext context) in E:\projects\mine\FluentAssertions.Web\samples\Sample.Api.Net30.Tests\CustomStartupConfigurationsTests.cs:line 30
    at Microsoft.AspNetCore.Routing.EndpointMiddleware.Invoke(HttpContext httpContext)
 --- End of stack trace from previous location where exception was thrown ---
@@ -621,5 +616,4 @@ HEADERS
 =======
 Host: localhost
 ";
-    }
 }

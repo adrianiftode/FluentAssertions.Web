@@ -1,10 +1,8 @@
 ﻿using System.Text;
-using System.Threading.Tasks;
 
-namespace FluentAssertions.Web.Internal.ContentProcessors
+namespace FluentAssertions.Web.Internal.ContentProcessors;
+
+internal interface IContentProcessor
 {
-    internal interface IContentProcessor
-    {
-        Task GetContentInfo(StringBuilder contentBuilder);
-    }
+    Task GetContentInfo(StringBuilder contentBuilder);
 }
