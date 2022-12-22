@@ -12,4 +12,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <!-- Explicit reference to STEW as .NET 5.0 references the 5.0.0 version, and not 5.0.1 as FA.Web does -->
+    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
+  </ItemGroup>
+
 </Project>

@@ -26,6 +26,8 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.13" />
+    <!-- Explicit reference to STEW as .NET 5.0 references the 5.0.0 version, and not 5.0.1 as FA.Web does -->
+    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
     <ProjectReference Include="..\..\samples\Sample.Api.Net50\Sample.Api.Net50.csproj" />
   </ItemGroup>
 
