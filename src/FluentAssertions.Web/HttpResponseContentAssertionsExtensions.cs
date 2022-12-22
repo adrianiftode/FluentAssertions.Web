@@ -1,9 +1,4 @@
-﻿using FluentAssertions.Equivalency;
-using FluentAssertions.Web;
-using System;
-using System.Diagnostics;
-
-namespace FluentAssertions;
+﻿namespace FluentAssertions;
 
 /// <summary>
 /// Contains extension methods for custom assertions in unit tests related to Http Response Content Assertions

@@ -1,10 +1,4 @@
-﻿using FluentAssertions.Web.Internal;
-using FluentAssertions.Web.Internal.Serializers;
-using FluentAssertions.Web.Tests.TestModels;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
+﻿using FluentAssertions.Web.Tests.TestModels;
 
 namespace FluentAssertions.Web.Tests.Internal;
 

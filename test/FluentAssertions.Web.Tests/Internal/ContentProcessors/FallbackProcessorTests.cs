@@ -1,13 +1,5 @@
-﻿using System.IO;
-using FluentAssertions.Web.Internal;
-using FluentAssertions.Web.Internal.ContentProcessors;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using FluentAssertions.Web.Internal.ContentProcessors;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace FluentAssertions.Web.Tests.Internal.ContentProcessors;
 

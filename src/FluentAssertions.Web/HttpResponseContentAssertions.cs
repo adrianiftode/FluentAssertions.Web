@@ -1,10 +1,4 @@
-﻿using FluentAssertions.Equivalency;
-using FluentAssertions.Execution;
-using FluentAssertions.Web.Internal;
-using System;
-using System.Net.Http;
-
-namespace FluentAssertions.Web;
+﻿namespace FluentAssertions.Web;
 
 /// <summary>
 /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state related to the HTTP content.

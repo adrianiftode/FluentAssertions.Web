@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FluentAssertions.Web.Internal;
+﻿namespace FluentAssertions.Web.Internal;
 
 internal class AssertionsFailures
 {

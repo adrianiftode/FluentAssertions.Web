@@ -1,11 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Text;
-using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
-
-[assembly: Xunit.TestFramework("FluentAssertions.Web.Serializers.NewtonsoftJson.Tests.ConfigureFluentAssertionsWebFixture", "FluentAssertions.Web.Serializers.NewtonsoftJson.Tests")]
+﻿[assembly: Xunit.TestFramework("FluentAssertions.Web.Serializers.NewtonsoftJson.Tests.ConfigureFluentAssertionsWebFixture", "FluentAssertions.Web.Serializers.NewtonsoftJson.Tests")]
 
 namespace FluentAssertions.Web.Serializers.NewtonsoftJson.Tests;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FluentAssertions.Web.Internal;
+﻿namespace FluentAssertions.Web.Internal;
 
 internal static class StringExtensions
 {

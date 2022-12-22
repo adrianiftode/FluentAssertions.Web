@@ -1,10 +1,4 @@
-﻿using FluentAssertions.Execution;
-using FluentAssertions.Web.Internal;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FluentAssertions.Web;
+﻿namespace FluentAssertions.Web;
 
 public partial class HttpResponseMessageAssertions
 {

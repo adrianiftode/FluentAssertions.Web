@@ -1,5 +1,4 @@
 ﻿using FluentAssertions.Web.Internal.Serializers;
-using Xunit;
 
 namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests;
 

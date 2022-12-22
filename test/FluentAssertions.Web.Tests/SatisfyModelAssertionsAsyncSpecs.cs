@@ -1,10 +1,4 @@
 ﻿using FluentAssertions.Web.Tests.TestModels;
-using System;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Sdk;
 
 namespace FluentAssertions.Web.Tests;
 

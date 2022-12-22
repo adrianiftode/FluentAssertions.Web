@@ -1,9 +1,5 @@
-﻿using FluentAssertions.Execution;
-using FluentAssertions.Primitives;
-using System.Linq;
-using System.Net.Http;
+﻿using FluentAssertions.Primitives;
 using System.Reflection;
-using Xunit;
 
 namespace FluentAssertions.Web.Tests.Internal;
 

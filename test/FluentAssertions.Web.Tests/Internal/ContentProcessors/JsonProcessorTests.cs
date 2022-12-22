@@ -1,8 +1,4 @@
 ﻿using FluentAssertions.Web.Internal.ContentProcessors;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace FluentAssertions.Web.Tests.Internal.ContentProcessors;
 

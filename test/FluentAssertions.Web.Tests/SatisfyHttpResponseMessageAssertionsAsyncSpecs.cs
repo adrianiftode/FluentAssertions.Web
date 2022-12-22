@@ -1,10 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
-using Xunit.Sdk;
-
-namespace FluentAssertions.Web.Tests;
+﻿namespace FluentAssertions.Web.Tests;
 
 public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
 {

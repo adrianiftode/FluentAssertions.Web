@@ -1,9 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using Xunit;
-using Xunit.Sdk;
-
-namespace FluentAssertions.Web.Tests;
+﻿namespace FluentAssertions.Web.Tests;
 
 public class SatisfyHttpResponseMessageAssertionsSpecs
 {

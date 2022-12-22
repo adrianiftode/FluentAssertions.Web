@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FluentAssertions.Web.Internal;
+﻿namespace FluentAssertions.Web.Internal;
 
 /// <summary>
 /// Some unit test frameworks (like xUnit) have their own synchronization context

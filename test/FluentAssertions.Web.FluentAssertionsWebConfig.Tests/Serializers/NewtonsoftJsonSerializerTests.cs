@@ -1,7 +1,4 @@
-﻿using System;
-using Xunit;
-
-namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests;
+﻿namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests;
 
 [Collection("Serializers Tests")]
 public sealed class NewtonsoftJsonSerializerTests : IDisposable

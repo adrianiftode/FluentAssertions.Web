@@ -1,7 +1,4 @@
-﻿using FluentAssertions.Execution;
-using System.Net;
-
-namespace FluentAssertions.Web;
+﻿namespace FluentAssertions.Web;
 
 public partial class HttpResponseMessageAssertions
 {

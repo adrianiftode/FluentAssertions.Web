@@ -1,6 +1,4 @@
 ﻿// ReSharper disable once CheckNamespace
-using FluentAssertions.Web.Internal.Serializers;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace FluentAssertions;
@@ -17,7 +15,7 @@ public static class SystemTextJsonSerializerConfig
     {
         AllowTrailingCommas = true,
         PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter(), new NullableConverterFactory(), new EmptyArrayToObjectConverterFactory() },
+        Converters = { new JsonStringEnumConverter(), new NullableConverterFactory() },
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 }

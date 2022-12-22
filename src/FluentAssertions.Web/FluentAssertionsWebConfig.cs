@@ -1,7 +1,4 @@
-﻿using FluentAssertions.Web.Internal.Serializers;
-using System;
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 namespace FluentAssertions;
 
 /// <summary>

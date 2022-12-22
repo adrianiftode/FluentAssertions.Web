@@ -1,7 +1,4 @@
-﻿using FluentAssertions.Web;
-using System.Diagnostics;
-
-namespace FluentAssertions;
+﻿namespace FluentAssertions;
 
 /// <summary>
 /// Contains extension methods for custom assertions in unit tests related to <see cref="HeadersAssertions"/>.

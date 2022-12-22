@@ -1,10 +1,5 @@
-﻿using FluentAssertions.Execution;
-using FluentAssertions.Formatting;
+﻿using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
-using FluentAssertions.Web.Internal;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace FluentAssertions.Web;
 

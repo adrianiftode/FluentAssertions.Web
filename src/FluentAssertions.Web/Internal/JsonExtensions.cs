@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-
-namespace FluentAssertions.Web.Internal;
+﻿namespace FluentAssertions.Web.Internal;
 
 internal static class JsonExtensions
 {

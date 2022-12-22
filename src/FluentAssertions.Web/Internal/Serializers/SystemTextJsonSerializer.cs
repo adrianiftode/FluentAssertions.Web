@@ -1,10 +1,6 @@
 ﻿// ReSharper disable once CheckNamespace
-using System;
-using System.IO;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace FluentAssertions.Web.Internal.Serializers;
 
@@ -59,49 +55,5 @@ internal class NullableConverterFactory : JsonConverterFactory
 
         public override void Write(Utf8JsonWriter writer, T? value, JsonSerializerOptions options) =>
             JsonSerializer.Serialize(writer, value != null ? value.Value : default, options);
-    }
-}
-
-internal class EmptyArrayToObjectConverterFactory : JsonConverterFactory
-{
-    public override bool CanConvert(Type typeToConvert) => !typeToConvert.IsArray;
-
-    public override JsonConverter CreateConverter(Type type, JsonSerializerOptions options) =>
-        (JsonConverter)Activator.CreateInstance(
-            typeof(EmptyArrayToObjectConverter<>).MakeGenericType(type),
-            BindingFlags.Instance | BindingFlags.Public,
-            binder: null,
-            args: new object[] { options },
-            culture: null);
-
-    class EmptyArrayToObjectConverter<T> : JsonConverter<T>
-    {
-        public EmptyArrayToObjectConverter(JsonSerializerOptions options) { }
-
-        public override T? Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
-        {  
-            if (reader.TokenType == JsonTokenType.StartArray)
-            {
-                var readOtherThingsThanTheEndOfTheArray = false;
-                while (reader.Read())
-                {
-                    if (reader.TokenType != JsonTokenType.EndArray)
-                    {
-                        readOtherThingsThanTheEndOfTheArray = true;
-                    }
-                }
-
-                if (!readOtherThingsThanTheEndOfTheArray)
-                {
-                    return default;
-                }
-            }
-
-            return JsonSerializer.Deserialize<T>(ref reader, options);
-        }
-
-        public override bool CanConvert(Type typeToConvert) => true;
-
-        public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options) => JsonSerializer.Serialize(writer, value, options);
     }
 }

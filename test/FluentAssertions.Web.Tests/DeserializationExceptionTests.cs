@@ -1,7 +1,4 @@
-﻿using System;
-using Xunit;
-
-namespace FluentAssertions.Web.Tests;
+﻿namespace FluentAssertions.Web.Tests;
 
 public class DeserializationExceptionTests
 {

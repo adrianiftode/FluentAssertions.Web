@@ -1,12 +1,4 @@
-﻿using FluentAssertions.Execution;
-using FluentAssertions.Web.Internal;
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-namespace FluentAssertions.Web;
+﻿namespace FluentAssertions.Web;
 
 /// <summary>
 /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state related to HTTP Bad Request response

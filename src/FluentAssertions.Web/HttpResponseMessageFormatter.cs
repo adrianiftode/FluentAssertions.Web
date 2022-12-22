@@ -1,11 +1,6 @@
 ﻿using FluentAssertions.Formatting;
-using FluentAssertions.Web.Internal;
 using FluentAssertions.Web.Internal.ContentProcessors;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FluentAssertions.Web;
 

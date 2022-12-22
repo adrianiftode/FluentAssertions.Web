@@ -1,8 +1,4 @@
 ﻿// ReSharper disable once CheckNamespace
-using System;
-using System.IO;
-using System.Threading.Tasks;
-
 namespace FluentAssertions;
 
 /// <summary>

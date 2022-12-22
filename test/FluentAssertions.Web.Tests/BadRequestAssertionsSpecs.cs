@@ -1,11 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using Xunit;
-using Xunit.Sdk;
-
-namespace FluentAssertions.Web.Tests;
+﻿namespace FluentAssertions.Web.Tests;
 
 public class BadRequestAssertionsSpecs
 {

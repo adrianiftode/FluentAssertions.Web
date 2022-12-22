@@ -1,8 +1,4 @@
-﻿using FluentAssertions.Web.Internal;
-using System.Text.Json;
-using Xunit;
-
-namespace FluentAssertions.Web.Tests.Internal;
+﻿namespace FluentAssertions.Web.Tests.Internal;
 
 public class JsonExtensionsTests
 {
