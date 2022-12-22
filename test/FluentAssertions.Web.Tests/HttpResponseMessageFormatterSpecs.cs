@@ -92,7 +92,7 @@ Set-Cookie: name2=value2*");
         var formattedGraph = new FormattedObjectGraph(maxLines: 100);
         using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
     ""glossary"": {
         ""title"": ""example glossary"",
         ""GlossDiv"": {
@@ -165,7 +165,8 @@ The originated HTTP request was <null>.*");
         using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
             Content = new StringContent(
-                @"{""message"":""папка""}",
+                /*lang=json,strict*/
+                                     @"{""message"":""папка""}",
                 Encoding.UTF8, "application/json")
         };
         var sut = new HttpResponseMessageFormatter();
@@ -186,7 +187,8 @@ The originated HTTP request was <null>.*");
         using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
             Content = new StringContent(
-                @"{""glossary"":{""title"":""example glossary"",""GlossDiv"":{""title"":""S"",""GlossList"":{""GlossEntry"":{""ID"":""SGML"",""SortAs"":""SGML"",""GlossTerm"":""Standard Generalized Markup Language"",""Acronym"":""SGML"",""Abbrev"":""ISO 8879:1986"",""GlossDef"":{""para"":""A meta-markup language, used to create markup languages such as DocBook."",""GlossSeeAlso"":[""GML"",""XML""]},""GlossSee"":""markup""}}}}}",
+                /*lang=json,strict*/
+                                     @"{""glossary"":{""title"":""example glossary"",""GlossDiv"":{""title"":""S"",""GlossList"":{""GlossEntry"":{""ID"":""SGML"",""SortAs"":""SGML"",""GlossTerm"":""Standard Generalized Markup Language"",""Acronym"":""SGML"",""Abbrev"":""ISO 8879:1986"",""GlossDef"":{""para"":""A meta-markup language, used to create markup languages such as DocBook."",""GlossSeeAlso"":[""GML"",""XML""]},""GlossSee"":""markup""}}}}}",
                 Encoding.UTF8, "application/json")
         };
         var sut = new HttpResponseMessageFormatter();

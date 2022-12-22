@@ -9,7 +9,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json*/ @"{
                                             ""comment"": ""Hey"",
                                             ""author"": ""John"",
                                         }", Encoding.UTF8, "application/json")
@@ -33,7 +33,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json*/ @"{
                                             ""author"": ""John"",
                                             ""comment"": ""Hey"",
                                         }", Encoding.UTF8, "application/json")
@@ -56,7 +56,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json*/ @"{
                                             ""comment"": ""Hey"",
                                             ""author"": ""John"",
                                         }", Encoding.UTF8, "application/json")
@@ -123,7 +123,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json*/ @"{
                                             ""comment"": ""Hey"",
                                         }", Encoding.UTF8, "application/json")
         };
@@ -168,7 +168,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{ ""price"" : 0.0}", Encoding.UTF8, "text/plain")
+            Content = new StringContent(/*lang=json,strict*/ @"{ ""price"" : 0.0}", Encoding.UTF8, "text/plain")
         };
 
         // Act
@@ -189,7 +189,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"[{ ""price"" : 0.0}, { ""price"" : 1.0}]", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ @"[{ ""price"" : 0.0}, { ""price"" : 1.0}]", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -218,7 +218,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                                             ""author"": ""John"",
                                             ""comment"": ""Hey"",
                                             ""version"": ""version 1""
@@ -244,7 +244,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json*/ @"{
                                             ""comment"": ""Hey"",
                                             ""author"": ""John"",
                                         }", Encoding.UTF8, "application/json")
@@ -318,7 +318,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json*/ @"{
                                             ""comment"": ""Hey"",
                                             ""author"": ""John"",
                                         }", Encoding.UTF8, "application/json")
@@ -338,7 +338,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json*/ @"{
                                             ""comment"": ""Hey"",
                                             ""author"": ""John"",
                                         }", Encoding.UTF8, "application/json")

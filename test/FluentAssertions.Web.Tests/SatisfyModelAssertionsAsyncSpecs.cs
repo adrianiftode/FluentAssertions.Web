@@ -12,7 +12,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -37,7 +37,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -60,7 +60,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"testEnum\" : \"Type1\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : \"Type1\"}", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -85,7 +85,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"testEnum\" : 2 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : 2 }", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -110,7 +110,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -135,7 +135,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -181,7 +181,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -237,7 +237,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
         var completed = false;
 
@@ -264,7 +264,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
         var completed = false;
 
@@ -288,7 +288,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -313,7 +313,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -339,7 +339,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"testEnum\" : \"Type1\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : \"Type1\"}", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -366,7 +366,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"testEnum\" : 2 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : 2 }", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -393,7 +393,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -419,7 +419,7 @@ public class SatisfyModelAssertionsAsyncSpecs
     {
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 

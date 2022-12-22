@@ -8,7 +8,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                                             ""errors"": {
                                                 ""Author"": [
                                                     ""The Author field is required.""
@@ -27,7 +27,7 @@ public class BadRequestAssertionsSpecs
 
     #region HaveError
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -35,7 +35,7 @@ public class BadRequestAssertionsSpecs
                     }
                 }")]
 
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                         ""Author"": [
                             ""The Author field is required.""
                         ]
@@ -62,7 +62,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                   ""type"": ""https://tools.ietf.org/html/rfc7231#section-6.5.1"",
                   ""title"": ""One or more validation errors occurred."",
                   ""status"": 400,
@@ -89,7 +89,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                   ""type"": ""https://tools.ietf.org/html/rfc7231#section-6.5.1"",
                   ""title"": ""One or more validation errors occurred."",
                   ""status"": 400,
@@ -116,7 +116,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                   ""type"": ""https://tools.ietf.org/html/rfc7231#section-6.5.1"",
                   ""title"": ""One or more validation errors occurred."",
                   ""status"": 400,
@@ -136,14 +136,14 @@ public class BadRequestAssertionsSpecs
     }
 
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
                         ]
                     }
                 }")]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                         ""Author"": [
                             ""The Author field is required.""
                         ]
@@ -166,7 +166,7 @@ public class BadRequestAssertionsSpecs
     }
 
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -174,7 +174,7 @@ public class BadRequestAssertionsSpecs
                     }
                 }")]
 
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                         ""Author"": [
                             ""The Author field is required.""
                         ]
@@ -196,10 +196,10 @@ public class BadRequestAssertionsSpecs
     }
 
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json*/ @"{
                         ""id"": [""Error message 1."", ""Error message 2.""]   
                     }")]
-    [InlineData(@"{
+    [InlineData(/*lang=json*/ @"{
                     ""errors"" :
                         {
                             ""id"": [""Error message 1."", ""Error message 2.""]   
@@ -224,11 +224,11 @@ public class BadRequestAssertionsSpecs
     }
 
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                         ""Author"": ""The Author field is required.""
                 }")]
 
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"" : {
                         ""Author"": ""The Author field is required.""
                 }
@@ -250,14 +250,14 @@ public class BadRequestAssertionsSpecs
     }
 
     [Theory]
-    [InlineData(@"[
+    [InlineData(/*lang=json,strict*/ @"[
                         {
                             ""code"": ""previous_steps_validation_error"",
                             ""description"": null
                         }
                     ]")]
 
-    [InlineData(@"{ ""errors"" : [
+    [InlineData(/*lang=json,strict*/ @"{ ""errors"" : [
                         {
                             ""code"": ""previous_steps_validation_error"",
                             ""description"": null
@@ -288,7 +288,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -314,7 +314,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -340,7 +340,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var response = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{ 
+            Content = new StringContent(/*lang=json*/ @"{ 
                            ""errors"":{ 
                               """":[ 
                                  ""A non-empty request body is required.""
@@ -364,7 +364,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                         ""Author"": ""The Author field is required.""
                 }", Encoding.UTF8, "application/json")
         };
@@ -383,7 +383,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                         ""Author"": [ ""The Author field is required."" ]
                 }", Encoding.UTF8, "application/json")
         };
@@ -402,7 +402,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var response = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{ 
+            Content = new StringContent(/*lang=json*/ @"{ 
                               """":[ 
                                  ""A non-empty request body is required.""
                               ]                           
@@ -424,7 +424,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var response = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                         ""type"": ""https://tools.ietf.org/html/rfc7231#section-6.5.1"",
                         ""title"": ""One or more validation errors occurred."",
                         ""status"": 400,
@@ -452,7 +452,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                   ""type"": ""https://tools.ietf.org/html/rfc7231#section-6.5.1"",
                   ""title"": ""One or more validation errors occurred."",
                   ""status"": 400,
@@ -479,7 +479,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -500,14 +500,14 @@ public class BadRequestAssertionsSpecs
 
     #region NotHaveError
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
                         ]
                     }
                 }")]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                         ""Author"": [
                             ""The Author field is required.""
                         ]
@@ -534,7 +534,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                   ""type"": ""https://tools.ietf.org/html/rfc7231#section-6.5.1"",
                   ""title"": ""One or more validation errors occurred."",
                   ""status"": 400,
@@ -556,7 +556,7 @@ public class BadRequestAssertionsSpecs
     }
 
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -564,7 +564,7 @@ public class BadRequestAssertionsSpecs
                     }
                 }")]
 
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                         ""Author"": [
                             ""The Author field is required.""
                         ]
@@ -594,7 +594,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -615,12 +615,12 @@ public class BadRequestAssertionsSpecs
 
     #region OnlyHaveError
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [ ""The Author field is required."" ]
                     }
                 }")]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""Author"": [ ""The Author field is required."" ]
                     }")]
     public void When_asserting_bad_request_response_with_a_single_error_field_to_be_BadRequest_and_OnlyHaveError_for_that_field_it_should_succeed(string responseContent)
@@ -640,13 +640,13 @@ public class BadRequestAssertionsSpecs
     }
 
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [ ""The Author field is required."" ],
                         ""Comments"": [ ""The Comments field is required."" ]
                     }
                 }")]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""Author"": [ ""The Author field is required."" ],
                     ""Comments"": [ ""The Comments field is required."" ]
                 }")]
@@ -668,7 +668,7 @@ public class BadRequestAssertionsSpecs
     }
 
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""Message 1."",
@@ -676,7 +676,7 @@ public class BadRequestAssertionsSpecs
                         ]
                     }
                 }")]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                         ""Author"": [
                             ""Message 1."",
                             ""Message 2.""
@@ -700,7 +700,7 @@ public class BadRequestAssertionsSpecs
     }
 
     [Theory]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -710,7 +710,7 @@ public class BadRequestAssertionsSpecs
                         ]
                     }
                 }")]
-    [InlineData(@"{
+    [InlineData(/*lang=json,strict*/ @"{
                         ""Author"": [
                             ""The Author field is required.""
                         ],
@@ -743,7 +743,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""
@@ -769,7 +769,7 @@ public class BadRequestAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                     ""errors"": {
                         ""Author"": [
                             ""The Author field is required.""

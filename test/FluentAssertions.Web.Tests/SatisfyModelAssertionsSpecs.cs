@@ -14,7 +14,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -32,7 +32,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -52,7 +52,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -71,7 +71,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -89,7 +89,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -127,7 +127,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -182,7 +182,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -202,7 +202,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -226,7 +226,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -243,7 +243,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -264,7 +264,7 @@ public class SatisfyModelAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act

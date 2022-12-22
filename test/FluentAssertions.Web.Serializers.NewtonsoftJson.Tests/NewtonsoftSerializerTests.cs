@@ -20,7 +20,7 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json*/ @"{
                                             ""accepted"": ""yes"",
                                             ""required"": ""no"",
                                         }", Encoding.UTF8, "application/json")
@@ -50,7 +50,7 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                                             ""accepted"": ""yes""
                                         }", Encoding.UTF8, "application/json")
         };
@@ -73,7 +73,7 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
+            Content = new StringContent(/*lang=json,strict*/ @"{
                                             ""accepted"": ""da""
                                         }", Encoding.UTF8, "application/json")
         };
@@ -96,7 +96,7 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -114,7 +114,7 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
         };
 
         // Act

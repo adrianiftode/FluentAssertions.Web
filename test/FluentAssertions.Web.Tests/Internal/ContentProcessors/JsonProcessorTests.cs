@@ -53,7 +53,7 @@ public class JsonProcessorTests
     public async Task GivenAJsonContentWithAnApplicationJsonMediaType_WhenGetContentInfo_ThenItIsTheExpectedJson()
     {
         // Arrange
-        var content = new StringContent(@"{ ""a"": ""json""}", Encoding.UTF8, "application/json");
+        var content = new StringContent(/*lang=json,strict*/ @"{ ""a"": ""json""}", Encoding.UTF8, "application/json");
         var sut = new JsonProcessor(content);
         var contentBuilder = new StringBuilder();
 
