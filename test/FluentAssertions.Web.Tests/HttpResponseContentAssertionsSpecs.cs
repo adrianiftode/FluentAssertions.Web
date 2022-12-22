@@ -193,6 +193,35 @@ namespace FluentAssertions.Web.Tests
         }
 
         [Fact]
+        public void When_asserting_response_with_a_syntactically_correct_JSON_array_to_be_as_a_single_object_model_it_should_throw_with_descriptive_message_which_includes_the_serialization_error_details_but_keep_the_original_content()
+        {
+            // Arrange
+            using var subject = new HttpResponseMessage
+            {
+                Content = new StringContent(@"[{ ""price"" : 0.0}, { ""price"" : 1.0}]", Encoding.UTF8, "application/json")
+            };
+
+            // Act
+            Action act = () =>
+                subject.Should().BeAs(new
+                {
+                    price = 0m
+                }, "we want to test the {0}", "reason");
+
+            // Assert
+            act.Should().Throw<XunitException>()
+                .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: ""Exception while deserializing the model with SystemTextJsonSerializer: The JSON value could not be converted to * Path: $ | LineNumber: 0 | BytePositionInLine: 1.*
+[
+  {
+    ""price"": 0.0
+  },
+  {
+    ""price"": 1.0
+  }
+]*");
+        }
+
+        [Fact]
         public void When_asserting_with_equivalency_assertion_options_to_be_as_model_it_should_succeed()
         {
             // Arrange
@@ -290,8 +319,10 @@ namespace FluentAssertions.Web.Tests
         #endregion
 
         #region MatchInContent
-        [Fact]
-        public void When_asserting_response_with_keywords_in_content_to_match_in_content_it_should_succeed()
+        [Theory]
+        [InlineData("*comment*author*")]
+        [InlineData("*co?ment*a?thor*")]
+        public void When_asserting_response_with_keywords_in_content_to_match_in_content_it_should_succeed(string wildcardText)
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -304,7 +335,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().MatchInContent("*comment*author*");
+                subject.Should().MatchInContent(wildcardText);
 
             // Assert
             act.Should().NotThrow();

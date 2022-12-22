@@ -3,7 +3,6 @@ using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
 using FluentAssertions.Web.Internal;
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -53,7 +52,7 @@ namespace FluentAssertions.Web
                 model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
                 return (true, null);
             }
-            catch (Exception ex) when (ex is DeserializationException || ex is NotSupportedException)
+            catch (Exception ex) when (ex is DeserializationException or NotSupportedException)
             {
                 model = default;
                 var message = ex.Message;

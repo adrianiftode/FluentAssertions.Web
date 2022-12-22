@@ -26,6 +26,11 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             {
                 if (content != null)
                 {
+                    if (content.CanSeek)
+                    {
+                        content.Seek(0, SeekOrigin.Begin);
+                    }
+
                     jsonDocument = await JsonDocument.ParseAsync(content, new JsonDocumentOptions
                     {
                         AllowTrailingCommas = true
@@ -58,13 +63,13 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
                 using var streamReader = new StreamReader(stream, Encoding.UTF8);
 
                 var jsonString = await streamReader.ReadToEndAsync();
-
-                contentBuilder.Append(jsonString);
+                AppendContentWithinLimits(contentBuilder, jsonString);
             }
             else
             {
                 // append the content as it is if it cannot be parsed as a json
-                contentBuilder.Append(await _httpContent.ReadAsStringAsync());
+                var stringContent = await _httpContent.ReadAsStringAsync();
+                AppendContentWithinLimits(contentBuilder, stringContent);
             }
         }
 
@@ -78,8 +83,7 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
             _httpContent.TryGetContentLength(out long length);
             _httpContent.TryGetContentTypeMediaType(out var mediaType);
 
-            return length <= ContentFormatterOptions.MaximumReadableBytes
-                   && (mediaType.EqualsCaseInsensitive("application/json") || mediaType.EqualsCaseInsensitive("application/problem+json"));
+            return mediaType.EqualsCaseInsensitive("application/json") || mediaType.EqualsCaseInsensitive("application/problem+json");
         }
     }
 }

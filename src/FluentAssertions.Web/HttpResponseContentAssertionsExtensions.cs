@@ -64,6 +64,10 @@ namespace FluentAssertions
         /// </summary>
         /// <param name="expectedWildcardText">
         /// The wildcard pattern with which the subject is matched, where * and ? have special meanings.
+        /// <remarks>
+        ///     <para>* - Matches any number of characters. You can use the asterisk (*) anywhere in a character string. Example: wh* finds what, white, and why, but not awhile or watch.</para>
+        ///     <para>? - Matches a single alphabet in a specific position. Example: b?ll finds ball, bell, and bill.</para>
+        /// </remarks>
         /// </param>
         /// <param name="because">
         /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion

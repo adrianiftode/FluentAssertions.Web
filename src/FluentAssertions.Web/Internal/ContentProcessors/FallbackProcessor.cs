@@ -31,16 +31,8 @@ namespace FluentAssertions.Web.Internal.ContentProcessors
 
             // we might get here some StreamContent, let's try to print it
             // but let's try not to get into this issue again https://github.com/adrianiftode/FluentAssertions.Web/issues/93
-            _httpContent!.TryGetContentLength(out var contentLength);
             var content = await _httpContent!.SafeReadAsStringAsync();
-            if (contentLength >= ContentFormatterOptions.MaximumReadableBytes)
-            {
-                contentBuilder.AppendLine();
-                contentBuilder.AppendLine(ContentFormatterOptions.WarningMessageWhenContentIsTooLarge);
-                content = content!.Substring(0,ContentFormatterOptions.MaximumReadableBytes);
-            }
-
-            contentBuilder.Append(content);
+            AppendContentWithinLimits(contentBuilder, content);
         }
     }
 }
