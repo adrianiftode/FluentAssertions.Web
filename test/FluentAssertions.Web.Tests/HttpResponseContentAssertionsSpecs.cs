@@ -319,8 +319,10 @@ namespace FluentAssertions.Web.Tests
         #endregion
 
         #region MatchInContent
-        [Fact]
-        public void When_asserting_response_with_keywords_in_content_to_match_in_content_it_should_succeed()
+        [Theory]
+        [InlineData("*comment*author*")]
+        [InlineData("*co?ment*a?thor*")]
+        public void When_asserting_response_with_keywords_in_content_to_match_in_content_it_should_succeed(string wildcardText)
         {
             // Arrange
             using var subject = new HttpResponseMessage
@@ -333,7 +335,7 @@ namespace FluentAssertions.Web.Tests
 
             // Act
             Action act = () =>
-                subject.Should().MatchInContent("*comment*author*");
+                subject.Should().MatchInContent(wildcardText);
 
             // Assert
             act.Should().NotThrow();
