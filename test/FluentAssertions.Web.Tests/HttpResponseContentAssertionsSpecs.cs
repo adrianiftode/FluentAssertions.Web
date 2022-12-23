@@ -9,10 +9,12 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
-                                            ""comment"": ""Hey"",
-                                            ""author"": ""John"",
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json*/"""
+            {
+              "comment": "Hey",
+              "author": "John"
+            }
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -33,10 +35,12 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
-                                            ""author"": ""John"",
-                                            ""comment"": ""Hey"",
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json*/"""
+            {
+              "author": "John",
+              "comment": "Hey"
+            }
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -56,10 +60,12 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
-                                            ""comment"": ""Hey"",
-                                            ""author"": ""John"",
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json*/"""
+            {
+              "comment": "Hey",
+              "author": "John"
+            }
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -123,9 +129,11 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
-                                            ""comment"": ""Hey"",
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json*/"""
+            {
+              "comment": "Hey"
+            }
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -138,7 +146,7 @@ public class HttpResponseContentAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"*Author to be ""John""*reason*");
+            .WithMessage("""*Author to be "John"*reason*""");
     }
 
     [Fact]
@@ -147,7 +155,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"some text:that doesn't look like a json {", Encoding.UTF8, "text/plain")
+            Content = new StringContent("some text:that doesn't look like a json {", Encoding.UTF8, "text/plain")
         };
 
         // Act
@@ -159,7 +167,7 @@ public class HttpResponseContentAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
+            .WithMessage("*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
     }
 
     [Fact]
@@ -168,7 +176,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{ ""price"" : 0.0}", Encoding.UTF8, "text/plain")
+            Content = new StringContent(/*lang=json,strict*/ """{ "price" : 0.0}""", Encoding.UTF8, "text/plain")
         };
 
         // Act
@@ -180,7 +188,7 @@ public class HttpResponseContentAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: ""Exception while deserializing the model with SystemTextJsonSerializer: The JSON value could not be converted to * Path: $.price | LineNumber: 0 | BytePositionInLine: 15.*");
+            .WithMessage("""*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: "Exception while deserializing the model with SystemTextJsonSerializer: The JSON value could not be converted to * Path: $.price | LineNumber: 0 | BytePositionInLine: 15.*""");
     }
 
     [Fact]
@@ -189,7 +197,7 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"[{ ""price"" : 0.0}, { ""price"" : 1.0}]", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """[{ "price" : 0.0}, { "price" : 1.0}]""", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -201,15 +209,17 @@ public class HttpResponseContentAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: ""Exception while deserializing the model with SystemTextJsonSerializer: The JSON value could not be converted to * Path: $ | LineNumber: 0 | BytePositionInLine: 1.*
-[
-  {
-    ""price"": 0.0
-  },
-  {
-    ""price"": 1.0
-  }
-]*");
+            .WithMessage("""
+            *to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: "Exception while deserializing the model with SystemTextJsonSerializer: The JSON value could not be converted to * Path: $ | LineNumber: 0 | BytePositionInLine: 1.*
+            [
+              {
+                "price": 0.0
+              },
+              {
+                "price": 1.0
+              }
+            ]*
+            """);
     }
 
     [Fact]
@@ -218,11 +228,13 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
-                                            ""author"": ""John"",
-                                            ""comment"": ""Hey"",
-                                            ""version"": ""version 1""
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """
+            {
+              "author": "John",
+              "comment": "Hey",
+              "version": "version 1"
+            }
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -244,10 +256,12 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
-                                            ""comment"": ""Hey"",
-                                            ""author"": ""John"",
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json*/"""
+            {
+              "comment": "Hey",
+              "author": "John"
+            }
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -305,7 +319,7 @@ public class HttpResponseContentAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
+            .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
     }
     #endregion
 
@@ -318,10 +332,12 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
-                                            ""comment"": ""Hey"",
-                                            ""author"": ""John"",
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json*/"""
+            {
+              "comment": "Hey",
+              "author": "John"
+            }
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -338,10 +354,12 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(@"{
-                                            ""comment"": ""Hey"",
-                                            ""author"": ""John"",
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json*/"""
+            {
+              "comment": "Hey",
+              "author": "John"
+            }
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -395,7 +413,7 @@ public class HttpResponseContentAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
+            .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
     }
     #endregion
 }

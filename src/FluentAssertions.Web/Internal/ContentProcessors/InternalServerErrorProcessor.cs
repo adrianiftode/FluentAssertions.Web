@@ -50,7 +50,7 @@ internal class InternalServerErrorProcessor : ProcessorBase
             return;
         }
 
-        const string startTag = @"<pre class=""rawExceptionStackTrace"">";
+        const string startTag = """<pre class="rawExceptionStackTrace">""";
         if (content!.Contains(startTag))
         {
             var startTagIndex = content.LastIndexOf(startTag, StringComparison.Ordinal);

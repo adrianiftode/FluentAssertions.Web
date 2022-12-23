@@ -77,7 +77,7 @@ public class FallbackProcessorTests
 
         // Assert
         contentBuilder.ToString().Should().Match(
-            @"*Content is disposed so it cannot be read.*");
+            "*Content is disposed so it cannot be read.*");
     }
 
     [Fact]
