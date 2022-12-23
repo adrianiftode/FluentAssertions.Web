@@ -15,10 +15,13 @@ public async Task Post_ReturnsOk()
     var client = _factory.CreateClient();
 
     // Act
-    var response = await client.PostAsync("/api/comments", new StringContent(@"{
-              ""author"": ""John"",
-              ""content"": ""Hey, you...""
-            }", Encoding.UTF8, "application/json"));
+    var response = await client.PostAsync("/api/comments", new StringContent(
+    """
+    {
+      "author": "John",
+      "content": "Hey, you..."
+    }
+    """, Encoding.UTF8, "application/json"));
 
     // Assert
     response.Should().Be200Ok();
@@ -58,10 +61,13 @@ public async Task Post_ReturnsOkAndWithContent()
     var client = _factory.CreateClient();
 
     // Act
-    var response = await client.PostAsync("/api/comments", new StringContent(@"{
-                ""author"": ""John"",
-                ""content"": ""Hey, you...""
-            }", Encoding.UTF8, "application/json"));
+    var response = await client.PostAsync("/api/comments", new StringContent(
+    """
+    {
+      "author": "John",
+      "content": "Hey, you..."
+    }
+    """, Encoding.UTF8, "application/json"));
 
     // Assert
     response.Should().BeAs(new
@@ -102,9 +108,12 @@ public async Task Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMe
     var client = _factory.CreateClient();
 
     // Act
-    var response = await client.PostAsync("/api/comments", new StringContent(@"{
-                                    ""content"": ""Hey, you...""
-                                }", Encoding.UTF8, "application/json"));
+    var response = await client.PostAsync("/api/comments", new StringContent(
+    """
+    {
+      "content": "Hey, you..."
+    }
+    """, Encoding.UTF8, "application/json"));
 
     // Assert
     response.Should().Be400BadRequest()
