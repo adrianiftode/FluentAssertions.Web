@@ -20,10 +20,12 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json*/ @"{
-                                            ""accepted"": ""yes"",
-                                            ""required"": ""no"",
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json*/"""
+                {
+                  "accepted": "yes",
+                  "required": "no"
+                }
+                """, Encoding.UTF8, "application/json")
         };
 
         subject.Should().BeAs(new
@@ -50,9 +52,11 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ @"{
-                                            ""accepted"": ""yes""
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """
+                {
+                  "accepted": "yes"
+                }
+                """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -73,9 +77,11 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ @"{
-                                            ""accepted"": ""da""
-                                        }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """
+                {
+                  "accepted": "da"
+                }
+                """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -87,7 +93,7 @@ public class NewtonsoftSerializerTests
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"*but the JSON representation*NewtonsoftJsonSerializer*Error converting value ""da"" to type 'System.Boolean'*");
+            .WithMessage("""*but the JSON representation*NewtonsoftJsonSerializer*Error converting value "da" to type 'System.Boolean'*""");
     }
 
     [Fact]
@@ -96,7 +102,7 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -114,7 +120,7 @@ public class NewtonsoftSerializerTests
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
         // Act

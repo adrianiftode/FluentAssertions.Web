@@ -7,14 +7,16 @@ public class JsonExtensionsTests
     public void GivenJson_WhenKeyExistsAndHasAnArrayOfStringValues_ThenReturnsTheStrings()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": [
-                        ""The Author field is required."",
-                        ""The Author length exceeds 200 characters.""
-                    ]
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": [
+              "The Author field is required.",
+              "The Author length exceeds 200 characters."
+            ]
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Author");
@@ -27,14 +29,16 @@ public class JsonExtensionsTests
     public void GivenJson_WhenKeyExistsAndHasAnArrayOfObjects_ThenReturnsAnEmptyCollection()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": [
-                        {""description"" : ""The Author field is required.""},
-                        {""description"" : ""The Author length exceeds 200 characters.""}
-                    ]
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": [
+              { "description": "The Author field is required." },
+              { "description": "The Author length exceeds 200 characters." }
+            ]
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Author");
@@ -47,14 +51,16 @@ public class JsonExtensionsTests
     public void GivenJson_WhenKeyExistsAndHasAnArrayOfNull_ThenReturnsAnEmptyCollection()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": [
-                        null,
-                        null
-                    ]
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": [
+              null,
+              null
+            ]
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Author");
@@ -67,13 +73,15 @@ public class JsonExtensionsTests
     public void GivenJson_WhenKeyDoesNotExist_ThenReturnsEmpty()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": [
-                        ""The Author field is required.""
-                    ]
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": [
+              "The Author field is required."
+            ]
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Comment");
@@ -86,11 +94,13 @@ public class JsonExtensionsTests
     public void GivenJson_WhenKeyHasSingleValue_ThenReturnsCollection()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": ""The Author field is required.""
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": "The Author field is required."
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Author");
@@ -103,11 +113,13 @@ public class JsonExtensionsTests
     public void GivenJson_WhenKeyHasAComplexObject_ThenReturnsEmpty()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": { ""Text"" : ""The Author field is required."" }
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": { "Text": "The Author field is required." }
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Author");
@@ -120,11 +132,13 @@ public class JsonExtensionsTests
     public void GivenJson_WhenKeyHasNullValue_ThenReturnsEmpty()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": null
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": null
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Author");
@@ -137,11 +151,13 @@ public class JsonExtensionsTests
     public void GivenJson_WhenKeyHasTrueValue_ThenReturnsEmpty()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": true
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": true
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Author");
@@ -154,11 +170,13 @@ public class JsonExtensionsTests
     public void GivenJson_WhenKeyHasFalseValue_ThenReturnsEmpty()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": false
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": false
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Author");
@@ -173,16 +191,18 @@ public class JsonExtensionsTests
     public void GivenJsonWithAField_WhenGetChildrenKeysIsCalledWithThatField_ThenReturnsDirectKeys()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": [
-                        ""The Author field is required.""
-                    ],
-                    ""Content"": [
-                        ""The Content field is required.""
-                    ]
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": [
+              "The Author field is required."
+            ],
+            "Content": [
+              "The Content field is required."
+            ]
+          }
+        }
+        """);
 
         // Act
         var result = json.GetChildrenNames("errors");
@@ -195,13 +215,15 @@ public class JsonExtensionsTests
     public void GivenJsonWithAnEmptyField_WhenGetChildrenKeysIsCalledByItsParent_ThenReturnsDirectKeys()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    """": [
-                        ""The Author field is required.""
-                    ]
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "": [
+              "The Author field is required."
+            ]
+          }
+        }
+        """);
 
         // Act
         var result = json.GetChildrenNames("errors");
@@ -214,11 +236,13 @@ public class JsonExtensionsTests
     public void GivenJson_WhenGetChildrenKeysIsCalledWithNullOrEmpty_ThenReturnsDirectKeysOfRoot()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                    ""Author"": [
-                        ""The Author field is required.""
-                    ]
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "Author": [
+            "The Author field is required."
+          ]
+        }
+        """);
 
         // Act
         var result = json.GetChildrenNames("");
@@ -231,17 +255,19 @@ public class JsonExtensionsTests
     public void GivenJson_WhenArrayContainsANonStringValue_ThenItExcludeFromResult()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{
-                ""errors"": {
-                    ""Author"": [
-                        ""The Author field is required."",
-                        true,
-                        false,
-                        null,
-                        []
-                    ]
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "errors": {
+            "Author": [
+              "The Author field is required.",
+              true,
+              false,
+              null,
+              []
+            ]
+          }
+        }
+        """);
 
         // Act
         var result = json.GetStringValuesOf("Author");
@@ -256,17 +282,20 @@ public class JsonExtensionsTests
     public void GivenJsonWithAFieldWithChildren_WhenGetParentKeyIsCalledWithOneOfTheChildren_ThenReturnsParent()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{ ""root"" : {
-                    ""errors"": {
-                        ""Author"": [
-                            ""The Author field is required.""
-                        ],
-                        ""Content"": [
-                            ""The Content field is required.""
-                        ]
-                    }
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "root": {
+            "errors": {
+              "Author": [
+                "The Author field is required."
+              ],
+              "Content": [
+                "The Content field is required."
+              ]
+            }
+          }
+        }
+        """);
 
         // Act
         var result = json.GetParentKey("content");
@@ -279,17 +308,20 @@ public class JsonExtensionsTests
     public void GivenJsonWithAFieldWithChildren_WhenGetParentKeyIsCalledWithNoneOfTheChildren_ThenReturnsNull()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{ ""root"" : {
-                    ""errors"": {
-                        ""Author"": [
-                            ""The Author field is required.""
-                        ],
-                        ""Content"": [
-                            ""The Content field is required.""
-                        ]
-                    }
-                }
-            }");
+        using var json = JsonDocument.Parse("""
+        {
+          "root": {
+            "errors": {
+              "Author": [
+                "The Author field is required."
+              ],
+              "Content": [
+                "The Content field is required."
+              ]
+            }
+          }
+        }
+        """);
 
         // Act
         var result = json.GetParentKey("date");
@@ -302,7 +334,7 @@ public class JsonExtensionsTests
     public void GivenJsonAFieldAndChildren_WhenGetParentKeyIsCalledWithItself_ThenReturnsNull()
     {
         // Arrange
-        using var json = JsonDocument.Parse(@"{ ""root"" : """" }");
+        using var json = JsonDocument.Parse("""{ "root" : "" }""");
 
         // Act
         var result = json.GetParentKey("root");

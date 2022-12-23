@@ -12,7 +12,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -37,7 +37,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -51,7 +51,7 @@ public class SatisfyModelAssertionsAsyncSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*to be empty, but found \"Value\"*HTTP response*");
+            .WithMessage("""Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*to be empty, but found "Value"*HTTP response*""");
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : \"Type1\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "testEnum" : "Type1"}""", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -85,7 +85,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : 2 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "testEnum" : 2 }""", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -110,7 +110,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "testEnum" : -1 }""", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -135,7 +135,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "testEnum" : -1 }""", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -158,7 +158,9 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("\"True\"", Encoding.UTF8, "application/json")
+            Content = new StringContent("""
+            "True"
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -172,7 +174,7 @@ public class SatisfyModelAssertionsAsyncSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
+            .WithMessage("*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
     }
 
     [Fact]
@@ -181,7 +183,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -196,7 +198,7 @@ public class SatisfyModelAssertionsAsyncSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*Not Value*expected*to be <null>*The HTTP response was:*");
+            .WithMessage("""Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*Not Value*expected*to be <null>*The HTTP response was:*""");
     }
 
     [Fact]
@@ -226,7 +228,7 @@ public class SatisfyModelAssertionsAsyncSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
+            .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
     }
     #endregion
 
@@ -237,7 +239,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
         var completed = false;
 
@@ -264,7 +266,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
         var completed = false;
 
@@ -288,7 +290,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -304,7 +306,7 @@ public class SatisfyModelAssertionsAsyncSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*to be empty, but found \"Value\"*HTTP response*");
+            .WithMessage("""Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*to be empty, but found "Value"*HTTP response*""");
     }
 
     [Fact]
@@ -313,7 +315,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"property\" : \"Value\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -330,7 +332,7 @@ public class SatisfyModelAssertionsAsyncSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*Not Value*expected*to be <null>*The HTTP response was:*");
+            .WithMessage("Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*Not Value*expected*to be <null>*The HTTP response was:*");
     }
 
     [Fact]
@@ -339,7 +341,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : \"Type1\"}", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "testEnum" : "Type1"}""", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -366,7 +368,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : 2 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "testEnum" : 2 }""", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -393,7 +395,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "testEnum" : -1 }""", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -419,7 +421,7 @@ public class SatisfyModelAssertionsAsyncSpecs
     {
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent(/*lang=json,strict*/ "{ \"testEnum\" : -1 }", Encoding.UTF8, "application/json")
+            Content = new StringContent(/*lang=json,strict*/ """{ "testEnum" : -1 }""", Encoding.UTF8, "application/json")
         };
         bool completed = false;
 
@@ -447,7 +449,9 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage
         {
-            Content = new StringContent("\"True\"", Encoding.UTF8, "application/json")
+            Content = new StringContent("""
+            "True"
+            """, Encoding.UTF8, "application/json")
         };
 
         // Act
@@ -463,7 +467,7 @@ public class SatisfyModelAssertionsAsyncSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
+            .WithMessage("*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
     }
 
     [Fact]
@@ -501,7 +505,7 @@ public class SatisfyModelAssertionsAsyncSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage(@"Expected a * to assert because we want to test the failure message, but found <null>.");
+            .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
     }
     #endregion
 }

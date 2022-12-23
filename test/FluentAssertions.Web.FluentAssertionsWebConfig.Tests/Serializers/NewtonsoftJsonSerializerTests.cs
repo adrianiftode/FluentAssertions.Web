@@ -1,4 +1,4 @@
-﻿namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests;
+﻿namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests.Serializers;
 
 [Collection("Serializers Tests")]
 public sealed class NewtonsoftJsonSerializerTests : IDisposable

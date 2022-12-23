@@ -38,7 +38,7 @@ public class JsonProcessorTests
     public async Task GivenANonJsonContentWithAnApplicationJsonMediaType_WhenGetContentInfo_ThenItIsTheExpectedJson()
     {
         // Arrange
-        var content = new StringContent(@"giberish", Encoding.UTF8, "application/json");
+        var content = new StringContent("giberish", Encoding.UTF8, "application/json");
         var sut = new JsonProcessor(content);
         var contentBuilder = new StringBuilder();
 
@@ -46,14 +46,14 @@ public class JsonProcessorTests
         await sut.GetContentInfo(contentBuilder);
 
         // Assert
-        contentBuilder.ToString().Should().Match(@"giberish");
+        contentBuilder.ToString().Should().Match("giberish");
     }
 
     [Fact]
     public async Task GivenAJsonContentWithAnApplicationJsonMediaType_WhenGetContentInfo_ThenItIsTheExpectedJson()
     {
         // Arrange
-        var content = new StringContent(/*lang=json,strict*/ @"{ ""a"": ""json""}", Encoding.UTF8, "application/json");
+        var content = new StringContent(/*lang=json,strict*/ """{ "a": "json"}""", Encoding.UTF8, "application/json");
         var sut = new JsonProcessor(content);
         var contentBuilder = new StringBuilder();
 
@@ -61,16 +61,18 @@ public class JsonProcessorTests
         await sut.GetContentInfo(contentBuilder);
 
         // Assert
-        contentBuilder.ToString().Should().Match(@"{*
-*""a"": ""json""*
-}*");
+        contentBuilder.ToString().Should().Match("""
+            {*
+            *"a": "json"*
+            }*
+            """);
     }
 
     [Fact]
     public async Task GivenHttpResponseWithDisposedContent_WhenGetContentInfo_ThenIsEmpty()
     {
         // Arrange
-        var content = new StringContent(@"giberish", Encoding.UTF8, "application/json");
+        var content = new StringContent("giberish", Encoding.UTF8, "application/json");
         var sut = new JsonProcessor(content);
         var contentBuilder = new StringBuilder();
         content.Dispose();
