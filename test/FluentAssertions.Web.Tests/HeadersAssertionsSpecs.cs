@@ -212,6 +212,73 @@ public class HeadersAssertionsSpecs
     }
     #endregion
 
+    #region NotBeEmpty
+    [Fact]
+    public void When_asserting_response_with_header_and_header_value_to_have_header_and_not_be_empty_value_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Headers =
+            {
+                { "custom-header", "some-value" }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().HaveHeader("custom-header").And.NotBeEmpty();
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+    [Fact]
+    public void When_asserting_response_with_header_and_header_values_to_have_header_and_not_be_empty_value_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Headers =
+            {
+                { "custom-header", "some-value" },
+                { "custom-header", "another-value" }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().HaveHeader("custom-header").And.NotBeEmpty();
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+
+    [Theory]
+    [InlineData("")]
+    [InlineData((string?)null)]
+    public void When_asserting_response_with_header_and_no_header_value_to_have_that_header_and_not_be_empty_value_it_should_throw_with_descriptive_message(string? headerValue)
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Headers =
+            { 
+                { "custom-header", headerValue }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().HaveHeader("custom-header").And.NotBeEmpty("we want to test the {0}", "reason");
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*the HTTP header *custom-header* with any header values, but found the header and it has no values in the actual response*reason*");
+    }
+    #endregion
+
     #region Match
     [Fact]
     public void When_asserting_response_with_header_to_have_header_with_a_value_it_should_succeed()

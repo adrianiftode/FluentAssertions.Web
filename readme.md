@@ -164,7 +164,7 @@ public async Task Get_WithCommentId_Returns_A_NonSpam_Comment()
 }
 ```
 
-- Asserting the response has a header like `X-Correlation-ID` header of `application/json; charset=utf-8`
+- Asserting the response has a header with the name `X-Correlation-ID` and the value matches a certain pattern
 
 ```csharp
 [Fact]
@@ -178,6 +178,23 @@ public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
 
     // Assert
     response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*", "we want to test the correlation id is a Guid like one");
+}
+```
+
+- Asserting the response has a header with the name `X-Correlation-ID` and the value is not empty
+
+```csharp
+[Fact]
+public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
+{
+    // Arrange
+    var client = _factory.CreateClient();
+
+    // Act
+    var response = await client.GetAsync("/api/values");
+
+    // Assert
+    response.Should().HaveHeader("X-Correlation-ID").And.NotBeEmpty();
 }
 ```
 
@@ -233,6 +250,7 @@ NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConver
 |  *Should().HaveHeader().And.* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to HTTP headers. | 
 | --- | --- | 
 | **BeEmpty()**  | Asserts that an existing HTTP header in a HTTP response has no values.  | 
+| **NotBeEmpty()**  | Asserts that an existing HTTP header in a HTTP response has any values.  | 
 | **BeValues()**  | Asserts that an existing HTTP header in a HTTP response has an expected list of header values.  | 
 | **Match()**  | Asserts that an existing HTTP header in a HTTP response contains at least a value that matches a wildcard pattern.  | 
 
