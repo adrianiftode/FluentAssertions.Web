@@ -11,6 +11,13 @@ internal static class HttpResponseMessageExtensions
             .Where(c => !string.IsNullOrEmpty(c));
     }
 
+    public static string? GetFirstHeaderValue(this HttpResponseMessage response, string header)
+    {
+        var values = response.GetHeaderValues(header);
+
+        return values.FirstOrDefault();
+    }
+
     public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpResponseMessage response)
     {
         var responseContentHeaders =

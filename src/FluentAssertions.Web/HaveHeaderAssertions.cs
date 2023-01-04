@@ -82,7 +82,34 @@ public class HeadersAssertions : HttpResponseMessageAssertions
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(!headerValues.Any())
                     .FailWith("Expected {context:response} to contain " +
-                              "the HTTP header {0} with no header values, but the found the header and it has values {1} in the actual response{reason}. {2}",
+                              "the HTTP header {0} with no header values, but found the header and it has values {1} in the actual response{reason}. {2}",
+                        _header,
+                        headerValues,
+                        Subject);
+
+        return new AndConstraint<HeadersAssertions>(this);
+    }
+
+    /// <summary>
+    /// Asserts that an existing HTTP header in a HTTP response has any values.
+    /// </summary>
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public AndConstraint<HeadersAssertions> NotBeEmpty(string because = "", params object[] becauseArgs)
+    {
+        var headerValues = Subject.GetHeaderValues(_header);
+
+        Execute.Assertion
+            .BecauseOf(because, becauseArgs)
+            .ForCondition(headerValues.Any())
+            .FailWith("Expected {context:response} to contain " +
+                      "the HTTP header {0} with any header values, but found the header and it has no values in the actual response{reason}. {2}",
                         _header,
                         headerValues,
                         Subject);

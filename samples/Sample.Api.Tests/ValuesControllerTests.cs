@@ -140,7 +140,7 @@ namespace Sample.Api.Tests
         }
 
         [Fact]
-        public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
+        public async Task Get_Should_Contain_a_Header_With_Correlation_Id_That_Matches_A_Guid_Like_Pattern()
         {
             // Arrange
             var client = _factory.CreateClient();
@@ -150,6 +150,19 @@ namespace Sample.Api.Tests
 
             // Assert
             response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*", "we want to test the correlation id is a Guid like one");
+        }
+
+        [Fact]
+        public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/api/values");
+
+            // Assert
+            response.Should().HaveHeader("X-Correlation-ID").And.NotBeEmpty("we want to test the correlation id header has some value");
         }
     }
 }
