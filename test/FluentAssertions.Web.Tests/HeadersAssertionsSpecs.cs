@@ -343,6 +343,134 @@ public class HeadersAssertionsSpecs
     }
     #endregion
 
+    #region BeValue
+    [Fact]
+    public void When_asserting_response_with_header_with_value_to_have_the_value_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Headers =
+            {
+                { "custom-header", "value1" }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().HaveHeader("custom-header").And.BeValue("value1");
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+    [Fact]
+    public void When_asserting_response_with_header_with_multiple_values_to_have_the_value_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Headers =
+            {
+                { "custom-header", "value1" },
+                { "custom-header", "value2" }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().HaveHeader("custom-header").And.BeValue("value1", "we want to test the {0}", "reason");
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*the*custom-header*HTTP header*value to be equivalent to*value1*but found the header and has more or no values*reason*");
+    }
+
+    [Fact]
+    public void When_asserting_response_with_header_with_multiple_values_indicated_by_comma_separation_to_have_the_value_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Headers =
+            {
+                { "custom-header", "value1,value2" }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().HaveHeader("custom-header").And.BeValue("value1", "we want to test the {0}", "reason");
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*the *custom-header* HTTP header*value to be equivalent to*value1*but*value1,value2*differs*reason*");
+    }
+
+    [Fact]
+    public void When_asserting_response_with_header_without_some_value_to_be_different_value_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Headers =
+            {
+                { "custom-header", "value1" }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().HaveHeader("custom-header").And.BeValue("other-than-value1", "we want to test the {0}", "reason");
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*the *custom-header* HTTP header*value to be equivalent to*other-than-value1*but*value1*differs*reason*");
+    }
+
+    [Fact]
+    public void When_asserting_response_to_have_header_and_be_value_against_null_expected_values_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Headers =
+            {
+                { "custom-header", "value1" }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().HaveHeader("custom-header").And.BeValue(null!);
+
+        // Assert
+        act.Should().Throw<ArgumentNullException>()
+            .WithMessage("*<null>*Use And.BeEmpty to test if the HTTP header has no value.*");
+    }
+
+    [Fact]
+    public void When_asserting_response_to_have_header_and_be_values_against_empty_expected_value_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Headers =
+            {
+                { "custom-header", "value1" }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().HaveHeader("custom-header").And.BeValue("");
+
+        // Assert
+        act.Should().Throw<ArgumentException>()
+            .WithMessage("*empty*Use And.BeEmpty to test if the HTTP header has no value.*");
+    }
+    #endregion
+
     #region BeValues
     [Fact]
     public void When_asserting_response_with_header_with_values_to_have_those_values_it_should_succeed()
