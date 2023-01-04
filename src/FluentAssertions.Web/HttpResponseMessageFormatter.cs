@@ -63,10 +63,10 @@ internal class HttpResponseMessageFormatter : IValueFormatter
         var request = response.RequestMessage;
         if (request == null)
         {
-            messageBuilder.AppendLine("The originated HTTP request was <null>.");
+            messageBuilder.AppendLine("The originating HTTP request was <null>.");
             return;
         }
-        messageBuilder.AppendLine("The originated HTTP request was:");
+        messageBuilder.AppendLine("The originating HTTP request was:");
         messageBuilder.AppendLine();
 
         messageBuilder.AppendLine($"{request.Method.ToString().ToUpper()} {request.RequestUri} HTTP {request.Version}");

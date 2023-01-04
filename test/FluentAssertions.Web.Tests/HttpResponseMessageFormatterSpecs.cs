@@ -22,7 +22,7 @@ public class HttpResponseMessageFormatterSpecs
             The HTTP response was:*
             HTTP/1.1 200 OK*
             Content-Length: 0*
-            The originated HTTP request was <null>.*
+            The originating HTTP request was <null>.*
             """);
     }
 
@@ -60,7 +60,7 @@ public class HttpResponseMessageFormatterSpecs
             Connection: close*
             Content-Type: text/html; charset=utf-8*
             Content-Length: 0*
-            The originated HTTP request was <null>.*
+            The originating HTTP request was <null>.*
             """);
     }
 
@@ -163,7 +163,7 @@ public class HttpResponseMessageFormatterSpecs
                 }*
               }*
             }*
-            The originated HTTP request was <null>.*
+            The originating HTTP request was <null>.*
             """);
     }
 
@@ -187,7 +187,7 @@ public class HttpResponseMessageFormatterSpecs
 
         // Assert
         var formatted = formattedGraph.ToString();
-        formatted.Should().Match("""*The HTTP response wa*"папка"*The originated HTTP request was <null>.*""");
+        formatted.Should().Match("""*The HTTP response wa*"папка"*The originating HTTP request was <null>.*""");
     }
     
     [Fact]
@@ -240,7 +240,7 @@ public class HttpResponseMessageFormatterSpecs
                 }*
               }*
             }*
-            The originated HTTP request was <null>.*
+            The originating HTTP request was <null>.*
             """);
     }
 
@@ -286,7 +286,7 @@ public class HttpResponseMessageFormatterSpecs
             The content of the document......*
             </body>*
             </html>*
-            The originated HTTP request was <null>.*
+            The originating HTTP request was <null>.*
             """);
     }
 
@@ -313,7 +313,7 @@ public class HttpResponseMessageFormatterSpecs
             HTTP/1.1 200 OK*
             Content-Type: text/plain; charset=utf-8*
             Content-Length: 0*
-            The originated HTTP request was <null>.*
+            The originating HTTP request was <null>.*
             """);
     }
 
@@ -342,7 +342,7 @@ public class HttpResponseMessageFormatterSpecs
             *The HTTP response was:*
             HTTP/1.1 200 OK*
             Content-Length: 0*
-            The originated HTTP request was:*
+            The originating HTTP request was:*
             POST http://localhost:5001/ HTTP*
             Authorization: Bearer xyz*
             Content-Type: text/plain; charset=utf-8*
@@ -378,7 +378,7 @@ public class HttpResponseMessageFormatterSpecs
             *The HTTP response was:*
             HTTP/1.1 200 OK*
             Content-Length: 0*
-            The originated HTTP request was:*
+            The originating HTTP request was:*
             POST http://localhost:5001/ HTTP*
             Authorization: Bearer xyz*
             Content-Type: text/plain; charset=utf-8*
@@ -1439,7 +1439,7 @@ public class HttpResponseMessageFormatterSpecs
             {*
               "glossary": {*
                 "title": "----*
-            The originated HTTP request was <null>.*
+            The originating HTTP request was <null>.*
             """);
     }
 
@@ -1474,7 +1474,7 @@ public class HttpResponseMessageFormatterSpecs
                 "glossary": {*
                     "title":*
             }*
-            The originated HTTP request was <null>.*
+            The originating HTTP request was <null>.*
             """);
     }
 }
