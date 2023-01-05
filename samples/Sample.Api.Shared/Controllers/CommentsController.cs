@@ -16,7 +16,11 @@ namespace Sample.Api.Controllers
         };
 
         [HttpGet("{id}")]
-        public Comment Get(int id) => new Comment { Author = "Adrian", Content = "Hey", CommentId = id };
+        public Comment Get(int id)
+        {
+            Response.Headers.Add("x-vendor", "vendor");
+            return new Comment { Author = "Adrian", Content = "Hey", CommentId = id };
+        }
 
         [HttpPost]
         public Comment Post([FromBody] Comment value) => value;

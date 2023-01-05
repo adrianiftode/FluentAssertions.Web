@@ -107,6 +107,19 @@ namespace Sample.Api.Tests
         }
 
         [Fact]
+        public async Task Get_Returns_Response_With_A_Certain_Header()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/api/comments/1");
+
+            // Assert
+            response.Should().HaveHeader("x-vendor").And.BeValue("vendor", "we want to test the header has a specific value");
+        }
+
+        [Fact]
         public async Task Post_ReturnsOk()
         {
             // Arrange

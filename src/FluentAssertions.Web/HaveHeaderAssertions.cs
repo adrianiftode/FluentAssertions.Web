@@ -110,9 +110,9 @@ public class HeadersAssertions : HttpResponseMessageAssertions
             .ForCondition(headerValues.Any())
             .FailWith("Expected {context:response} to contain " +
                       "the HTTP header {0} with any header values, but found the header and it has no values in the actual response{reason}. {2}",
-                        _header,
-                        headerValues,
-                        Subject);
+                _header,
+                headerValues,
+                Subject);
 
         return new AndConstraint<HeadersAssertions>(this);
     }
@@ -163,7 +163,52 @@ public class HeadersAssertions : HttpResponseMessageAssertions
         return new AndConstraint<HeadersAssertions>(this);
     }
 
+    /// <summary>
+    /// Asserts that an existing HTTP header in a HTTP response has an expected value.
+    /// </summary>
+    /// <param name="expectedValue">
+    /// The expected value with which the HTTP header value list is compared.
+    /// </param>
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public AndConstraint<HeadersAssertions> BeValue(string expectedValue,
+        string because = "", params object[] becauseArgs)
+    {
+        Guard.ThrowIfArgumentIsNullOrEmpty(expectedValue, nameof(expectedValue), "Cannot verify a HTTP header to be a value against a <null> or empty value. Use And.BeEmpty to test if the HTTP header has no value.");
 
+        Execute.Assertion
+            .BecauseOf(because, becauseArgs)
+            .ForCondition(Subject.GetHeaderValues(_header).Count() == 1)
+            .FailWith($$"""
+                              Expected {context:response} to contain the {0} HTTP header and the value to be equivalent to "{{expectedValue}}", but found the header and has more or no values{reason}.{1}
+                              """, _header, Subject);
+
+        var value = Subject.GetFirstHeaderValue(_header);
+
+        string[] failures;
+
+        using (var scope = new AssertionScope("header value"))
+        {
+            value.Should().BeEquivalentTo(expectedValue);
+
+            failures = scope.Discard();
+        }
+
+        Execute.Assertion
+                    .BecauseOf(because, becauseArgs)
+                    .ForCondition(failures.Length == 0)
+                    .FailWith($$"""
+                              Expected {context:response} to contain the {0} HTTP header and the {{ failures.FirstOrDefault()?.ReplaceFirstWithLowercase().TrimDot() }}{reason}.{1}
+                              """, _header, Subject);
+
+        return new AndConstraint<HeadersAssertions>(this);
+    }
 
     /// <summary>
     /// Returns the type of the subject the assertion applies on.
