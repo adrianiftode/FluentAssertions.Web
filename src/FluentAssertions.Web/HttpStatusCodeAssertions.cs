@@ -517,7 +517,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be301MovedPermanently(string because = "", params object[] becauseArgs)
+    public AndConstraint<HaveLocationHeaderAssertions> Be301MovedPermanently(string because = "", params object[] becauseArgs)
     {
         Execute.Assertion
             .ForCondition(Subject is not null)
@@ -529,7 +529,7 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.MovedPermanently == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , "HttpStatusCode.MovedPermanently {value: 301}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+        return new AndConstraint<HaveLocationHeaderAssertions>(new HaveLocationHeaderAssertions(Subject));
     }
 
     /// <summary>

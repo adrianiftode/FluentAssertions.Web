@@ -372,12 +372,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be301MovedPermanently(
+    public static AndConstraint<HaveLocationHeaderAssertions> Be301MovedPermanently(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be301MovedPermanently(because, becauseArgs);
+        => new HaveLocationHeaderAssertions(parent.Subject).Be301MovedPermanently(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 301 Moved

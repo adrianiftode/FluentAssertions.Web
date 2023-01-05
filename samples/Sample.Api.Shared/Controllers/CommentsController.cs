@@ -24,6 +24,9 @@ namespace Sample.Api.Controllers
 
         [HttpPost]
         public Comment Post([FromBody] Comment value) => value;
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Comment value) => RedirectPermanent("/location");
     }
 
     public class Comment

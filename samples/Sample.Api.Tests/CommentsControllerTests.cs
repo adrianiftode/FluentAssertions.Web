@@ -1,3 +1,4 @@
+using System;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Sample.Api.Controllers;
@@ -223,6 +224,44 @@ namespace Sample.Api.Tests
             // Assert
             response.Should().Be400BadRequest()
                 .And.OnlyHaveError("Author", "The Author field is required.");
+        }
+
+        [Fact]
+        public async Task Put_PermanentRedirect()
+        {
+            // Arrange
+            var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
+
+            // Act
+            var response = await client.PutAsync("/api/comments/1", new StringContent(/*lang=json,strict*/ @"{
+                      ""author"": ""John"",
+                      ""content"": ""Hey, you...""
+                    }", Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.Should().Be301MovedPermanently().And.HaveLocationHeader("/location", "we want to test the redirect at {0}", DateTime.Today);
+        }
+
+        [Fact]
+        public async Task Post_PermanentRedirect()
+        {
+            // Arrange
+            var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
+
+            // Act
+            var response = await client.PostAsync("/api/comments/1", new StringContent(/*lang=json,strict*/ @"{
+                      ""author"": ""John"",
+                      ""content"": ""Hey, you...""
+                    }", Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.Should().HaveHeader("X-Correlation-ID").And.NotBeEmpty("we want to test the redirect at {0}", DateTime.Today);
         }
     }
 }
