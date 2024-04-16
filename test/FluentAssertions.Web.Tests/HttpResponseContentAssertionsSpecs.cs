@@ -18,6 +18,22 @@ public class HttpResponseContentAssertionsSpecs
     }
 
     [Fact]
+    public void When_asserting_response_with_empty_content_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage()
+        {
+            Content = new StringContent("")
+        };
+
+        // Act
+        Action act = () => subject.Should().BeEmpty();
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+    [Fact]
     public void When_asserting_response_with_content_it_should_throw_with_descriptive_message()
     {
         // Arrange
