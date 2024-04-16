@@ -108,6 +108,19 @@ namespace Sample.Api.Tests
 #endif
 
         [Fact]
+        public async Task Post_ReturnsEmptyContent()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.PostAsync("/api/values", new StringContent(@"""value""", Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.Should().BeEmpty();
+        }
+
+        [Fact]
         public async Task Post_ReturnsOk()
         {
             // Arrange

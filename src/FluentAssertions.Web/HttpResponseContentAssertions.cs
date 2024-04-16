@@ -6,6 +6,34 @@
 public partial class HttpResponseMessageAssertions
 {
     /// <summary>
+    /// Asserts that the HTTP content is empty.
+    /// </summary>
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public AndConstraint<HttpResponseMessageAssertions> BeEmpty(string because = "", params object[] becauseArgs)
+    {
+        Execute.Assertion
+            .ForCondition(Subject is not null)
+            .BecauseOf(because, becauseArgs)
+            .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+        var content = GetContent();
+
+        Execute.Assertion
+            .ForCondition(string.IsNullOrEmpty(content))
+            .BecauseOf(because, becauseArgs)
+            .FailWith("Expected {context:response} to have no content. {0}", Subject);
+
+        return new AndConstraint<HttpResponseMessageAssertions>(this);
+    }
+
+    /// <summary>
     /// Asserts that HTTP response content can be an equivalent representation of the expected model.
     /// </summary>
     /// <param name="expectedModel">

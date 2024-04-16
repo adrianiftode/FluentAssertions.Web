@@ -2,6 +2,44 @@
 
 public class HttpResponseContentAssertionsSpecs
 {
+    #region BeEmpty
+
+    [Fact]
+    public void When_asserting_response_with_no_content_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage();
+
+        // Act
+        Action act = () => subject.Should().BeEmpty();
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+    [Fact]
+    public void When_asserting_response_with_content_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Content = new StringContent(/*lang=json*/"""
+                                                     {
+                                                       "comment": "Hey",
+                                                       "author": "John"
+                                                     }
+                                                     """, Encoding.UTF8, "application/json")
+        };
+
+        // Act
+        Action act = () => subject.Should().BeEmpty("we want to test the {0}", "reason");
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*to have no content*");
+    }
+    #endregion
+
     #region BeAs
     [Fact]
     public void When_asserting_response_with_content_to_be_as_model_it_should_succeed()
