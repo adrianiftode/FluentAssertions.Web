@@ -47,7 +47,7 @@ before_build:
 build_script:
   # Begin SonarScanner
   # Ensure Java 15, required by Sonar
-  - set JAVA_HOME=C:\Program Files\Java\jdk15
+  - set JAVA_HOME=C:\Program Files\Java\jdk19
   - if not exist "%JAVA_HOME%\bin\java.exe" (echo "%JAVA_HOME%\bin\java.exe does not exist" && exit 1)
   - set PATH=%JAVA_HOME%\bin;%PATH%
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"adrianiftode_FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" /d:sonar.cs.opencover.reportsPaths="opencovercoverage.xml" /d:sonar.coverage.exclusions=test/**}'
