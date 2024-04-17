@@ -25,10 +25,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net30", "samples\Sample.Api.Net30\Sample.Api.Net30.csproj", "{BAE9E107-74FE-4C37-A528-857AC73D2C55}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net22", "samples\Sample.Api.Net22\Sample.Api.Net22.csproj", "{75C52AB3-0B18-4B3D-B604-6C2EDD724402}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net31", "samples\Sample.Api.Net31\Sample.Api.Net31.csproj", "{A62ABBAE-BFB8-467A-9FBC-974172C718E2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Tests", "samples\Sample.Api.Tests\Sample.Api.Tests.csproj", "{5E7E24A9-A31F-4EBB-A3BA-167B0DD9C37E}"
@@ -38,8 +34,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net50", "samples\Sample.Api.Net50\Sample.Api.Net50.csproj", "{4C9619BF-7ED4-42A3-B25C-15E288264C6F}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample.Api.Shared", "Samples\Sample.Api.Shared\Sample.Api.Shared.shproj", "{815C141D-4504-42B1-A6F7-672C2476A474}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net21", "samples\Sample.Api.Net21\Sample.Api.Net21.csproj", "{A0B5B518-714A-4731-B371-996D5FBC72A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssertions.Web.Serializers.NewtonsoftJson", "src\FluentAssertions.Web.Serializers.NewtonsoftJson\FluentAssertions.Web.Serializers.NewtonsoftJson.csproj", "{1BDE8312-1789-40EA-86B2-83784E560740}"
 EndProject
@@ -63,18 +57,6 @@ Global
 		{3C892A67-86B1-491F-8BF6-6E782FE4F689}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C892A67-86B1-491F-8BF6-6E782FE4F689}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C892A67-86B1-491F-8BF6-6E782FE4F689}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAE9E107-74FE-4C37-A528-857AC73D2C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAE9E107-74FE-4C37-A528-857AC73D2C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAE9E107-74FE-4C37-A528-857AC73D2C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAE9E107-74FE-4C37-A528-857AC73D2C55}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75C52AB3-0B18-4B3D-B604-6C2EDD724402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75C52AB3-0B18-4B3D-B604-6C2EDD724402}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75C52AB3-0B18-4B3D-B604-6C2EDD724402}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75C52AB3-0B18-4B3D-B604-6C2EDD724402}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A62ABBAE-BFB8-467A-9FBC-974172C718E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A62ABBAE-BFB8-467A-9FBC-974172C718E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A62ABBAE-BFB8-467A-9FBC-974172C718E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A62ABBAE-BFB8-467A-9FBC-974172C718E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E7E24A9-A31F-4EBB-A3BA-167B0DD9C37E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E7E24A9-A31F-4EBB-A3BA-167B0DD9C37E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E7E24A9-A31F-4EBB-A3BA-167B0DD9C37E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,10 +69,6 @@ Global
 		{4C9619BF-7ED4-42A3-B25C-15E288264C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C9619BF-7ED4-42A3-B25C-15E288264C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C9619BF-7ED4-42A3-B25C-15E288264C6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A0B5B518-714A-4731-B371-996D5FBC72A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0B5B518-714A-4731-B371-996D5FBC72A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0B5B518-714A-4731-B371-996D5FBC72A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0B5B518-714A-4731-B371-996D5FBC72A0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1BDE8312-1789-40EA-86B2-83784E560740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1BDE8312-1789-40EA-86B2-83784E560740}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BDE8312-1789-40EA-86B2-83784E560740}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -114,14 +92,10 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{313919D0-7CE6-4118-A6A2-8963362A338F} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 		{3C892A67-86B1-491F-8BF6-6E782FE4F689} = {14FDD52D-B83A-445B-BD2F-04B3E7B8033C}
-		{BAE9E107-74FE-4C37-A528-857AC73D2C55} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
-		{75C52AB3-0B18-4B3D-B604-6C2EDD724402} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
-		{A62ABBAE-BFB8-467A-9FBC-974172C718E2} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 		{5E7E24A9-A31F-4EBB-A3BA-167B0DD9C37E} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 		{FACC5AED-9978-441D-A359-DCD83F924BF8} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 		{4C9619BF-7ED4-42A3-B25C-15E288264C6F} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 		{815C141D-4504-42B1-A6F7-672C2476A474} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
-		{A0B5B518-714A-4731-B371-996D5FBC72A0} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 		{1BDE8312-1789-40EA-86B2-83784E560740} = {14FDD52D-B83A-445B-BD2F-04B3E7B8033C}
 		{F2C0B6F2-4ACE-4688-8F96-9EB1D5718B60} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 		{538479CE-5922-4FF9-A09D-80C9E91FFFF1} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
@@ -132,11 +106,7 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{4c9619bf-7ed4-42a3-b25c-15e288264c6f}*SharedItemsImports = 5
-		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{75c52ab3-0b18-4b3d-b604-6c2edd724402}*SharedItemsImports = 5
 		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{815c141d-4504-42b1-a6f7-672c2476a474}*SharedItemsImports = 13
-		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{a0b5b518-714a-4731-b371-996d5fbc72a0}*SharedItemsImports = 5
-		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{a62abbae-bfb8-467a-9fbc-974172c718e2}*SharedItemsImports = 5
-		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{bae9e107-74fe-4c37-a528-857ac73d2c55}*SharedItemsImports = 5
 		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{dcc4b007-dce3-443e-bc9d-635ee367882b}*SharedItemsImports = 5
 		Samples\Sample.Api.Shared\Sample.Api.Shared.projitems*{facc5aed-9978-441d-a359-dcd83f924bf8}*SharedItemsImports = 5
 	EndGlobalSection
