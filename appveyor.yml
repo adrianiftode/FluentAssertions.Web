@@ -37,7 +37,7 @@ init:
   - ps: |
       Write-Host "APPVEYOR_BUILD_VERSION='$env:APPVEYOR_BUILD_VERSION'" -ForegroundColor Yellow
       Write-Host "APPVEYOR_REPO_TAG_NAME= '$env:APPVEYOR_REPO_TAG_NAME'" -ForegroundColor Yellow
-  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet tool install -g dotnet-sonarscanner }'
+  - ps: '{ & dotnet tool install -g dotnet-sonarscanner }'
   - cmd: dotnet tool install -g minicover
 
 nuget:
@@ -50,7 +50,7 @@ build_script:
   - set JAVA_HOME=C:\Program Files\Java\jdk19
   - if not exist "%JAVA_HOME%\bin\java.exe" (echo "%JAVA_HOME%\bin\java.exe does not exist" && exit 1)
   - set PATH=%JAVA_HOME%\bin;%PATH%
-  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"adrianiftode_FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" /d:sonar.cs.opencover.reportsPaths="opencovercoverage.xml" /d:sonar.coverage.exclusions=test/**}'
+  - ps: '{ dotnet sonarscanner begin /k:"adrianiftode_FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" /d:sonar.cs.opencover.reportsPaths="opencovercoverage.xml" /d:sonar.coverage.exclusions=test/**}'
   - dotnet build -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION%
   - minicover instrument
 test_script:
@@ -60,7 +60,7 @@ after_test:
   - minicover opencoverreport
   # will fail when the test coverage is lower than the threshold
   - minicover report --threshold 95
-  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner end /d:sonar.login="$env:SONAR_TOKEN" }'
+  - ps: '{ dotnet sonarscanner end /d:sonar.login="$env:SONAR_TOKEN" }'
   - dotnet pack --no-build --include-symbols -c %CONFIGURATION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 
 artifacts:
