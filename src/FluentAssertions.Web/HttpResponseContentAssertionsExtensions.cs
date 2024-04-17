@@ -7,6 +7,24 @@
 public static class HttpResponseContentAssertionsExtensions
 {
     /// <summary>
+    /// Asserts that HTTP response content is empty
+    /// </summary>
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public static AndConstraint<HttpResponseMessageAssertions> BeEmpty(
+#pragma warning disable 1573
+        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+#pragma warning restore 1573
+        string because = "", params object[] becauseArgs)
+        => new HttpResponseMessageAssertions(parent.Subject).BeEmpty(because, becauseArgs);
+
+    /// <summary>
     /// Asserts that HTTP response content can be an equivalent representation of the expected model.
     /// </summary>
     /// <param name="expectedModel">

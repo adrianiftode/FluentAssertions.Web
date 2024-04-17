@@ -238,6 +238,7 @@ NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConver
 
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to the HTTP content. |
 | --- | --- |
+| **Should().BeEmpty()** | Asserts that HTTP response content is empty. |
 | **Should().BeAs&lt;TModel&gt;()** | Asserts that HTTP response content can be an equivalent representation of the expected model. |
 | **Should().HaveHeader()** | Asserts that an HTTP response has a named header. |
 | **Should().NotHaveHeader()** | Asserts that an HTTP response does not have a named header. |
