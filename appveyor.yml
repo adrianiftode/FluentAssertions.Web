@@ -79,7 +79,7 @@ deploy:
  - provider: GitHub
    release: $(APPVEYOR_BUILD_VERSION)
    auth_token:
-       secure: 7a4x3VBTP+NCJ2NFJ7oTeT70kYkdWcLrSzoZjThOB/wqw6DFIGp7I0KSAu+BRnq6
+       secure: WXU/Xj3ntIZVx89KDAa/V5km1nhPI924T8G9u8c/i2LBSegKtLVV2pJjfUFvNYFEQ2j6adP4YkP6AgotppXNcFVQ/uvEfx2TY304k+FzkQpRwIfxBZantESXUKIC6aa5
    artifact: /.*\.nupkg/
    on:
      appveyor_repo_tag: true
