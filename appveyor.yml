@@ -50,11 +50,11 @@ build_script:
   - set JAVA_HOME=C:\Program Files\Java\jdk15
   - if not exist "%JAVA_HOME%\bin\java.exe" (echo "%JAVA_HOME%\bin\java.exe does not exist" && exit 1)
   - set PATH=%JAVA_HOME%\bin;%PATH%
-  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" /d:sonar.cs.opencover.reportsPaths="opencovercoverage.xml" /d:sonar.coverage.exclusions=test/**}'
+  - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet sonarscanner begin /k:"adrianiftode_FluentAssertions.Web" /o:adrianiftode-github /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$env:SONAR_TOKEN" /v:"$env:APPVEYOR_BUILD_NUMBER" /d:sonar.cs.opencover.reportsPaths="opencovercoverage.xml" /d:sonar.coverage.exclusions=test/**}'
   - dotnet build -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION%
   - minicover instrument
 test_script:
-  - dotnet test --no-restore --no-build
+  - dotnet test --no-restore --no-build --nologo --verbosity:q
 after_test:
   - minicover uninstrument
   - minicover opencoverreport
@@ -70,7 +70,7 @@ artifacts:
 deploy:
  - provider: NuGet
    api_key:
-       secure: 10kb6vZ2gElrxxz+w9R1HHXKllKB2eX1jn+08B46Z3kE9jofD14d9f41+I2DOnW1
+       secure: aHT1IlqkfTAZm236Pkjt84NdjfEIrPJqJt4IwO5QNvH0LpIWqx/L3oFRewdCwCQs
    skip_symbols: true
    artifact: /.*\.nupkg/
    on:
