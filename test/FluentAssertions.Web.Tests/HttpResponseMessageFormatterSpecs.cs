@@ -5,7 +5,7 @@ namespace FluentAssertions.Web.Tests;
 public class HttpResponseMessageFormatterSpecs
 {
     [Fact]
-    public void GivenUnspecifiedResponse_ShouldPrintProtocolAndHaveContentLengthZero()
+    public void GivenUnspecifiedResponse_ShouldPrintProtocolAndHaveNoContentLength()
     {
         // Arrange
         var formattedGraph = new FormattedObjectGraph(maxLines: 100);
@@ -21,7 +21,6 @@ public class HttpResponseMessageFormatterSpecs
             *
             The HTTP response was:*
             HTTP/1.1 200 OK*
-            Content-Length: 0*
             The originating HTTP request was <null>.*
             """);
     }
@@ -59,7 +58,6 @@ public class HttpResponseMessageFormatterSpecs
             Date: Thu, 26 Sep 2019 22:33:34 GMT*
             Connection: close*
             Content-Type: text/html; charset=utf-8*
-            Content-Length: 0*
             The originating HTTP request was <null>.*
             """);
     }
@@ -137,7 +135,6 @@ public class HttpResponseMessageFormatterSpecs
             *The HTTP response was:*
             HTTP/1.1 200 OK*
             Content-Type: application/json; charset=utf-8*
-            Content-Length:*
             {*
               "glossary": {*
                 "title": "example glossary",*
@@ -214,7 +211,6 @@ public class HttpResponseMessageFormatterSpecs
             The HTTP response was:*
             HTTP/1.1 200 OK*
             Content-Type: application/json; charset=utf-8*
-            Content-Length:*
             {*
               "glossary": {*
                 "title": "example glossary",*
@@ -277,7 +273,6 @@ public class HttpResponseMessageFormatterSpecs
             The HTTP response was:*
             HTTP/1.1 200 OK*
             Content-Type: text/html; charset=utf-8*
-            Content-Length:*
             <html>*
             <head>*
             <title>Title of the document</title>*
@@ -324,9 +319,10 @@ public class HttpResponseMessageFormatterSpecs
         var formattedGraph = new FormattedObjectGraph(maxLines: 100);
         using var subject = new HttpResponseMessage(HttpStatusCode.OK)
         {
+            Content = new StringContent("OK") { Headers = { ContentLength = 2 } },
             RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/")
             {
-                Content = new StringContent("Some content."),
+                Content = new StringContent("Some content.") { Headers = { ContentLength = 13 } },
                 Headers = { { "Authorization", "Bearer xyz" } }
             }
         };
@@ -341,12 +337,12 @@ public class HttpResponseMessageFormatterSpecs
             """
             *The HTTP response was:*
             HTTP/1.1 200 OK*
-            Content-Length: 0*
+            Content-Length: 2*
             The originating HTTP request was:*
             POST http://localhost:5001/ HTTP*
             Authorization: Bearer xyz*
             Content-Type: text/plain; charset=utf-8*
-            Content-Length: *
+            Content-Length: 13*
             Some content.*
             """);
     }
@@ -377,12 +373,10 @@ public class HttpResponseMessageFormatterSpecs
             """
             *The HTTP response was:*
             HTTP/1.1 200 OK*
-            Content-Length: 0*
             The originating HTTP request was:*
             POST http://localhost:5001/ HTTP*
             Authorization: Bearer xyz*
             Content-Type: text/plain; charset=utf-8*
-            Content-Length: *
             Some content.*
             """);
     }
@@ -408,7 +402,7 @@ public class HttpResponseMessageFormatterSpecs
             """
             *The HTTP response was:*
             HTTP/1.1 200 OK*
-            Content-Length: 0*HTTP request*<null>*
+            *HTTP request*<null>*
             """);
     }
 
@@ -1434,7 +1428,6 @@ public class HttpResponseMessageFormatterSpecs
             *The HTTP response was:*
             HTTP/1.1 200 OK*
             Content-Type: application/json; charset=utf-8*
-            Content-Length:*
             *Content is too large to display and only a part is printed*
             {*
               "glossary": {*
@@ -1469,7 +1462,6 @@ public class HttpResponseMessageFormatterSpecs
             *The HTTP response was:*
             HTTP/1.1 200 OK*
             Content-Type: application/json; charset=utf-8*
-            Content-Length:*
             {*
                 "glossary": {*
                     "title":*

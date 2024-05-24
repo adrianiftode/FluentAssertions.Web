@@ -107,7 +107,12 @@ internal class HttpResponseMessageFormatter : IValueFormatter
 
     private static void AppendContentLength(StringBuilder messageBuilder, HttpContent content)
     {
-        content.TryGetContentLength(out var length);
-        messageBuilder.AppendLine($"Content-Length: {length}");
+        if (content.Headers.TryGetValues("Content-Length", out var values))
+        {
+            foreach (var value in values)
+            {
+                messageBuilder.AppendLine($"Content-Length: {value}");
+            }
+        }
     }
 }
