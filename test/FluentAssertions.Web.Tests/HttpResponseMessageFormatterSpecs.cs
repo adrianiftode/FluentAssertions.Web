@@ -313,6 +313,25 @@ public class HttpResponseMessageFormatterSpecs
     }
 
     [Fact]
+    public void GivenRequestWithoutContent_ShouldNotThrowAnyException()
+    {
+        // Arrange
+        var formattedGraph = new FormattedObjectGraph(maxLines: 100);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            RequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://localhost:5001/"),
+        };
+        var sut = new HttpResponseMessageFormatter();
+
+        // Act
+        sut.Format(subject, formattedGraph, null!, null!);
+
+        // Assert
+        var formatted = formattedGraph.ToString();
+        formatted.Should().NotContain("An exception occurred");
+    }
+
+    [Fact]
     public void GivenRequest_ShouldPrintRequestDetails()
     {
         // Arrange

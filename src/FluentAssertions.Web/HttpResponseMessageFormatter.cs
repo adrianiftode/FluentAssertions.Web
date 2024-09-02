@@ -105,9 +105,9 @@ internal class HttpResponseMessageFormatter : IValueFormatter
         messageBuilder.AppendLine($@"HTTP/{response.Version} {(int)response.StatusCode} {response.StatusCode}");
     }
 
-    private static void AppendContentLength(StringBuilder messageBuilder, HttpContent content)
+    private static void AppendContentLength(StringBuilder messageBuilder, HttpContent? content)
     {
-        if (content.Headers.TryGetValues("Content-Length", out var values))
+        if (content != null && content.Headers.TryGetValues("Content-Length", out var values))
         {
             foreach (var value in values)
             {
