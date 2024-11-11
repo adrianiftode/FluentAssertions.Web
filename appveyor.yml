@@ -54,6 +54,7 @@ build_script:
   - dotnet build -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION%
   - minicover instrument
 test_script:
+  - set DOTNET_ROLL_FORWARD=LatestMajor
   - dotnet test --no-restore --no-build --nologo --verbosity:q
 after_test:
   - minicover uninstrument
