@@ -9,6 +9,7 @@
     <WarningsAsErrors>CS8600;CS8602;CS8603</WarningsAsErrors>
     <DebugSymbols>True</DebugSymbols>
     <DebugType>portable</DebugType>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
   <ItemGroup>
