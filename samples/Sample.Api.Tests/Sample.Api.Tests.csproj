@@ -2,8 +2,8 @@
 
   <Import Project="..\..\common.tests.props" />
 
-  <PropertyGroup>    
-    <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>    
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
