@@ -3,24 +3,17 @@
   <Import Project="..\..\common.tests.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.13" />
-    <!-- Explicit reference to STEW as .NET 5.0 references the 5.0.0 version, and not 5.0.1 as FA.Web does -->
-    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
-    <ProjectReference Include="..\..\samples\Sample.Api.Net50\Sample.Api.Net50.csproj" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.11" />
+    <ProjectReference Include="..\..\samples\Sample.Api.Net80\Sample.Api.Net80.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.1" />
-    <ProjectReference Include="..\..\samples\Sample.Api.Net60\Sample.Api.Net60.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.1" />
-    <ProjectReference Include="..\..\samples\Sample.Api.Net70\Sample.Api.Net70.csproj" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
+    <ProjectReference Include="..\..\samples\Sample.Api.Net90\Sample.Api.Net90.csproj" />
   </ItemGroup>
 
   <ItemGroup>

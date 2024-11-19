@@ -165,13 +165,8 @@ namespace Sample.Api.Tests
             var response = await client.PostAsync("/api/comments", new StringContent("", Encoding.UTF8, "application/json"));
 
             // Assert
-#if NETCOREAPP2_1 || NETCOREAPP2_2 || NET5_0_OR_GREATER
             response.Should().Be400BadRequest()
                 .And.HaveErrorMessage("A non-empty request body is required.");
-#elif NETCOREAPP3_0 || NETCOREAPP3_1
-            response.Should().Be400BadRequest()
-                .And.HaveErrorMessage("*The input does not contain any JSON tokens*");
-#endif
         }
 
         [Fact]
