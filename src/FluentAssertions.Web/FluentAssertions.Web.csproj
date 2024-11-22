@@ -1,8 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\common.props" />
-  <Import Project="..\..\common.package.props" />
-
   <PropertyGroup>
     <PackageDescription>
       This is a FluentAssertions extension over the HttpResponseMessage object. It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
@@ -10,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="$(System-Text-Json)" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="$(Microsoft-AspNet-WebApi-Client)" />
+    <PackageReference Include="System.Text.Json" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
   </ItemGroup>
 
 </Project>

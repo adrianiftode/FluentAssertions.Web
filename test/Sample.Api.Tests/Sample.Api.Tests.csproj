@@ -1,25 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\common.tests.props" />
-
-  <PropertyGroup>    
+  <PropertyGroup>
     <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>    
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.13" />
-    <!-- Explicit reference to STEW as .NET 5.0 references the 5.0.0 version, and not 5.0.1 as FA.Web does -->
-    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" VersionOverride="5.0.13" />
     <ProjectReference Include="..\..\samples\Sample.Api.Net50\Sample.Api.Net50.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" VersionOverride="6.0.1" />
     <ProjectReference Include="..\..\samples\Sample.Api.Net60\Sample.Api.Net60.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" VersionOverride="7.0.1" />
     <ProjectReference Include="..\..\samples\Sample.Api.Net70\Sample.Api.Net70.csproj" />
   </ItemGroup>
 

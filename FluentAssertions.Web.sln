@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{14FDD52D-B83A-445B-BD2F-04B3E7B8033C}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BFF7517A-C9EA-458D-829E-28A10F8D61BF}"
+	ProjectSection(SolutionItems) = preProject
+		test\Directory.Build.props = test\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssertions.Web.Tests", "test\FluentAssertions.Web.Tests\FluentAssertions.Web.Tests.csproj", "{313919D0-7CE6-4118-A6A2-8963362A338F}"
 EndProject
@@ -18,16 +24,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
-		common.dependencies.props = common.dependencies.props
-		common.package.props = common.package.props
-		common.props = common.props
-		common.tests.props = common.tests.props
+		Directory.Packages.props = Directory.Packages.props
 		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net31", "samples\Sample.Api.Net31\Sample.Api.Net31.csproj", "{A62ABBAE-BFB8-467A-9FBC-974172C718E2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Tests", "samples\Sample.Api.Tests\Sample.Api.Tests.csproj", "{5E7E24A9-A31F-4EBB-A3BA-167B0DD9C37E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Tests", "test\Sample.Api.Tests\Sample.Api.Tests.csproj", "{5E7E24A9-A31F-4EBB-A3BA-167B0DD9C37E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Net60", "samples\Sample.Api.Net60\Sample.Api.Net60.csproj", "{FACC5AED-9978-441D-A359-DCD83F924BF8}"
 EndProject
@@ -92,7 +93,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{313919D0-7CE6-4118-A6A2-8963362A338F} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 		{3C892A67-86B1-491F-8BF6-6E782FE4F689} = {14FDD52D-B83A-445B-BD2F-04B3E7B8033C}
-		{5E7E24A9-A31F-4EBB-A3BA-167B0DD9C37E} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
+		{5E7E24A9-A31F-4EBB-A3BA-167B0DD9C37E} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 		{FACC5AED-9978-441D-A359-DCD83F924BF8} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 		{4C9619BF-7ED4-42A3-B25C-15E288264C6F} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
 		{815C141D-4504-42B1-A6F7-672C2476A474} = {B6E9FBF3-AC48-48B0-9CBB-CA260F59CCD9}
