@@ -1,0 +1,10 @@
+<Project>
+
+  <PropertyGroup>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+    <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+    <IsPackable>false</IsPackable>
+    <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
+  </PropertyGroup>
+
+</Project>

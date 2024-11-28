@@ -1,8 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="..\..\common.props" />
-  <Import Project="..\..\common.package.props" />
-
   <PropertyGroup>
     <PackageDescription>
       NewtonsoftJson based serializer for FluentAssertions.Web
@@ -10,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="$(Newtonsoft-Json)" />
+    <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
 
   <ItemGroup>

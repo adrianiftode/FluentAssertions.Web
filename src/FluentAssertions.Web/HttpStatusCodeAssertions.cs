@@ -502,7 +502,7 @@ public partial class HttpResponseMessageAssertions
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Ambiguous == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
-                , HttpStatusCode.Ambiguous, Subject!.StatusCode, Subject);
+                , $"{nameof(HttpStatusCode)}.{nameof(HttpStatusCode.Ambiguous)}", Subject!.StatusCode, Subject);
         return new AndConstraint<HttpResponseMessageAssertions>(this);
     }
 
@@ -606,7 +606,7 @@ public partial class HttpResponseMessageAssertions
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Redirect == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
-                , HttpStatusCode.Redirect, Subject!.StatusCode, Subject);
+                , $"{nameof(HttpStatusCode)}.{nameof(HttpStatusCode.Redirect)}", Subject!.StatusCode, Subject);
         return new AndConstraint<HttpResponseMessageAssertions>(this);
     }
 
@@ -658,7 +658,7 @@ public partial class HttpResponseMessageAssertions
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.RedirectMethod == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
-                , HttpStatusCode.RedirectMethod, Subject!.StatusCode, Subject);
+                , $"{nameof(HttpStatusCode)}.{nameof(HttpStatusCode.RedirectMethod)}", Subject!.StatusCode, Subject);
         return new AndConstraint<HttpResponseMessageAssertions>(this);
     }
 
@@ -762,7 +762,7 @@ public partial class HttpResponseMessageAssertions
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.TemporaryRedirect == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
-                , HttpStatusCode.TemporaryRedirect, Subject!.StatusCode, Subject);
+                , $"{nameof(HttpStatusCode)}.{nameof(HttpStatusCode.TemporaryRedirect)}", Subject!.StatusCode, Subject);
         return new AndConstraint<HttpResponseMessageAssertions>(this);
     }
 

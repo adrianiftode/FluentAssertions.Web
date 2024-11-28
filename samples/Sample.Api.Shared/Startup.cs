@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Sample.Api
@@ -39,10 +40,7 @@ namespace Sample.Api
 
                 context.Response.OnStarting(() =>
                 {
-                    if (!context.Response.Headers.ContainsKey(XCorrelationIdHeaderName))
-                    {
-                        context.Response.Headers.Add(XCorrelationIdHeaderName, correlationId);
-                    }
+                    context.Response.Headers.TryAdd(XCorrelationIdHeaderName, correlationId);
                     return Task.CompletedTask;
                 });
 
