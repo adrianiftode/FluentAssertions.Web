@@ -22,11 +22,11 @@ public static class HeadersAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HeadersAssertions> HaveHeader(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         string expectedHeader,
         string because = "", params object[] becauseArgs)
-    => new HttpResponseMessageAssertions(parent.Subject).HaveHeader(expectedHeader, because, becauseArgs);
+    => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).HaveHeader(expectedHeader, because, becauseArgs);
 
     /// <summary>
     /// Asserts that an HTTP response does not have a named header.
@@ -44,9 +44,9 @@ public static class HeadersAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> NotHaveHeader(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         string expectedHeader,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).NotHaveHeader(expectedHeader, because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).NotHaveHeader(expectedHeader, because, becauseArgs);
 }

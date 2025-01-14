@@ -6,7 +6,12 @@ namespace FluentAssertions.Web;
 /// <summary>
 /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state.
 /// </summary>
-public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>
+public partial class HttpResponseMessageAssertions(HttpResponseMessage value, AssertionChain assertionChain) : HttpResponseMessageAssertions<HttpResponseMessageAssertions>(value, assertionChain);
+
+/// <summary>
+/// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state.
+/// </summary>
+public class HttpResponseMessageAssertions<TAssertions> : ObjectAssertions<HttpResponseMessage, TAssertions> where TAssertions : HttpResponseMessageAssertions<TAssertions>
 {
     static HttpResponseMessageAssertions()
     {
@@ -19,7 +24,8 @@ public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<Htt
     /// class.
     /// </summary>
     /// <param name="value">The subject value to be asserted.</param>
-    public HttpResponseMessageAssertions(HttpResponseMessage value) : base(value) { }
+    /// <param name="assertionChain">The assertion chain to build assertions.</param>
+    protected HttpResponseMessageAssertions(HttpResponseMessage value, AssertionChain assertionChain) : base(value, assertionChain) { }
 
     /// <summary>
     /// Returns the type of the subject the assertion applies on.
@@ -60,7 +66,7 @@ public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<Htt
         }
     }
 
-    private string[] CollectFailuresFromAssertion<TAsserted>(Action<TAsserted> assertion, TAsserted subject)
+    internal string[] CollectFailuresFromAssertion<TAsserted>(Action<TAsserted> assertion, TAsserted subject)
     {
         using var collectionScope = new AssertionScope();
         string[] assertionFailures;

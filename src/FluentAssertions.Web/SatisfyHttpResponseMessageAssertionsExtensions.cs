@@ -26,11 +26,11 @@ public static class SatisfyHttpResponseMessageAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> Satisfy(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         Action<HttpResponseMessage> assertion,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Satisfy(assertion, because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).Satisfy(assertion, because, becauseArgs);
 
     /// <summary>
     /// Asserts that an HTTP response satisfies an asynchronous assertion.
@@ -51,9 +51,9 @@ public static class SatisfyHttpResponseMessageAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> Satisfy(
 #pragma warning disable 1573
-            this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+            this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         Func<HttpResponseMessage, Task> assertion,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Satisfy(assertion, because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).Satisfy(assertion, because, becauseArgs);
 }

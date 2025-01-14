@@ -26,11 +26,11 @@ public static class SatisfyModelAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(
 #pragma warning disable 1573
-            this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+            this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         Action<TModel> assertion,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Satisfy(assertion, because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).Satisfy(assertion, because, becauseArgs);
 
     /// <summary>
     /// Asserts that an HTTP response content can be a model that satisfies an assertion starting from an inferred model structure.
@@ -54,12 +54,12 @@ public static class SatisfyModelAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         TModel givenModelStructure,
         Action<TModel> assertion,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Satisfy(givenModelStructure, assertion, because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).Satisfy(givenModelStructure, assertion, because, becauseArgs);
 
     /// <summary>
     /// Asserts that an HTTP response content can be a model that satisfies an asynchronous assertion.
@@ -80,11 +80,11 @@ public static class SatisfyModelAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         Func<TModel, Task> assertion,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Satisfy(assertion, because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).Satisfy(assertion, because, becauseArgs);
 
     /// <summary>
     /// Asserts that an HTTP response content can be a model that satisfies an asynchronous assertion starting from an inferred model structure.
@@ -108,10 +108,10 @@ public static class SatisfyModelAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> Satisfy<TModel>(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         TModel givenModelStructure,
         Func<TModel, Task> assertion,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Satisfy(givenModelStructure, assertion, because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).Satisfy(givenModelStructure, assertion, because, becauseArgs);
 }

@@ -19,10 +19,10 @@ public static class HttpResponseContentAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> BeEmpty(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).BeEmpty(because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).BeEmpty(because, becauseArgs);
 
     /// <summary>
     /// Asserts that HTTP response content can be an equivalent representation of the expected model.
@@ -31,9 +31,9 @@ public static class HttpResponseContentAssertionsExtensions
     /// The expected model.
     /// </param>
     /// <param name="options">
-    /// A reference to the <see cref="EquivalencyAssertionOptions{TExpectation}"/> configuration object that can be used
+    /// A reference to the <see cref="EquivalencyOptions{TExpectation}"/> configuration object that can be used
     /// to influence the way the object graphs are compared. You can also provide an alternative instance of the
-    /// <see cref="EquivalencyAssertionOptions{TExpectation}"/> class. The global defaults are determined by the
+    /// <see cref="EquivalencyOptions{TExpectation}"/> class. The global defaults are determined by the
     /// <see cref="AssertionOptions"/> class.
     /// </param>
     /// <param name="because">
@@ -46,10 +46,10 @@ public static class HttpResponseContentAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
-        TModel expectedModel, Func<EquivalencyAssertionOptions<TModel>, EquivalencyAssertionOptions<TModel>> options, string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).BeAs(expectedModel, options, because, becauseArgs);
+        TModel expectedModel, Func<EquivalencyOptions<TModel>, EquivalencyOptions<TModel>> options, string because = "", params object[] becauseArgs)
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).BeAs(expectedModel, options, because, becauseArgs);
 
     /// <summary>
     /// Asserts that HTTP response content can be an equivalent representation of the expected model.
@@ -67,10 +67,10 @@ public static class HttpResponseContentAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         TModel expectedModel, string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).BeAs(expectedModel, because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).BeAs(expectedModel, because, becauseArgs);
 
     /// <summary>
     /// Asserts that HTTP response has content that matches a wildcard pattern.
@@ -92,8 +92,8 @@ public static class HttpResponseContentAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<HttpResponseMessageAssertions> MatchInContent(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string expectedWildcardText, string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).MatchInContent(expectedWildcardText, because, becauseArgs);
+        => new HttpResponseMessageAssertions(parent.Subject, parent.CurrentAssertionChain).MatchInContent(expectedWildcardText, because, becauseArgs);
 }

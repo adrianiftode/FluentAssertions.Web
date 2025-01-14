@@ -29,11 +29,11 @@ public static class BadRequestAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<BadRequestAssertions> HaveError(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         string expectedErrorField, string expectedWildcardErrorMessage,
         string because = "", params object[] becauseArgs)
-        => new BadRequestAssertions(parent.Subject).HaveError(expectedErrorField, expectedWildcardErrorMessage, because, becauseArgs);
+        => new BadRequestAssertions(parent.Subject, parent.CurrentAssertionChain).HaveError(expectedErrorField, expectedWildcardErrorMessage, because, becauseArgs);
 
     /// <summary>
     /// Asserts that a Bad Request HTTP response content contains only a single error message identifiable by an expected field name and a wildcard error text.
@@ -57,11 +57,11 @@ public static class BadRequestAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<BadRequestAssertions> OnlyHaveError(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         string expectedErrorField, string expectedWildcardErrorMessage,
         string because = "", params object[] becauseArgs)
-        => new BadRequestAssertions(parent.Subject).OnlyHaveError(expectedErrorField, expectedWildcardErrorMessage, because, becauseArgs);
+        => new BadRequestAssertions(parent.Subject, parent.CurrentAssertionChain).OnlyHaveError(expectedErrorField, expectedWildcardErrorMessage, because, becauseArgs);
 
     /// <summary>
     /// Asserts that a Bad Request HTTP response content does not contain an error message identifiable by an expected field name.
@@ -82,10 +82,10 @@ public static class BadRequestAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<BadRequestAssertions> NotHaveError(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         string expectedErrorField, string because = "", params object[] becauseArgs)
-        => new BadRequestAssertions(parent.Subject).NotHaveError(expectedErrorField, because, becauseArgs);
+        => new BadRequestAssertions(parent.Subject, parent.CurrentAssertionChain).NotHaveError(expectedErrorField, because, becauseArgs);
 
     /// <summary>
     /// Asserts that a Bad Request HTTP response content contains an error message identifiable by an wildcard error text.
@@ -103,9 +103,9 @@ public static class BadRequestAssertionsExtensions
     [CustomAssertion]
     public static AndConstraint<BadRequestAssertions> HaveErrorMessage(
 #pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+        this HttpResponseMessageAssertions<HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
         string expectedWildcardErrorMessage,
         string because = "", params object[] becauseArgs)
-        => new BadRequestAssertions(parent.Subject).HaveErrorMessage(expectedWildcardErrorMessage, because, becauseArgs);
+        => new BadRequestAssertions(parent.Subject, parent.CurrentAssertionChain).HaveErrorMessage(expectedWildcardErrorMessage, because, becauseArgs);
 }

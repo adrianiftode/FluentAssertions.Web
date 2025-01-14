@@ -18,12 +18,12 @@ public partial class HttpResponseMessageAssertions
     // ReSharper disable once InconsistentNaming
     public AndConstraint<HttpResponseMessageAssertions> Be1XXInformational(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject!.StatusCode < HttpStatusCode.OK)
             .FailWith("Expected {context:response} to have a HTTP status code representing an informational error, but it was {0}{reason}.{1}",
@@ -49,12 +49,12 @@ public partial class HttpResponseMessageAssertions
     // ReSharper disable once InconsistentNaming
     public AndConstraint<HttpResponseMessageAssertions> Be2XXSuccessful(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject!.IsSuccessStatusCode)
             .FailWith("Expected {context:response} to have a successful HTTP status code, but it was {0}{reason}.{1}",
@@ -80,12 +80,12 @@ public partial class HttpResponseMessageAssertions
     // ReSharper disable once InconsistentNaming
     public AndConstraint<HttpResponseMessageAssertions> Be3XXRedirection(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject!.StatusCode >= HttpStatusCode.Moved && Subject!.StatusCode < HttpStatusCode.BadRequest)
             .FailWith("Expected {context:response} to have a HTTP status code representing a redirection, but it was {0}{reason}.{1}",
@@ -111,12 +111,12 @@ public partial class HttpResponseMessageAssertions
     // ReSharper disable once InconsistentNaming
     public AndConstraint<HttpResponseMessageAssertions> Be4XXClientError(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject!.StatusCode >= HttpStatusCode.BadRequest && Subject!.StatusCode < HttpStatusCode.InternalServerError)
             .FailWith("Expected {context:response} to have a HTTP status code representing a client error, but it was {0}{reason}.{1}",
@@ -142,12 +142,12 @@ public partial class HttpResponseMessageAssertions
     // ReSharper disable once InconsistentNaming
     public AndConstraint<HttpResponseMessageAssertions> Be5XXServerError(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject!.StatusCode >= HttpStatusCode.InternalServerError)
             .FailWith("Expected {context:response} to have a HTTP status code representing a server error, but it was {0}{reason}.{1}",
@@ -174,12 +174,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> HaveHttpStatusCode(HttpStatusCode expected, string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(expected == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -205,12 +205,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> NotHaveHttpStatusCode(HttpStatusCode unexpected, string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(unexpected != Subject!.StatusCode)
             .FailWith("Did not expect {context:response} to have status {0}{reason}.{1}",
@@ -233,12 +233,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be100Continue(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Continue == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -259,12 +259,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be101SwitchingProtocols(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.SwitchingProtocols == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -285,12 +285,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be200Ok(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.OK == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -311,12 +311,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be201Created(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Created == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -337,12 +337,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be202Accepted(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Accepted == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -363,12 +363,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be203NonAuthoritativeInformation(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.NonAuthoritativeInformation == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -389,12 +389,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be204NoContent(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.NoContent == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -415,12 +415,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be205ResetContent(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.ResetContent == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -441,12 +441,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be206PartialContent(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.PartialContent == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -467,12 +467,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be300MultipleChoices(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.MultipleChoices == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -493,12 +493,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be300Ambiguous(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Ambiguous == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -519,12 +519,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be301MovedPermanently(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.MovedPermanently == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -545,12 +545,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be301Moved(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Moved == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -571,12 +571,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be302Found(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Found == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -597,12 +597,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be302Redirect(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Redirect == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -623,12 +623,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be303SeeOther(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.SeeOther == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -649,12 +649,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be303RedirectMethod(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.RedirectMethod == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -675,12 +675,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be304NotModified(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.NotModified == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -701,12 +701,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be305UseProxy(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.UseProxy == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -727,12 +727,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be306Unused(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Unused == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -753,12 +753,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be307TemporaryRedirect(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.TemporaryRedirect == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -779,12 +779,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be307RedirectKeepVerb(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.RedirectKeepVerb == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -805,17 +805,17 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<BadRequestAssertions> Be400BadRequest(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.BadRequest == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , HttpStatusCode.BadRequest, Subject!.StatusCode, Subject);
-        return new AndConstraint<BadRequestAssertions>(new BadRequestAssertions(Subject));
+        return new AndConstraint<BadRequestAssertions>(new BadRequestAssertions(Subject, CurrentAssertionChain));
     }
 
     /// <summary>
@@ -831,12 +831,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be401Unauthorized(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Unauthorized == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -857,12 +857,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be402PaymentRequired(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.PaymentRequired == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -883,12 +883,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be403Forbidden(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Forbidden == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -909,12 +909,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be404NotFound(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.NotFound == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -935,12 +935,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be405MethodNotAllowed(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.MethodNotAllowed == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -961,12 +961,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be406NotAcceptable(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.NotAcceptable == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -987,12 +987,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be407ProxyAuthenticationRequired(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.ProxyAuthenticationRequired == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1013,12 +1013,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be408RequestTimeout(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.RequestTimeout == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1039,12 +1039,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be409Conflict(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Conflict == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1065,12 +1065,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be410Gone(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.Gone == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1091,12 +1091,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be411LengthRequired(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.LengthRequired == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1117,12 +1117,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be412PreconditionFailed(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.PreconditionFailed == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1143,12 +1143,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be413RequestEntityTooLarge(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.RequestEntityTooLarge == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1169,12 +1169,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be414RequestUriTooLong(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.RequestUriTooLong == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1195,12 +1195,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be415UnsupportedMediaType(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.UnsupportedMediaType == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1221,12 +1221,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be416RequestedRangeNotSatisfiable(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.RequestedRangeNotSatisfiable == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1247,12 +1247,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be417ExpectationFailed(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.ExpectationFailed == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1273,12 +1273,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be422UnprocessableEntity(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(422 == (int)Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1299,12 +1299,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be429TooManyRequests(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(429 == (int)Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1325,12 +1325,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be426UpgradeRequired(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.UpgradeRequired == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1351,12 +1351,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be500InternalServerError(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.InternalServerError == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1377,12 +1377,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be501NotImplemented(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.NotImplemented == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1403,12 +1403,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be502BadGateway(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.BadGateway == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1429,12 +1429,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be503ServiceUnavailable(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.ServiceUnavailable == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1455,12 +1455,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be504GatewayTimeout(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.GatewayTimeout == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
@@ -1481,12 +1481,12 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> Be505HttpVersionNotSupported(string because = "", params object[] becauseArgs)
     {
-        Execute.Assertion
+        CurrentAssertionChain
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        Execute.Assertion
+        CurrentAssertionChain
             .BecauseOf(because, becauseArgs)
             .ForCondition(HttpStatusCode.HttpVersionNotSupported == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
