@@ -3,6 +3,7 @@ image: Visual Studio 2022
 branches:
   only:
   - master
+  - master-v8
   - /\d+\.\d+\.\d+/
 pull_requests:
   do_not_increment_build_number: false
@@ -70,7 +71,7 @@ artifacts:
 deploy:
  - provider: NuGet
    api_key:
-       secure: aHT1IlqkfTAZm236Pkjt84NdjfEIrPJqJt4IwO5QNvH0LpIWqx/L3oFRewdCwCQs
+       secure: Ihowbb270n9ZDddCMfVAwAUNrEJ+Okjsld802+/Qw+cGxx3/ih8ToDxU8OxQ4sq9
    skip_symbols: true
    artifact: /.*\.nupkg/
    on:

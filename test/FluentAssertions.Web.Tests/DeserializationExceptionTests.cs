@@ -31,16 +31,4 @@ public class DeserializationExceptionTests
         // Assert
         act.Should().NotThrow();
     }
-
-#if !NET8_0_OR_GREATER
-    [Fact]
-    public void Exception_ShouldBeBinarySerializable()
-    {
-        // Arrange
-        var sut = new DeserializationException("Exception message", new Exception());
-
-        // Assert
-        sut.Should().BeBinarySerializable();
-    }
-#endif
 }

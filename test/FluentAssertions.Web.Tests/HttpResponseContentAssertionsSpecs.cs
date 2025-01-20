@@ -339,7 +339,11 @@ public class HttpResponseContentAssertionsSpecs
 
         // Act
         Action act = () =>
+#if FAV8
+            subject.Should().BeAs(new { }, options: (Func<EquivalencyOptions<object>, EquivalencyOptions<object>>)(null!));
+#else
             subject.Should().BeAs(new { }, options: (Func<EquivalencyAssertionOptions<object>, EquivalencyAssertionOptions<object>>)(null!));
+#endif
 
         // Assert
         act.Should().Throw<ArgumentNullException>()
@@ -375,7 +379,7 @@ public class HttpResponseContentAssertionsSpecs
         act.Should().Throw<XunitException>()
             .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
     }
-    #endregion
+#endregion
 
     #region MatchInContent
     [Theory]

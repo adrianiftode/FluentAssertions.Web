@@ -18,14 +18,22 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> BeEmpty(string because = "", params object[] becauseArgs)
     {
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
         var content = GetContent();
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .ForCondition(string.IsNullOrEmpty(content))
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected {context:response} to have no content. {0}", Subject);
@@ -57,10 +65,13 @@ public partial class HttpResponseMessageAssertions
     /// The expected model.
     /// </param>
     /// <param name="options">
-    /// A reference to the <see cref="EquivalencyAssertionOptions{TExpectation}"/> configuration object that can be used
+    /// A reference to the <see cref="EquivalencyOptions{TExpectation}"/> configuration object that can be used
     /// to influence the way the object graphs are compared. You can also provide an alternative instance of the
+#if FAV8
+    /// <see cref="EquivalencyOptions{TExpectation}"/> class. The global defaults are determined by the
+#else
     /// <see cref="EquivalencyAssertionOptions{TExpectation}"/> class. The global defaults are determined by the
-    /// <see cref="AssertionOptions"/> class.
+#endif
     /// </param>
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -70,11 +81,19 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
+#if FAV8
+    public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, Func<EquivalencyOptions<TModel>, EquivalencyOptions<TModel>> options, string because = "", params object[] becauseArgs)
+#else
     public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, Func<EquivalencyAssertionOptions<TModel>, EquivalencyAssertionOptions<TModel>> options, string because = "", params object[] becauseArgs)
+#endif
     {
         Guard.ThrowIfArgumentIsNull(options, nameof(options));
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
@@ -88,7 +107,11 @@ public partial class HttpResponseMessageAssertions
 
         var (success, errorMessage) = TryGetSubjectModel(out var subjectModel, expectedModelType);
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(success)
             .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
@@ -103,7 +126,11 @@ public partial class HttpResponseMessageAssertions
             failures = scope.Discard();
         }
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
                    .BecauseOf(because, becauseArgs)
                    .ForCondition(failures.Length == 0)
                    .FailWith("Expected {context:response} to have a content equivalent to a model, but it has differences:{0}{reason}. {1}",
@@ -135,7 +162,11 @@ public partial class HttpResponseMessageAssertions
     {
         Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify a HTTP response content match a <null> wildcard pattern.");
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
@@ -144,7 +175,11 @@ public partial class HttpResponseMessageAssertions
 
         if (string.IsNullOrEmpty(content))
         {
-            Execute.Assertion
+#if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                 .BecauseOf(because, becauseArgs)
                 .FailWith("Expected {context:response} to match the wildcard pattern {0} in its content, but content was <null>{reason}. {1}",
                     expectedWildcardText,
@@ -160,7 +195,11 @@ public partial class HttpResponseMessageAssertions
             failures = scope.Discard();
         }
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
                    .BecauseOf(because, becauseArgs)
                    .ForCondition(failures.Length == 0)
                    .FailWith("Expected {context:response} to match a wildcard pattern in its content, but does not since:{0}{reason}. {1}",

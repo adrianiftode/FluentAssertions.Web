@@ -13,8 +13,12 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     /// </summary>
     /// <param name="value">The subject value to be asserted.</param>
     /// <param name="header">The HTTP header name to be asserted.</param>
+#if FAV8
+    /// <param name="assertionChain">The assertion chain to build and manage assertions.</param>
+    public HeadersAssertions(HttpResponseMessage value, string header, AssertionChain assertionChain) : base(value, assertionChain) => _header = header;
+#else
     public HeadersAssertions(HttpResponseMessage value, string header) : base(value) => _header = header;
-
+#endif
     /// <summary>
     /// Asserts that an existing HTTP header in a HTTP response contains at least a value that matches a wildcard pattern.
     /// </summary>
@@ -37,7 +41,11 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     {
         Guard.ThrowIfArgumentIsNull(expectedWildcardValue, nameof(expectedWildcardValue), "Cannot verify a HTTP header to be a value against a <null> value. Use And.BeEmpty to test if the HTTP header has no values.");
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
@@ -51,7 +59,11 @@ public class HeadersAssertions : HttpResponseMessageAssertions
             return !scope.Discard().Any();
         });
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
                      .BecauseOf(because, becauseArgs)
                      .ForCondition(matchFound)
                      .FailWith("Expected {context:response} to contain " +
@@ -78,7 +90,11 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     {
         var headerValues = Subject.GetHeaderValues(_header);
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(!headerValues.Any())
                     .FailWith("Expected {context:response} to contain " +
@@ -105,7 +121,11 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     {
         var headerValues = Subject.GetHeaderValues(_header);
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(headerValues.Any())
             .FailWith("Expected {context:response} to contain " +
@@ -151,7 +171,11 @@ public class HeadersAssertions : HttpResponseMessageAssertions
             failures = scope.Discard();
         }
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(failures.Length == 0)
                     .FailWith("Expected {context:response} to contain " +
@@ -182,7 +206,11 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     {
         Guard.ThrowIfArgumentIsNullOrEmpty(expectedValue, nameof(expectedValue), "Cannot verify a HTTP header to be a value against a <null> or empty value. Use And.BeEmpty to test if the HTTP header has no value.");
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject.GetHeaderValues(_header).Count() == 1)
             .FailWith($$"""
@@ -200,7 +228,11 @@ public class HeadersAssertions : HttpResponseMessageAssertions
             failures = scope.Discard();
         }
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(failures.Length == 0)
                     .FailWith($$"""
@@ -237,15 +269,22 @@ public partial class HttpResponseMessageAssertions
     {
         Guard.ThrowIfArgumentIsNull(expectedHeader, nameof(expectedHeader), "Cannot verify having a header against a <null> header.");
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(IsHeaderPresent(expectedHeader))
             .FailWith("Expected {context:response} to contain " +
                       "the HTTP header {0}, but no such header was found in the actual response{reason}.{1}",
                 expectedHeader,
                 Subject);
-
+#if FAV8
+        return new AndConstraint<HeadersAssertions>(new HeadersAssertions(Subject, expectedHeader, CurrentAssertionChain));
+#else
         return new AndConstraint<HeadersAssertions>(new HeadersAssertions(Subject, expectedHeader));
+#endif
     }
 
     /// <summary>
@@ -267,7 +306,11 @@ public partial class HttpResponseMessageAssertions
     {
         Guard.ThrowIfArgumentIsNull(expectedHeader, nameof(expectedHeader), "Cannot verify not having a header against a <null> header.");
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(!IsHeaderPresent(expectedHeader))
             .FailWith("Expected {context:response} to not to contain " +

@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" />
+    <PackageReference Include="FluentAssertions" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
   </ItemGroup>
 
 </Project>

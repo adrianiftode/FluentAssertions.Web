@@ -20,8 +20,4 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentAssertions" />
-  </ItemGroup>
-
 </Project>

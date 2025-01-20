@@ -1,4 +1,5 @@
-﻿// ReSharper disable once CheckNamespace
+﻿#if !FAV8
+// ReSharper disable once CheckNamespace
 namespace FluentAssertions;
 
 /// <summary>
@@ -109,3 +110,4 @@ public static class BadRequestAssertionsExtensions
         string because = "", params object[] becauseArgs)
         => new BadRequestAssertions(parent.Subject).HaveErrorMessage(expectedWildcardErrorMessage, because, becauseArgs);
 }
+#endif

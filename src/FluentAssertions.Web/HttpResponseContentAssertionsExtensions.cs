@@ -1,4 +1,6 @@
-﻿namespace FluentAssertions;
+﻿#if !FAV8
+// ReSharper disable once CheckNamespace
+namespace FluentAssertions;
 
 /// <summary>
 /// Contains extension methods for custom assertions in unit tests related to Http Response Content Assertions
@@ -97,3 +99,4 @@ public static class HttpResponseContentAssertionsExtensions
         string expectedWildcardText, string because = "", params object[] becauseArgs)
         => new HttpResponseMessageAssertions(parent.Subject).MatchInContent(expectedWildcardText, because, becauseArgs);
 }
+#endif

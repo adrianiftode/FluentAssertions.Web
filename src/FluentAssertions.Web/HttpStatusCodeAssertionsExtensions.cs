@@ -1,4 +1,5 @@
-﻿// ReSharper disable once CheckNamespace
+﻿#if !FAV8
+// ReSharper disable once CheckNamespace
 namespace FluentAssertions;
 
 /// <summary>
@@ -1046,3 +1047,4 @@ public static class HttpStatusCodeAssertionsExtensions
         => new HttpResponseMessageAssertions(parent.Subject).Be505HttpVersionNotSupported(because, becauseArgs);
     #endregion
 }
+#endif

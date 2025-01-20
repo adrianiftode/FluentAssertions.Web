@@ -1,4 +1,5 @@
-﻿// ReSharper disable once CheckNamespace
+﻿#if !FAV8
+// ReSharper disable once CheckNamespace
 namespace FluentAssertions;
 
 /// <summary>
@@ -115,3 +116,4 @@ public static class SatisfyModelAssertionsExtensions
         string because = "", params object[] becauseArgs)
         => new HttpResponseMessageAssertions(parent.Subject).Satisfy(givenModelStructure, assertion, because, becauseArgs);
 }
+#endif

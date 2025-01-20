@@ -50,6 +50,39 @@ public class ApiAccessibilityTests
     }
 
     [Fact]
+    public void Each_HttpResponseMessage_Assertion_Should_Have_The_CustomAssertion_Attribute()
+    {
+        // Arrange
+        var baseAssertionsType = typeof(ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>);
+        var httpResponseMessageAssertions = typeof(HttpResponseMessageAssertions).Assembly
+            .GetTypes()
+            .Where(c => c.BaseType == baseAssertionsType)
+            .SelectMany(assertionType =>
+                assertionType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+            .ToList();
+
+        // Assert
+        httpResponseMessageAssertions
+            .Should().AllSatisfy(method => method.Should().BeDecoratedWith<CustomAssertionAttribute>());
+    }
+
+    [Fact]
+    public void Each_HttpResponseMessage_Assertion_Extension_Should_Be_In_The_Fluent_Assertions_Namespace_Only()
+    {
+        // Arrange
+        var httpResponseMessageAssertionsExtensionsTypes = typeof(HttpResponseMessageAssertions).Assembly
+            .GetTypes()
+            .Where(c => c.Name.EndsWith("AssertionsExtensions"))
+            .ToList();
+
+        // Assert
+        httpResponseMessageAssertionsExtensionsTypes
+            .Should().OnlyContain(type => type.Namespace == "FluentAssertions");
+    }
+
+#if !FAV8
+
+    [Fact]
     public void Each_HttpResponseMessage_Assertion_ShouldHaveAnExtensionOverPrimitivesHttpResponseMessageAssertions()
     {
         // Arrange
@@ -90,23 +123,6 @@ public class ApiAccessibilityTests
     }
 
     [Fact]
-    public void Each_HttpResponseMessage_Assertion_Should_Have_The_CustomAssertion_Attribute()
-    {
-        // Arrange
-        var baseAssertionsType = typeof(ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>);
-        var httpResponseMessageAssertions = typeof(HttpResponseMessageAssertions).Assembly
-            .GetTypes()
-            .Where(c => c.BaseType == baseAssertionsType)
-            .SelectMany(assertionType =>
-                assertionType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-            .ToList();
-
-        // Assert
-        httpResponseMessageAssertions
-            .Should().AllSatisfy(method => method.Should().BeDecoratedWith<CustomAssertionAttribute>());
-    }
-
-    [Fact]
     public void Each_HttpResponseMessage_Assertion_Extension_Should_Have_The_CustomAssertion_Attribute()
     {
         // Arrange
@@ -118,20 +134,6 @@ public class ApiAccessibilityTests
 
         // Assert
         allExtensions.Should().AllSatisfy(method => method.Should().BeDecoratedWith<CustomAssertionAttribute>());
-    }
-
-    [Fact]
-    public void Each_HttpResponseMessage_Assertion_Extension_Should_Be_In_The_Fluent_Assertions_Namespace_Only()
-    {
-        // Arrange
-        var httpResponseMessageAssertionsExtensionsTypes = typeof(HttpResponseMessageAssertions).Assembly
-            .GetTypes()
-            .Where(c => c.Name.EndsWith("AssertionsExtensions"))
-            .ToList();
-
-        // Assert
-        httpResponseMessageAssertionsExtensionsTypes
-            .Should().OnlyContain(type => type.Namespace == "FluentAssertions");
     }
 
     private static bool SameParameters(MethodInfo extensionMethod, MethodInfo assertionMethod)
@@ -158,4 +160,5 @@ public class ApiAccessibilityTests
 
         return true;
     }
+#endif
 }

@@ -24,7 +24,11 @@ public partial class HttpResponseMessageAssertions
     {
         Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion), "Cannot verify the subject satisfies a `null` assertion.");
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
@@ -33,7 +37,11 @@ public partial class HttpResponseMessageAssertions
 
         if (failuresFromAssertions.Any())
         {
-            Execute.Assertion
+    #if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                 .BecauseOf(because, becauseArgs)
                 .FailWith(
                     "Expected {context:response} to satisfy one or more assertions, but it wasn't{reason}: {0}{1}",
@@ -65,7 +73,11 @@ public partial class HttpResponseMessageAssertions
     {
         Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion), "Cannot verify the subject satisfies a `null` assertion.");
 
+#if FAV8
+        CurrentAssertionChain
+#else
         Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
@@ -78,7 +90,11 @@ public partial class HttpResponseMessageAssertions
 
         if (failuresFromAssertions.Any())
         {
-            Execute.Assertion
+    #if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                 .BecauseOf(because, becauseArgs)
                 .FailWith(
                     "Expected {context:response} to satisfy one or more assertions, but it wasn't{reason}: {0}{1}",

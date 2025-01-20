@@ -3,10 +3,6 @@ This is a [*FluentAssertions*](https://fluentassertions.com/) extension over the
 
 It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adrianiftode_FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/project/overview?id=adrianiftode_FluentAssertions.Web)
-[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.svg)](https://www.nuget.org/packages/FluentAssertions.Web)
-
 ```csharp
 [Fact]
 public async Task Post_ReturnsOk()
@@ -48,6 +44,26 @@ Once the response is ready you'll want to assert it. With first level properties
 **And this can be avoided**, if the *Test Detail Summary* contains the request and the response information, providing a similar experience as with an HTTP interceptor like Fiddler. 
 
 ![FailedTest1](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest1.png?raw=true)
+
+### Status
+
+[![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adrianiftode_FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/project/overview?id=adrianiftode_FluentAssertions.Web)
+[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.svg)](https://www.nuget.org/packages/FluentAssertions.Web)
+[![NuGet FA v8](https://img.shields.io/nuget/v/FluentAssertions.Web.svg)](https://www.nuget.org/packages/FluentAssertions.Web.v8)
+
+### Getting started
+
+If you are using FluentAssertions < 8.0.0
+```
+dotnet add package FluentAssertions.Web
+```
+
+If you are using FluentAssertions >= 8.0.0
+
+```
+dotnet add package FluentAssertions.Web.v8
+```
 
 ### FluentAssertions.Web Examples
 
@@ -333,3 +349,9 @@ This library can still be used with FluentAssertions and it did not become obsol
 
 When FluentAssertions.Web was created, [FluentAssertions.Http](https://github.com/balanikas/FluentAssertions.Http) also existed at the time, solving the same problem when considering the asserting language.
 Besides the extra assertions added by FluentAssertions.Web, an important effort is put by this library on what happens when a test fails.
+
+**FluentAssertions 8.0.0 and beyond**
+
+Starting 8.0.0, FA is not an FOSS anymore. **FluentAssertions.Web** will maintain both FOSS (< 8.0.0) and the Commercial versions of FA (>= 8.0.0), so they will be deployed as separate Nuget packages:
+    - **FluentAssertions.Web** will continue to dependend on the FOSS versions
+    - **FluentAssertions.Web.v8** will dependend on the Commercial versions

@@ -19,7 +19,13 @@ public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<Htt
     /// class.
     /// </summary>
     /// <param name="value">The subject value to be asserted.</param>
-    public HttpResponseMessageAssertions(HttpResponseMessage value) : base(value) { }
+#if FAV8
+    /// <param name="assertionChain">The assertion chain to build and manage assertions.</param>
+    public HttpResponseMessageAssertions(HttpResponseMessage value, AssertionChain assertionChain) : base(value, assertionChain)
+#else
+    public HttpResponseMessageAssertions(HttpResponseMessage value) : base(value)
+#endif
+    { }
 
     /// <summary>
     /// Returns the type of the subject the assertion applies on.

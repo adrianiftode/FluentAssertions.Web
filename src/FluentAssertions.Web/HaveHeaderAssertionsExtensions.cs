@@ -1,4 +1,7 @@
-﻿namespace FluentAssertions;
+﻿#if !FAV8
+
+namespace FluentAssertions;
+
 
 /// <summary>
 /// Contains extension methods for custom assertions in unit tests related to <see cref="HeadersAssertions"/>.
@@ -50,3 +53,4 @@ public static class HeadersAssertionsExtensions
         string because = "", params object[] becauseArgs)
         => new HttpResponseMessageAssertions(parent.Subject).NotHaveHeader(expectedHeader, because, becauseArgs);
 }
+#endif
