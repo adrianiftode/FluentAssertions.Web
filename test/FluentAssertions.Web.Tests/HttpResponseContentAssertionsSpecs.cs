@@ -339,7 +339,7 @@ public class HttpResponseContentAssertionsSpecs
 
         // Act
         Action act = () =>
-            subject.Should().BeAs(new { }, options: (Func<EquivalencyAssertionOptions<object>, EquivalencyAssertionOptions<object>>)(null!));
+            subject.Should().BeAs(new { }, options: (Func<EquivalencyOptions<object>, EquivalencyOptions<object>>)(null!));
 
         // Assert
         act.Should().Throw<ArgumentNullException>()

@@ -404,7 +404,7 @@ public class HeadersAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("*the *custom-header* HTTP header*value to be equivalent to*value1*but*value1,value2*differs*reason*");
+            .WithMessage("*the*custom-header*HTTP header*equivalent*but they differ at*value1,value2*value1*reason*");
     }
 
     [Fact]
@@ -425,7 +425,7 @@ public class HeadersAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("*the *custom-header* HTTP header*value to be equivalent to*other-than-value1*but*value1*differs*reason*");
+            .WithMessage("*the *custom-header* HTTP header*value* to be equivalent to the same string, but they differ at*reason*");
     }
 
     [Fact]

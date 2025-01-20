@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageDescription>
-      This is a FluentAssertions extension over the HttpResponseMessage object. It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
-    </PackageDescription>
+	<PackageId>FluentAssertions.Web.v8</PackageId>
+	<PackageDescription>
+	  This is a FluentAssertions extension over the HttpResponseMessage object. It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
+	</PackageDescription>
   </PropertyGroup>
 
   <ItemGroup>

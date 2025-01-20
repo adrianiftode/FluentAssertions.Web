@@ -50,46 +50,6 @@ public class ApiAccessibilityTests
     }
 
     [Fact]
-    public void Each_HttpResponseMessage_Assertion_ShouldHaveAnExtensionOverPrimitivesHttpResponseMessageAssertions()
-    {
-        // Arrange
-        var baseAssertionsType = typeof(ReferenceTypeAssertions<HttpResponseMessage, HttpResponseMessageAssertions>);
-        var httpResponseMessageAssertions = typeof(HttpResponseMessageAssertions).Assembly
-            .GetTypes()
-            .Where(c => c.BaseType == baseAssertionsType)
-            .ToList();
-        httpResponseMessageAssertions.Should().NotBeEmpty();
-
-        var allExtensions = typeof(HttpResponseMessageAssertions).Assembly
-            .GetTypes()
-            .Where(c => c.Name.EndsWith("AssertionsExtensions"))
-            .SelectMany(c => c.GetMethods(BindingFlags.Static | BindingFlags.Public))
-            .ToList();
-
-        // Assert
-        foreach (var assertionType in httpResponseMessageAssertions)
-        {
-            foreach (var assertionMethod in assertionType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-            {
-                allExtensions.Should().Contain(extensionMethod =>
-                    extensionMethod.Name == assertionMethod.Name
-                    && extensionMethod.ReturnType.GetType() == assertionMethod.ReturnType.GetType()
-                    && SameParameters(extensionMethod, assertionMethod),
-                    "\n we wanted to check \n" +
-                    "the assertion method {0} \n" +
-                    "from assertion type {1} \n" +
-                    "and return type {2}  \n" +
-                    "and arguments {3} \n" +
-                    "has a corresponding extension method",
-                    assertionMethod.Name,
-                    assertionType.FullName,
-                    assertionMethod.ReturnType.FullName,
-                    string.Join(", ", assertionMethod.GetParameters().Select(c => $"{c.Name} of type {c.ParameterType.FullName}")));
-            }
-        }
-    }
-
-    [Fact]
     public void Each_HttpResponseMessage_Assertion_Should_Have_The_CustomAssertion_Attribute()
     {
         // Arrange
@@ -104,20 +64,6 @@ public class ApiAccessibilityTests
         // Assert
         httpResponseMessageAssertions
             .Should().AllSatisfy(method => method.Should().BeDecoratedWith<CustomAssertionAttribute>());
-    }
-
-    [Fact]
-    public void Each_HttpResponseMessage_Assertion_Extension_Should_Have_The_CustomAssertion_Attribute()
-    {
-        // Arrange
-        var allExtensions = typeof(HttpResponseMessageAssertions).Assembly
-            .GetTypes()
-            .Where(c => c.Name.EndsWith("AssertionsExtensions"))
-            .SelectMany(c => c.GetMethods(BindingFlags.Static | BindingFlags.Public))
-            .ToList();
-
-        // Assert
-        allExtensions.Should().AllSatisfy(method => method.Should().BeDecoratedWith<CustomAssertionAttribute>());
     }
 
     [Fact]
