@@ -26,7 +26,11 @@ public partial class HttpResponseMessageAssertions
         Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion),
             "Cannot verify the subject satisfies a `null` assertion.");
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
@@ -35,7 +39,11 @@ public partial class HttpResponseMessageAssertions
 
         Type? modelType = typeof(TModel);
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(success)
             .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
@@ -45,7 +53,11 @@ public partial class HttpResponseMessageAssertions
 
         if (failuresFromAssertions.Any())
         {
-            CurrentAssertionChain
+    #if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                 .BecauseOf(because, becauseArgs)
                 .FailWith(
                     "Expected {context:response} to satisfy one or more model assertions, but it wasn't{reason}: {0}{1}",
@@ -83,7 +95,11 @@ public partial class HttpResponseMessageAssertions
     {
         Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion), "Cannot verify the subject satisfies a `null` assertion.");
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
@@ -92,7 +108,11 @@ public partial class HttpResponseMessageAssertions
 
         Type? modelType = typeof(TModel);
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(success)
             .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
@@ -102,7 +122,11 @@ public partial class HttpResponseMessageAssertions
 
         if (failuresFromAssertions.Any())
         {
-            CurrentAssertionChain
+    #if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                 .BecauseOf(because, becauseArgs)
                 .FailWith(
                     "Expected {context:response} to satisfy one or more model assertions, but it wasn't{reason}: {0}{1}",
@@ -136,7 +160,11 @@ public partial class HttpResponseMessageAssertions
         Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion),
             "Cannot verify the subject satisfies a `null` assertion.");
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
@@ -153,7 +181,11 @@ public partial class HttpResponseMessageAssertions
 
         Type? modelType = typeof(TModel);
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(success)
             .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
@@ -163,7 +195,11 @@ public partial class HttpResponseMessageAssertions
 
         if (failuresFromAssertions.Any())
         {
-            CurrentAssertionChain
+    #if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                 .BecauseOf(because, becauseArgs)
                 .FailWith(
                     "Expected {context:response} to satisfy one or more model assertions, but it wasn't{reason}: {0}{1}",
@@ -201,7 +237,11 @@ public partial class HttpResponseMessageAssertions
     {
         Guard.ThrowIfArgumentIsNull(assertion, nameof(assertion), "Cannot verify the subject satisfies a `null` assertion.");
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
@@ -218,7 +258,11 @@ public partial class HttpResponseMessageAssertions
 
         Type? modelType = typeof(TModel);
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(success)
             .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
@@ -228,7 +272,11 @@ public partial class HttpResponseMessageAssertions
 
         if (failuresFromAssertions.Any())
         {
-            CurrentAssertionChain
+    #if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                 .BecauseOf(because, becauseArgs)
                 .FailWith(
                     "Expected {context:response} to satisfy one or more model assertions, but it wasn't{reason}: {0}{1}",

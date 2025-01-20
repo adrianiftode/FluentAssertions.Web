@@ -12,8 +12,12 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
     /// class.
     /// </summary>
     /// <param name="value">The subject value to be asserted.</param>
+#if FAV8
     /// <param name="assertionChain">The assertion chain to build and manage assertions.</param>
     public BadRequestAssertions(HttpResponseMessage value, AssertionChain assertionChain) : base(value, assertionChain)
+#else
+    public BadRequestAssertions(HttpResponseMessage value) : base(value)
+#endif
     {
     }
 
@@ -56,8 +60,11 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
         var fieldsOfErrorsProperty = json.GetChildrenNames(ErrorsPropertyName);
         var allFields = json.GetChildrenNames("");
         var fields = hasErrorsProperty ? fieldsOfErrorsProperty : allFields;
-
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(fields.Any(field => string.Equals(field, expectedErrorField, StringComparison.OrdinalIgnoreCase)))
             .FailWith("Expected {context:response} " +
@@ -73,7 +80,11 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
             return !scope.Discard().Any();
         });
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(matchFound)
                     .FailWith("Expected {context:response} to contain " +
@@ -123,7 +134,11 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
         var allFields = json.GetChildrenNames("");
         var fields = hasErrorsProperty ? fieldsOfErrorsProperty : allFields;
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(fields.Any(field => string.Equals(field, expectedErrorField, StringComparison.OrdinalIgnoreCase)))
             .FailWith("Expected {context:response} " +
@@ -134,7 +149,11 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
         var parent = hasErrorsProperty ? ErrorsPropertyName : json.GetParentKey(expectedErrorField);
         var children = json.GetChildrenNames(parent);
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(children.Count() == 1)
             .FailWith("Expected {context:response} " +
@@ -150,7 +169,11 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
             return !scope.Discard().Any();
         });
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(expectedWildcardErrorMessageMatchFound)
                     .FailWith("Expected {context:response} to contain " +
@@ -161,7 +184,11 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
                         expectedErrorField,
                         Subject);
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(values.Count() == 1)
             .FailWith("Expected {context:response} " +
@@ -203,7 +230,11 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
         var allFields = json.GetChildrenNames("");
         var fields = hasErrorsProperty ? fieldsOfErrorsProperty : allFields;
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(!fields.Any(c => string.Equals(c, expectedErrorField, StringComparison.OrdinalIgnoreCase)))
             .FailWith("Expected {context:response} " +
@@ -248,7 +279,11 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
             return !scope.Discard().Any();
         });
 
+#if FAV8
         CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
                     .BecauseOf(because, becauseArgs)
                     .ForCondition(matchFound)
                     .FailWith("Expected {context:response} to contain " +

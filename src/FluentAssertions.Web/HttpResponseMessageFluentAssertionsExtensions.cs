@@ -1,4 +1,5 @@
-﻿// ReSharper disable once CheckNamespace
+﻿#if FAV8
+// ReSharper disable once CheckNamespace
 namespace FluentAssertions
 {
     /// <summary>
@@ -15,3 +16,4 @@ namespace FluentAssertions
             => new HttpResponseMessageAssertions(actual, AssertionChain.GetOrCreate());
     }
 }
+#endif

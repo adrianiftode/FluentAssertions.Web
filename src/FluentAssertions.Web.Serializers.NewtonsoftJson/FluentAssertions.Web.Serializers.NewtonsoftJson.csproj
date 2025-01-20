@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<PackageId>FluentAssertions.Web.v8.Serializers.NewtonsoftJson</PackageId>
     <PackageDescription>
       NewtonsoftJson based serializer for FluentAssertions.Web
     </PackageDescription>
@@ -12,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentAssertions.Web\FluentAssertions.Web.csproj" />
+    <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
   </ItemGroup>
-  
+
 </Project>

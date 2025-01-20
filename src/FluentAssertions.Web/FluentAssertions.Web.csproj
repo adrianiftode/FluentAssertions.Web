@@ -1,15 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<PackageId>FluentAssertions.Web.v8</PackageId>
-	<PackageDescription>
-	  This is a FluentAssertions extension over the HttpResponseMessage object. It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
-	</PackageDescription>
+    <PackageDescription>
+      This is a FluentAssertions extension over the HttpResponseMessage object. It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
+    </PackageDescription>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" />
+    <PackageReference Include="FluentAssertions" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
   </ItemGroup>
 
 </Project>

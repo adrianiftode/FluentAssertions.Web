@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageDescription>
+      This is a FluentAssertions extension over the HttpResponseMessage object. It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
+      This version depends on the commercial version of the FluentAssertions library (&gt;= 8.0.0).
+    </PackageDescription>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);FAV8</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" VersionOverride="8.0.0" />
+    <PackageReference Include="System.Text.Json" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FluentAssertions.Web\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <PackagePath>$(ContentTargetFolders)\src\%RecursiveDir%</PackagePath>
+    </Compile>
+  </ItemGroup>
+
+</Project>

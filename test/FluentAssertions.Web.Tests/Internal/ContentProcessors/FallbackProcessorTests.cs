@@ -1,5 +1,4 @@
 ﻿using FluentAssertions.Web.Internal.ContentProcessors;
-using System.Net.Http.Headers;
 
 namespace FluentAssertions.Web.Tests.Internal.ContentProcessors;
 
