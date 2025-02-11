@@ -9,7 +9,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FluentAssertions.Web.Serializers.NewtonsoftJson\FluentAssertions.Web.Serializers.NewtonsoftJson.csproj" />
     <ProjectReference Include="..\..\src\FluentAssertions.Web.v8\FluentAssertions.Web.v8.csproj" />
   </ItemGroup>
 

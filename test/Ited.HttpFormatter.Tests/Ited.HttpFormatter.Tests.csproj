@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FluentAssertions.Web\FluentAssertions.Web.csproj" />
+    <ProjectReference Include="..\..\src\Ited.HttpFormatter\Ited.HttpFormatter.csproj" />
   </ItemGroup>
 
 </Project>

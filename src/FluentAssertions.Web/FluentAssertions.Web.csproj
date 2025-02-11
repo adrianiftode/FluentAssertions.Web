@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
+    <ProjectReference Include="..\Ited.HttpFormatter\Ited.HttpFormatter.csproj" />
   </ItemGroup>
 
 </Project>
