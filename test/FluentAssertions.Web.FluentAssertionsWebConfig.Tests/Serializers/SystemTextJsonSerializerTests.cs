@@ -1,6 +1,4 @@
-﻿using FluentAssertions.Web.Internal.Serializers;
-
-namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests.Serializers;
+﻿namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests.Serializers;
 
 [Collection("Serializers Tests")]
 public class SystemTextJsonSerializerTests
