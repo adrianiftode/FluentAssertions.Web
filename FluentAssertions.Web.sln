@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ited.HttpFormatter", "src\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ited.HttpFormatter.Tests", "test\Ited.HttpFormatter.Tests\Ited.HttpFormatter.Tests.csproj", "{6BA3687F-995A-4726-96D6-366F277384F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shouldly.Web", "src\Shouldly.Web\Shouldly.Web.csproj", "{982D2645-AF8E-44E8-9E5D-D16B740913BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +116,10 @@ Global
 		{6BA3687F-995A-4726-96D6-366F277384F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BA3687F-995A-4726-96D6-366F277384F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BA3687F-995A-4726-96D6-366F277384F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{982D2645-AF8E-44E8-9E5D-D16B740913BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{982D2645-AF8E-44E8-9E5D-D16B740913BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{982D2645-AF8E-44E8-9E5D-D16B740913BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{982D2645-AF8E-44E8-9E5D-D16B740913BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +139,7 @@ Global
 		{056E517C-F644-4B8A-9494-09276E6E3C6B} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 		{8C66744D-AC2B-4086-AC2C-5BD04D1BC0D3} = {14FDD52D-B83A-445B-BD2F-04B3E7B8033C}
 		{6BA3687F-995A-4726-96D6-366F277384F1} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
+		{982D2645-AF8E-44E8-9E5D-D16B740913BC} = {14FDD52D-B83A-445B-BD2F-04B3E7B8033C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81F41C75-2F8A-4E70-BA17-38146C4BB6E6}

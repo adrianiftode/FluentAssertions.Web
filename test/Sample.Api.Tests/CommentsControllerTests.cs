@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Sample.Api.Controllers;
+using Shouldly;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -20,6 +21,19 @@ namespace Sample.Api.Tests
         }
 
         [Fact]
+        public async Task Get_Returns_2xx_Not_Be_Successful()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/api/comments");
+
+            // Assert
+            response.ShouldNotBe2XXSuccessful();
+        }
+
+        [Fact]
         public async Task Get_Returns_Ok_With_CommentsList()
         {
             // Arrange
@@ -29,9 +43,9 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments");
 
             // Assert
-            response.Should().Be200Ok().And.BeAs(new[]
+            response.ShouldBeAs(new[]
             {
-                new { Author = "Adrian", Content = "Hey" },
+                new { Author = "Adrian", Content = "Hey you" },
                 new { Author = "Johnny", Content = "Hey!" }
             });
         }

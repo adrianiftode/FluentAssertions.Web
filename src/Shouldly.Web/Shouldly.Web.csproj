@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageDescription>
+      This is a Shouldy extension over the HttpResponseMessage object. It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
+    </PackageDescription>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ited.HttpFormatter\Ited.HttpFormatter.csproj" />
+  </ItemGroup>
+
+</Project>

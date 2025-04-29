@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentAssertions.Web\FluentAssertions.Web.csproj" />
+    <ProjectReference Include="..\..\src\Shouldly.Web\Shouldly.Web.csproj" />
   </ItemGroup>
 
 </Project>
