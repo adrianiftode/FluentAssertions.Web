@@ -1,6 +1,10 @@
 ﻿using Newtonsoft.Json;
 
+#if AAV
+namespace AwesomeAssertions.Web.Serializers.NewtonsoftJson.Tests;
+#else
 namespace FluentAssertions.Web.Serializers.NewtonsoftJson.Tests;
+#endif
 
 public class YesNoBooleanJsonConverter : JsonConverter
 {

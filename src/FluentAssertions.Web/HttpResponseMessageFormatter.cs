@@ -1,8 +1,18 @@
-﻿using FluentAssertions.Formatting;
+﻿#if AAV
+using AwesomeAssertions.Formatting;
+using AwesomeAssertions.Web.Internal.ContentProcessors;
+#else
+using FluentAssertions.Formatting;
 using FluentAssertions.Web.Internal.ContentProcessors;
+#endif
+
 using System.Text;
 
+#if AAV
+namespace AwesomeAssertions.Web;
+#else
 namespace FluentAssertions.Web;
+#endif
 
 internal class HttpResponseMessageFormatter : IValueFormatter
 {

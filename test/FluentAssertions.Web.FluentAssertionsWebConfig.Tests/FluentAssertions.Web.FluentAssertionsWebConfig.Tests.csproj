@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="FluentAssertions.Analyzers" />
   </ItemGroup>
 
   <ItemGroup>

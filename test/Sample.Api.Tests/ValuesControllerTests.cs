@@ -1,4 +1,8 @@
+#if AAV
+using AwesomeAssertions;
+#else
 using FluentAssertions;
+#endif
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http;
 using System.Net.Http.Headers;

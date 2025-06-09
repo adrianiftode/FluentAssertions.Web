@@ -1,4 +1,8 @@
-﻿namespace FluentAssertions.Web.Tests;
+﻿#if AAV
+namespace AwesomeAssertions.Web.Tests;
+#else
+namespace FluentAssertions.Web.Tests;
+#endif
 
 public class DeserializationExceptionTests
 {

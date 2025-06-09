@@ -1,4 +1,8 @@
-﻿namespace FluentAssertions.Web.Internal;
+﻿#if AAV
+namespace AwesomeAssertions.Web.Internal;
+#else
+namespace FluentAssertions.Web.Internal;
+#endif
 
 /// <summary>
 /// Some unit test frameworks (like xUnit) have their own synchronization context

@@ -1,4 +1,8 @@
-﻿namespace FluentAssertions.Web.Tests.TestModels;
+﻿#if AAV
+namespace AwesomeAssertions.Web.Tests.TestModels;
+#else
+namespace FluentAssertions.Web.Tests.TestModels;
+#endif
 
 internal class TestModel
 {

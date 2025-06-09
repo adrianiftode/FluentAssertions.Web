@@ -1,4 +1,8 @@
-﻿namespace FluentAssertions.Web;
+﻿#if AAV
+namespace AwesomeAssertions.Web;
+#else
+namespace FluentAssertions.Web;
+#endif
 
 /// <summary>
 /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state related to HTTP Bad Request response

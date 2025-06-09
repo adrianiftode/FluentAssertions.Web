@@ -1,7 +1,15 @@
-﻿using FluentAssertions.Primitives;
+﻿#if AAV
+using AwesomeAssertions.Primitives;
+#else
+using FluentAssertions.Primitives;
+#endif
 using System.Reflection;
 
+#if AAV
+namespace AwesomeAssertions.Web.Tests.Internal;
+#else
 namespace FluentAssertions.Web.Tests.Internal;
+#endif
 
 public class ApiAccessibilityTests
 {
@@ -22,18 +30,27 @@ public class ApiAccessibilityTests
     }
 
     [Fact]
+#if AAV
+    public void GivenAssertionsExtensions_ThenShouldHaveAwesomeAssertionsNamespaceOnly()
+#else
     public void GivenAssertionsExtensions_ThenShouldHaveFluentAssertionsNamespaceOnly()
+#endif
     {
         // Arrange
         var assertionsExtensionsTypes = typeof(HttpResponseMessageAssertions).Assembly
             .GetTypes()
             .Where(c => c.Name.EndsWith("AssertionsExtensions"));
+#if AAV
+        var expectedNamespace = "AwesomeAssertions";  
+#else
+        var expectedNamespace = "FluentAssertions";
+#endif
 
         // Assert
         using (new AssertionScope())
             foreach (var type in assertionsExtensionsTypes)
             {
-                type.Namespace.Should().Be("FluentAssertions", "because we want to make sure {0} has the FluentAssertions namespace", type.Name);
+                type.Namespace.Should().Be(expectedNamespace, $"because we want to make sure {{0}} has the {expectedNamespace} namespace", type.Name);
             }
     }
 
@@ -75,9 +92,15 @@ public class ApiAccessibilityTests
             .Where(c => c.Name.EndsWith("AssertionsExtensions"))
             .ToList();
 
+#if AAV
+        var expectedNamespace = "AwesomeAssertions";  
+#else
+        var expectedNamespace = "FluentAssertions";
+#endif
+
         // Assert
         httpResponseMessageAssertionsExtensionsTypes
-            .Should().OnlyContain(type => type.Namespace == "FluentAssertions");
+            .Should().OnlyContain(type => type.Namespace == expectedNamespace);
     }
 
 #if !FAV8

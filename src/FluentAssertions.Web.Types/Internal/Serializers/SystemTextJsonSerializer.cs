@@ -2,7 +2,11 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 
+#if AAV
+namespace AwesomeAssertions.Web.Internal.Serializers;
+#else
 namespace FluentAssertions.Web.Internal.Serializers;
+#endif
 
 internal class SystemTextJsonSerializer : ISerializer
 {

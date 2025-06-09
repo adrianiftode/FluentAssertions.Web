@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);FAV8;AAV</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AwesomeAssertions" />
+    <PackageReference Include="AwesomeAssertions.Analyzers" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AwesomeAssertions.Web\AwesomeAssertions.Web.csproj" />
+    <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" />
+    <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Serializers.NewtonsoftJson\AwesomeAssertions.Web.Serializers.NewtonsoftJson.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FluentAssertions.Web.Serializers.NewtonsoftJson.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj;**\ConfigureFluentAssertionsWebFixture.cs">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+
+</Project>

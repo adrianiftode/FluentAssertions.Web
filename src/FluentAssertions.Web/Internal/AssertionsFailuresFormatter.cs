@@ -1,7 +1,15 @@
-﻿using FluentAssertions.Formatting;
+﻿#if AAV
+using AwesomeAssertions.Formatting;
+#else
+using FluentAssertions.Formatting;
+#endif
 using System.Text;
 
+#if AAV
+namespace AwesomeAssertions.Web.Internal;
+#else
 namespace FluentAssertions.Web.Internal;
+#endif
 
 internal class AssertionsFailuresFormatter : IValueFormatter
 {

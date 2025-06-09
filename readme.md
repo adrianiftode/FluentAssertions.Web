@@ -1,7 +1,7 @@
 ## FluentAssertions.Web
-This is a [*FluentAssertions*](https://fluentassertions.com/) extension over the *HttpResponseMessage* object.
+This is a [*FluentAssertions*](https://fluentassertions.com/) and [*AwesomeAssertions*](https://awesomeassertions.org//) extension over the *HttpResponseMessage* object.
 
-It provides assertions specific to HTTP responses and outputs rich erros messages when the tests fail, so less time with debugging is spent.
+It provides assertions specific to HTTP responses and outputs rich errors messages when the tests fail, so less time with debugging is spent.
 
 ```csharp
 [Fact]
@@ -33,7 +33,7 @@ Thus this library solves two problems:
 
 ##### Focus on the Assert part and not on the HttpClient related APIs, neither on the response deserialization
 
-Once the response is ready you'll want to assert it. With first level properties like `StatusCode` is somehow easy, especially with FluentAssertions, but often we need more, like to deserialize the content into an object of a certain type and then to Assert it. Or to simply assert something about the response content itself. Soon duplication code occurs and the urge to reduce it is just the next logical step. 
+Once the response is ready you'll want to assert it. With first level properties like `StatusCode` is somehow easy, especially with FluentAssertions/AwesomeAssertions, but often we need more, like to deserialize the content into an object of a certain type and then to Assert it. Or to simply assert something about the response content itself. Soon duplication code occurs and the urge to reduce it is just the next logical step. 
 
 ##### Debugging failed tests interrupts the programmer's flow state
  When a test is failing, the following actions are taken most of the time:
@@ -63,6 +63,12 @@ If you are using FluentAssertions >= 8.0.0
 
 ```
 dotnet add package FluentAssertions.Web.v8
+```
+
+If you are using AwesomeAssertions >= 8.0.0
+
+```
+dotnet add package AwesomeAssertions.Web
 ```
 
 ### FluentAssertions.Web Examples
@@ -232,7 +238,8 @@ The change must be done before the test is run and this depends on the testing f
 
 #### Newtonsoft.Json
 
-The serializer itself is replaceable, so you can implement your own, by implementing the `ISerialize` interface. The serializer is shipped via the **FluentAssertions.Web.Serializers.NewtonsoftJson** package.
+The serializer itself is replaceable, so you can implement your own, by implementing the `ISerialize` interface. 
+The serializer is shipped via the **FluentAssertions.Web.Serializers.NewtonsoftJson** and **AwesomeAssertions.Web.Serializers.NewtonsoftJson** package.
 
 [![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.Serializers.NewtonsoftJson.svg)](https://www.nuget.org/packages/FluentAssertions.Web.Serializers.NewtonsoftJson)
 
@@ -241,6 +248,12 @@ To set the default serializer to **Newtonsoft.Json** one, use the following conf
 
 ```csharp
 FluentAssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
+
+```
+or
+
+```csharp
+AwesomeAssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
 
 ```
 

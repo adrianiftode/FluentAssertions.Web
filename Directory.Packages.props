@@ -19,4 +19,9 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageVersion Include="AwesomeAssertions" Version="9.0.0" />
+    <PackageVersion Include="AwesomeAssertions.Analyzers" Version="9.0.0" />
+  </ItemGroup>
+
 </Project>

@@ -1,16 +1,8 @@
-﻿[assembly: Xunit.TestFramework("FluentAssertions.Web.Serializers.NewtonsoftJson.Tests.ConfigureFluentAssertionsWebFixture", "FluentAssertions.Web.Serializers.NewtonsoftJson.Tests")]
-
+﻿#if AAV
+namespace AwesomeAssertions.Web.Serializers.NewtonsoftJson.Tests;
+#else
 namespace FluentAssertions.Web.Serializers.NewtonsoftJson.Tests;
-
-public class ConfigureFluentAssertionsWebFixture : XunitTestFramework
-{
-    public ConfigureFluentAssertionsWebFixture(IMessageSink messageSink) : base(messageSink)
-    {
-        NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConverter());
-
-        FluentAssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
-    }
-}
+#endif
 
 public class NewtonsoftSerializerTests
 {

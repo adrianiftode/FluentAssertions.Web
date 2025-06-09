@@ -1,7 +1,16 @@
-﻿using FluentAssertions.Formatting;
+﻿#if AAV
+using AwesomeAssertions.Formatting;
+using AwesomeAssertions.Primitives;
+#else
+using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
+#endif
 
+#if AAV
+namespace AwesomeAssertions.Web;
+#else
 namespace FluentAssertions.Web;
+#endif
 
 /// <summary>
 /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state.
@@ -47,7 +56,13 @@ public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<Htt
 
     private protected (bool success, string? errorMessage) TryGetSubjectModel(out object? model, Type modelType)
     {
-        Func<Task<object?>> readModel = () => Subject.Content.ReadAsAsync(modelType, FluentAssertionsWebConfig.Serializer);
+#if AAV
+        var serializer = AwesomeAssertionsWebConfig.Serializer;
+#else
+        var serializer = FluentAssertionsWebConfig.Serializer;
+#endif
+        
+        Func<Task<object?>> readModel = () => Subject.Content.ReadAsAsync(modelType, serializer);
         try
         {
             model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();

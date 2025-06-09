@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" VersionOverride="8.0.0" />
+    <PackageReference Include="FluentAssertions.Analyzers" />
   </ItemGroup>
   
   <ItemGroup>

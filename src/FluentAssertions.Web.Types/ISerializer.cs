@@ -3,7 +3,11 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
+#if AAV
+namespace AwesomeAssertions;
+#else
 namespace FluentAssertions;
+#endif
 
 /// <summary>
 /// Provides an abstraction to deserialize a Stream of binary data into a C# object.

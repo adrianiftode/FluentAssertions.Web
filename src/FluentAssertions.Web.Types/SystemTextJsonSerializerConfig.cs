@@ -1,7 +1,11 @@
 ﻿// ReSharper disable once CheckNamespace
 using System.Text.Json.Serialization;
 
+#if AAV
+namespace AwesomeAssertions;
+#else
 namespace FluentAssertions;
+#endif
 
 /// <summary>
 /// Holder of the global <see cref="System.Text.Json.JsonSerializerOptions"/>

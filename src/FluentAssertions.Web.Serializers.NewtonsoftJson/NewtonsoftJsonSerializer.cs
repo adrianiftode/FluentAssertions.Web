@@ -1,5 +1,9 @@
 ﻿// ReSharper disable once CheckNamespace
+#if AAV
+namespace AwesomeAssertions;
+#else
 namespace FluentAssertions;
+#endif
 
 /// <summary>
 /// Newtonsoft.Json based serializer

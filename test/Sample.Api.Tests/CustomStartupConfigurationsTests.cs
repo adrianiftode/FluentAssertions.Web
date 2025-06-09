@@ -1,4 +1,8 @@
-﻿using FluentAssertions;
+﻿#if AAV
+using AwesomeAssertions;
+#else
+using FluentAssertions;
+#endif
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;

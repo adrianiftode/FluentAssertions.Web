@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);AAV</DefineConstants>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="..\FluentAssertions.Web.Types\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj;**\GlobalUsings.cs">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <PackagePath>$(ContentTargetFolders)\src\%RecursiveDir%</PackagePath>
+    </Compile>
+  </ItemGroup>
+  
+</Project>

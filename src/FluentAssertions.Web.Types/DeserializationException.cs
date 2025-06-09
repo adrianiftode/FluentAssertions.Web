@@ -2,7 +2,11 @@
 using System;
 using System.Runtime.Serialization;
 
+#if AAV
+namespace AwesomeAssertions;
+#else
 namespace FluentAssertions;
+#endif
 
 /// <summary>
 /// Captures serialization exceptions.

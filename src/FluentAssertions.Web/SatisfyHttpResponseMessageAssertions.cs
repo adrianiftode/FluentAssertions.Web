@@ -1,4 +1,8 @@
-﻿namespace FluentAssertions.Web;
+﻿#if AAV
+namespace AwesomeAssertions.Web;
+#else
+namespace FluentAssertions.Web;
+#endif
 
 public partial class HttpResponseMessageAssertions
 {

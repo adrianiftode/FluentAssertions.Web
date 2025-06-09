@@ -1,4 +1,8 @@
+#if AAV
+using AwesomeAssertions;
+#else
 using FluentAssertions;
+#endif
 using Microsoft.AspNetCore.Mvc.Testing;
 using Sample.Api.Controllers;
 using System.Collections.Generic;

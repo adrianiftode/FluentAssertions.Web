@@ -1,6 +1,14 @@
-﻿using FluentAssertions.Web.Tests.TestModels;
+﻿#if AAV
+using AwesomeAssertions.Web.Tests.TestModels;
+#else
+using FluentAssertions.Web.Tests.TestModels;
+#endif
 
+#if AAV
+namespace AwesomeAssertions.Web.Tests.Internal;
+#else
 namespace FluentAssertions.Web.Tests.Internal;
+#endif
 
 public class HttpContentExtensionsTests
 {

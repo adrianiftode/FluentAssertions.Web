@@ -2,7 +2,11 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
+#if AAV
+namespace AwesomeAssertions.Web.Internal.ContentProcessors;
+#else
 namespace FluentAssertions.Web.Internal.ContentProcessors;
+#endif
 
 internal class JsonProcessor : ProcessorBase
 {

@@ -1,4 +1,8 @@
-﻿using FluentAssertions;
+﻿#if AAV
+using AwesomeAssertions;
+#else
+using FluentAssertions;
+#endif
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Threading.Tasks;
 using Xunit;
