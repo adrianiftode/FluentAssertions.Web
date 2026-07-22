@@ -1,5 +1,5 @@
 version: 0.0.0-ci-{build}
-image: Visual Studio 2022
+image: Visual Studio 2026
 branches:
   only:
   - master
