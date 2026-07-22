@@ -40,7 +40,6 @@ init:
       Write-Host "APPVEYOR_REPO_TAG_NAME= '$env:APPVEYOR_REPO_TAG_NAME'" -ForegroundColor Yellow
   - ps: 'if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { & dotnet tool install -g dotnet-sonarscanner }'
   - cmd: dotnet tool install -g minicover
-  - cmd: where java.exe
 
 nuget:
   project_feed: true 
