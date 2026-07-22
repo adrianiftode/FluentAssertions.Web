@@ -165,7 +165,7 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
                       "{1}",
                 expectedErrorField, Subject);
 
-        var values = json.GetStringValuesOf(expectedErrorField);
+        var values = hasErrorsProperty ? errorsProperty.First().GetStringValuesOf(expectedErrorField) : json.GetStringValuesOf(expectedErrorField);
         var expectedWildcardErrorMessageMatchFound = values.Any(headerValue =>
         {
             using var scope = new AssertionScope();

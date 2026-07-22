@@ -95,6 +95,35 @@ public class BadRequestAssertionsSpecs
     }
 
     [Fact]
+    public void When_asserting_bad_request_response_with_error_field_having_a_reserved_name_like_title_to_be_BadRequest_and_HaveError_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+        {
+            Content = new StringContent(/*lang=json,strict*/ """
+                                                             {
+                                                               "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                                                               "title": "One or more validation errors occurred.",
+                                                               "status": 400,
+                                                               "traceId": "00-deb7480af23a884e942f7b85cac6bd35-c1abe72874d40c4a-00",
+                                                               "errors": {
+                                                                "Title": [
+                                                                   "\u0027Title\u0027 must not be empty."
+                                                                 ]
+                                                               }
+                                                             }
+                                                             """, Encoding.UTF8, "application/json")
+        };
+
+        // Act
+        Action act = () => subject.Should().Be400BadRequest()
+            .And.HaveError("title", "*empty*");
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+    [Fact]
     public void When_asserting_bad_request_response_with_error_field_having_a_reserved_name_from_standard_dot_net_json_and_also_error_message_to_be_BadRequest_and_HaveError_should_succeed()
     {
         // Arrange
@@ -708,6 +737,64 @@ public class BadRequestAssertionsSpecs
         act.Should().NotThrow();
     }
 
+    [Fact]
+    public void When_asserting_bad_request_response_with_error_field_having_a_reserved_name_from_standard_dot_net_json_to_be_BadRequest_and_OnlyHaveError_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+        {
+            Content = new StringContent(/*lang=json,strict*/ """
+                                                             {
+                                                               "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                                                               "title": "One or more validation errors occurred.",
+                                                               "status": 400,
+                                                               "traceId": "00-deb7480af23a884e942f7b85cac6bd35-c1abe72874d40c4a-00",
+                                                               "errors": {
+                                                                 "Status": [
+                                                                   "Cannot add at Revoked Status."
+                                                                 ]
+                                                               }
+                                                             }
+                                                             """, Encoding.UTF8, "application/json")
+        };
+
+        // Act
+        Action act = () => subject.Should().Be400BadRequest()
+            .And.OnlyHaveError("Status", "Cannot add at Revoked Status.");
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+    [Fact]
+    public void When_asserting_bad_request_response_with_error_field_having_a_reserved_name_like_title_to_be_BadRequest_and_OnlyHaveError_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
+        {
+            Content = new StringContent(/*lang=json,strict*/ """
+                                                             {
+                                                               "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                                                               "title": "One or more validation errors occurred.",
+                                                               "status": 400,
+                                                               "traceId": "00-deb7480af23a884e942f7b85cac6bd35-c1abe72874d40c4a-00",
+                                                               "errors": {
+                                                                "Title": [
+                                                                   "\u0027Title\u0027 must not be empty."
+                                                                 ]
+                                                               }
+                                                             }
+                                                             """, Encoding.UTF8, "application/json")
+        };
+
+        // Act
+        Action act = () => subject.Should().Be400BadRequest()
+            .And.OnlyHaveError("title", "*empty*");
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
     [Theory]
     [InlineData(/*lang=json,strict*/ """
         {
@@ -723,7 +810,7 @@ public class BadRequestAssertionsSpecs
           "Comments": [ "The Comments field is required." ]
         }
         """)]
-    public void When_asserting_bad_request_response_with_multiple_error_fields_where_one_of_them_is_the_actual_error_from_standard_dot_net_json_to_be_BadRequest_and_OnlyHaveError_fo_it_should_throw_with_descriptive_message(string responseContent)
+    public void When_asserting_bad_request_response_with_multiple_error_fields_where_one_of_them_is_the_actual_error_to_be_BadRequest_and_OnlyHaveError_it_should_throw_with_descriptive_message(string responseContent)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -759,7 +846,7 @@ public class BadRequestAssertionsSpecs
           ]
         }
         """)]
-    public void When_asserting_bad_request_response_with_multiple_error_messages_where_one_of_them_is_the_actual_error_from_standard_dot_net_json_to_be_BadRequest_and_OnlyHaveError_fo_it_should_throw_with_descriptive_message(string responseContent)
+    public void When_asserting_bad_request_response_with_multiple_error_messages_where_one_of_them_is_the_actual_error_to_be_BadRequest_and_OnlyHaveError_it_should_throw_with_descriptive_message(string responseContent)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
