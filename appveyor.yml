@@ -19,22 +19,6 @@ skip_commits:
     - samples/**/*
   message: /.*skip\sci.*/
 
-install:
-  # Install .NET Core 2.1
-  - ps: |
-      Invoke-WebRequest https://dot.net/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1
-      .\dotnet-install.ps1 -Version 2.1.818 -InstallDir "$env:USERPROFILE\.dotnet"
-
-  # Install .NET Core 3.1
-  - ps: |
-      .\dotnet-install.ps1 -Version 3.1.426 -InstallDir "$env:USERPROFILE\.dotnet"
-
-  # Add to PATH
-  - set PATH=%USERPROFILE%\.dotnet;%PATH%
-
-  # Verify
-  - dotnet --list-sdks
-
 init:
   - cmd: dotnet --version
   - ps: |
