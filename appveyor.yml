@@ -108,7 +108,7 @@ after_test:
       }
 
   # Clean packing execution targeting your unified multimatrix assemblies cleanly
-  - cmd: dotnet pack --include-symbols -c %CONFIGURATION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+  - cmd: dotnet pack --include-symbols -c %CONFIGURATION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION% --force /p:BuildInParallel=false
 
 artifacts:
   - path: '**\FluentAssertions.Web*.nupkg'
