@@ -1,3 +1,6 @@
+
+using HttpMessageFormatter;
+
 #if AAV
 using AwesomeAssertions.Formatting;
 #else
@@ -23,7 +26,8 @@ public class HttpResponseMessageFormatter : IValueFormatter
         FormatChild formatChild)
     {
         var response = (HttpResponseMessage)value;
-        var formatted = global::HttpMessageFormatter.HttpResponseFormatterExtensions.Format(response);
+        var formatted = response.Format();
+
         formattedGraph.AddFragment(formatted);
     }
 }
