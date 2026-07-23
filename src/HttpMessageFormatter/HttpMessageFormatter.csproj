@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <!-- Link to the file relative to this csproj file (likely up one or two folders) -->
-    <None Include="..\..\..\Readme.md" Pack="true" PackagePath="\" />
+    <None Include="Readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
