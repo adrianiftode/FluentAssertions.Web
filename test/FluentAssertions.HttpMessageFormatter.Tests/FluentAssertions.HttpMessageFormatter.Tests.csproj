@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="FluentAssertions.Analyzers" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
+    <ProjectReference Include="..\..\src\FluentAssertions.Web.Serializers.NewtonsoftJson\FluentAssertions.Web.Serializers.NewtonsoftJson.csproj" />
+    <ProjectReference Include="..\..\src\FluentAssertions.HttpMessageFormatter\FluentAssertions.HttpMessageFormatter.csproj" />
+  </ItemGroup>
+
+</Project>

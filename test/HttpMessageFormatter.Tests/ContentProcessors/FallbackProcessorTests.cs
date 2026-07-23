@@ -1,14 +1,7 @@
-﻿#if AAV
-using AwesomeAssertions.Web.Internal.ContentProcessors;
-#else
-using FluentAssertions.Web.Internal.ContentProcessors;
-#endif
+﻿using System.Net;
 
-#if AAV
-namespace AwesomeAssertions.Web.Tests.Internal.ContentProcessors;
-#else
-namespace FluentAssertions.Web.Tests.Internal.ContentProcessors;
-#endif
+namespace HttpMessageFormatter.Tests.ContentProcessors;
+
 
 public class FallbackProcessorTests
 {

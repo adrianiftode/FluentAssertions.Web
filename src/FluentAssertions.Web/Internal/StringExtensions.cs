@@ -11,7 +11,4 @@ internal static class StringExtensions
         : source;
 
     public static string TrimDot(this string source) => source.TrimEnd('.');
-
-    public static bool EqualsCaseInsensitive(this string? source, string? other)
-        => string.Equals(source, other, StringComparison.OrdinalIgnoreCase);
 }

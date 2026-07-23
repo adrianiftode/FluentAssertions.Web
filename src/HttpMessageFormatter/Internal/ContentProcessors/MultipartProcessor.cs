@@ -1,14 +1,9 @@
-﻿using System.Text;
-
-#if AAV
-namespace AwesomeAssertions.Web.Internal.ContentProcessors;
-#else
-namespace FluentAssertions.Web.Internal.ContentProcessors;
-#endif
+namespace HttpMessageFormatter.Internal.ContentProcessors;
 
 internal class MultipartProcessor : ProcessorBase
 {
     private readonly HttpContent? _httpContent;
+
     public MultipartProcessor(HttpContent? httpContent)
     {
         _httpContent = httpContent;
@@ -68,5 +63,15 @@ internal class MultipartProcessor : ProcessorBase
         return !string.IsNullOrEmpty(boundary);
     }
 
-    private string? GetBoundary() => _httpContent?.Headers?.ContentType?.Parameters.FirstOrDefault(c => c.Name == "boundary")?.Value?.Trim('\"');
+    private string? GetBoundary()
+    {
+        var contentType = _httpContent?.Headers?.ContentType;
+        if (contentType?.Parameters == null)
+        {
+            return null;
+        }
+
+        var boundaryParameter = contentType.Parameters.FirstOrDefault(p => p.Name.Equals("boundary", StringComparison.OrdinalIgnoreCase));
+        return boundaryParameter != null ? $"--{boundaryParameter.Value}" : null;
+    }
 }

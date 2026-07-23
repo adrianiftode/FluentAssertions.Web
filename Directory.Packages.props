@@ -10,6 +10,8 @@
     <PackageVersion Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="System.Text.Json" Version="8.0.5" />
+    <PackageVersion Include="System.Text.Encodings.Web" Version="8.0.0" />
+    <PackageVersion Include="System.Net.Http.Json" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>

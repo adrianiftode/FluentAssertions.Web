@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\AwesomeAssertions.HttpMessageFormatter\AwesomeAssertions.HttpMessageFormatter.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\HttpMessageFormatter\HttpMessageFormatter.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,10 +1,6 @@
-﻿using System.Text;
+using System.Net;
 
-#if AAV
-namespace AwesomeAssertions.Web.Internal.ContentProcessors;
-#else
-namespace FluentAssertions.Web.Internal.ContentProcessors;
-#endif
+namespace HttpMessageFormatter.Internal.ContentProcessors;
 
 internal class InternalServerErrorProcessor : ProcessorBase
 {
@@ -18,9 +14,9 @@ internal class InternalServerErrorProcessor : ProcessorBase
     }
 
     protected override bool CanHandle() => _httpContent != null
-    && _httpResponseMessage != null 
-    && _httpResponseMessage.StatusCode == HttpStatusCode.InternalServerError 
-    && !_httpContent.IsDisposed();
+        && _httpResponseMessage != null 
+        && _httpResponseMessage.StatusCode == HttpStatusCode.InternalServerError 
+        && !_httpContent.IsDisposed();
 
     protected override async Task Handle(StringBuilder contentBuilder)
     {

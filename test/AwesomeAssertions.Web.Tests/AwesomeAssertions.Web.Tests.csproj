@@ -10,6 +10,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\src\AwesomeAssertions.HttpMessageFormatter\AwesomeAssertions.HttpMessageFormatter.csproj" />
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Serializers.NewtonsoftJson\AwesomeAssertions.Web.Serializers.NewtonsoftJson.csproj" />
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web\AwesomeAssertions.Web.csproj" />
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" />

@@ -1,37 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageDescription>
-      This is a FluentAssertions extension over the HttpResponseMessage object.
-      It provides specific assertions and outputs rich erros messages that include the HTTP Request and Response.
-      This version depends on the commercial version of the FluentAssertions library (&gt;= 8.0.0).
-    </PackageDescription>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <DefineConstants>$(DefineConstants);FAV8</DefineConstants>
+    <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);AAV</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" VersionOverride="8.0.0" />
-    <PackageReference Include="System.Text.Json" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
+    <PackageReference Include="AwesomeAssertions" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\FluentAssertions.HttpMessageFormatter\FluentAssertions.HttpMessageFormatter.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\HttpMessageFormatter\HttpMessageFormatter.csproj" />
+    <ProjectReference Include="..\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../readme.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\FluentAssertions.Web\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
+    <Compile Include="..\FluentAssertions.HttpMessageFormatter\**\*.cs" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-      <PackagePath>$(ContentTargetFolders)\src\%RecursiveDir%</PackagePath>
     </Compile>
   </ItemGroup>
 

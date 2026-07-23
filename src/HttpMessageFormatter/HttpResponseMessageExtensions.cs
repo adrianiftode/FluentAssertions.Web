@@ -1,10 +1,8 @@
-﻿#if AAV
-namespace AwesomeAssertions.Web.Internal;
-#else
-namespace FluentAssertions.Web.Internal;
-#endif
+﻿using System.Text.Json;
 
-internal static class HttpResponseMessageExtensions
+namespace HttpMessageFormatter;
+
+public static class HttpResponseMessageExtensions
 {
     public static IEnumerable<string> GetHeaderValues(this HttpResponseMessage response, string header)
     {

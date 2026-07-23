@@ -1,10 +1,4 @@
-﻿using System.Text;
-
-#if AAV
-namespace AwesomeAssertions.Web.Internal.ContentProcessors;
-#else
-namespace FluentAssertions.Web.Internal.ContentProcessors;
-#endif
+namespace HttpMessageFormatter.Internal.ContentProcessors;
 
 internal class BinaryProcessor : ProcessorBase
 {
@@ -28,6 +22,7 @@ internal class BinaryProcessor : ProcessorBase
                                            && !_httpContent.IsDisposed()
                                            && _httpContent is not (StringContent or FormUrlEncodedContent)
                                            && (IsNonPrintableContent(_httpContent) || _httpContent is ByteArrayContent);
+
     private static bool IsNonPrintableContent(HttpContent? content)
     {
         // a file name is passed

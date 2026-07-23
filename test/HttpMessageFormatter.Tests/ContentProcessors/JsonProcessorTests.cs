@@ -1,14 +1,4 @@
-﻿#if AAV
-using AwesomeAssertions.Web.Internal.ContentProcessors;
-#else
-using FluentAssertions.Web.Internal.ContentProcessors;
-#endif
-
-#if AAV
-namespace AwesomeAssertions.Web.Tests.Internal.ContentProcessors;
-#else
-namespace FluentAssertions.Web.Tests.Internal.ContentProcessors;
-#endif
+﻿namespace HttpMessageFormatter.Tests.ContentProcessors;
 
 public class JsonProcessorTests
 {

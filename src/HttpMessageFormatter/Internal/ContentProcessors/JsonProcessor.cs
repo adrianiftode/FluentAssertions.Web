@@ -1,17 +1,14 @@
-using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Text.Unicode;
 
-#if AAV
-namespace AwesomeAssertions.Web.Internal.ContentProcessors;
-#else
-namespace FluentAssertions.Web.Internal.ContentProcessors;
-#endif
+namespace HttpMessageFormatter.Internal.ContentProcessors;
 
 internal class JsonProcessor : ProcessorBase
 {
     private static readonly JavaScriptEncoder JavaScriptEncoder = JavaScriptEncoder.Create(UnicodeRanges.All);
     private readonly HttpContent? _httpContent;
+
     public JsonProcessor(HttpContent? httpContent)
     {
         _httpContent = httpContent;
