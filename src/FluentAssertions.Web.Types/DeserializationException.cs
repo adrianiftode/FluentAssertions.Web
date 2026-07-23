@@ -1,5 +1,5 @@
 ﻿// ReSharper disable once CheckNamespace
-using System;
+
 using System.Runtime.Serialization;
 
 #if AAV

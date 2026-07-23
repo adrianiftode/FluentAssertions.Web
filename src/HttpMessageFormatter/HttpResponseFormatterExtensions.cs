@@ -1,40 +1,30 @@
-﻿#if AAV
-using AwesomeAssertions.Formatting;
-using AwesomeAssertions.Web.Internal.ContentProcessors;
-#else
-using FluentAssertions.Formatting;
-using FluentAssertions.Web.Internal.ContentProcessors;
-#endif
+using HttpMessageFormatter.Internal;
+using HttpMessageFormatter.Internal.ContentProcessors;
 
-using System.Text;
+namespace HttpMessageFormatter;
 
-#if AAV
-namespace AwesomeAssertions.Web;
-#else
-namespace FluentAssertions.Web;
-#endif
-
-internal class HttpResponseMessageFormatter : IValueFormatter
+/// <summary>
+/// Formats HTTP response messages for inspection and debugging.
+/// Provides rich, readable output of HTTP responses including headers, content, status codes, and associated requests.
+/// </summary>
+public static class HttpResponseFormatterExtensions
 {
-    public bool CanHandle(object value) => value is HttpResponseMessage;
-
-    /// <inheritdoc />
-    public void Format(object value,
-        FormattedObjectGraph formattedGraph,
-        FormattingContext context,
-        FormatChild formatChild)
+    /// <summary>
+    /// Formats an HTTP response message into a readable string representation.
+    /// </summary>
+    /// <param name="response">The HTTP response message to format.</param>
+    /// <returns>A formatted string representation of the HTTP response.</returns>
+    public static string Format(this HttpResponseMessage response)
     {
-        var response = (HttpResponseMessage)value;
-
         var messageBuilder = new StringBuilder();
         messageBuilder.AppendLine();
         messageBuilder.AppendLine();
         messageBuilder.AppendLine("The HTTP response was:");
 
         Func<Task> contentResolver = async () => await AppendHttpResponseMessage(messageBuilder, response);
-        contentResolver.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+        contentResolver.ExecuteInDefaultSynchronizationContext();
 
-        formattedGraph.AddFragment(messageBuilder.ToString());
+        return messageBuilder.ToString();
     }
 
     private static async Task AppendHttpResponseMessage(StringBuilder messageBuilder, HttpResponseMessage response)
@@ -70,6 +60,7 @@ internal class HttpResponseMessageFormatter : IValueFormatter
     private static async Task AppendRequest(StringBuilder messageBuilder, HttpResponseMessage response)
     {
         messageBuilder.AppendLine();
+        messageBuilder.AppendLine();
         var request = response.RequestMessage;
         if (request == null)
         {
@@ -102,6 +93,20 @@ internal class HttpResponseMessageFormatter : IValueFormatter
         var contentBuilder = await ProcessorsRunner.RunProcessors(processors);
         messageBuilder.AppendLine();
         messageBuilder.Append(contentBuilder);
+    }
+
+    internal static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpResponseMessage response)
+    {
+        var responseContentHeaders =
+            response.Content?.Headers ?? Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>();
+        return response.Headers.Union(responseContentHeaders);
+    }
+
+    internal static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpRequestMessage request)
+    {
+        var requestContentHeaders =
+            request.Content?.Headers ?? Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>();
+        return request.Headers.Union(requestContentHeaders);
     }
 
     private static async Task AppendRequestContent(StringBuilder messageBuilder, HttpContent content)

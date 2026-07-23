@@ -368,3 +368,35 @@ Besides the extra assertions added by FluentAssertions.Web, an important effort 
 Starting 8.0.0, FA is not an FOSS anymore. **FluentAssertions.Web** will maintain both FOSS (< 8.0.0) and the Commercial versions of FA (>= 8.0.0), so they will be deployed as separate Nuget packages:
     - **FluentAssertions.Web** will continue to dependend on the FOSS versions
     - **FluentAssertions.Web.v8** will dependend on the Commercial versions
+
+### HttpResponse Formatter
+
+The internal HTTP Request/Response formatter used by FluentAssertions.Web is now published as a standalone package, so it can be reused in other projects.
+
+Basic usage: 
+ - start from a HttpResponseMessage instance
+ - reference the HttpMessageFormatter package from Nuget
+ - import the extension method _using HttpMessageFormatter;_
+ - call the *Format* method on the HttpResponseMessage instance
+
+ ```csharp
+using HttpMessageFormatter;
+
+public class HttpResponseFormatterExtensionsTests
+{
+    [Fact]
+    public void GivenUnspecifiedResponse_ShouldFormatBasicResponse()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage();
+
+        // Act
+        var formatted = subject.Format();
+
+        // Assert
+        Assert.Contains("The HTTP response was:", formatted);
+        Assert.Contains("HTTP/1.1 200 OK", formatted);
+    }
+}
+
+```

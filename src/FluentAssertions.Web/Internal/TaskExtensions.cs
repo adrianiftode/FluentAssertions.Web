@@ -12,14 +12,6 @@ namespace FluentAssertions.Web.Internal;
 /// </summary>
 internal static class TaskExtensions
 {
-    public static void ExecuteInDefaultSynchronizationContext(this Action action)
-    {
-        using (NoSynchronizationContextScope.Enter())
-        {
-            action();
-        }
-    }
-
     public static TResult ExecuteInDefaultSynchronizationContext<TResult>(this Func<TResult> action)
     {
         using (NoSynchronizationContextScope.Enter())

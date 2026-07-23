@@ -1,0 +1,10 @@
+global using System.IO;
+global using System.Linq;
+global using System.Net.Http;
+global using System.Net.Http.Headers;
+global using System.Text;
+global using System.Threading.Tasks;
+global using FluentAssertions;
+global using HttpMessageFormatter.Internal;
+global using HttpMessageFormatter.Internal.ContentProcessors;
+global using Xunit;

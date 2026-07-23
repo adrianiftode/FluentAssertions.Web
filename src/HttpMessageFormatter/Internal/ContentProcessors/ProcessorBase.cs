@@ -1,10 +1,4 @@
-﻿using System.Text;
-
-#if AAV
-namespace AwesomeAssertions.Web.Internal.ContentProcessors;
-#else
-namespace FluentAssertions.Web.Internal.ContentProcessors;
-#endif
+namespace HttpMessageFormatter.Internal.ContentProcessors;
 
 internal abstract class ProcessorBase : IContentProcessor
 {
@@ -20,6 +14,7 @@ internal abstract class ProcessorBase : IContentProcessor
 
     protected abstract bool CanHandle();
     protected abstract Task Handle(StringBuilder contentBuilder);
+
     protected void AppendContentWithinLimits(StringBuilder contentBuilder, string? content)
     {
         if (content == null)

@@ -57,12 +57,6 @@ init:
           }
       }
 
-  - ps: |
-      dotnet tool update -g minicover
-      if ($LASTEXITCODE -ne 0) {
-          dotnet tool install -g minicover
-      }
-
 nuget:
   project_feed: true
 
@@ -70,7 +64,6 @@ before_build:
   - dotnet restore
 
 build_script:
-
   - cmd: set JAVA_HOME=C:\Program Files\Java\jdk25
   - cmd: if not exist "%JAVA_HOME%\bin\java.exe" exit /b 1
   - cmd: set PATH=%JAVA_HOME%\bin;%PATH%
@@ -88,7 +81,7 @@ build_script:
             /d:sonar.host.url="https://sonarcloud.io" `
             /d:sonar.token="$env:SONAR_TOKEN" `
             /v:"$env:APPVEYOR_BUILD_NUMBER" `
-            /d:sonar.cs.opencover.reportsPaths="opencovercoverage.xml" `
+            /d:sonar.cs.opencover.reportsPaths="**\coverage.opencover.xml" `
             /d:sonar.coverage.exclusions="test/**"
 
           if ($LASTEXITCODE -ne 0) {
@@ -96,21 +89,13 @@ build_script:
           }
       }
 
-  - cmd: dotnet build -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION%
-
-  - cmd: minicover instrument
+  - cmd: dotnet build -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 
 test_script:
-  - cmd: dotnet test --no-restore --no-build --nologo --verbosity:q
+  # Uses native coverlet collector to safely output an OpenCover report without altering compiled disk files
+  - cmd: dotnet test --no-restore --no-build --nologo --verbosity:q /p:CollectCoverage=true --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
 after_test:
-
-  - cmd: minicover uninstrument
-
-  - cmd: minicover opencoverreport
-
-  - cmd: minicover report --threshold 95
-
   - ps: |
       if (-not $env:APPVEYOR_PULL_REQUEST_NUMBER) {
 
@@ -122,17 +107,22 @@ after_test:
           }
       }
 
-  - cmd: dotnet pack --include-symbols -c %CONFIGURATION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+  - cmd: dotnet pack --include-symbols -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 
 artifacts:
+  - path: '**\*.nupkg'
+    name: Artifacts
+
   - path: '**\FluentAssertions.Web*.nupkg'
     name: FluentAssertionsPackages
 
   - path: '**\AwesomeAssertions.Web*.nupkg'
     name: AwesomeAssertionsPackages
 
-deploy:
+  - path: '**\HttpMessageFormatter*.nupkg'
+    name: HttpMessageFormatterPackage
 
+deploy:
   - provider: NuGet
     api_key:
       secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
@@ -141,10 +131,26 @@ deploy:
     on:
       appveyor_repo_tag: true
 
+  - provider: NuGet
+    api_key:
+      secure: gaPfZkebBqHImrgOgug/EV8v/LrAR93n8SjxTdi+wWPmuOE5/O8m13XZ5+vSApmH
+    skip_symbols: true
+    artifact: AwesomeAssertionsPackages
+    on:
+      appveyor_repo_tag: true
+
+  - provider: NuGet
+    api_key:
+      secure: 3liPSvxDFNIdyj4KA8uPbuefOgAqKdLEsX2SRiWiW2QxKia2xDADSu89tKE7oDId
+    skip_symbols: true
+    artifact: HttpMessageFormatterPackage
+    on:
+      appveyor_repo_tag: true
+
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: WXU/Xj3ntIZVx89KDAa/V/FGerV2fURqVQJxrKIqMcCijmXeC065twmHPYQMWGBabafs1llkLbe6DMKRAGnz+GxwH8GpT3A86rcSOLxbsp4uRkeMRsLxWHI+eDHTonOY
-    artifact: FluentAssertionsPackages
+    artifact: Artifacts
     on:
       appveyor_repo_tag: true
