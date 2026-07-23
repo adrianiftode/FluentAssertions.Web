@@ -94,6 +94,20 @@ public static class HttpResponseFormatterExtensions
         messageBuilder.Append(contentBuilder);
     }
 
+    internal static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpResponseMessage response)
+    {
+        var responseContentHeaders =
+            response.Content?.Headers ?? Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>();
+        return response.Headers.Union(responseContentHeaders);
+    }
+
+    internal static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetHeaders(this HttpRequestMessage request)
+    {
+        var requestContentHeaders =
+            request.Content?.Headers ?? Enumerable.Empty<KeyValuePair<string, IEnumerable<string>>>();
+        return request.Headers.Union(requestContentHeaders);
+    }
+
     private static async Task AppendRequestContent(StringBuilder messageBuilder, HttpContent content)
     {
         await Appender.AppendContent(messageBuilder, content, false);

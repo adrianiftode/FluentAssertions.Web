@@ -5,7 +5,6 @@ using AwesomeAssertions.Primitives;
 using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
 #endif
-using HttpMessageFormatter;
 
 #if AAV
 namespace AwesomeAssertions.Web;

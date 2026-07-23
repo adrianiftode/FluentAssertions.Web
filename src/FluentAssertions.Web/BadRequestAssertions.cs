@@ -1,6 +1,4 @@
-﻿using HttpMessageFormatter;
-
-#if AAV
+﻿#if AAV
 namespace AwesomeAssertions.Web;
 #else
 namespace FluentAssertions.Web;

@@ -1,23 +1,19 @@
-
-using System.IO;
-using System.Threading.Tasks;
-
 #if AAV
-using AwesomeAssertions.Formatting;
+using AwesomeAssertions;
 #else
-using FluentAssertions.Formatting;
+using FluentAssertions;
 #endif
 
 #if AAV
-namespace AwesomeAssertions.Formatting;
+namespace AwesomeAssertions.Web.Internal;
 #else
-namespace FluentAssertions.Formatting;
+namespace FluentAssertions.Web.Internal;
 #endif
 
 /// <summary>
 /// Provides extension methods for working with <see cref="HttpContent"/> instances.
 /// </summary>
-public static class HttpContentExtensions
+internal static class HttpContentExtensions
 {
     /// <summary>
     /// Reads the content of the <see cref="HttpContent"/> as an instance of the specified type.
