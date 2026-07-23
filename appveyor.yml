@@ -93,7 +93,7 @@ build_script:
 
 test_script:
   # Uses native coverlet collector to safely output an OpenCover report without altering compiled disk files
-  - cmd: dotnet test --no-restore --no-build --nologo --verbosity:q --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+  - cmd: dotnet test --no-restore --no-build --nologo --verbosity:q /p:CollectCoverage=true --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
 after_test:
   - ps: |
