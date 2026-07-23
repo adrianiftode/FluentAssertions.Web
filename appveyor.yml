@@ -110,9 +110,6 @@ after_test:
   - cmd: dotnet pack --include-symbols -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 
 artifacts:
-  - path: '**\*.nupkg'
-    name: Artifacts
-
   - path: '**\FluentAssertions.Web*.nupkg'
     name: FluentAssertionsPackages
 
@@ -121,6 +118,9 @@ artifacts:
 
   - path: '**\HttpMessageFormatter*.nupkg'
     name: HttpMessageFormatterPackage
+
+  - path: '**\*.nupkg'
+    name: Artifacts
 
 deploy:
   - provider: NuGet
@@ -139,18 +139,10 @@ deploy:
     on:
       appveyor_repo_tag: true
 
-  - provider: NuGet
-    api_key:
-      secure: 3liPSvxDFNIdyj4KA8uPbuefOgAqKdLEsX2SRiWiW2QxKia2xDADSu89tKE7oDId
-    skip_symbols: true
-    artifact: HttpMessageFormatterPackage
-    on:
-      appveyor_repo_tag: true
-
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: WXU/Xj3ntIZVx89KDAa/V/FGerV2fURqVQJxrKIqMcCijmXeC065twmHPYQMWGBabafs1llkLbe6DMKRAGnz+GxwH8GpT3A86rcSOLxbsp4uRkeMRsLxWHI+eDHTonOY
-    artifact: Artifacts
+    artifact: FluentAssertionsPackages, AwesomeAssertionsPackages, HttpMessageFormatterPackage
     on:
       appveyor_repo_tag: true
