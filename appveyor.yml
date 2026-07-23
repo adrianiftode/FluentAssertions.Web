@@ -142,7 +142,7 @@ deploy:
       appveyor_repo_tag: true
 
   - provider: GitHub
-    release: $(APPVEYOR_BUILD_VERSION)
+    release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: WXU/Xj3ntIZVx89KDAa/V/FGerV2fURqVQJxrKIqMcCijmXeC065twmHPYQMWGBabafs1llkLbe6DMKRAGnz+GxwH8GpT3A86rcSOLxbsp4uRkeMRsLxWHI+eDHTonOY
     artifact: FluentAssertionsPackages
