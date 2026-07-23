@@ -107,7 +107,7 @@ after_test:
           }
       }
 
-  - cmd: dotnet pack --no-build --include-symbols -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+  - cmd: dotnet pack--include-symbols -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 
 artifacts:
   - path: '**\FluentAssertions.Web*.nupkg'
