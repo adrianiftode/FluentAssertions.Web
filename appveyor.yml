@@ -131,6 +131,9 @@ artifacts:
   - path: '**\AwesomeAssertions.Web*.nupkg'
     name: AwesomeAssertionsPackages
 
+  - path: '**\HttpMessageFormatter*.nupkg'
+    name: HttpMessageFormatterPackage
+
 deploy:
 
   - provider: NuGet
@@ -138,6 +141,14 @@ deploy:
       secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
     skip_symbols: true
     artifact: FluentAssertionsPackages
+    on:
+      appveyor_repo_tag: true
+
+  - provider: NuGet
+    api_key:
+      secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
+    skip_symbols: true
+    artifact: HttpMessageFormatterPackage
     on:
       appveyor_repo_tag: true
 
