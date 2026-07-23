@@ -8,7 +8,7 @@
       It provides rich, readable output of HTTP messages including headers, content, status codes, and more.
       This library has no dependencies on any assertion framework, making it suitable for general-purpose use.
     </PackageDescription>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -24,8 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Link to the file relative to this csproj file (likely up one or two folders) -->
-    <None Include="Readme.md" Pack="true" PackagePath="\" />
+    <None Include="Readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
