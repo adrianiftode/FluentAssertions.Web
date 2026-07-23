@@ -60,6 +60,7 @@ public static class HttpResponseFormatterExtensions
     private static async Task AppendRequest(StringBuilder messageBuilder, HttpResponseMessage response)
     {
         messageBuilder.AppendLine();
+        messageBuilder.AppendLine();
         var request = response.RequestMessage;
         if (request == null)
         {
