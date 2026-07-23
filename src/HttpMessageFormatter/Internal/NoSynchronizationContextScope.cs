@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace HttpMessageFormatter.Internal;
 
 internal static class NoSynchronizationContextScope
