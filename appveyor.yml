@@ -125,8 +125,11 @@ after_test:
   - cmd: dotnet pack --include-symbols -c %CONFIGURATION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
 
 artifacts:
-  - path: "**\\*.nupkg"
-    name: NuGet
+  - path: '**\FluentAssertions.Web*.nupkg'
+    name: FluentAssertionsPackages
+
+  - path: '**\AwesomeAssertions.Web*.nupkg'
+    name: AwesomeAssertionsPackages
 
 deploy:
 
@@ -134,7 +137,7 @@ deploy:
     api_key:
       secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
     skip_symbols: true
-    artifact: /FluentAssertions\.Web*\.nupkg/
+    artifact: FluentAssertionsPackages
     on:
       appveyor_repo_tag: true
 
@@ -142,6 +145,6 @@ deploy:
     release: $(APPVEYOR_BUILD_VERSION)
     auth_token:
       secure: WXU/Xj3ntIZVx89KDAa/V/FGerV2fURqVQJxrKIqMcCijmXeC065twmHPYQMWGBabafs1llkLbe6DMKRAGnz+GxwH8GpT3A86rcSOLxbsp4uRkeMRsLxWHI+eDHTonOY
-    artifact: /FluentAssertions\.Web*\.nupkg/
+    artifact: FluentAssertionsPackages
     on:
       appveyor_repo_tag: true
