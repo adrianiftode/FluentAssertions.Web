@@ -1,18 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net6.0;net8.0</TargetFrameworks>
+
     <PackageDescription>
       HttpMessageFormatter is a utility library for formatting HTTP request and response messages for inspection and debugging.
       It provides rich, readable output of HTTP messages including headers, content, status codes, and more.
       This library has no dependencies on any assertion framework, making it suitable for general-purpose use.
     </PackageDescription>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <!-- 3. Conditional dependencies to prevent ecosystem bloat -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Net.Http.Json" />
+    <PackageReference Include="System.Text.Encodings.Web" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
-    <PackageReference Include="System.Text.Encodings.Web" />
-    <PackageReference Include="System.Net.Http.Json" />
   </ItemGroup>
 
 </Project>
