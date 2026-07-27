@@ -499,12 +499,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be305UseProxy(
+    public static AndConstraint<LocationAssertions> Be305UseProxy(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be305UseProxy(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be305UseProxy(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 306 Unused
