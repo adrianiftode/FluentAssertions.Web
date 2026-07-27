@@ -9,7 +9,10 @@ namespace FluentAssertions.Web;
 /// </summary>
 public class HeadersAssertions : HttpResponseMessageAssertions
 {
-    private readonly string _header;
+    /// <summary>
+    /// The HTTP header name to be asserted.
+    /// </summary>
+    protected readonly string Header;
 
     /// <summary>
     /// Initialized a new instance of the <see cref="HeadersAssertions"/>
@@ -19,9 +22,9 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     /// <param name="header">The HTTP header name to be asserted.</param>
 #if FAV8
     /// <param name="assertionChain">The assertion chain to build and manage assertions.</param>
-    public HeadersAssertions(HttpResponseMessage value, string header, AssertionChain assertionChain) : base(value, assertionChain) => _header = header;
+    public HeadersAssertions(HttpResponseMessage value, string header, AssertionChain assertionChain) : base(value, assertionChain) => Header = header;
 #else
-    public HeadersAssertions(HttpResponseMessage value, string header) : base(value) => _header = header;
+    public HeadersAssertions(HttpResponseMessage value, string header) : base(value) => Header = header;
 #endif
     /// <summary>
     /// Asserts that an existing HTTP header in a HTTP response contains at least a value that matches a wildcard pattern.
@@ -54,7 +57,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        IEnumerable<string> headerValues = Subject!.GetHeaderValues(_header);
+        IEnumerable<string> headerValues = Subject!.GetHeaderValues(Header);
 
         var matchFound = headerValues.Any(headerValue =>
         {
@@ -72,7 +75,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
                      .ForCondition(matchFound)
                      .FailWith("Expected {context:response} to contain " +
                                "the HTTP header {0} having a value matching {1}, but there was no match{reason}. {2}",
-                         _header,
+                         Header,
                          expectedWildcardValue,
                          Subject);
 
@@ -92,7 +95,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HeadersAssertions> BeEmpty(string because = "", params object[] becauseArgs)
     {
-        var headerValues = Subject.GetHeaderValues(_header);
+        var headerValues = Subject.GetHeaderValues(Header);
 
 #if FAV8
         CurrentAssertionChain
@@ -103,7 +106,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
                     .ForCondition(!headerValues.Any())
                     .FailWith("Expected {context:response} to contain " +
                               "the HTTP header {0} with no header values, but found the header and it has values {1} in the actual response{reason}. {2}",
-                        _header,
+                        Header,
                         headerValues,
                         Subject);
 
@@ -123,7 +126,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HeadersAssertions> NotBeEmpty(string because = "", params object[] becauseArgs)
     {
-        var headerValues = Subject.GetHeaderValues(_header);
+        var headerValues = Subject.GetHeaderValues(Header);
 
 #if FAV8
         CurrentAssertionChain
@@ -134,7 +137,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
             .ForCondition(headerValues.Any())
             .FailWith("Expected {context:response} to contain " +
                       "the HTTP header {0} with any header values, but found the header and it has no values in the actual response{reason}. {2}",
-                _header,
+                Header,
                 headerValues,
                 Subject);
 
@@ -164,7 +167,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
             throw new ArgumentException("Cannot verify a HTTP header to be a collection of expected values against an empty collection. Use And.BeEmpty to test if the HTTP header has no values.", nameof(expectedValues));
         }
 
-        var values = Subject.GetHeaders().FirstOrDefault(c => c.Key == _header).Value;
+        var values = Subject.GetHeaders().FirstOrDefault(c => c.Key == Header).Value;
 
         string[] failures;
 
@@ -184,7 +187,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
                     .ForCondition(failures.Length == 0)
                     .FailWith("Expected {context:response} to contain " +
                               "the HTTP header {0} having values {1}, but the found values have differences{reason}. {2}",
-                        _header,
+                        Header,
                         expectedValues,
                         Subject);
 
@@ -216,12 +219,12 @@ public class HeadersAssertions : HttpResponseMessageAssertions
         Execute.Assertion
 #endif
             .BecauseOf(because, becauseArgs)
-            .ForCondition(Subject.GetHeaderValues(_header).Count() == 1)
+            .ForCondition(Subject.GetHeaderValues(Header).Count() == 1)
             .FailWith($$"""
                               Expected {context:response} to contain the {0} HTTP header and the value to be equivalent to "{{expectedValue}}", but found the header and has more or no values{reason}.{1}
-                              """, _header, Subject);
+                              """, Header, Subject);
 
-        var value = Subject.GetFirstHeaderValue(_header);
+        var value = Subject.GetFirstHeaderValue(Header);
 
         string[] failures;
 
@@ -241,7 +244,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
                     .ForCondition(failures.Length == 0)
                     .FailWith($$"""
                               Expected {context:response} to contain the {0} HTTP header and the {{ failures.FirstOrDefault()?.ReplaceFirstWithLowercase().TrimDot() }}{reason}.{1}
-                              """, _header, Subject);
+                              """, Header, Subject);
 
         return new AndConstraint<HeadersAssertions>(this);
     }
@@ -317,7 +320,7 @@ public partial class HttpResponseMessageAssertions
 #endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(!IsHeaderPresent(expectedHeader))
-            .FailWith("Expected {context:response} to not to contain " +
+            .FailWith("Expected {context:response} to not contain " +
                       "the HTTP header {0}, but the header was found in the actual response{reason}.{1}",
                 expectedHeader,
                 Subject);
@@ -325,7 +328,39 @@ public partial class HttpResponseMessageAssertions
         return new AndConstraint<HttpResponseMessageAssertions>(this);
     }
 
-    private bool IsHeaderPresent(string expectedHeader)
+    /// <summary>
+    /// Asserts that an HTTP response does not have a Location header.
+    /// </summary>
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public AndConstraint<HttpResponseMessageAssertions> NotHaveLocation(string because = "", params object[] becauseArgs)
+    {
+#if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
+            .BecauseOf(because, becauseArgs)
+            .ForCondition(!IsHeaderPresent("Location"))
+            .FailWith("Expected {context:response} to not contain " +
+                      "the Location HTTP header, but the header was found in the actual response{reason}.{0}",
+                Subject);
+
+        return new AndConstraint<HttpResponseMessageAssertions>(this);
+    }
+
+    /// <summary>
+    /// Checks if the expected header is present in the HTTP response headers.
+    /// </summary>
+    /// <param name="expectedHeader"></param>
+    /// <returns></returns>
+    protected bool IsHeaderPresent(string expectedHeader)
         => Subject
             .GetHeaders()
             .Any(c => string.Equals(c.Key, expectedHeader, StringComparison.OrdinalIgnoreCase));

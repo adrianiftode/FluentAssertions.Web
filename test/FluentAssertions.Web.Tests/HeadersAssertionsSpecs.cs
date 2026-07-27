@@ -153,7 +153,7 @@ public class HeadersAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("*to not to contain the HTTP header*that-header*but the header was found*reason*");
+            .WithMessage("*to not contain the HTTP header*that-header*but the header was found*reason*");
     }
 
     [Fact]
