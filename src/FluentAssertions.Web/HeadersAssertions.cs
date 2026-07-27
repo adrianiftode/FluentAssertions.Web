@@ -27,7 +27,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     public HeadersAssertions(HttpResponseMessage value, string header) : base(value) => Header = header;
 #endif
     /// <summary>
-    /// Asserts that an existing HTTP header in a HTTP response contains at least a value that matches a wildcard pattern.
+    /// Asserts that an existing HTTP header in an HTTP response contains at least a value that matches a wildcard pattern.
     /// </summary>
     /// <param name="expectedWildcardValue">
     /// The wildcard pattern with which the subject is matched, where * and ? have special meanings.
@@ -46,7 +46,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HeadersAssertions> Match(string expectedWildcardValue, string because = "", params object[] becauseArgs)
     {
-        Guard.ThrowIfArgumentIsNull(expectedWildcardValue, nameof(expectedWildcardValue), "Cannot verify a HTTP header to be a value against a <null> value. Use And.BeEmpty to test if the HTTP header has no values.");
+        Guard.ThrowIfArgumentIsNull(expectedWildcardValue, nameof(expectedWildcardValue), "Cannot verify an HTTP header to be a value against a <null> value. Use And.BeEmpty to test if the HTTP header has no values.");
 
 #if FAV8
         CurrentAssertionChain
@@ -83,7 +83,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that an existing HTTP header in a HTTP response has no values.
+    /// Asserts that an existing HTTP header in an HTTP response has no values.
     /// </summary>
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -114,7 +114,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that an existing HTTP header in a HTTP response has any values.
+    /// Asserts that an existing HTTP header in an HTTP response has any values.
     /// </summary>
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -145,7 +145,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that an existing HTTP header in a HTTP response has an expected list of header values.
+    /// Asserts that an existing HTTP header in an HTTP response has an expected list of header values.
     /// </summary>
     /// <param name="expectedValues">
     /// The expected values with which the HTTP headers values list is compared.
@@ -161,10 +161,10 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     public AndConstraint<HeadersAssertions> BeValues(IEnumerable<string> expectedValues,
         string because = "", params object[] becauseArgs)
     {
-        Guard.ThrowIfArgumentIsNull(expectedValues, nameof(expectedValues), "Cannot verify a HTTP header to be a collection of expected values against a <null> collection. Use And.BeEmpty to test if the HTTP header has no values.");
+        Guard.ThrowIfArgumentIsNull(expectedValues, nameof(expectedValues), "Cannot verify an HTTP header to be a collection of expected values against a <null> collection. Use And.BeEmpty to test if the HTTP header has no values.");
         if (!expectedValues.Any())
         {
-            throw new ArgumentException("Cannot verify a HTTP header to be a collection of expected values against an empty collection. Use And.BeEmpty to test if the HTTP header has no values.", nameof(expectedValues));
+            throw new ArgumentException("Cannot verify an HTTP header to be a collection of expected values against an empty collection. Use And.BeEmpty to test if the HTTP header has no values.", nameof(expectedValues));
         }
 
         var values = Subject.GetHeaders().FirstOrDefault(c => c.Key == Header).Value;
@@ -195,7 +195,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that an existing HTTP header in a HTTP response has an expected value.
+    /// Asserts that an existing HTTP header in an HTTP response has an expected value.
     /// </summary>
     /// <param name="expectedValue">
     /// The expected value with which the HTTP header value list is compared.
@@ -211,7 +211,7 @@ public class HeadersAssertions : HttpResponseMessageAssertions
     public AndConstraint<HeadersAssertions> BeValue(string expectedValue,
         string because = "", params object[] becauseArgs)
     {
-        Guard.ThrowIfArgumentIsNullOrEmpty(expectedValue, nameof(expectedValue), "Cannot verify a HTTP header to be a value against a <null> or empty value. Use And.BeEmpty to test if the HTTP header has no value.");
+        Guard.ThrowIfArgumentIsNullOrEmpty(expectedValue, nameof(expectedValue), "Cannot verify an HTTP header to be a value against a <null> or empty value. Use And.BeEmpty to test if the HTTP header has no value.");
 
 #if FAV8
         CurrentAssertionChain

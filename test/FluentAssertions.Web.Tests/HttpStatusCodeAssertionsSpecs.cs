@@ -38,7 +38,7 @@ public class HttpStatusCodeAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("*to have a HTTP status code representing an informational error*message*");
+            .WithMessage("*to have an HTTP status code representing an informational error*message*");
     }
 
     [Fact]
@@ -141,7 +141,7 @@ public class HttpStatusCodeAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("*to have a HTTP status code representing a redirection*message*");
+            .WithMessage("*to have an HTTP status code representing a redirection*message*");
     }
 
     [Fact]
@@ -192,7 +192,7 @@ public class HttpStatusCodeAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("*to have a HTTP status code representing a client error*message*");
+            .WithMessage("*to have an HTTP status code representing a client error*message*");
     }
 
     [Fact]
@@ -243,7 +243,7 @@ public class HttpStatusCodeAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("*to have a HTTP status code representing a server error*message*");
+            .WithMessage("*to have an HTTP status code representing a server error*message*");
     }
 
     [Fact]
