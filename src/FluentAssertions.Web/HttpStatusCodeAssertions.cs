@@ -8,7 +8,7 @@ public partial class HttpResponseMessageAssertions
 {
     #region Be1XXInformational
     /// <summary>
-    /// Asserts that a HTTP response has a HTTP status code representing an informational response.
+    /// Asserts that an HTTP response has an HTTP status code representing an informational response.
     /// </summary>
     /// <remarks>The HTTP response was an informational one if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 100-199.</remarks>
     /// <param name="because">
@@ -38,7 +38,7 @@ public partial class HttpResponseMessageAssertions
 #endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject!.StatusCode < HttpStatusCode.OK)
-            .FailWith("Expected {context:response} to have a HTTP status code representing an informational error, but it was {0}{reason}.{1}",
+            .FailWith("Expected {context:response} to have an HTTP status code representing an informational error, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
         return new AndConstraint<HttpResponseMessageAssertions>(this);
@@ -47,7 +47,7 @@ public partial class HttpResponseMessageAssertions
 
     #region Be2XXSuccessful
     /// <summary>
-    /// Asserts that a HTTP response has a successful HTTP status code.
+    /// Asserts that an HTTP response has a successful HTTP status code.
     /// </summary>
     /// <remarks>The HTTP response was successful if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 200-299.</remarks>
     /// <param name="because">
@@ -86,7 +86,7 @@ public partial class HttpResponseMessageAssertions
 
     #region Be3XXRedirection
     /// <summary>
-    /// Asserts that a HTTP response has a HTTP status code representing a redirection response.
+    /// Asserts that an HTTP response has an HTTP status code representing a redirection response.
     /// </summary>
     /// <remarks>The HTTP response was an informational one if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 300-399.</remarks>
     /// <param name="because">
@@ -116,7 +116,7 @@ public partial class HttpResponseMessageAssertions
 #endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject!.StatusCode >= HttpStatusCode.Moved && Subject!.StatusCode < HttpStatusCode.BadRequest)
-            .FailWith("Expected {context:response} to have a HTTP status code representing a redirection, but it was {0}{reason}.{1}",
+            .FailWith("Expected {context:response} to have an HTTP status code representing a redirection, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
 #if FAV8
@@ -129,7 +129,7 @@ public partial class HttpResponseMessageAssertions
 
     #region Be4XXClientError
     /// <summary>
-    /// Asserts that a HTTP response has a HTTP status code representing a client error.
+    /// Asserts that an HTTP response has an HTTP status code representing a client error.
     /// </summary>
     /// <remarks>The HTTP response was a client error if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was in the range 400-499.</remarks>
     /// <param name="because">
@@ -159,7 +159,7 @@ public partial class HttpResponseMessageAssertions
 #endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject!.StatusCode >= HttpStatusCode.BadRequest && Subject!.StatusCode < HttpStatusCode.InternalServerError)
-            .FailWith("Expected {context:response} to have a HTTP status code representing a client error, but it was {0}{reason}.{1}",
+            .FailWith("Expected {context:response} to have an HTTP status code representing a client error, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
         return new AndConstraint<HttpResponseMessageAssertions>(this);
@@ -168,7 +168,7 @@ public partial class HttpResponseMessageAssertions
 
     #region Be5XXServerError
     /// <summary>
-    /// Asserts that a HTTP response has a HTTP status code representing a server error.
+    /// Asserts that an HTTP response has an HTTP status code representing a server error.
     /// </summary>
     /// <remarks>The HTTP response was a server error if <see cref="P:System.Net.Http.HttpResponseMessage.StatusCode" /> was above 500.</remarks>
     /// <param name="because">
@@ -198,7 +198,7 @@ public partial class HttpResponseMessageAssertions
 #endif
             .BecauseOf(because, becauseArgs)
             .ForCondition(Subject!.StatusCode >= HttpStatusCode.InternalServerError)
-            .FailWith("Expected {context:response} to have a HTTP status code representing a server error, but it was {0}{reason}.{1}",
+            .FailWith("Expected {context:response} to have an HTTP status code representing a server error, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
         return new AndConstraint<HttpResponseMessageAssertions>(this);
@@ -207,7 +207,7 @@ public partial class HttpResponseMessageAssertions
 
     #region HaveHttpStatus
     /// <summary>
-    /// Asserts that a HTTP response has a HTTP status with the specified code.
+    /// Asserts that an HTTP response has an HTTP status with the specified code.
     /// </summary>
     /// <param name="expected">
     /// The code of the expected HTTP Status.
@@ -246,7 +246,7 @@ public partial class HttpResponseMessageAssertions
 
     #region NotHaveHttpStatus
     /// <summary>
-    /// Asserts that a HTTP response does not have a HTTP status with the specified code.
+    /// Asserts that an HTTP response does not have an HTTP status with the specified code.
     /// </summary>
     /// <param name="unexpected">
     /// The code of the unexpected HTTP Status.
@@ -285,7 +285,7 @@ public partial class HttpResponseMessageAssertions
 
     #region BeXXXHttpStatus
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 100 Continue
+    /// Asserts that an HTTP response has the HTTP status 100 Continue
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -319,7 +319,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 101 Switching Protocols
+    /// Asserts that an HTTP response has the HTTP status 101 Switching Protocols
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -353,7 +353,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 200 Ok
+    /// Asserts that an HTTP response has the HTTP status 200 Ok
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -387,7 +387,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 201 Created
+    /// Asserts that an HTTP response has the HTTP status 201 Created
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -425,7 +425,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 202 Accepted
+    /// Asserts that an HTTP response has the HTTP status 202 Accepted
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -463,7 +463,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 203 Non Authoritative Information
+    /// Asserts that an HTTP response has the HTTP status 203 Non Authoritative Information
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -497,7 +497,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 204 No Content
+    /// Asserts that an HTTP response has the HTTP status 204 No Content
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -535,7 +535,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 205 Reset Content
+    /// Asserts that an HTTP response has the HTTP status 205 Reset Content
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -569,7 +569,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 206 Partial Content
+    /// Asserts that an HTTP response has the HTTP status 206 Partial Content
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -603,7 +603,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 300 Multiple Choices
+    /// Asserts that an HTTP response has the HTTP status 300 Multiple Choices
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -641,7 +641,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 300 Ambiguous
+    /// Asserts that an HTTP response has the HTTP status 300 Ambiguous
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -679,7 +679,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 301 Moved Permanently
+    /// Asserts that an HTTP response has the HTTP status 301 Moved Permanently
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -717,7 +717,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 301 Moved
+    /// Asserts that an HTTP response has the HTTP status 301 Moved
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -755,7 +755,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 302 Found
+    /// Asserts that an HTTP response has the HTTP status 302 Found
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -793,7 +793,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 302 Redirect
+    /// Asserts that an HTTP response has the HTTP status 302 Redirect
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -831,7 +831,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 303 See Other
+    /// Asserts that an HTTP response has the HTTP status 303 See Other
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -869,7 +869,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 303 Redirect Method
+    /// Asserts that an HTTP response has the HTTP status 303 Redirect Method
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -907,7 +907,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 304 Not Modified
+    /// Asserts that an HTTP response has the HTTP status 304 Not Modified
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -941,7 +941,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 305 Use Proxy
+    /// Asserts that an HTTP response has the HTTP status 305 Use Proxy
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -979,7 +979,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 306 Unused
+    /// Asserts that an HTTP response has the HTTP status 306 Unused
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1013,7 +1013,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 307 Temporary Redirect
+    /// Asserts that an HTTP response has the HTTP status 307 Temporary Redirect
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1051,7 +1051,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 307 Redirect Keep Verb
+    /// Asserts that an HTTP response has the HTTP status 307 Redirect Keep Verb
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1089,7 +1089,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 308 Permanent Redirect
+    /// Asserts that an HTTP response has the HTTP status 308 Permanent Redirect
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1127,7 +1127,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 400 BadRequest
+    /// Asserts that an HTTP response has the HTTP status 400 BadRequest
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1165,7 +1165,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 401 Unauthorized
+    /// Asserts that an HTTP response has the HTTP status 401 Unauthorized
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1199,7 +1199,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 402 Payment Required
+    /// Asserts that an HTTP response has the HTTP status 402 Payment Required
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1233,7 +1233,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 403 Forbidden
+    /// Asserts that an HTTP response has the HTTP status 403 Forbidden
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1267,7 +1267,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 404 Not Found
+    /// Asserts that an HTTP response has the HTTP status 404 Not Found
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1301,7 +1301,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 405 Method Not Allowed
+    /// Asserts that an HTTP response has the HTTP status 405 Method Not Allowed
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1335,7 +1335,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 406 Not Acceptable
+    /// Asserts that an HTTP response has the HTTP status 406 Not Acceptable
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1369,7 +1369,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 407 Proxy Authentication Required
+    /// Asserts that an HTTP response has the HTTP status 407 Proxy Authentication Required
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1403,7 +1403,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 408 Request Timeout
+    /// Asserts that an HTTP response has the HTTP status 408 Request Timeout
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1437,7 +1437,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 409 Conflict
+    /// Asserts that an HTTP response has the HTTP status 409 Conflict
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1475,7 +1475,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 410 Gone
+    /// Asserts that an HTTP response has the HTTP status 410 Gone
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1513,7 +1513,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 411 Length Required
+    /// Asserts that an HTTP response has the HTTP status 411 Length Required
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1547,7 +1547,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 412 Precondition Failed
+    /// Asserts that an HTTP response has the HTTP status 412 Precondition Failed
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1581,7 +1581,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 413 Request Entity Too Large
+    /// Asserts that an HTTP response has the HTTP status 413 Request Entity Too Large
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1615,7 +1615,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 414 Request Uri Too Long
+    /// Asserts that an HTTP response has the HTTP status 414 Request Uri Too Long
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1649,7 +1649,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 415 Unsupported Media Type
+    /// Asserts that an HTTP response has the HTTP status 415 Unsupported Media Type
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1683,7 +1683,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 416 Requested Range Not Satisfiable
+    /// Asserts that an HTTP response has the HTTP status 416 Requested Range Not Satisfiable
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1717,7 +1717,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 417 Expectation Failed
+    /// Asserts that an HTTP response has the HTTP status 417 Expectation Failed
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1751,7 +1751,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 422 UnprocessableEntity
+    /// Asserts that an HTTP response has the HTTP status 422 UnprocessableEntity
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1785,7 +1785,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 429 TooManyRequests
+    /// Asserts that an HTTP response has the HTTP status 429 TooManyRequests
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1819,7 +1819,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 426 UpgradeRequired
+    /// Asserts that an HTTP response has the HTTP status 426 UpgradeRequired
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1853,7 +1853,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 500 Internal Server Error
+    /// Asserts that an HTTP response has the HTTP status 500 Internal Server Error
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1887,7 +1887,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 501 Not Implemented
+    /// Asserts that an HTTP response has the HTTP status 501 Not Implemented
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1921,7 +1921,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 502 Bad Gateway
+    /// Asserts that an HTTP response has the HTTP status 502 Bad Gateway
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1955,7 +1955,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 503 Service Unavailable
+    /// Asserts that an HTTP response has the HTTP status 503 Service Unavailable
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -1989,7 +1989,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 504 Gateway Timeout
+    /// Asserts that an HTTP response has the HTTP status 504 Gateway Timeout
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
@@ -2023,7 +2023,7 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 505 Http Version Not Supported
+    /// Asserts that an HTTP response has the HTTP status 505 Http Version Not Supported
     /// </summary>        
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion

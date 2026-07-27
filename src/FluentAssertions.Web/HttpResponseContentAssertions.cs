@@ -164,7 +164,7 @@ public partial class HttpResponseMessageAssertions
     [CustomAssertion]
     public AndConstraint<HttpResponseMessageAssertions> MatchInContent(string expectedWildcardText, string because = "", params object[] becauseArgs)
     {
-        Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify a HTTP response content match a <null> wildcard pattern.");
+        Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify an HTTP response content match a <null> wildcard pattern.");
 
 #if FAV8
         CurrentAssertionChain
