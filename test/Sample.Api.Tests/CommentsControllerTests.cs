@@ -231,5 +231,21 @@ namespace Sample.Api.Tests
             response.Should().Be400BadRequest()
                 .And.OnlyHaveError("Author", "The Author field is required.");
         }
+
+        [Fact]
+        public async Task Post_WithNoAuthorButWithContent_Returns_Bad_Request_With_No_Location()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.PostAsync("/api/comments", new StringContent(/*lang=json,strict*/ @"{
+                                          ""content"": ""Hey, you...""
+                                        }", Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.Should().Be400BadRequest()
+                .And.NotHaveLocation("Bad Request responses are not designed to have Location headers.");
+        }
     }
 }
