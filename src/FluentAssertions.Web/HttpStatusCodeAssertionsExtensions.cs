@@ -543,24 +543,6 @@ public static class HttpStatusCodeAssertionsExtensions
         => new LocationAssertions(parent.Subject).Be307TemporaryRedirect(because, becauseArgs);
 
     /// <summary>
-    /// Asserts that a HTTP response has the HTTP status 308 Permanent Redirect
-    /// </summary>        
-    /// <param name="because">
-    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
-    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
-    /// </param>
-    /// <param name="becauseArgs">
-    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
-    /// </param>
-    [CustomAssertion]
-    public static AndConstraint<LocationAssertions> Be308PermanentRedirect(
-#pragma warning disable 1573
-        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
-#pragma warning restore 1573,
-        string because = "", params object[] becauseArgs)
-        => new LocationAssertions(parent.Subject).Be308PermanentRedirect(because, becauseArgs);
-
-    /// <summary>
     /// Asserts that a HTTP response has the HTTP status 307 Redirect Keep Verb
     /// </summary>        
     /// <param name="because">
@@ -577,6 +559,24 @@ public static class HttpStatusCodeAssertionsExtensions
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
         => new LocationAssertions(parent.Subject).Be307RedirectKeepVerb(because, becauseArgs);
+
+    /// <summary>
+    /// Asserts that a HTTP response has the HTTP status 308 Permanent Redirect
+    /// </summary>        
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public static AndConstraint<LocationAssertions> Be308PermanentRedirect(
+#pragma warning disable 1573
+        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+#pragma warning restore 1573,
+        string because = "", params object[] becauseArgs)
+        => new LocationAssertions(parent.Subject).Be308PermanentRedirect(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 400 BadRequest
