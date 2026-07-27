@@ -98,7 +98,7 @@ public partial class HttpResponseMessageAssertions
     /// </param>
     [CustomAssertion]
     // ReSharper disable once InconsistentNaming
-    public AndConstraint<HttpResponseMessageAssertions> Be3XXRedirection(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be3XXRedirection(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -119,7 +119,11 @@ public partial class HttpResponseMessageAssertions
             .FailWith("Expected {context:response} to have a HTTP status code representing a redirection, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
     #endregion
 

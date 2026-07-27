@@ -65,12 +65,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// </param>
     [CustomAssertion]
     // ReSharper disable once InconsistentNaming
-    public static AndConstraint<HttpResponseMessageAssertions> Be3XXRedirection(
+    public static AndConstraint<LocationAssertions> Be3XXRedirection(
 #pragma warning disable 1573
     this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
     string because = "", params object[] becauseArgs)
-    => new HttpResponseMessageAssertions(parent.Subject).Be3XXRedirection(because, becauseArgs);
+    => new LocationAssertions(parent.Subject).Be3XXRedirection(because, becauseArgs);
     #endregion
 
     #region Be4XXClientError

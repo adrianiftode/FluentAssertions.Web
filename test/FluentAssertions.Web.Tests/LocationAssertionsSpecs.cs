@@ -225,6 +225,26 @@ public class LocationAssertionsSpecs
     }
 
     [Fact]
+    public void When_asserting_3xx_redirection_with_location_header_to_have_the_location_header_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage(HttpStatusCode.PermanentRedirect)
+        {
+            Headers =
+            {
+                { "Location", "1.html" }
+            }
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().Be3XXRedirection().And.HaveLocation();
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+    [Fact]
     public void When_asserting_201_created_response_without_location_header_to_have_the_location_header_it_should_throw_with_descriptive_message()
     {
         // Arrange
