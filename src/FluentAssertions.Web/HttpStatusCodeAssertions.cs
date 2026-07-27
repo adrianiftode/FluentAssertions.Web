@@ -98,7 +98,7 @@ public partial class HttpResponseMessageAssertions
     /// </param>
     [CustomAssertion]
     // ReSharper disable once InconsistentNaming
-    public AndConstraint<HttpResponseMessageAssertions> Be3XXRedirection(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be3XXRedirection(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -119,7 +119,11 @@ public partial class HttpResponseMessageAssertions
             .FailWith("Expected {context:response} to have a HTTP status code representing a redirection, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
     #endregion
 
@@ -393,7 +397,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be201Created(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be201Created(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -413,7 +417,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.Created == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , HttpStatusCode.Created, Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -427,7 +435,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be202Accepted(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be202Accepted(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -447,7 +455,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.Accepted == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , HttpStatusCode.Accepted, Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -495,7 +507,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be204NoContent(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be204NoContent(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -515,7 +527,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.NoContent == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , HttpStatusCode.NoContent, Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -597,7 +613,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be300MultipleChoices(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be300MultipleChoices(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -617,7 +633,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.MultipleChoices == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , "HttpStatusCode.MultipleChoices {value: 300}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -631,7 +651,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be300Ambiguous(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be300Ambiguous(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -651,7 +671,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.Ambiguous == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , $"{nameof(HttpStatusCode)}.{nameof(HttpStatusCode.Ambiguous)}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -665,7 +689,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be301MovedPermanently(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be301MovedPermanently(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -685,7 +709,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.MovedPermanently == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , "HttpStatusCode.MovedPermanently {value: 301}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -699,7 +727,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be301Moved(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be301Moved(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -719,7 +747,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.Moved == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , HttpStatusCode.Moved, Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -733,7 +765,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be302Found(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be302Found(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -753,7 +785,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.Found == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , "HttpStatusCode.Found {value: 302}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -767,7 +803,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be302Redirect(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be302Redirect(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -787,7 +823,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.Redirect == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , $"{nameof(HttpStatusCode)}.{nameof(HttpStatusCode.Redirect)}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -801,7 +841,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be303SeeOther(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be303SeeOther(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -821,7 +861,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.SeeOther == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , "HttpStatusCode.SeeOther {value: 303}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -835,7 +879,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be303RedirectMethod(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be303RedirectMethod(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -855,7 +899,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.RedirectMethod == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , $"{nameof(HttpStatusCode)}.{nameof(HttpStatusCode.RedirectMethod)}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -903,7 +951,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be305UseProxy(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be305UseProxy(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -923,7 +971,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.UseProxy == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , HttpStatusCode.UseProxy, Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -971,7 +1023,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be307TemporaryRedirect(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be307TemporaryRedirect(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -991,7 +1043,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.TemporaryRedirect == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , $"{nameof(HttpStatusCode)}.{nameof(HttpStatusCode.TemporaryRedirect)}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -1005,7 +1061,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be307RedirectKeepVerb(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be307RedirectKeepVerb(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -1025,7 +1081,49 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.RedirectKeepVerb == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , "HttpStatusCode.RedirectKeepVerb {value: 307}", Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
+    }
+
+    /// <summary>
+    /// Asserts that a HTTP response has the HTTP status 308 Permanent Redirect
+    /// </summary>        
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public AndConstraint<LocationAssertions> Be308PermanentRedirect(string because = "", params object[] becauseArgs)
+    {
+#if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
+            .ForCondition(Subject is not null)
+            .BecauseOf(because, becauseArgs)
+            .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+#if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
+            .BecauseOf(because, becauseArgs)
+            .ForCondition(308 == (int)Subject!.StatusCode)
+            .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                , "HttpStatusCode.PermanentRedirect {value: 308}", Subject!.StatusCode, Subject);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -1349,7 +1447,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be409Conflict(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be409Conflict(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -1369,7 +1467,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.Conflict == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , HttpStatusCode.Conflict, Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>
@@ -1383,7 +1485,7 @@ public partial class HttpResponseMessageAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> Be410Gone(string because = "", params object[] becauseArgs)
+    public AndConstraint<LocationAssertions> Be410Gone(string because = "", params object[] becauseArgs)
     {
 #if FAV8
         CurrentAssertionChain
@@ -1403,7 +1505,11 @@ public partial class HttpResponseMessageAssertions
             .ForCondition(HttpStatusCode.Gone == Subject!.StatusCode)
             .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
                 , HttpStatusCode.Gone, Subject!.StatusCode, Subject);
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+#if FAV8
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject, CurrentAssertionChain));
+#else
+        return new AndConstraint<LocationAssertions>(new LocationAssertions(Subject));
+#endif
     }
 
     /// <summary>

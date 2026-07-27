@@ -125,7 +125,7 @@ namespace Sample.Api.Tests
         }
 
         [Fact]
-        public async Task Post_ReturnsOk()
+        public async Task Post_ReturnsCreated()
         {
             // Arrange
             var client = _factory.CreateClient();
@@ -137,11 +137,11 @@ namespace Sample.Api.Tests
                     }", Encoding.UTF8, "application/json"));
 
             // Assert
-            response.Should().Be200Ok();
+            response.Should().Be201Created().And.HaveLocation().And.Match("*/api/Comments/1");
         }
 
         [Fact]
-        public async Task Post_ReturnsOkAndWithContent()
+        public async Task Post_ReturnsCreatedAndWithContent()
         {
             // Arrange
             var client = _factory.CreateClient();
@@ -153,7 +153,9 @@ namespace Sample.Api.Tests
                     }", Encoding.UTF8, "application/json"));
 
             // Assert
-            response.Should().Be200Ok().And.BeAs(new
+            response.Should().Be201Created()
+                .And.HaveLocation().And.BeValue("http://localhost/api/Comments/1")
+                .And.BeAs(new
             {
                 Author = "John",
                 Content = "Hey, you..."
@@ -228,6 +230,22 @@ namespace Sample.Api.Tests
             // Assert
             response.Should().Be400BadRequest()
                 .And.OnlyHaveError("Author", "The Author field is required.");
+        }
+
+        [Fact]
+        public async Task Post_WithNoAuthorButWithContent_Returns_Bad_Request_With_No_Location()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.PostAsync("/api/comments", new StringContent(/*lang=json,strict*/ @"{
+                                          ""content"": ""Hey, you...""
+                                        }", Encoding.UTF8, "application/json"));
+
+            // Assert
+            response.Should().Be400BadRequest()
+                .And.NotHaveLocation("Bad Request responses are not designed to have Location headers.");
         }
     }
 }

@@ -15,15 +15,25 @@ namespace Sample.Api.Controllers
             new Comment { Author = "Johnny", Content = "Hey!", CommentId = 2 }
         };
 
-        [HttpGet("{id}")]
-        public Comment Get(int id)
+        [HttpGet("{id}", Name = "GetById")]
+        public Comment GetById(int id)
         {
             Response.Headers["x-vendor"] = "vendor";
             return new Comment { Author = "Adrian", Content = "Hey", CommentId = id };
         }
 
         [HttpPost]
-        public Comment Post([FromBody] Comment value) => value;
+        [ProducesResponseType(201)]
+        public CreatedAtRouteResult Post([FromBody] Comment value)
+        {
+            value.CommentId = 1;
+            return CreatedAtRoute("GetById",
+                new
+                {
+                    id = value.CommentId
+                },
+                value);
+        }
     }
 
     public class Comment

@@ -292,12 +292,30 @@ NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConver
 | **NotHaveError()** | Asserts that a Bad Request HTTP response content does not contain an error message identifiable by an expected field name and a wildcard error text. |
 | **HaveErrorMessage()** | Asserts that a Bad Request HTTP response content contains an error message identifiable by an wildcard error text. |
 
+|  *HaveLocation* Header related assertions. | |
+| --- | --- |
+| Should().Be201Created().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 201 status code has a location header. |
+| Should().Be300Ambiguous().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 300 status code has a location header. |
+| Should().Be300MultipleChoices().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 300 status code has a location header. |
+| Should().Be301Moved().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 301 status code has a location header. |
+| Should().Be301MovedPermanently().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 301 status code has a location header. |
+| Should().Be302Found().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 302 status code has a location header. |
+| Should().Be302Redirect().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 302 status code has a location header. |
+| Should().Be303RedirectMethod().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 303 status code has a location header. |
+| Should().Be303SeeOther().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 303 status code has a location header. |
+| Should().Be304NotModified().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 304 status code has a location header. |
+| Should().Be305UseProxy().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 305 status code has a location header. |
+| Should().Be307RedirectKeepVerb().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 307 status code has a location header. |
+| Should().Be307TemporaryRedirect().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 307 status code has a location header. |
+| Should().Be308PermanentRedirect().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 308 status code has a location header. |
+| Should().Be3XXRedirection().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 308 status code has a location header. |
+
 |  *Fine grained status assertions.* | |
 | --- | --- |
 | **Should().Be1XXInformational()** |  Asserts that a HTTP response has a HTTP status code representing an informational response. |
 | **Should().Be2XXSuccessful()** | Asserts that a HTTP response has a successful HTTP status code. |
-| **Should().Be4XXClientError()** | Asserts that a HTTP response has a HTTP status code representing a client error. |
 | **Should().Be3XXRedirection()** | Asserts that a HTTP response has a HTTP status code representing a redirection response. |
+| **Should().Be4XXClientError()** | Asserts that a HTTP response has a HTTP status code representing a client error. |
 | **Should().Be5XXServerError()** | Asserts that a HTTP response has a HTTP status code representing a server error. |
 | **Should().Be100Continue()** | Asserts that a HTTP response has the HTTP status 100 Continue |
 | **Should().Be101SwitchingProtocols()** | Asserts that a HTTP response has the HTTP status 101 Switching Protocols |
@@ -321,6 +339,7 @@ NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConver
 | **Should().Be306Unused()** | Asserts that a HTTP response has the HTTP status 306 Unused |
 | **Should().Be307RedirectKeepVerb()** | Asserts that a HTTP response has the HTTP status 307 Redirect Keep Verb |
 | **Should().Be307TemporaryRedirect()** | Asserts that a HTTP response has the HTTP status 307 Temporary Redirect |
+| **Should().Be308PermanentRedirect()** | Asserts that a HTTP response has the HTTP status 308 Permanent Redirect |
 | **Should().Be400BadRequest()** | Asserts that a HTTP response has the HTTP status 400 BadRequest |
 | **Should().Be401Unauthorized()** | Asserts that a HTTP response has the HTTP status 401 Unauthorized |
 | **Should().Be402PaymentRequired()** | Asserts that a HTTP response has the HTTP status 402 Payment Required |

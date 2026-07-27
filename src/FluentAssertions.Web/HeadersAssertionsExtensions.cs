@@ -52,5 +52,23 @@ public static class HeadersAssertionsExtensions
         string expectedHeader,
         string because = "", params object[] becauseArgs)
         => new HttpResponseMessageAssertions(parent.Subject).NotHaveHeader(expectedHeader, because, becauseArgs);
+
+    /// <summary>
+    /// Asserts that an HTTP response does not have a Location header.
+    /// </summary>
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public static AndConstraint<HttpResponseMessageAssertions> NotHaveLocation(
+#pragma warning disable 1573
+        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+#pragma warning restore 1573
+        string because = "", params object[] becauseArgs)
+        => new HttpResponseMessageAssertions(parent.Subject).NotHaveLocation(because, becauseArgs);
 }
 #endif

@@ -1366,6 +1366,52 @@ public class HttpStatusCodeAssertionsSpecs
     }
     #endregion 
 
+    #region 308 Permanent Redirect
+    [Fact]
+    public void When_asserting_308_Permanent_Redirect_response_to_be_308PermanentRedirect_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage((HttpStatusCode)308);
+
+        // Act
+        Action act = () =>
+            subject.Should().Be308PermanentRedirect();
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+    [Fact]
+    public void When_asserting_other_than_308_Permanent_Redirect_response_to_be_308PermanentRedirect_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK);
+
+        // Act
+        Action act = () =>
+            subject.Should().Be308PermanentRedirect("because we want to test the failure {0}", "message");
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*HttpStatusCode.PermanentRedirect*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    }
+
+    [Fact]
+    public void When_asserting_null_HttpResponse_to_be_308PermanentRedirect_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        HttpResponseMessage? subject = null;
+
+        // Act
+        Action act = () =>
+            subject.Should().Be308PermanentRedirect("because we want to test the failure {0}", "message");
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    }
+    #endregion 
+
     #region 400 BadRequest
     [Fact]
     public void When_asserting_400_BadRequest_response_to_be_400_BadRequest_it_should_succeed()

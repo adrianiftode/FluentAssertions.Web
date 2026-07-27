@@ -65,12 +65,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// </param>
     [CustomAssertion]
     // ReSharper disable once InconsistentNaming
-    public static AndConstraint<HttpResponseMessageAssertions> Be3XXRedirection(
+    public static AndConstraint<LocationAssertions> Be3XXRedirection(
 #pragma warning disable 1573
     this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573
     string because = "", params object[] becauseArgs)
-    => new HttpResponseMessageAssertions(parent.Subject).Be3XXRedirection(because, becauseArgs);
+    => new LocationAssertions(parent.Subject).Be3XXRedirection(because, becauseArgs);
     #endregion
 
     #region Be4XXClientError
@@ -229,12 +229,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be201Created(
+    public static AndConstraint<LocationAssertions> Be201Created(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be201Created(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be201Created(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 202 Accepted
@@ -247,12 +247,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be202Accepted(
+    public static AndConstraint<LocationAssertions> Be202Accepted(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be202Accepted(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be202Accepted(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 203 Non Authoritative Information
@@ -283,12 +283,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be204NoContent(
+    public static AndConstraint<LocationAssertions> Be204NoContent(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be204NoContent(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be204NoContent(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 205 Reset Content
@@ -337,12 +337,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be300MultipleChoices(
+    public static AndConstraint<LocationAssertions> Be300MultipleChoices(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be300MultipleChoices(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be300MultipleChoices(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 300 Ambiguous
@@ -355,12 +355,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be300Ambiguous(
+    public static AndConstraint<LocationAssertions> Be300Ambiguous(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be300Ambiguous(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be300Ambiguous(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 301 Moved Permanently
@@ -373,12 +373,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be301MovedPermanently(
+    public static AndConstraint<LocationAssertions> Be301MovedPermanently(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be301MovedPermanently(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be301MovedPermanently(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 301 Moved
@@ -391,12 +391,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be301Moved(
+    public static AndConstraint<LocationAssertions> Be301Moved(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be301Moved(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be301Moved(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 302 Found
@@ -409,12 +409,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be302Found(
+    public static AndConstraint<LocationAssertions> Be302Found(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be302Found(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be302Found(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 302 Redirect
@@ -427,12 +427,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be302Redirect(
+    public static AndConstraint<LocationAssertions> Be302Redirect(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be302Redirect(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be302Redirect(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 303 See Other
@@ -445,12 +445,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be303SeeOther(
+    public static AndConstraint<LocationAssertions> Be303SeeOther(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be303SeeOther(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be303SeeOther(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 303 Redirect Method
@@ -463,12 +463,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be303RedirectMethod(
+    public static AndConstraint<LocationAssertions> Be303RedirectMethod(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be303RedirectMethod(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be303RedirectMethod(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 304 Not Modified
@@ -499,12 +499,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be305UseProxy(
+    public static AndConstraint<LocationAssertions> Be305UseProxy(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be305UseProxy(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be305UseProxy(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 306 Unused
@@ -535,12 +535,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be307TemporaryRedirect(
+    public static AndConstraint<LocationAssertions> Be307TemporaryRedirect(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be307TemporaryRedirect(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be307TemporaryRedirect(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 307 Redirect Keep Verb
@@ -553,12 +553,30 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be307RedirectKeepVerb(
+    public static AndConstraint<LocationAssertions> Be307RedirectKeepVerb(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be307RedirectKeepVerb(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be307RedirectKeepVerb(because, becauseArgs);
+
+    /// <summary>
+    /// Asserts that a HTTP response has the HTTP status 308 Permanent Redirect
+    /// </summary>        
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public static AndConstraint<LocationAssertions> Be308PermanentRedirect(
+#pragma warning disable 1573
+        this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
+#pragma warning restore 1573,
+        string because = "", params object[] becauseArgs)
+        => new LocationAssertions(parent.Subject).Be308PermanentRedirect(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 400 BadRequest
@@ -733,12 +751,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be409Conflict(
+    public static AndConstraint<LocationAssertions> Be409Conflict(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be409Conflict(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be409Conflict(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 410 Gone
@@ -751,12 +769,12 @@ public static class HttpStatusCodeAssertionsExtensions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
     [CustomAssertion]
-    public static AndConstraint<HttpResponseMessageAssertions> Be410Gone(
+    public static AndConstraint<LocationAssertions> Be410Gone(
 #pragma warning disable 1573
         this Primitives.HttpResponseMessageAssertions<Primitives.HttpResponseMessageAssertions> parent,
 #pragma warning restore 1573,
         string because = "", params object[] becauseArgs)
-        => new HttpResponseMessageAssertions(parent.Subject).Be410Gone(because, becauseArgs);
+        => new LocationAssertions(parent.Subject).Be410Gone(because, becauseArgs);
 
     /// <summary>
     /// Asserts that a HTTP response has the HTTP status 411 Length Required
