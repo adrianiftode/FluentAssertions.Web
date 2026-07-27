@@ -93,7 +93,7 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
                     .ForCondition(matchFound)
                     .FailWith("Expected {context:response} to contain " +
                               "the error message {0} related to the {1} field, " +
-                              "but no such message was found in the actual error messages list: " +
+                              "but no such message was found in the actual error messages list." +
                               "{2}",
                         expectedWildcardErrorMessage,
                         expectedErrorField,
@@ -165,8 +165,8 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
                       "{1}",
                 expectedErrorField, Subject);
 
-        var values = hasErrorsProperty ? errorsProperty.First().GetStringValuesOf(expectedErrorField) : json.GetStringValuesOf(expectedErrorField);
-        var expectedWildcardErrorMessageMatchFound = values.Any(headerValue =>
+        var allErrorsMessages = (hasErrorsProperty ? errorsProperty.First().GetStringValuesOf(expectedErrorField) : json.GetStringValuesOf(expectedErrorField)).ToList();
+        var expectedWildcardErrorMessageMatchFound = allErrorsMessages.Any(headerValue =>
         {
             using var scope = new AssertionScope();
             headerValue.Should().Match(expectedWildcardErrorMessage);
@@ -182,7 +182,7 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
                     .ForCondition(expectedWildcardErrorMessageMatchFound)
                     .FailWith("Expected {context:response} to contain " +
                               "the error message {0} related to the {1} field, " +
-                              "but no such message was found in the actual error messages list: " +
+                              "but no such message was found in the actual error messages list." +
                               "{2}",
                         expectedWildcardErrorMessage,
                         expectedErrorField,
@@ -194,7 +194,7 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
         Execute.Assertion
 #endif
             .BecauseOf(because, becauseArgs)
-            .ForCondition(values.Count() == 1)
+            .ForCondition(allErrorsMessages.Count() == 1)
             .FailWith("Expected {context:response} " +
                       "to only contain an error message related to the {0} field and message {1}, but more than this one was found." +
                       "{2}",
@@ -292,7 +292,7 @@ public class BadRequestAssertions : HttpResponseMessageAssertions
                     .ForCondition(matchFound)
                     .FailWith("Expected {context:response} to contain " +
                               "the error message {0}, " +
-                              "but no such message was found in the actual error messages list: " +
+                              "but no such message was found in the actual error messages list." +
                               "{1}",
                         expectedWildcardErrorMessage,
                         Subject);

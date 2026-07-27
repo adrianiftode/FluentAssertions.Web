@@ -548,7 +548,7 @@ public class BadRequestAssertionsSpecs
 
         // Assert
         act.Should().Throw<XunitException>()
-            .WithMessage("""Expected * to contain the error message "One or more validation errors occurred.", but no such message was found in the actual error messages list*""");
+            .WithMessage("""Expected * to contain the error message "One or more validation errors occurred.", but no such message was found in the actual error messages list.*""");
     }
 
     [Theory]
