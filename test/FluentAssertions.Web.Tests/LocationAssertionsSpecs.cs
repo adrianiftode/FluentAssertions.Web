@@ -205,10 +205,10 @@ public class LocationAssertionsSpecs
     }
 
     [Fact]
-    public void When_asserting_308_redirect_keep_verb_response_with_location_header_to_have_the_location_header_it_should_succeed()
+    public void When_asserting_308_permanent_redirect_response_with_location_header_to_have_the_location_header_it_should_succeed()
     {
         // Arrange
-        using var subject = new HttpResponseMessage(HttpStatusCode.RedirectKeepVerb)
+        using var subject = new HttpResponseMessage(HttpStatusCode.PermanentRedirect)
         {
             Headers =
             {

@@ -1385,7 +1385,7 @@ public class HttpStatusCodeAssertionsSpecs
     public void When_asserting_other_than_308_Permanent_Redirect_response_to_be_308PermanentRedirect_it_should_throw_with_descriptive_message()
     {
         // Arrange
-        using var subject = new HttpResponseMessage((HttpStatusCode)308);
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
         // Act
         Action act = () =>
