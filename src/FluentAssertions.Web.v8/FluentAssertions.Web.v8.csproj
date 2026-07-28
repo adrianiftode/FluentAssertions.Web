@@ -16,7 +16,6 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" VersionOverride="8.0.0" />
     <PackageReference Include="System.Text.Json" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
   </ItemGroup>
 
   <ItemGroup>

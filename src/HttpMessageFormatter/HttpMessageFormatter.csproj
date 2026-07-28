@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" PrivateAssets="compile" />
   </ItemGroup>
 
   <ItemGroup>
