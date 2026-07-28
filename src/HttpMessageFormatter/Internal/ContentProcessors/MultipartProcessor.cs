@@ -16,17 +16,21 @@ internal class MultipartProcessor : ProcessorBase
         {
             multipartContent = dataContent;
         }
-        else
+        else if (_httpContent is MultipartContent generalMultipartContent)
         {
-            if (_httpContent is StreamContent streamContent)
+            multipartContent = generalMultipartContent;
+        }
+        else if (_httpContent is StreamContent streamContent)
+        {
+            var stream = await streamContent.ReadAsStreamAsync();
+            if (stream.CanSeek)
             {
-                var stream = await streamContent.ReadAsStreamAsync();
-                if (stream.CanSeek)
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                }
+                stream.Seek(0, SeekOrigin.Begin);
+            }
 
-                multipartContent = (await _httpContent.ReadAsMultipartAsync(new MultipartMemoryStreamProvider())).Contents;
+            if (_httpContent.Headers.ContentType?.MediaType?.StartsWith("multipart/", System.StringComparison.OrdinalIgnoreCase) == true)
+            {
+                multipartContent = await _httpContent.ReadAsMultipartExtensionAsync();
             }
         }
 
@@ -37,14 +41,27 @@ internal class MultipartProcessor : ProcessorBase
 
         var boundary = GetBoundary();
 
-        foreach (var content in multipartContent)
+        try
         {
-            contentBuilder.AppendLine();
-            contentBuilder.AppendLine(boundary);
 
-            Appender.AppendHeaders(contentBuilder, content.Headers);
+            // ReSharper disable once PossibleMultipleEnumeration
+            foreach (var content in multipartContent)
+            {
+                contentBuilder.AppendLine();
+                contentBuilder.AppendLine(boundary);
 
-            await Appender.AppendContent(contentBuilder, content, true);
+                Appender.AppendHeaders(contentBuilder, content.Headers);
+
+                await Appender.AppendContent(contentBuilder, content, true);
+            }
+        }
+        finally
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            foreach (var content in multipartContent)
+            {
+                content.Dispose();
+            }
         }
 
         contentBuilder.AppendLine();
@@ -66,12 +83,8 @@ internal class MultipartProcessor : ProcessorBase
     private string? GetBoundary()
     {
         var contentType = _httpContent?.Headers?.ContentType;
-        if (contentType?.Parameters == null)
-        {
-            return null;
-        }
 
-        var boundaryParameter = contentType.Parameters.FirstOrDefault(p => p.Name.Equals("boundary", StringComparison.OrdinalIgnoreCase));
+        var boundaryParameter = contentType?.Parameters?.FirstOrDefault(p => p.Name.Equals("boundary", StringComparison.OrdinalIgnoreCase));
         return boundaryParameter != null ? $"--{boundaryParameter.Value}" : null;
     }
 }
