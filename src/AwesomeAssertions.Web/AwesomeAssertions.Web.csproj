@@ -15,7 +15,6 @@
   <ItemGroup>
     <PackageReference Include="AwesomeAssertions"/>
     <PackageReference Include="System.Text.Json" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
   </ItemGroup>
 
   <ItemGroup>
