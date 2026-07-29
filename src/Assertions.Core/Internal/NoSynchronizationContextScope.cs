@@ -1,10 +1,7 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
-#if AAV
-namespace AwesomeAssertions.Web.Internal;
-#else
-namespace FluentAssertions.Web.Internal;
-#endif
+namespace Assertions.Core.Internal;
 
 internal static class NoSynchronizationContextScope
 {

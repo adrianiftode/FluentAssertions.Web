@@ -19,4 +19,8 @@
     </Compile>
   </ItemGroup>
   
+  <ItemGroup>
+    <Compile Remove="..\FluentAssertions.Web.Types\ISerializer.cs" />
+  </ItemGroup>
+  
 </Project>

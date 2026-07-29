@@ -1,14 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Assertions.Core\Assertions.Core.csproj" PrivateAssets="all"/>
-  </ItemGroup>
 </Project>

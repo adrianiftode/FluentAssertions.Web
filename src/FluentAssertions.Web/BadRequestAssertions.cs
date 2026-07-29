@@ -1,6 +1,10 @@
 ﻿#if AAV
+using Assertions.Core.Internal;
+
 namespace AwesomeAssertions.Web;
 #else
+using Assertions.Core.Internal;
+
 namespace FluentAssertions.Web;
 #endif
 

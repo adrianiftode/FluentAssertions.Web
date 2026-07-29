@@ -1,8 +1,12 @@
-﻿// ReSharper disable once CheckNamespace
+﻿
 
+using System;
 using System.Runtime.Serialization;
 
-#if AAV
+// ReSharper disable once CheckNamespace
+#if SH
+namespace Shouldly;
+#elif AAV
 namespace AwesomeAssertions;
 #else
 namespace FluentAssertions;

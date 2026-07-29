@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <Compile Remove="BadRequestAssertionsSpecs.cs" />
+    <Compile Remove="DeserializationExceptionTests.cs" />
+    <Compile Remove="HeadersAssertionsSpecs.cs" />
+    <Compile Remove="HttpResponseContentAssertionsSpecs.cs" />
+    <Compile Remove="HttpResponseMessageFormatterSpecs.cs" />
+    <Compile Remove="Internal\ApiAccessibilityTests.cs" />
+    <Compile Remove="Internal\HttpContentExtensionsTests.cs" />
+    <Compile Remove="Internal\JsonExtensionsTests.cs" />
+    <Compile Remove="LocationAssertionsSpecs.cs" />
+    <Compile Remove="SatisfyHttpResponseMessageAssertionsAsyncSpecs.cs" />
+    <Compile Remove="SatisfyHttpResponseMessageAssertionsSpecs.cs" />
+    <Compile Remove="SatisfyModelAssertionsAsyncSpecs.cs" />
+    <Compile Remove="SatisfyModelAssertionsSpecs.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="FluentAssertions.Analyzers" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\HttpMessageFormatter\HttpMessageFormatter.csproj" />
+    <ProjectReference Include="..\..\src\FluentAssertions.Web.Serializers.NewtonsoftJson\FluentAssertions.Web.Serializers.NewtonsoftJson.csproj" />
+    <ProjectReference Include="..\..\src\Shouldly.Web\Shouldly.Web.csproj" />
+    <ProjectReference Include="..\..\src\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Internal\" />
+  </ItemGroup>
+
+</Project>

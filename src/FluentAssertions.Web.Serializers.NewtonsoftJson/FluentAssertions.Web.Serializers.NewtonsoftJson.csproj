@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Assertions.Core\Assertions.Core.csproj" PrivateAssets="all"/>
     <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" PrivateAssets="all" />
   </ItemGroup>
 

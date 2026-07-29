@@ -1,17 +1,11 @@
-﻿#if AAV
-using Assertions.Core.Internal;
-
-namespace AwesomeAssertions.Web;
-#else
-using Assertions.Core.Internal;
-
-namespace FluentAssertions.Web;
-#endif
+﻿// ReSharper disable once CheckNamespace
+namespace Shouldly;
 
 /// <summary>
 /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state related to the HTTP content.
 /// </summary>
-public partial class HttpResponseMessageAssertions
+[ShouldlyMethods]
+public static class HttpResponseContentAssertions
 {
     /// <summary>
     /// Asserts that the HTTP content is empty.
@@ -23,19 +17,14 @@ public partial class HttpResponseMessageAssertions
     /// <param name="becauseArgs">
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
-    [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> BeEmpty(string because = "", params object[] becauseArgs)
+    public static void BeEmpty(this HttpResponseMessage? response, string because = "", params object[] becauseArgs)
     {
-#if FAV8
-        CurrentAssertionChain
-#else
-        Execute.Assertion
-#endif
-            .ForCondition(Subject is not null)
+        ExecuteAssertion
+            .ForCondition(response is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        var content = GetContent();
+        var content =  GetContent();
 
 #if FAV8
         CurrentAssertionChain

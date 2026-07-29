@@ -1,7 +1,9 @@
 ﻿#if AAV
+using Assertions.Core.Internal;
 using AwesomeAssertions.Formatting;
 using AwesomeAssertions.Primitives;
 #else
+using Assertions.Core.Internal;
 using FluentAssertions.Formatting;
 using FluentAssertions.Primitives;
 #endif

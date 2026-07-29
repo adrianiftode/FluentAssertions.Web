@@ -1,7 +1,12 @@
-﻿// ReSharper disable once CheckNamespace
+﻿
+using System.Text.Json;
 using System.Text.Json.Serialization;
+using Assertions.Core.Internal.Serializers;
 
-#if AAV
+// ReSharper disable once CheckNamespace
+#if SH
+namespace Shouldly;
+#elif AAV
 namespace AwesomeAssertions;
 #else
 namespace FluentAssertions;

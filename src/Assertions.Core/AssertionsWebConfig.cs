@@ -1,11 +1,22 @@
-﻿// ReSharper disable once CheckNamespace
-#if AAV
+﻿using System;
+using Assertions.Core.Internal.Serializers;
+
+
+// ReSharper disable once CheckNamespace
+#if SH
+namespace Shouldly;
+#elif AAV
 namespace AwesomeAssertions;
 #else
 namespace FluentAssertions;
 #endif
 
-#if AAV
+#if SH
+/// <summary>
+/// Holder of the global <see cref="ShouldlyAssertionsWebConfig"/>
+/// </summary>
+public static class ShouldlyAssertionsWebConfig
+#elif AAV
 /// <summary>
 /// Holder of the global <see cref="AwesomeAssertionsWebConfig"/>
 /// </summary>
