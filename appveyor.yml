@@ -130,7 +130,7 @@ deploy:
 
   - provider: NuGet
     api_key:
-      secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
+      secure: JK6J6voMfJm2FYMh52c2qv4CbRAQoz/lUZmPHqw93jy+bfiM4iTBmiusXAqlMsbV
     skip_symbols: true
     artifact: HttpMessageFormatterPackage
     on:
