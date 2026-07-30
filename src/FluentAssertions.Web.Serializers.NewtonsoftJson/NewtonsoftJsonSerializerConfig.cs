@@ -1,8 +1,9 @@
-﻿// ReSharper disable once CheckNamespace
-#if AAV
-namespace AwesomeAssertions;
+﻿#if SH
+using Shouldly;
+#elif AAV
+using AwesomeAssertions;
 #else
-namespace FluentAssertions;
+using FluentAssertions;
 #endif
 
 /// <summary>

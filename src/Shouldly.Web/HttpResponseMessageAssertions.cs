@@ -1,8 +1,9 @@
 ﻿
 
 using System.Threading.Tasks;
+using Assertions.Core.Internal;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Shouldly;
 
 /// <summary>
@@ -10,6 +11,12 @@ namespace Shouldly;
 /// </summary>
 internal static class HttpResponseMessageAssertions
 {
+    public static string? GetContent(HttpResponseMessage subject)
+    {
+        Func<Task<string?>> content = () => subject.GetStringContent();
+        return content.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
+    }
+
     public static (bool success, string? errorMessage) TryGetSubjectModel<TModel>(HttpResponseMessage subject, out TModel? model)
     {
         var (success, errorMessage) = TryGetSubjectModel(subject, out var subjectModel, typeof(TModel));
@@ -19,7 +26,7 @@ internal static class HttpResponseMessageAssertions
 
     public static (bool success, string? errorMessage) TryGetSubjectModel(HttpResponseMessage subject, out object? model, Type modelType)
     {
-        var serializer = FluentAssertionsWebConfig.Serializer;
+        var serializer = ShouldlyAssertionsWebConfig.Serializer;
         
         Func<Task<object?>> readModel = () => subject.Content.ReadAsAsync(modelType, serializer);
         try

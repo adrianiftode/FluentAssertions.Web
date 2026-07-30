@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Assertions.Core.Internal;
+﻿namespace Assertions.Core.Internal;
 
 internal static class Guard
 {

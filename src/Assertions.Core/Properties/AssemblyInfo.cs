@@ -1,5 +1,8 @@
-﻿using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("AwesomeAssertions.Web")]
+﻿[assembly: InternalsVisibleTo("AwesomeAssertions.Web")]
+[assembly: InternalsVisibleTo("AwesomeAssertions.Web.Serializers.NewtonsoftJson")]
 [assembly: InternalsVisibleTo("FluentAssertions.Web")]
-[assembly: InternalsVisibleTo("ShouldlyAssertions.Web")]
+[assembly: InternalsVisibleTo("FluentAssertions.Web.Serializers.NewtonsoftJson")]
+[assembly: InternalsVisibleTo("FluentAssertions.Web.v8")]
+[assembly: InternalsVisibleTo("FluentAssertions.Web.Serializers.NewtonsoftJson")]
+[assembly: InternalsVisibleTo("Shouldly.Web")]
+[assembly: InternalsVisibleTo("ShouldlyAssertions.Web.Serializers.NewtonsoftJson")]

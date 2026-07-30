@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace Assertions.Core.Internal;
+﻿namespace Assertions.Core.Internal;
 
 internal static class ObjectExtensions
 {

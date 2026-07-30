@@ -1,9 +1,6 @@
 ﻿
 
-using System;
-using System.Runtime.Serialization;
-
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 #if SH
 namespace Shouldly;
 #elif AAV

@@ -1,11 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Text.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ISerializer.cs" />
+    <Compile Remove="DeserializationException.cs" />
+    <Compile Remove="AssertionsWebConfig.cs" />
+    <Compile Remove="SystemTextJsonSerializerConfig.cs" />
+    <Compile Remove="Internal\HttpContentExtensions.cs" />
+    <Compile Remove="Internal\Serializers\SystemTextJsonSerializer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Shared\" />
   </ItemGroup>
 
 </Project>

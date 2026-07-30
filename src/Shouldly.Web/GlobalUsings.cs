@@ -1,5 +1,6 @@
 // Global using directives
 
+global using Assertions.Core.Internal;
 global using Assertions.Core;
 global using System;
 global using System.Net;

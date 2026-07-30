@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-
-namespace Assertions.Core.Internal;
+﻿namespace Assertions.Core.Internal;
 
 internal static class NoSynchronizationContextScope
 {

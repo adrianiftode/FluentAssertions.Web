@@ -1,4 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
+﻿// ReSharper disable CheckNamespace
 #if AAV
 namespace AwesomeAssertions;
 #elif FAV8 

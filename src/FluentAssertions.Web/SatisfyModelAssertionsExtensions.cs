@@ -1,5 +1,5 @@
 ﻿#if !FAV8
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace FluentAssertions;
 
 /// <summary>

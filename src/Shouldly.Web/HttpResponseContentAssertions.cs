@@ -1,5 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿// ReSharper disable CheckNamespace
 namespace Shouldly;
+
 
 /// <summary>
 /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state related to the HTTP content.
@@ -24,18 +25,12 @@ public static class HttpResponseContentAssertions
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
-        var content =  GetContent();
+        var content = response.GetContent();
 
-#if FAV8
-        CurrentAssertionChain
-#else
-        Execute.Assertion
-#endif
+        ExecuteAssertion
             .ForCondition(string.IsNullOrEmpty(content))
             .BecauseOf(because, becauseArgs)
-            .FailWith("Expected {context:response} to have no content. {0}", Subject);
-
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+            .FailWith("Expected {context:response} to have no content. {0}", response.Format());
     }
 
     /// <summary>
@@ -51,9 +46,8 @@ public static class HttpResponseContentAssertions
     /// <param name="becauseArgs">
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
-    [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, string because = "", params object[] becauseArgs)
-        => BeAs(expectedModel, options => options, because, becauseArgs);
+    public static void BeAs<TModel>(this HttpResponseMessage? response, TModel expectedModel, string because = "", params object[] becauseArgs)
+        => BeAs(response, expectedModel, options => options, because, becauseArgs);
 
     /// <summary>
     /// Asserts that HTTP response content can be an equivalent representation of the expected model.
@@ -62,14 +56,14 @@ public static class HttpResponseContentAssertions
     /// The expected model.
     /// </param>
     /// <param name="options">
-    /// A reference to the <see cref="EquivalencyOptions{TExpectation}"/> configuration object that can be used
-    /// to influence the way the object graphs are compared. You can also provide an alternative instance of the
-#if FAV8
-    /// <see cref="EquivalencyOptions{TExpectation}"/> class. The global defaults are determined by the
-#else
-    /// <see cref="EquivalencyAssertionOptions{TExpectation}"/> class. The global defaults are determined by the
-#endif
-    /// </param>
+//    /// A reference to the <see cref="EquivalencyOptions{TExpectation}"/> configuration object that can be used
+//    /// to influence the way the object graphs are compared. You can also provide an alternative instance of the
+//#if FAV8
+//    /// <see cref="EquivalencyOptions{TExpectation}"/> class. The global defaults are determined by the
+//#else
+//    /// <see cref="EquivalencyAssertionOptions{TExpectation}"/> class. The global defaults are determined by the
+//#endif
+//    /// </param>
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
     /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
@@ -77,21 +71,13 @@ public static class HttpResponseContentAssertions
     /// <param name="becauseArgs">
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
-    [CustomAssertion]
-#if FAV8
-    public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, Func<EquivalencyOptions<TModel>, EquivalencyOptions<TModel>> options, string because = "", params object[] becauseArgs)
-#else
-    public AndConstraint<HttpResponseMessageAssertions> BeAs<TModel>(TModel expectedModel, Func<EquivalencyAssertionOptions<TModel>, EquivalencyAssertionOptions<TModel>> options, string because = "", params object[] becauseArgs)
-#endif
-    {
-        Guard.ThrowIfArgumentIsNull(options, nameof(options));
 
-#if FAV8
-        CurrentAssertionChain
-#else
-        Execute.Assertion
-#endif
-            .ForCondition(Subject is not null)
+    public static void BeAs<TModel>(this HttpResponseMessage? response, TModel expectedModel, EquivalencyOptions options, string because = "", params object[] becauseArgs)
+    {
+        //Guard.ThrowIfArgumentIsNull(options, nameof(options));
+
+        ExecuteAssertion
+            .ForCondition(response is not null)
             .BecauseOf(because, becauseArgs)
             .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
 
@@ -102,107 +88,97 @@ public static class HttpResponseContentAssertions
 
         var expectedModelType = expectedModel.GetType();
 
-        var (success, errorMessage) = TryGetSubjectModel(out var subjectModel, expectedModelType);
+        var (success, errorMessage) = response.TryGetSubjectModel(out var subjectModel, expectedModelType);
 
-#if FAV8
-        CurrentAssertionChain
-#else
-        Execute.Assertion
-#endif
-            .BecauseOf(because, becauseArgs)
+        ExecuteAssertion
             .ForCondition(success)
-            .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
-                expectedModelType.ToString() ?? "unknown type", Subject, errorMessage);
-
-        string[] failures;
-
-        using (var scope = new AssertionScope())
-        {
-            subjectModel.Should().BeEquivalentTo(expectedModel, options);
-
-            failures = scope.Discard();
-        }
-
-#if FAV8
-        CurrentAssertionChain
-#else
-        Execute.Assertion
-#endif
-                   .BecauseOf(because, becauseArgs)
-                   .ForCondition(failures.Length == 0)
-                   .FailWith("Expected {context:response} to have a content equivalent to a model, but it has differences:{0}{reason}. {1}",
-                       new AssertionsFailures(failures),
-                       Subject);
-
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
-    }
-
-    /// <summary>
-    /// Asserts that HTTP response has content that matches a wildcard pattern.
-    /// </summary>
-    /// <param name="expectedWildcardText">
-    /// The wildcard pattern with which the subject is matched, where * and ? have special meanings.
-    /// <remarks>
-    ///     <para>* - Matches any number of characters. You can use the asterisk (*) anywhere in a character string. Example: wh* finds what, white, and why, but not awhile or watch.</para>
-    ///     <para>? - Matches a single alphabet in a specific position. Example: b?ll finds ball, bell, and bill.</para>
-    /// </remarks>
-    /// </param>
-    /// <param name="because">
-    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
-    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
-    /// </param>
-    /// <param name="becauseArgs">
-    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
-    /// </param>
-    [CustomAssertion]
-    public AndConstraint<HttpResponseMessageAssertions> MatchInContent(string expectedWildcardText, string because = "", params object[] becauseArgs)
-    {
-        Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify an HTTP response content match a <null> wildcard pattern.");
-
-#if FAV8
-        CurrentAssertionChain
-#else
-        Execute.Assertion
-#endif
-            .ForCondition(Subject is not null)
             .BecauseOf(because, becauseArgs)
-            .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
-
-        var content = GetContent();
-
-        if (string.IsNullOrEmpty(content))
-        {
-#if FAV8
-        CurrentAssertionChain
-#else
-        Execute.Assertion
-#endif
-                .BecauseOf(because, becauseArgs)
-                .FailWith("Expected {context:response} to match the wildcard pattern {0} in its content, but content was <null>{reason}. {1}",
-                    expectedWildcardText,
-                    Subject);
-        }
+            .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
+                expectedModelType.ToString() ?? "unknown type", response.Format(), errorMessage);
 
         string[] failures;
 
-        using (var scope = new AssertionScope())
-        {
-            content.Should().Match(expectedWildcardText);
+        //using (var scope = new AssertionScope())
+        //{
+            subjectModel.ShouldBeEquivalentTo(expectedModel, options);
 
-            failures = scope.Discard();
-        }
+        //    failures = scope.Discard();
+        //}
 
-#if FAV8
-        CurrentAssertionChain
-#else
-        Execute.Assertion
-#endif
-                   .BecauseOf(because, becauseArgs)
-                   .ForCondition(failures.Length == 0)
-                   .FailWith("Expected {context:response} to match a wildcard pattern in its content, but does not since:{0}{reason}. {1}",
-                       new AssertionsFailures(failures),
-                       Subject);
-
-        return new AndConstraint<HttpResponseMessageAssertions>(this);
+        //ExecuteAssertion
+        //           .ForCondition(failures.Length == 0)
+        //           .BecauseOf(because, becauseArgs)
+        //           .FailWith("Expected {context:response} to have a content equivalent to a model, but it has differences:{0}{reason}. {1}",
+        //               new AssertionsFailures(failures),
+        //               response.Format());
     }
+
+//    /// <summary>
+//    /// Asserts that HTTP response has content that matches a wildcard pattern.
+//    /// </summary>
+//    /// <param name="expectedWildcardText">
+//    /// The wildcard pattern with which the subject is matched, where * and ? have special meanings.
+//    /// <remarks>
+//    ///     <para>* - Matches any number of characters. You can use the asterisk (*) anywhere in a character string. Example: wh* finds what, white, and why, but not awhile or watch.</para>
+//    ///     <para>? - Matches a single alphabet in a specific position. Example: b?ll finds ball, bell, and bill.</para>
+//    /// </remarks>
+//    /// </param>
+//    /// <param name="because">
+//    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+//    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+//    /// </param>
+//    /// <param name="becauseArgs">
+//    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+//    /// </param>
+//    [CustomAssertion]
+//    public AndConstraint<HttpResponseMessageAssertions> MatchInContent(string expectedWildcardText, string because = "", params object[] becauseArgs)
+//    {
+//        Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify an HTTP response content match a <null> wildcard pattern.");
+
+//#if FAV8
+//        CurrentAssertionChain
+//#else
+//        Execute.Assertion
+//#endif
+//            .ForCondition(Subject is not null)
+//            .BecauseOf(because, becauseArgs)
+//            .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+//        var content = GetContent();
+
+//        if (string.IsNullOrEmpty(content))
+//        {
+//#if FAV8
+//        CurrentAssertionChain
+//#else
+//            Execute.Assertion
+//#endif
+//                    .BecauseOf(because, becauseArgs)
+//                    .FailWith("Expected {context:response} to match the wildcard pattern {0} in its content, but content was <null>{reason}. {1}",
+//                        expectedWildcardText,
+//                        Subject);
+//        }
+
+//        string[] failures;
+
+//        using (var scope = new AssertionScope())
+//        {
+//            content.Should().Match(expectedWildcardText);
+
+//            failures = scope.Discard();
+//        }
+
+//#if FAV8
+//        CurrentAssertionChain
+//#else
+//        Execute.Assertion
+//#endif
+//                   .BecauseOf(because, becauseArgs)
+//                   .ForCondition(failures.Length == 0)
+//                   .FailWith("Expected {context:response} to match a wildcard pattern in its content, but does not since:{0}{reason}. {1}",
+//                       new AssertionsFailures(failures),
+//                       Subject);
+
+//        return new AndConstraint<HttpResponseMessageAssertions>(this);
+//    }
 }

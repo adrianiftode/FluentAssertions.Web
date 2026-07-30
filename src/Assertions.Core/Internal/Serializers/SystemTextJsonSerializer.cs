@@ -1,10 +1,10 @@
-﻿using System.Reflection;
-using System;
-using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-
+﻿#if SH
+using Shouldly;
+#elif AAV
+using AwesomeAssertions;
+#else
+using FluentAssertions;
+#endif
 
 namespace Assertions.Core.Internal.Serializers;
 
@@ -27,20 +27,20 @@ internal class SystemTextJsonSerializer : ISerializer
 //https://stackoverflow.com/a/65025191/782754
 internal class NullableConverterFactory : JsonConverterFactory
 {
-    static readonly byte[] Empty = Array.Empty<byte>();
+    private static readonly byte[] Empty = [];
 
     public override bool CanConvert(Type typeToConvert) => Nullable.GetUnderlyingType(typeToConvert) != null;
 
     public override JsonConverter CreateConverter(Type type, JsonSerializerOptions options) =>
         (JsonConverter)Activator.CreateInstance(
             typeof(NullableConverter<>).MakeGenericType(
-                new Type[] { Nullable.GetUnderlyingType(type) }),
+                [Nullable.GetUnderlyingType(type)]),
             BindingFlags.Instance | BindingFlags.Public,
             binder: null,
-            args: new object[] { options },
+            args: [options],
             culture: null);
 
-    class NullableConverter<T> : JsonConverter<T?> where T : struct
+    private class NullableConverter<T> : JsonConverter<T?> where T : struct
     {
         // DO NOT CACHE the return of (JsonConverter<T>)options.GetConverter(typeof(T)) as DoubleConverter.Read() and DoubleConverter.Write()
         // DO NOT WORK for nondefault values of JsonSerializerOptions.NumberHandling which was introduced in .NET 5
@@ -58,6 +58,6 @@ internal class NullableConverterFactory : JsonConverterFactory
         }
 
         public override void Write(Utf8JsonWriter writer, T? value, JsonSerializerOptions options) =>
-            JsonSerializer.Serialize(writer, value != null ? value.Value : default, options);
+            JsonSerializer.Serialize(writer, value ?? default, options);
     }
 }

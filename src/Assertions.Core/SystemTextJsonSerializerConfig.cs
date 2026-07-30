@@ -1,9 +1,5 @@
-﻿
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Assertions.Core.Internal.Serializers;
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable CheckNamespace
+#pragma warning disable IDE0130
 #if SH
 namespace Shouldly;
 #elif AAV
@@ -11,6 +7,7 @@ namespace AwesomeAssertions;
 #else
 namespace FluentAssertions;
 #endif
+#pragma warning restore IDE0130
 
 /// <summary>
 /// Holder of the global <see cref="System.Text.Json.JsonSerializerOptions"/>

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-namespace Assertions.Core.Internal;
+﻿namespace Assertions.Core.Internal;
 
 internal static class HttpResponseMessageExtensions
 {

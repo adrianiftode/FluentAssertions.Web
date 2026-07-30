@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <PackageReference Include="AwesomeAssertions" />
@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web\AwesomeAssertions.Web.csproj" />
-    <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" />
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Serializers.NewtonsoftJson\AwesomeAssertions.Web.Serializers.NewtonsoftJson.csproj" />
   </ItemGroup>
 

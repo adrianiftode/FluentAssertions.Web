@@ -25,7 +25,6 @@
     <ProjectReference Include="..\..\src\HttpMessageFormatter\HttpMessageFormatter.csproj" />
     <ProjectReference Include="..\..\src\FluentAssertions.Web.Serializers.NewtonsoftJson\FluentAssertions.Web.Serializers.NewtonsoftJson.csproj" />
     <ProjectReference Include="..\..\src\Shouldly.Web\Shouldly.Web.csproj" />
-    <ProjectReference Include="..\..\src\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
   </ItemGroup>
 
   <ItemGroup>

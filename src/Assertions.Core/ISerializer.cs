@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable CheckNamespace
+#pragma warning disable IDE0130
 #if SH
 namespace Shouldly;
 #elif AAV
@@ -10,6 +7,7 @@ namespace AwesomeAssertions;
 #else
 namespace FluentAssertions;
 #endif
+#pragma warning restore IDE0130
 
 /// <summary>
 /// Provides an abstraction to deserialize a Stream of binary data into a C# object.

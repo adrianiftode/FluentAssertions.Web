@@ -13,14 +13,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AwesomeAssertions"/>
+    <PackageReference Include="AwesomeAssertions" />
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Assertions.Core\Assertions.Core.csproj" PrivateAssets="all"/>
-    <ProjectReference Include="..\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" PrivateAssets="all"/>
-    <ProjectReference Include="..\AwesomeAssertions.HttpMessageFormatter\AwesomeAssertions.HttpMessageFormatter.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\Assertions.Core\Assertions.Core.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\AwesomeAssertions.HttpMessageFormatter\AwesomeAssertions.HttpMessageFormatter.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\HttpMessageFormatter\HttpMessageFormatter.csproj" />
   </ItemGroup>
 
@@ -42,7 +42,7 @@
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
     <ItemGroup>
       <!-- Filter out unnecessary files -->
-      <_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'all'))" />
+      <_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PrivateAssets', 'all'))" />
     </ItemGroup>
 
     <!-- Print batches for debug purposes -->

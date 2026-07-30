@@ -1,8 +1,13 @@
-﻿using System;
-using Assertions.Core.Internal.Serializers;
+﻿#if SH
+using Shouldly;
+#elif AAV
+using AwesomeAssertions;
+#else
+using FluentAssertions;
+#endif
 
-
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
+#pragma warning disable IDE0130
 #if SH
 namespace Shouldly;
 #elif AAV
@@ -10,6 +15,7 @@ namespace AwesomeAssertions;
 #else
 namespace FluentAssertions;
 #endif
+#pragma warning restore IDE0130
 
 #if SH
 /// <summary>
@@ -30,7 +36,9 @@ public static class FluentAssertionsWebConfig
 {
     private static ISerializer? _serializer;
 
-#if AAV
+#if SH
+    static ShouldlyAssertionsWebConfig() => Serializer = new SystemTextJsonSerializer();
+#elif AAV
     static AwesomeAssertionsWebConfig() => Serializer = new SystemTextJsonSerializer();
 #else
     static FluentAssertionsWebConfig() => Serializer = new SystemTextJsonSerializer();
