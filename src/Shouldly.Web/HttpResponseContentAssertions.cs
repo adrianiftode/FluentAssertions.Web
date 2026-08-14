@@ -1,6 +1,6 @@
 ﻿// ReSharper disable CheckNamespace
-namespace Shouldly;
 
+namespace Shouldly;
 
 /// <summary>
 /// Contains a number of methods to assert that an <see cref="HttpResponseMessage"/> is in the expected state related to the HTTP content.
@@ -11,6 +11,7 @@ public static class HttpResponseContentAssertions
     /// <summary>
     /// Asserts that the HTTP content is empty.
     /// </summary>
+    /// <param name="actual">The actual HttpResponseMessage to be asserted on.</param>
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
     /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
@@ -18,27 +19,29 @@ public static class HttpResponseContentAssertions
     /// <param name="becauseArgs">
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
-    public static void BeEmpty(this HttpResponseMessage? response, string because = "", params object[] becauseArgs)
+    public static void ShouldBeEmpty(this HttpResponseMessage? actual, string because = "", params object[] becauseArgs)
     {
         ExecuteAssertion
-            .ForCondition(response is not null)
+            .ForCondition(actual is not null)
             .BecauseOf(because, becauseArgs)
-            .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+            .FailWith("Expected a {context:actual} to assert{reason}, but found <null>.");
 
-        var content = response.GetContent();
+        var content = actual!.GetContent();
 
         ExecuteAssertion
             .ForCondition(string.IsNullOrEmpty(content))
             .BecauseOf(because, becauseArgs)
-            .FailWith("Expected {context:response} to have no content. {0}", response.Format());
+            .FailWith("Expected {context:actual} to have no content. {0}", new FormatHttpResponseMessage(actual));
     }
 
     /// <summary>
-    /// Asserts that HTTP response content can be an equivalent representation of the expected model.
+    /// Asserts that HTTP actual content can be an equivalent representation of the expected model.
     /// </summary>
+    /// <param name="actual">The actual HttpResponseMessage to be asserted on.</param>
     /// <param name="expectedModel">
     /// The expected model.
     /// </param>
+    /// <param name="responseExpression"></param>
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
     /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
@@ -46,24 +49,21 @@ public static class HttpResponseContentAssertions
     /// <param name="becauseArgs">
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
-    public static void BeAs<TModel>(this HttpResponseMessage? response, TModel expectedModel, string because = "", params object[] becauseArgs)
-        => BeAs(response, expectedModel, options => options, because, becauseArgs);
+    public static void ShouldBeAs<TModel>(this HttpResponseMessage? actual, TModel expectedModel, [CallerArgumentExpression(nameof(actual))] string responseExpression = "actual", string because = "", params object[] becauseArgs)
+        => actual.ShouldBeAs(expectedModel, null, responseExpression, because, becauseArgs);
 
     /// <summary>
-    /// Asserts that HTTP response content can be an equivalent representation of the expected model.
+    /// Asserts that HTTP actual content can be an equivalent representation of the expected model.
     /// </summary>
+    /// <param name="actual">The actual HttpResponseMessage to be asserted on.</param>
     /// <param name="expectedModel">
     /// The expected model.
     /// </param>
     /// <param name="options">
-//    /// A reference to the <see cref="EquivalencyOptions{TExpectation}"/> configuration object that can be used
-//    /// to influence the way the object graphs are compared. You can also provide an alternative instance of the
-//#if FAV8
-//    /// <see cref="EquivalencyOptions{TExpectation}"/> class. The global defaults are determined by the
-//#else
-//    /// <see cref="EquivalencyAssertionOptions{TExpectation}"/> class. The global defaults are determined by the
-//#endif
-//    /// </param>
+    //    /// A reference to the <see cref="EquivalencyOptions"/> configuration object that can be used
+    //    /// to influence the way the object graphs are compared. You can also provide an alternative instance of the
+    //    /// <see cref="EquivalencyOptions"/> class. The global defaults are determined by the
+    //    /// </param>
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
     /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
@@ -72,14 +72,12 @@ public static class HttpResponseContentAssertions
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
 
-    public static void BeAs<TModel>(this HttpResponseMessage? response, TModel expectedModel, EquivalencyOptions options, string because = "", params object[] becauseArgs)
+    public static void ShouldBeAs<TModel>(this HttpResponseMessage? actual, TModel expectedModel, EquivalencyOptions? options, [CallerArgumentExpression("actual")] string responseExpression = "actual", string because = "", params object[] becauseArgs)
     {
-        //Guard.ThrowIfArgumentIsNull(options, nameof(options));
-
         ExecuteAssertion
-            .ForCondition(response is not null)
+            .ForCondition(actual is not null, responseExpression)
             .BecauseOf(because, becauseArgs)
-            .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+            .FailWith("Expected a {context:actual} to assert{reason}, but found <null>.");
 
         if (expectedModel == null)
         {
@@ -88,36 +86,39 @@ public static class HttpResponseContentAssertions
 
         var expectedModelType = expectedModel.GetType();
 
-        var (success, errorMessage) = response.TryGetSubjectModel(out var subjectModel, expectedModelType);
+        var (success, errorMessage) = actual!.TryGetSubjectModel(out var subjectModel, expectedModelType);
 
         ExecuteAssertion
-            .ForCondition(success)
+            .ForCondition(success, responseExpression)
             .BecauseOf(because, becauseArgs)
-            .FailWith("Expected {context:response} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
-                expectedModelType.ToString() ?? "unknown type", response.Format(), errorMessage);
+            .FailWith("Expected {context:actual} to have a content equivalent to a model of type {0}, but the JSON representation could not be parsed, as the operation failed with the following message: {2}{reason}. {1}",
+                expectedModelType.ToString() ?? "unknown type", new FormatHttpResponseMessage(actual), errorMessage);
 
-        string[] failures;
+        AssertionsFailure? failure = null;
 
-        //using (var scope = new AssertionScope())
-        //{
-            subjectModel.ShouldBeEquivalentTo(expectedModel, options);
+        try
+        {
+            subjectModel.ShouldSatisfy(
+                [s => s.ShouldBeEquivalentTo(expectedModel, options ?? new EquivalencyOptions())]);
+        }
+        catch (ShouldAssertException ex)
+        {
+            failure = ex.ExtractAssertionFailure();
+        }
 
-        //    failures = scope.Discard();
-        //}
-
-        //ExecuteAssertion
-        //           .ForCondition(failures.Length == 0)
-        //           .BecauseOf(because, becauseArgs)
-        //           .FailWith("Expected {context:response} to have a content equivalent to a model, but it has differences:{0}{reason}. {1}",
-        //               new AssertionsFailures(failures),
-        //               response.Format());
+        ExecuteAssertion
+                   .ForCondition(failure == null, responseExpression)
+                   .BecauseOf(because, becauseArgs)
+                   .FailWith("Expected {context:actual} to have a content equivalent to a model{reason}, but it has differences:{0} {1}",
+                       new FormatAssertionsFailure(failure),
+                       new FormatHttpResponseMessage(actual));
     }
 
 //    /// <summary>
-//    /// Asserts that HTTP response has content that matches a wildcard pattern.
+//    /// Asserts that HTTP actual has content that matches a wildcard pattern.
 //    /// </summary>
 //    /// <param name="expectedWildcardText">
-//    /// The wildcard pattern with which the subject is matched, where * and ? have special meanings.
+//    /// The wildcard pattern with which actual is matched, where * and ? have special meanings.
 //    /// <remarks>
 //    ///     <para>* - Matches any number of characters. You can use the asterisk (*) anywhere in a character string. Example: wh* finds what, white, and why, but not awhile or watch.</para>
 //    ///     <para>? - Matches a single alphabet in a specific position. Example: b?ll finds ball, bell, and bill.</para>
@@ -133,7 +134,7 @@ public static class HttpResponseContentAssertions
 //    [CustomAssertion]
 //    public AndConstraint<HttpResponseMessageAssertions> MatchInContent(string expectedWildcardText, string because = "", params object[] becauseArgs)
 //    {
-//        Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify an HTTP response content match a <null> wildcard pattern.");
+//        Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify an HTTP actual content match a <null> wildcard pattern.");
 
 //#if FAV8
 //        CurrentAssertionChain
@@ -142,7 +143,7 @@ public static class HttpResponseContentAssertions
 //#endif
 //            .ForCondition(Subject is not null)
 //            .BecauseOf(because, becauseArgs)
-//            .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+//            .FailWith("Expected a {context:actual} to assert{reason}, but found <null>.");
 
 //        var content = GetContent();
 
@@ -154,7 +155,7 @@ public static class HttpResponseContentAssertions
 //            Execute.Assertion
 //#endif
 //                    .BecauseOf(because, becauseArgs)
-//                    .FailWith("Expected {context:response} to match the wildcard pattern {0} in its content, but content was <null>{reason}. {1}",
+//                    .FailWith("Expected {context:actual} to match the wildcard pattern {0} in its content, but content was <null>{reason}. {1}",
 //                        expectedWildcardText,
 //                        Subject);
 //        }
@@ -175,7 +176,7 @@ public static class HttpResponseContentAssertions
 //#endif
 //                   .BecauseOf(because, becauseArgs)
 //                   .ForCondition(failures.Length == 0)
-//                   .FailWith("Expected {context:response} to match a wildcard pattern in its content, but does not since:{0}{reason}. {1}",
+//                   .FailWith("Expected {context:actual} to match a wildcard pattern in its content, but does not since:{0}{reason}. {1}",
 //                       new AssertionsFailures(failures),
 //                       Subject);
 

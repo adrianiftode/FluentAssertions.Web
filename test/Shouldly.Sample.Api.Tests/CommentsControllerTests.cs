@@ -1,53 +1,55 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Threading.Tasks;
+using Sample.Api;
 using Xunit;
 
 
-namespace Sample.Api.Tests
+namespace Shouldly.Sample.Api.Tests;
+
+public class CommentsControllerTests : IClassFixture<WebApplicationFactory<Startup>>
 {
-    public class CommentsControllerTests : IClassFixture<WebApplicationFactory<Startup>>
+    private readonly WebApplicationFactory<Startup> _factory;
+
+    public CommentsControllerTests(WebApplicationFactory<Startup> factory)
     {
-        private readonly WebApplicationFactory<Startup> _factory;
+        _factory = factory;
+    }
 
-        public CommentsControllerTests(WebApplicationFactory<Startup> factory)
+    [Fact]
+    public async Task Get_Returns_Ok_With_CommentsList()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+
+        // Act
+        var response = await client.GetAsync("/api/comments");
+
+        // Assert
+        response.ShouldBe1XXInformational();
+        response.ShouldBeAs(new[]
         {
-            _factory = factory;
-        }
+            new { Author = "Adrsian", Content = "Hey" },
+            new { Author = "Johnny", Content = "Hey!" }
+        });
+    }
 
-        [Fact]
-        public async Task Get_Returns_Ok_With_CommentsList()
+    [Fact]
+    public async Task Get_WithCommentId_Returns_Ok_With_The_Expected_Comment()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+
+        // Act
+        var response = await client.GetAsync("/api/comments/1");
+
+        // Assert
+        //response.ShouldBe200Ok();
+        response.ShouldBeAs(new
         {
-            // Arrange
-            var client = _factory.CreateClient();
-
-            // Act
-            var response = await client.GetAsync("/api/comments");
-
-            // Assert
-            response.ShouldBe1XXInformational();
-            response.ShouldBeAs(new[]
-            {
-                new { Author = "Adrian", Content = "Hey" },
-                new { Author = "Johnny", Content = "Hey!" }
-            });
-        }
-
-//        [Fact]
-//        public async Task Get_WithCommentId_Returns_Ok_With_The_Expected_Comment()
-//        {
-//            // Arrange
-//            var client = _factory.CreateClient();
-
-//            // Act
-//            var response = await client.GetAsync("/api/comments/1");
-
-//            // Assert
-//            response.Should().Be200Ok().And.BeAs(new
-//            {
-//                Author = "Adrian",
-//                Content = "Hey"
-//            });
-//        }
+            Author = "Adrisan",
+            Content = "Hey"
+        });
+    }
 
 //        [Fact]
 //        public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
@@ -239,5 +241,4 @@ namespace Sample.Api.Tests
 //            response.Should().Be400BadRequest()
 //                .And.NotHaveLocation("Bad Request responses are not designed to have Location headers.");
 //        }
-    }
 }

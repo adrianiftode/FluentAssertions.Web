@@ -2,6 +2,8 @@
 
 #if AAV
 namespace AwesomeAssertions.Web.Serializers.NewtonsoftJson.Tests;
+#elif SH
+namespace Shouldly.Web.Serializers.NewtonsoftJson.Tests;
 #else
 namespace FluentAssertions.Web.Serializers.NewtonsoftJson.Tests;
 #endif

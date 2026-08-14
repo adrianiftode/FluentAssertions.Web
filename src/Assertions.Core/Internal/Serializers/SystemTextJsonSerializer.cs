@@ -6,9 +6,9 @@ using AwesomeAssertions;
 using FluentAssertions;
 #endif
 
-namespace Assertions.Core.Internal.Serializers;
+namespace Assertions.Core.Internal;
 
-internal class SystemTextJsonSerializer : ISerializer
+public class SystemTextJsonSerializer : ISerializer
 {
     public async Task<object?> Deserialize(Stream content, Type modelType)
     {

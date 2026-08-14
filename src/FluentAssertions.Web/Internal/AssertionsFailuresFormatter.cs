@@ -22,15 +22,7 @@ internal class AssertionsFailuresFormatter : IValueFormatter
     {
         var assertionsFailures = (AssertionsFailures)value;
 
-        var messageBuilder = new StringBuilder();
-        messageBuilder.AppendLine();
-        messageBuilder.AppendLine();
-
-        foreach (var failure in assertionsFailures.FailuresMessages)
-        {
-            messageBuilder.AppendLine($"    - { failure.ReplaceFirstWithLowercase() }");
-        }
-
-        formattedGraph.AddFragment(messageBuilder.ToString());
+        var fragment = assertionsFailures.Format();
+        formattedGraph.AddFragment(fragment);
     }
 }

@@ -1,6 +1,5 @@
 ﻿
 
-// ReSharper disable CheckNamespace
 #if SH
 namespace Shouldly;
 #elif AAV

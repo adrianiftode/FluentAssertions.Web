@@ -1,4 +1,5 @@
-﻿using AwesomeAssertions.Web.Internal.Serializers;
+﻿
+using Assertions.Core.Internal;
 
 namespace AwesomeAssertions.Web.AwesomeAssertionsWebConfig.Tests.Serializers;
 

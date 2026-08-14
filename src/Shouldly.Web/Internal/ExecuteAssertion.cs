@@ -7,19 +7,18 @@ internal class ExecuteAssertion
     private readonly bool _condition;
     private readonly string _contextName;
     private string _becausePhrase = string.Empty;
-    private object[] _becauseArgs = Array.Empty<object>();
+    private object[] _becauseArgs = [];
 
-    // Private constructor ensures the static entry point is always used
     private ExecuteAssertion(bool condition, string contextName)
     {
         _condition = condition;
-        _contextName = string.IsNullOrWhiteSpace(contextName) ? "The subject" : contextName;
+        _contextName = string.IsNullOrWhiteSpace(contextName) ? "actual" : contextName;
     }
 
     /// <summary>
     /// The single static entry point for evaluating conditions and capturing context names.
     /// </summary>
-    public static ExecuteAssertion ForCondition(bool condition, string contextName = "The subject")
+    public static ExecuteAssertion ForCondition(bool condition, string contextName = "actual")
     {
         return new ExecuteAssertion(condition, contextName);
     }
@@ -27,16 +26,16 @@ internal class ExecuteAssertion
     /// <summary>
     /// Chains custom reasons and structural formatting arguments.
     /// </summary>
-    public ExecuteAssertion BecauseOf(string because, params object[] becauseArgs)
+    public ExecuteAssertion BecauseOf(string because, params object[]? becauseArgs)
     {
         if (!string.IsNullOrWhiteSpace(because))
         {
-            string trimmed = because.Trim();
+            var trimmed = because.Trim();
             _becausePhrase = trimmed.StartsWith("because", StringComparison.OrdinalIgnoreCase)
                 ? $" {trimmed}"
                 : $" because {trimmed}";
 
-            _becauseArgs = becauseArgs ?? Array.Empty<object>();
+            _becauseArgs = becauseArgs ?? [];
         }
         return this;
     }
@@ -44,11 +43,11 @@ internal class ExecuteAssertion
     /// <summary>
     /// Evaluates the assertion. Throws formatted multiline exceptions on failure.
     /// </summary>
-    public void FailWith(string messageTemplate, params object[] messageArgs)
+    public void FailWith(string messageTemplate, params object[]? messageArgs)
     {
         if (_condition) return;
 
-        string formattedReason = _becausePhrase;
+        var formattedReason = _becausePhrase;
         if (_becauseArgs.Length > 0 && !string.IsNullOrEmpty(_becausePhrase))
         {
             try
@@ -58,12 +57,11 @@ internal class ExecuteAssertion
             catch (FormatException) { }
         }
 
-        // Bind FluentAssertions context strings
-        string processedTemplate = messageTemplate
-            .Replace("{context:response}", _contextName)
+        var processedTemplate = messageTemplate
+            .Replace("{context:actual}", _contextName)
             .Replace("{reason}", formattedReason);
 
-        string finalMessage = messageArgs != null && messageArgs.Length > 0
+        var finalMessage = messageArgs is { Length: > 0 }
             ? string.Format(processedTemplate, messageArgs)
             : processedTemplate;
 

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);FAV8;AAV</DefineConstants>
+    <DefineConstants>$(DefineConstants);AAV</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +10,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Assertions.Core\Assertions.Core.csproj" />
     <ProjectReference Include="..\..\src\AwesomeAssertions.HttpMessageFormatter\AwesomeAssertions.HttpMessageFormatter.csproj" />
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Serializers.NewtonsoftJson\AwesomeAssertions.Web.Serializers.NewtonsoftJson.csproj" />
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web\AwesomeAssertions.Web.csproj" />

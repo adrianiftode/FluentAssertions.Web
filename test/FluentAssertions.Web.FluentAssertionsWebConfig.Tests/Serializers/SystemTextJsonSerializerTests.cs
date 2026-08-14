@@ -1,4 +1,4 @@
-﻿using FluentAssertions.Web.Internal.Serializers;
+﻿using Assertions.Core.Internal;
 
 namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests.Serializers;
 

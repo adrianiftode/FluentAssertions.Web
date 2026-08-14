@@ -1,4 +1,5 @@
-﻿#if SH
+﻿
+#if SH
 using Shouldly;
 #elif AAV
 using AwesomeAssertions;
@@ -19,9 +20,9 @@ namespace FluentAssertions;
 
 #if SH
 /// <summary>
-/// Holder of the global <see cref="ShouldlyAssertionsWebConfig"/>
+/// Holder of the global <see cref="ShouldlyWebConfig"/>
 /// </summary>
-public static class ShouldlyAssertionsWebConfig
+public static class ShouldlyWebConfig
 #elif AAV
 /// <summary>
 /// Holder of the global <see cref="AwesomeAssertionsWebConfig"/>
@@ -37,7 +38,7 @@ public static class FluentAssertionsWebConfig
     private static ISerializer? _serializer;
 
 #if SH
-    static ShouldlyAssertionsWebConfig() => Serializer = new SystemTextJsonSerializer();
+    static ShouldlyWebConfig() => Serializer = new SystemTextJsonSerializer();
 #elif AAV
     static AwesomeAssertionsWebConfig() => Serializer = new SystemTextJsonSerializer();
 #else

@@ -18,7 +18,7 @@ public class HttpStatusCodeAssertionsSpecs
             subject.ShouldBe1XXInformational();
 
         // Assert
-        act.Should().NotThrow();
+        act.ShouldNotThrow();
     }
 
     [Theory]
@@ -35,8 +35,9 @@ public class HttpStatusCodeAssertionsSpecs
             subject.ShouldBe1XXInformational("because we want to test the failure {0}", "message");
 
         // Assert
-        act.Should().Throw<XunitException>()
-            .WithMessage("*to have an HTTP status code representing an informational error*message*");
+        act.ShouldThrow<ShouldAssertException>()
+            .Message.ShouldMatch("(.*)to have an HTTP status code representing an informational error(.*)message(.*)")
+            ;
     }
 
     [Fact]
@@ -50,8 +51,9 @@ public class HttpStatusCodeAssertionsSpecs
             subject.ShouldBe1XXInformational("because we want to test the failure {0}", "message");
 
         // Assert
-        act.Should().Throw<XunitException>()
-            .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+        act.ShouldThrow<ShouldAssertException>()
+            .Message.ShouldMatch("Expected a (.*) to assert because we want to test the failure message, but found <null>.")
+            ;
     }
     #endregion
 
@@ -86,8 +88,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be2XXSuccessful("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*have a successful HTTP status code, but it was*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)have a successful HTTP status code, but it was(.*)");
     //}
 
     //[Fact]
@@ -101,8 +103,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be2XXSuccessful("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -138,8 +140,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be3XXRedirection("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*to have an HTTP status code representing a redirection*message*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)to have an HTTP status code representing a redirection(.*)message(.*)");
     //}
 
     //[Fact]
@@ -153,8 +155,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be3XXRedirection("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -189,8 +191,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be4XXClientError("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*to have an HTTP status code representing a client error*message*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)to have an HTTP status code representing a client error(.*)message(.*)");
     //}
 
     //[Fact]
@@ -204,8 +206,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be4XXClientError("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -240,8 +242,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be5XXServerError("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*to have an HTTP status code representing a server error*message*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)to have an HTTP status code representing a server error(.*)message(.*)");
     //}
 
     //[Fact]
@@ -255,8 +257,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be5XXServerError("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -286,8 +288,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().HaveHttpStatusCode(HttpStatusCode.BadRequest, "because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.BadRequest*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.BadRequest(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -301,8 +303,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().HaveHttpStatusCode(HttpStatusCode.InternalServerError, "because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -332,8 +334,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().NotHaveHttpStatusCode(HttpStatusCode.OK, "because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*Did not expect*to have status HttpStatusCode.OK {value: 200}*message*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)Did not expect(.*)to have status HttpStatusCode.OK {value: 200}(.*)message(.*)");
     //}
 
     //[Fact]
@@ -347,8 +349,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().NotHaveHttpStatusCode(HttpStatusCode.InternalServerError, "because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -378,8 +380,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be100Continue("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Continue*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Continue(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -393,8 +395,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be100Continue("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -424,8 +426,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be101SwitchingProtocols("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.SwitchingProtocols*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.SwitchingProtocols(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -439,8 +441,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be101SwitchingProtocols("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion 
 
@@ -470,8 +472,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be200Ok("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.OK*because we want to test the failure message, but found HttpStatusCode.BadRequest {value: 400}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.OK(.*)because we want to test the failure message, but found HttpStatusCode.BadRequest {value: 400}(.*)");
     //}
 
     //[Fact]
@@ -485,8 +487,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be200Ok("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -516,8 +518,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be201Created("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Created*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Created(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -531,8 +533,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be201Created("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -562,8 +564,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be202Accepted("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Accepted*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Accepted(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -577,8 +579,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be202Accepted("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -608,8 +610,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be203NonAuthoritativeInformation("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.NonAuthoritativeInformation*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.NonAuthoritativeInformation(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -623,8 +625,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be203NonAuthoritativeInformation("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -654,8 +656,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be204NoContent("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.NoContent*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.NoContent(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -669,8 +671,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be204NoContent("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -700,8 +702,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be205ResetContent("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.ResetContent*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.ResetContent(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -715,8 +717,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be205ResetContent("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -746,8 +748,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be206PartialContent("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.PartialContent*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.PartialContent(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -761,8 +763,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be206PartialContent("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -792,8 +794,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be300MultipleChoices("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.MultipleChoices*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.MultipleChoices(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -807,8 +809,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be300MultipleChoices("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -838,8 +840,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be300Ambiguous("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Ambiguous*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Ambiguous(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -853,8 +855,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be300Ambiguous("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -884,8 +886,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be301MovedPermanently("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.MovedPermanently*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.MovedPermanently(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -899,8 +901,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be301MovedPermanently("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -930,8 +932,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be301Moved("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Moved*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Moved(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -945,8 +947,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be301Moved("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -976,8 +978,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be302Found("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Found*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Found(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -991,8 +993,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be302Found("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1022,8 +1024,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be302Redirect("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Redirect*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Redirect(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1037,8 +1039,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be302Redirect("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1068,8 +1070,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be303SeeOther("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.SeeOther*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.SeeOther(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1083,8 +1085,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be303SeeOther("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1114,8 +1116,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be303RedirectMethod("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.RedirectMethod*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.RedirectMethod(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1129,8 +1131,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be303RedirectMethod("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1160,8 +1162,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be304NotModified("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.NotModified*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.NotModified(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1175,8 +1177,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be304NotModified("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1206,8 +1208,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be305UseProxy("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.UseProxy*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.UseProxy(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1221,8 +1223,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be305UseProxy("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1252,8 +1254,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be306Unused("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Unused*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Unused(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1267,8 +1269,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be306Unused("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1298,8 +1300,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be307TemporaryRedirect("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.TemporaryRedirect*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.TemporaryRedirect(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1313,8 +1315,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be307TemporaryRedirect("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1344,8 +1346,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be307RedirectKeepVerb("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.RedirectKeepVerb*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.RedirectKeepVerb(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1359,8 +1361,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be307RedirectKeepVerb("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion 
 
@@ -1390,8 +1392,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be308PermanentRedirect("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.PermanentRedirect*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.PermanentRedirect(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1405,8 +1407,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be308PermanentRedirect("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion 
 
@@ -1436,8 +1438,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be400BadRequest("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.BadRequest*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.BadRequest(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1451,8 +1453,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be400BadRequest("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1482,8 +1484,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be401Unauthorized("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Unauthorized*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Unauthorized(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1497,8 +1499,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be401Unauthorized("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1528,8 +1530,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be402PaymentRequired("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.PaymentRequired*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.PaymentRequired(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1543,8 +1545,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be402PaymentRequired("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1574,8 +1576,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be403Forbidden("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Forbidden*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Forbidden(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1589,8 +1591,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be403Forbidden("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1620,8 +1622,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be404NotFound("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.NotFound*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.NotFound(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1635,8 +1637,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be404NotFound("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1666,8 +1668,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be405MethodNotAllowed("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.MethodNotAllowed*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.MethodNotAllowed(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1681,8 +1683,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be405MethodNotAllowed("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1712,8 +1714,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be406NotAcceptable("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.NotAcceptable*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.NotAcceptable(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1727,8 +1729,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be406NotAcceptable("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1758,8 +1760,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be407ProxyAuthenticationRequired("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.ProxyAuthenticationRequired*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.ProxyAuthenticationRequired(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1773,8 +1775,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be407ProxyAuthenticationRequired("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1804,8 +1806,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be408RequestTimeout("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.RequestTimeout*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.RequestTimeout(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1819,8 +1821,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be408RequestTimeout("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1850,8 +1852,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be409Conflict("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Conflict*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Conflict(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1865,8 +1867,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be409Conflict("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1896,8 +1898,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be410Gone("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.Gone*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.Gone(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1911,8 +1913,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be410Gone("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1942,8 +1944,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be411LengthRequired("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.LengthRequired*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.LengthRequired(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -1957,8 +1959,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be411LengthRequired("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -1988,8 +1990,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be412PreconditionFailed("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.PreconditionFailed*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.PreconditionFailed(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2003,8 +2005,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be412PreconditionFailed("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2034,8 +2036,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be413RequestEntityTooLarge("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.RequestEntityTooLarge*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.RequestEntityTooLarge(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2049,8 +2051,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be413RequestEntityTooLarge("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2080,8 +2082,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be414RequestUriTooLong("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.RequestUriTooLong*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.RequestUriTooLong(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2095,8 +2097,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be414RequestUriTooLong("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2126,8 +2128,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be415UnsupportedMediaType("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.UnsupportedMediaType*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.UnsupportedMediaType(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2141,8 +2143,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be415UnsupportedMediaType("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2172,8 +2174,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be416RequestedRangeNotSatisfiable("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.RequestedRangeNotSatisfiable*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.RequestedRangeNotSatisfiable(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2187,8 +2189,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be416RequestedRangeNotSatisfiable("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2218,8 +2220,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be417ExpectationFailed("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.ExpectationFailed*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.ExpectationFailed(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2233,8 +2235,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be417ExpectationFailed("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2264,8 +2266,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be422UnprocessableEntity("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.UnprocessableEntity*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.UnprocessableEntity(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2279,8 +2281,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be422UnprocessableEntity("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2310,8 +2312,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be429TooManyRequests("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.TooManyRequests*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.TooManyRequests(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2325,8 +2327,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be429TooManyRequests("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2356,8 +2358,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be426UpgradeRequired("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.UpgradeRequired*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.UpgradeRequired(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2371,8 +2373,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be426UpgradeRequired("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2402,8 +2404,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be500InternalServerError("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.InternalServerError*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.InternalServerError(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2417,8 +2419,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be500InternalServerError("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2448,8 +2450,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be501NotImplemented("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.NotImplemented*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.NotImplemented(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2463,8 +2465,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be501NotImplemented("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2494,8 +2496,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be502BadGateway("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.BadGateway*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.BadGateway(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2509,8 +2511,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be502BadGateway("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2540,8 +2542,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be503ServiceUnavailable("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.ServiceUnavailable*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.ServiceUnavailable(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2555,8 +2557,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be503ServiceUnavailable("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2586,8 +2588,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be504GatewayTimeout("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.GatewayTimeout*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.GatewayTimeout(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2601,8 +2603,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be504GatewayTimeout("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion
 
@@ -2632,8 +2634,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be505HttpVersionNotSupported("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("*HttpStatusCode.HttpVersionNotSupported*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("(.*)HttpStatusCode.HttpVersionNotSupported(.*)because we want to test the failure message, but found HttpStatusCode.OK {value: 200}(.*)");
     //}
 
     //[Fact]
@@ -2647,8 +2649,8 @@ public class HttpStatusCodeAssertionsSpecs
     //        subject.Should().Be505HttpVersionNotSupported("because we want to test the failure {0}", "message");
 
     //    // Assert
-    //    act.Should().Throw<XunitException>()
-    //        .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    //    act.Should().Throw<ShouldAssertException>()
+    //        .WithMessage("Expected a (.*) to assert because we want to test the failure message, but found <null>.");
     //}
     //#endregion 
 }

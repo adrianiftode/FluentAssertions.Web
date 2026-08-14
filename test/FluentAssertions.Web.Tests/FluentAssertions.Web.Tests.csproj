@@ -1,13 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);FAV8</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="FluentAssertions" />
     <PackageReference Include="FluentAssertions.Analyzers" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Assertions.Core\Assertions.Core.csproj" />
     <ProjectReference Include="..\..\src\FluentAssertions.HttpMessageFormatter\FluentAssertions.HttpMessageFormatter.csproj" />
     <ProjectReference Include="..\..\src\FluentAssertions.Web.Serializers.NewtonsoftJson\FluentAssertions.Web.Serializers.NewtonsoftJson.csproj" />
+    <ProjectReference Include="..\..\src\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
     <ProjectReference Include="..\..\src\FluentAssertions.Web\FluentAssertions.Web.csproj" />
   </ItemGroup>
 
