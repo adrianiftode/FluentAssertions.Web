@@ -1,4 +1,5 @@
 ﻿#if AAV
+using Assertions.Web;
 using AwesomeAssertions.Formatting;
 using AwesomeAssertions.Primitives;
 #else
@@ -56,11 +57,7 @@ public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<Htt
 
     private protected (bool success, string? errorMessage) TryGetSubjectModel(out object? model, Type modelType)
     {
-#if AAV
-        var serializer = AwesomeAssertionsWebConfig.Serializer;
-#else
-        var serializer = FluentAssertionsWebConfig.Serializer;
-#endif
+        var serializer = AssertionsWebConfig.Serializer;
         
         Func<Task<object?>> readModel = () => Subject.Content.ReadAsAsync(modelType, serializer);
         try

@@ -1,4 +1,5 @@
-﻿global using Assertions.Core.Internal;
+﻿global using Assertions.Web;
+global using Assertions.Web.Internal;
 global using AwesomeAssertions.Equivalency;
 global using AwesomeAssertions.Execution;
 global using AwesomeAssertions.Web;

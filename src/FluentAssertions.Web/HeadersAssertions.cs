@@ -1,9 +1,9 @@
 ﻿#if AAV
-using Assertions.Core.Internal;
+using Assertions.Web.Internal;
 
 namespace AwesomeAssertions.Web;
 #else
-using Assertions.Core.Internal;
+using Assertions.Web.Internal;
 
 namespace FluentAssertions.Web;
 #endif

@@ -9,13 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Shouldly.Web.Types\Shouldly.Web.Types.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web.Serializers.NewtonsoftJson\Assertions.Web.Serializers.NewtonsoftJson.csproj" />
     <ProjectReference Include="..\..\src\Shouldly.Web\Shouldly.Web.csproj" />
-    <ProjectReference Include="..\..\src\Shouldly.Web.Serializers.NewtonsoftJson\Shouldly.Web.Serializers.NewtonsoftJson.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\FluentAssertions.Web.Serializers.NewtonsoftJson.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj;**\ConfigureFluentAssertionsWebFixture.cs">
+    <Compile Include="..\Assertions.Web.Serializers.NewtonsoftJson.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
   </ItemGroup>

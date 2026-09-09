@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HttpMessageFormatter\HttpMessageFormatter.csproj" />
-    <ProjectReference Include="..\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

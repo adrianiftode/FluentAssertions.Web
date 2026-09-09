@@ -10,9 +10,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Assertions.Core\Assertions.Core.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
     <ProjectReference Include="..\..\src\FluentAssertions.HttpMessageFormatter\FluentAssertions.HttpMessageFormatter.csproj" />
-    <ProjectReference Include="..\..\src\FluentAssertions.Web.Serializers.NewtonsoftJson\FluentAssertions.Web.Serializers.NewtonsoftJson.csproj" />
     <ProjectReference Include="..\..\src\FluentAssertions.Web.v8\FluentAssertions.Web.v8.csproj" />
   </ItemGroup>
 

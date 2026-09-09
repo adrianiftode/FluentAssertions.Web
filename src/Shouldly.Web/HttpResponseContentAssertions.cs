@@ -114,72 +114,55 @@ public static class HttpResponseContentAssertions
                        new FormatHttpResponseMessage(actual));
     }
 
-//    /// <summary>
-//    /// Asserts that HTTP actual has content that matches a wildcard pattern.
-//    /// </summary>
-//    /// <param name="expectedWildcardText">
-//    /// The wildcard pattern with which actual is matched, where * and ? have special meanings.
-//    /// <remarks>
-//    ///     <para>* - Matches any number of characters. You can use the asterisk (*) anywhere in a character string. Example: wh* finds what, white, and why, but not awhile or watch.</para>
-//    ///     <para>? - Matches a single alphabet in a specific position. Example: b?ll finds ball, bell, and bill.</para>
-//    /// </remarks>
-//    /// </param>
-//    /// <param name="because">
-//    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
-//    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
-//    /// </param>
-//    /// <param name="becauseArgs">
-//    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
-//    /// </param>
-//    [CustomAssertion]
-//    public AndConstraint<HttpResponseMessageAssertions> MatchInContent(string expectedWildcardText, string because = "", params object[] becauseArgs)
-//    {
-//        Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify an HTTP actual content match a <null> wildcard pattern.");
+    /// <summary>
+    /// Asserts that HTTP actual has content that matches a wildcard pattern.
+    /// </summary>
+    /// <param name="actual">The actual HttpResponseMessage to be asserted on.</param>
+    /// <param name="expectedWildcardText">
+    /// The wildcard pattern with which actual is matched, where * and ? have special meanings.
+    /// <remarks>
+    ///     <para>* - Matches any number of characters. You can use the asterisk (*) anywhere in a character string. Example: wh* finds what, white, and why, but not awhile or watch.</para>
+    ///     <para>? - Matches a single alphabet in a specific position. Example: b?ll finds ball, bell, and bill.</para>
+    /// </remarks>
+    /// </param>
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    public static void ShouldMatchInContent(this HttpResponseMessage? actual, string expectedWildcardText, string because = "", params object[] becauseArgs)
+    {
+        Guard.ThrowIfArgumentIsNull(expectedWildcardText, nameof(expectedWildcardText), "Cannot verify an HTTP actual content match a <null> wildcard pattern.");
 
-//#if FAV8
-//        CurrentAssertionChain
-//#else
-//        Execute.Assertion
-//#endif
-//            .ForCondition(Subject is not null)
-//            .BecauseOf(because, becauseArgs)
-//            .FailWith("Expected a {context:actual} to assert{reason}, but found <null>.");
+        ExecuteAssertion
+            .ForCondition(actual is not null)
+            .BecauseOf(because, becauseArgs)
+            .FailWith("Expected a {context:actual} to assert{reason}, but found <null>.");
 
-//        var content = GetContent();
+        var content = actual!.GetContent();
 
-//        if (string.IsNullOrEmpty(content))
-//        {
-//#if FAV8
-//        CurrentAssertionChain
-//#else
-//            Execute.Assertion
-//#endif
-//                    .BecauseOf(because, becauseArgs)
-//                    .FailWith("Expected {context:actual} to match the wildcard pattern {0} in its content, but content was <null>{reason}. {1}",
-//                        expectedWildcardText,
-//                        Subject);
-//        }
+        if (string.IsNullOrEmpty(content))
+        {
+            ExecuteAssertion
+                .ForCondition(false)    
+                .BecauseOf(because, becauseArgs)
+                    .FailWith("Expected {context:actual} to match the wildcard pattern {0} in its content, but content was <null>{reason}. {1}",
+                        expectedWildcardText,
+                        new FormatHttpResponseMessage(actual));
+        }
 
-//        string[] failures;
+        Action<string> assertionScope = (content) => {
+            content!.ShouldMatch(expectedWildcardText);
+        };
+        var failures = assertionScope!.CollectFailuresFromAssertion(content);
 
-//        using (var scope = new AssertionScope())
-//        {
-//            content.Should().Match(expectedWildcardText);
-
-//            failures = scope.Discard();
-//        }
-
-//#if FAV8
-//        CurrentAssertionChain
-//#else
-//        Execute.Assertion
-//#endif
-//                   .BecauseOf(because, becauseArgs)
-//                   .ForCondition(failures.Length == 0)
-//                   .FailWith("Expected {context:actual} to match a wildcard pattern in its content, but does not since:{0}{reason}. {1}",
-//                       new AssertionsFailures(failures),
-//                       Subject);
-
-//        return new AndConstraint<HttpResponseMessageAssertions>(this);
-//    }
+        ExecuteAssertion
+                   .ForCondition(failures.Length == 0)
+                   .BecauseOf(because, becauseArgs)
+                   .FailWith("Expected {context:actual} to match a wildcard pattern in its content, but does not since:{0}{reason}. {1}",
+                       new AssertionsFailures(failures),
+                       new FormatHttpResponseMessage(actual));
+    }
 }

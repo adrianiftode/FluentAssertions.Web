@@ -1,6 +1,4 @@
 ﻿
-using Assertions.Core.Internal;
-
 namespace AwesomeAssertions.Web.AwesomeAssertionsWebConfig.Tests.Serializers;
 
 [Collection("Serializers Tests")]
@@ -9,12 +7,12 @@ public class SystemTextJsonSerializerTests
     [Fact]
     public void DefaultSerializer_IsOfSystemTextJsonSerializer_Type()
     {
-        AwesomeAssertions.AwesomeAssertionsWebConfig.Serializer.Should().BeOfType<SystemTextJsonSerializer>();
+        AssertionsWebConfig.Serializer.Should().BeOfType<SystemTextJsonSerializer>();
     }
 
     [Fact]
     public void Options_Is_Not_Null()
     {
-        SystemTextJsonSerializerConfig.Options.Should().NotBeNull();
+       SystemTextJsonSerializerConfig.Options.Should().NotBeNull();
     }
 }

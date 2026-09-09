@@ -4,11 +4,7 @@ using AwesomeAssertions.Web.Tests.TestModels;
 using FluentAssertions.Web.Tests.TestModels;
 #endif
 
-#if AAV
-namespace AwesomeAssertions.Web.Tests;
-#else
-namespace FluentAssertions.Web.Tests;
-#endif
+namespace Assertions.Web.Tests;
 
 public class SatisfyModelAssertionsAsyncSpecs
 {

@@ -1,8 +1,7 @@
-// Global using directives
-
-global using Assertions.Core.Internal;
-global using Assertions.Core;
+global using Assertions.Web;
+global using Assertions.Web.Internal;
 global using System;
+global using System.Linq;
 global using System.Net;
 global using System.Net.Http;
 global using System.Runtime.CompilerServices;

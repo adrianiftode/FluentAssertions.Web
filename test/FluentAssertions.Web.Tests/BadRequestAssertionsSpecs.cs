@@ -1,8 +1,4 @@
-﻿#if AAV
-namespace AwesomeAssertions.Web.Tests;
-#else
-namespace FluentAssertions.Web.Tests;
-#endif
+﻿namespace Assertions.Web.Tests;
 
 public class BadRequestAssertionsSpecs
 {
@@ -23,12 +19,21 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBe400BadRequest();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be400BadRequest();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     #region HaveError

@@ -1,15 +1,7 @@
-#if AAV
-using AwesomeAssertions.Formatting;
-#else
-using FluentAssertions.Formatting;
-#endif
+namespace Assertions.Web.Tests;
 
 
-#if AAV
-namespace AwesomeAssertions.Web.Tests;
-#else
-namespace FluentAssertions.Web.Tests;
-#endif
+namespace Assertions.Web.Tests;
 
 public class HttpResponseMessageFormatterSpecs
 {
