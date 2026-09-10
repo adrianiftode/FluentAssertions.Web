@@ -71,7 +71,6 @@ public static class HttpResponseContentAssertions
     /// <param name="becauseArgs">
     /// Zero or more objects to format using the placeholders in <see paramref="because" />.
     /// </param>
-
     public static void ShouldBeAs<TModel>(this HttpResponseMessage? actual, TModel expectedModel, EquivalencyOptions? options, [CallerArgumentExpression("actual")] string responseExpression = "actual", string because = "", params object[] becauseArgs)
     {
         ExecuteAssertion
