@@ -9,17 +9,18 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <!-- Fluent Assertions 8 and AwesomeAssertions share the same API (ie primitives like CurrentAssertionChain) -->
     <DefineConstants>$(DefineConstants);FAV8;AAV</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AwesomeAssertions"/>
+    <PackageReference Include="AwesomeAssertions" />
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" PrivateAssets="all"/>
-    <ProjectReference Include="..\AwesomeAssertions.HttpMessageFormatter\AwesomeAssertions.HttpMessageFormatter.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\Assertions.Web\Assertions.Web.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\AwesomeAssertions.HttpMessageFormatter\AwesomeAssertions.HttpMessageFormatter.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\HttpMessageFormatter\HttpMessageFormatter.csproj" />
   </ItemGroup>
 

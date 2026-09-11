@@ -1,8 +1,4 @@
-﻿#if AAV
-namespace AwesomeAssertions.Web.Tests;
-#else
-namespace FluentAssertions.Web.Tests;
-#endif
+﻿namespace Assertions.Web.Tests;
 
 public class HttpResponseContentAssertionsSpecs
 {
@@ -343,10 +339,10 @@ public class HttpResponseContentAssertionsSpecs
 
         // Act
         Action act = () =>
-#if FAV8
-            subject.Should().BeAs(new { }, options: (Func<EquivalencyOptions<object>, EquivalencyOptions<object>>)(null!));
-#else
+#if !FAV8
             subject.Should().BeAs(new { }, options: (Func<EquivalencyAssertionOptions<object>, EquivalencyAssertionOptions<object>>)(null!));
+#else
+            subject.Should().BeAs(new { }, options: (Func<EquivalencyOptions<object>, EquivalencyOptions<object>>)(null!));
 #endif
 
         // Assert

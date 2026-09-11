@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);SH</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web.Serializers.NewtonsoftJson\Assertions.Web.Serializers.NewtonsoftJson.csproj" />
+    <ProjectReference Include="..\..\src\Shouldly.Web\Shouldly.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Assertions.Web.Serializers.NewtonsoftJson.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+
+</Project>

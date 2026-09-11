@@ -14,13 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" PrivateAssets="all" />
-    <ProjectReference Include="..\FluentAssertions.HttpMessageFormatter\FluentAssertions.HttpMessageFormatter.csproj" PrivateAssets="all"/>
+    <ProjectReference Include="..\Assertions.Web\Assertions.Web.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\FluentAssertions.HttpMessageFormatter\FluentAssertions.HttpMessageFormatter.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\HttpMessageFormatter\HttpMessageFormatter.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../readme.md" Pack="true" PackagePath="\"/>
+    <None Include="../../readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <PropertyGroup>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
@@ -29,7 +29,7 @@
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
     <ItemGroup>
       <!-- Filter out unnecessary files -->
-      <_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PrivateAssets', 'all'))"/>
+      <_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'all'))" />
     </ItemGroup>
 
     <!-- Print batches for debug purposes -->
@@ -37,7 +37,7 @@
 
     <ItemGroup>
       <!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
-      <BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)"/>
+      <BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
     </ItemGroup>
   </Target>
 

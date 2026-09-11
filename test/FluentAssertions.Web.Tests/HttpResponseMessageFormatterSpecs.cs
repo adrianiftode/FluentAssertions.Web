@@ -1,15 +1,8 @@
-#if AAV
-using AwesomeAssertions.Formatting;
-#else
+
+namespace Assertions.Web.Tests;
+
+#if !SH && !AAV
 using FluentAssertions.Formatting;
-#endif
-
-
-#if AAV
-namespace AwesomeAssertions.Web.Tests;
-#else
-namespace FluentAssertions.Web.Tests;
-#endif
 
 public class HttpResponseMessageFormatterSpecs
 {
@@ -509,7 +502,7 @@ public class HttpResponseMessageFormatterSpecs
             margin: 3px 0 10px 30px;
         }
 
-        #header {
+# header {
             font-size: 18px;
             padding: 15px 0;
             border-top: 1px #ddd solid;
@@ -517,7 +510,7 @@ public class HttpResponseMessageFormatterSpecs
             margin-bottom: 0;
         }
 
-            #header li {
+# header li {
                 display: inline;
                 margin: 5px;
                 padding: 5px;
@@ -525,59 +518,59 @@ public class HttpResponseMessageFormatterSpecs
                 cursor: pointer;
             }
 
-            #header .selected {
+# header .selected {
                 background: #44c5f2;
                 color: #fff;
             }
 
-        #stackpage ul {
+# stackpage ul {
             list-style: none;
             padding-left: 0;
             margin: 0;
             /*border-bottom: 1px #ddd solid;*/
         }
 
-        #stackpage .details {
+# stackpage .details {
             font-size: 1.2em;
             padding: 3px;
             color: #000;
         }
 
-        #stackpage .stackerror {
+# stackpage .stackerror {
             padding: 5px;
             border-bottom: 1px #ddd solid;
         }
 
 
-        #stackpage .frame {
+# stackpage .frame {
             padding: 0;
             margin: 0 0 0 30px;
         }
 
-            #stackpage .frame h3 {
+# stackpage .frame h3 {
                 padding: 2px;
                 margin: 0;
             }
 
-        #stackpage .source {
+# stackpage .source {
             padding: 0 0 0 30px;
         }
 
-            #stackpage .source ol li {
+# stackpage .source ol li {
                 font-family: Consolas, "Courier New", courier, monospace;
                 white-space: pre;
                 background-color: #fbfbfb;
             }
 
-        #stackpage .frame .source .highlight li span {
+# stackpage .frame .source .highlight li span {
             color: #FF0000;
         }
 
-        #stackpage .source ol.collapsible li {
+# stackpage .source ol.collapsible li {
             color: #888;
         }
 
-            #stackpage .source ol.collapsible li span {
+# stackpage .source ol.collapsible li span {
                 color: #606060;
             }
 
@@ -1498,3 +1491,4 @@ public class HttpResponseMessageFormatterSpecs
             """);
     }
 }
+#endif

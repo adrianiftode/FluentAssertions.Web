@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CustomStartupConfigurationsTests.cs" />
+    <Compile Remove="FilesControllerTests.cs" />
+    <Compile Remove="ValuesControllerTests.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions.Analyzers" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" VersionOverride="9.0.1" />
+    <ProjectReference Include="..\..\samples\Sample.Api.Net90\Sample.Api.Net90.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net10.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" VersionOverride="10.0.10" />
+    <ProjectReference Include="..\..\samples\Sample.Api.Net10\Sample.Api.Net10.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Shouldly.Web\Shouldly.Web.csproj" />
+  </ItemGroup>
+
+</Project>

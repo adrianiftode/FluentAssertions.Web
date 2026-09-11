@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);SH</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Backup\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
+    <ProjectReference Include="..\..\src\HttpMessageFormatter\HttpMessageFormatter.csproj" />
+    <ProjectReference Include="..\..\src\Shouldly.Web\Shouldly.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FluentAssertions.Web.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj;**\Internal\**">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+  
+</Project>

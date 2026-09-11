@@ -1,0 +1,11 @@
+global using Assertions.Web;
+global using Assertions.Web.Internal;
+global using System;
+global using System.Linq;
+global using System.Net;
+global using System.Net.Http;
+global using System.Runtime.CompilerServices;
+global using System.Threading.Tasks;
+global using HttpMessageFormatter;
+global using Shouldly;
+global using Shouldly.Web.Internal;

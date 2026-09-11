@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);FAV8;AAV</DefineConstants>
+    <DefineConstants>$(DefineConstants);AAV;FA8</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,13 +10,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web.Serializers.NewtonsoftJson\Assertions.Web.Serializers.NewtonsoftJson.csproj" />
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web\AwesomeAssertions.Web.csproj" />
-    <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" />
-    <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Serializers.NewtonsoftJson\AwesomeAssertions.Web.Serializers.NewtonsoftJson.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\FluentAssertions.Web.Serializers.NewtonsoftJson.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj;**\ConfigureFluentAssertionsWebFixture.cs">
+    <Compile Include="..\Assertions.Web.Serializers.NewtonsoftJson.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Compile>
   </ItemGroup>

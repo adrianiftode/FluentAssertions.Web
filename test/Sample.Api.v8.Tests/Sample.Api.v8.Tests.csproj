@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\FluentAssertions.Web.v8\FluentAssertions.Web.v8.csproj" />
-    <ProjectReference Include="..\..\src\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" />
   </ItemGroup>
 
   <ItemGroup>
