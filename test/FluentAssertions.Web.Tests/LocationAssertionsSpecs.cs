@@ -3,6 +3,63 @@
 public class LocationAssertionsSpecs
 {
     #region HaveLocation
+#if SH
+    [Fact]
+    public void When_asserting_201_created_response_with_location_header_to_have_the_location_header_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage(HttpStatusCode.Created)
+        {
+            Headers =
+        {
+            { "Location", "1.html" }
+        }
+        };
+
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldHaveLocation();
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData((string?)null)]
+    public void When_asserting_201_created_response_with_location_header_and_no_header_value_to_have_the_location_header_it_should_succeed(string? locationValue)
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage(HttpStatusCode.Created);
+        subject.Headers.TryAddWithoutValidation("Location", locationValue);
+
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+    }
+
+    [Fact]
+    public void When_asserting_a_response_with_no_location_header_and_to_have_the_location_header_it_should_throw_with_descriptive_message(string? locationValue)
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage(HttpStatusCode.Created);
+
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldHaveLocation("we want to test the {0}", "reason");
+        };
+
+        // Assert
+        act.ShouldThrow<ShouldAssertException>()
+            .Message.ShouldMatch(@"(.*)Expected subject to not contain the Location HTTP header, but the header was found in the actual response(.*)reason(.*)");
+    }
+#else
     [Fact]
     public void When_asserting_201_created_response_with_location_header_to_have_the_location_header_it_should_succeed()
     {
@@ -239,23 +296,8 @@ public class LocationAssertionsSpecs
         // Assert
         act.Should().NotThrow();
     }
-
-    [Fact]
-    public void When_asserting_201_created_response_without_location_header_to_have_the_location_header_it_should_throw_with_descriptive_message()
-    {
-        // Arrange
-        using var subject = new HttpResponseMessage(HttpStatusCode.Created);
-
-        // Act
-        Action act = () =>
-            subject.Should().Be201Created().And.HaveLocation("we want to test the {0}", "reason");
-
-        // Assert
-        act.Should().Throw<XunitException>()
-            .WithMessage("Expected subject to contain the Location HTTP header, but no such header was found in the actual response*reason*.");
-    }
+#endif
     #endregion
-
     #region NotHaveLocation
     [Fact]
     public void When_asserting_a_response_without_a_location_header_not_to_have_the_location_header_it_should_succeed()
@@ -265,10 +307,20 @@ public class LocationAssertionsSpecs
 
         // Act
         Action act = () =>
+        {
+#if SH
+            subject.ShouldNotHaveLocation();
+#else
             subject.Should().NotHaveLocation();
+#endif
+        };
 
         // Assert
+#if SH
+        act.ShouldNotThrow();
+#else
         act.Should().NotThrow();
+#endif
     }
 
     [Theory]
@@ -282,12 +334,22 @@ public class LocationAssertionsSpecs
 
         // Act
         Action act = () =>
+        {
+#if SH
+            subject.ShouldNotHaveLocation("we want to test the {0}", "reason");
+#else
             subject.Should().Be201Created().And.NotHaveLocation("we want to test the {0}", "reason");
+#endif
+        };
 
         // Assert
+#if SH
+        act.ShouldThrow<ShouldAssertException>()
+            .Message.ShouldMatch(@"(.*)Expected subject to not contain the Location HTTP header, but the header was found in the actual response(.*)reason(.*)");
+#else
         act.Should().Throw<XunitException>()
             .WithMessage("Expected subject to not contain the Location HTTP header, but the header was found in the actual response*reason*.");
+#endif
     }
-
-    #endregion
+#endregion
 }
