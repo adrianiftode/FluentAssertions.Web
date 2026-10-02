@@ -101,9 +101,10 @@ test_script:
 
 after_test:
   - ps: |
-      if (-not \(env:APPVEYOR_PULL_REQUEST_NUMBER -and -not [string]::IsNullOrWhiteSpace(\)env:SONAR_TOKEN)) {
+      if (-not $env:APPVEYOR_PULL_REQUEST_NUMBER) {
 
-          dotnet sonarscanner end
+          dotnet sonarscanner end `
+            /d:sonar.token="$env:SONAR_TOKEN"
 
           if ($LASTEXITCODE -ne 0) {
               throw "SonarScanner end failed."
