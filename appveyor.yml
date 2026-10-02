@@ -34,13 +34,13 @@ init:
   - cmd: dotnet --version
 
   - ps: |
+      $ErrorActionPreference = "Stop"
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
           try {
               Update-AppveyorBuild -Version $env:APPVEYOR_REPO_TAG_NAME
           }
           catch {
-              Write-Host "Failed to update build version from tag."
-              Write-Host $_.Exception.Message
+              throw "Failed to update build version from tag: $_"
           }
       }
 
