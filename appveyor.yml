@@ -50,7 +50,8 @@ init:
       Write-Host "Pull Request = '$env:APPVEYOR_PULL_REQUEST_NUMBER'"
 
   - ps: |
-      if (-not $env:APPVEYOR_PULL_REQUEST_NUMBER) {
+      $runSonar = (-not $env:APPVEYOR_PULL_REQUEST_NUMBER)
+      if ($runSonar) {
           dotnet tool update -g dotnet-sonarscanner
           if ($LASTEXITCODE -ne 0) {
               dotnet tool install -g dotnet-sonarscanner
@@ -69,7 +70,8 @@ build_script:
   - cmd: set PATH=%JAVA_HOME%\bin;%PATH%
 
   - ps: |
-      if (-not $env:APPVEYOR_PULL_REQUEST_NUMBER) {
+      $runSonar = (-not $env:APPVEYOR_PULL_REQUEST_NUMBER)
+      if ($runSonar) {
 
           if ([string]::IsNullOrWhiteSpace($env:SONAR_TOKEN)) {
               throw "SONAR_TOKEN environment variable is missing."
@@ -97,7 +99,8 @@ test_script:
 
 after_test:
   - ps: |
-      if (-not $env:APPVEYOR_PULL_REQUEST_NUMBER) {
+      $runSonar = (-not $env:APPVEYOR_PULL_REQUEST_NUMBER)
+      if ($runSonar) {
 
           dotnet sonarscanner end `
             /d:sonar.token="$env:SONAR_TOKEN"
