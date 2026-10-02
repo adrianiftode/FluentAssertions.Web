@@ -89,7 +89,7 @@ public class NewtonsoftSerializerTests
     }
 
     [Fact]
-    public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_named_tuple_type_it_should_succeed()
+    public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_named_tuple_type_it_should_throw_with_descriptive_message()
     {
         // Arrange
         using var subject = new HttpResponseMessage
@@ -100,14 +100,16 @@ public class NewtonsoftSerializerTests
         // Act
         Action act = () =>
             subject.Should().Satisfy<(string Property, object _)>(
-                model => model.Property.Should().NotBeEmpty());
+                model => model.Property.Should().NotBeNullOrEmpty(), "because we want to test the {0}", "reason");
 
         // Assert
-        act.Should().NotThrow();
+        act.Should().Throw<XunitException>()
+            .WithMessage("*to have a content equivalent to a model of type *System.ValueTuple`2*, but the JSON representation could not be parsed*" +
+                "*exist only at compile time and are absent from the runtime type*because we want to test the reason*");
     }
 
     [Fact]
-    public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_non_named_tuple_type_it_should_succeed()
+    public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_non_named_tuple_type_it_should_throw_with_descriptive_message()
     {
         // Arrange
         using var subject = new HttpResponseMessage
@@ -118,9 +120,11 @@ public class NewtonsoftSerializerTests
         // Act
         Action act = () =>
             subject.Should().Satisfy<Tuple<string, string>>(
-                model => model.Item1.Should().NotBeEmpty());
+                model => model.Item1.Should().NotBeNullOrEmpty(), "because we want to test the {0}", "reason");
 
         // Assert
-        act.Should().NotThrow();
+        act.Should().Throw<XunitException>()
+            .WithMessage("*to have a content equivalent to a model of type *System.Tuple`2*, but the JSON representation could not be parsed*" +
+                "*exist only at compile time and are absent from the runtime type*because we want to test the reason*");
     }
 }

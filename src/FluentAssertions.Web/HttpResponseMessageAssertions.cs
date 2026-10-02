@@ -50,7 +50,7 @@ public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<Htt
     private protected (bool success, string? errorMessage) TryGetSubjectModel<TModel>(out TModel? model)
     {
         var (success, errorMessage) = TryGetSubjectModel(out var subjectModel, typeof(TModel));
-        model = (TModel?)subjectModel;
+        model = subjectModel is null ? default : (TModel)subjectModel;
         return (success, errorMessage);
     }
 
