@@ -49,8 +49,10 @@ Once the response is ready you'll want to assert it. With first level properties
 
 [![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adrianiftode_FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/project/overview?id=adrianiftode_FluentAssertions.Web)
-[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.svg)](https://www.nuget.org/packages/FluentAssertions.Web)
-[![NuGet FA v8](https://img.shields.io/nuget/v/FluentAssertions.Web.svg)](https://www.nuget.org/packages/FluentAssertions.Web.v8)
+[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.svg?label=FluentAssertions.Web)](https://www.nuget.org/packages/FluentAssertions.Web)
+[![NuGet FA v8](https://img.shields.io/nuget/v/FluentAssertions.Web.svg?label=FluentAssertions.Web.v8)](https://www.nuget.org/packages/FluentAssertions.Web.v8)
+[![NuGet HttpMessageFormatter](https://img.shields.io/nuget/v/HttpMessageFormatter.svg?label=HttpMessageFormatter)](https://www.nuget.org/packages/HttpMessageFormatter/)
+
 
 ### Getting started
 
@@ -241,7 +243,7 @@ The change must be done before the test is run and this depends on the testing f
 The serializer itself is replaceable, so you can implement your own, by implementing the `ISerialize` interface. 
 The serializer is shipped via the **FluentAssertions.Web.Serializers.NewtonsoftJson** and **AwesomeAssertions.Web.Serializers.NewtonsoftJson** package.
 
-[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.Serializers.NewtonsoftJson.svg)](https://www.nuget.org/packages/FluentAssertions.Web.Serializers.NewtonsoftJson)
+[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.Serializers.NewtonsoftJson.svg?label=FluentAssertions.Web.Serializers.NewtonsoftJson)](https://www.nuget.org/packages/FluentAssertions.Web.Serializers.NewtonsoftJson)
 
 
 To set the default serializer to **Newtonsoft.Json** one, use the following configuration:
