@@ -16,7 +16,7 @@ internal static class HttpContentExtensions
 
         try
         {
-            var _ = content?.Headers?.ContentLength;
+            var _ = content.Headers.ContentLength;
             return false;
         }
         catch (ObjectDisposedException)
