@@ -51,7 +51,7 @@ public class SatisfyModelAssertionsSpecs
     }
 
     [Fact]
-    public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_named_tuple_type_it_should_succeed()
+    public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_named_tuple_type_it_should_throw_with_descriptive_message()
     {
         // Arrange
         using var subject = new HttpResponseMessage
@@ -62,15 +62,17 @@ public class SatisfyModelAssertionsSpecs
         // Act
         Action act = () =>
             subject.Should().Satisfy<(string Property, object _)>(
-                model => model.Property.Should().NotBeEmpty());
+                model => model.Property.Should().NotBeNullOrEmpty(), "because we want to test the {0}", "reason");
 
         // Assert
-        act.Should().NotThrow();
+        act.Should().Throw<XunitException>()
+            .WithMessage("*to have a content equivalent to a model of type *System.ValueTuple`2*, but the JSON representation could not be parsed*" +
+                "*exist only at compile time and are absent from the runtime type*because we want to test the reason*");
     }
 
 
     [Fact]
-    public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_non_named_tuple_type_it_should_succeed()
+    public void When_asserting_response_content_with_a_certain_assertion_to_satisfy_assertion_and_model_is_of_non_named_tuple_type_it_should_throw_with_descriptive_message()
     {
         // Arrange
         using var subject = new HttpResponseMessage
@@ -81,10 +83,12 @@ public class SatisfyModelAssertionsSpecs
         // Act
         Action act = () =>
             subject.Should().Satisfy<Tuple<string, string>>(
-                model => model.Item1.Should().NotBeEmpty());
+                model => model.Item1.Should().NotBeNullOrEmpty(), "because we want to test the {0}", "reason");
 
         // Assert
-        act.Should().NotThrow();
+        act.Should().Throw<XunitException>()
+            .WithMessage("*to have a content equivalent to a model of type *System.Tuple`2*, but the JSON representation could not be parsed*" +
+                "*exist only at compile time and are absent from the runtime type*because we want to test the reason*");
     }
 
     [Fact]
@@ -178,6 +182,85 @@ public class SatisfyModelAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    }
+    #endregion
+
+#region Named Tuple Model
+    [Fact]
+    public void When_asserting_response_content_to_be_equivalent_to_a_named_tuple_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().BeAs((Property: "Value", Other: (object?)null));
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*but the JSON representation could not be parsed*" +
+                "*exist only at compile time and are absent from the runtime type*");
+    }
+
+    [Fact]
+    public void When_asserting_response_content_with_leading_whitespace_to_satisfy_assertion_on_a_tuple_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Content = new StringContent(/*lang=json,strict*/ """
+                  
+                  { "property" : "Value" }  
+                
+                """, Encoding.UTF8, "application/json")
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().Satisfy<(string Property, object _)>(model => true.Should().BeTrue());
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*exist only at compile time and are absent from the runtime type*");
+    }
+
+    [Fact]
+    public void When_asserting_response_content_with_a_json_array_to_satisfy_assertion_on_a_tuple_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Content = new StringContent(/*lang=json,strict*/ """[ "Value", 42 ]""", Encoding.UTF8, "application/json")
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().Satisfy<(string, object)>(model => true.Should().BeTrue());
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*" +
+                "*Exception while deserializing the model with SystemTextJsonSerializer*could not be converted to System.ValueTuple*");
+    }
+
+    [Fact]
+    public void When_asserting_response_content_to_satisfy_assertion_on_a_model_with_named_members_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage
+        {
+            Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
+        };
+
+        // Act
+        Action act = () =>
+            subject.Should().Satisfy<Model>(model => model.Property.Should().Be("Value"));
+
+        // Assert
+        act.Should().NotThrow();
     }
     #endregion
 
