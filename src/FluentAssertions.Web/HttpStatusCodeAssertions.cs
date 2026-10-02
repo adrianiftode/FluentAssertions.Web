@@ -1751,6 +1751,40 @@ public partial class HttpResponseMessageAssertions
     }
 
     /// <summary>
+    /// Asserts that an HTTP response has the HTTP status 418 I'm A Teapot
+    /// </summary>        
+    /// <param name="because">
+    /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
+    /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
+    /// </param>
+    /// <param name="becauseArgs">
+    /// Zero or more objects to format using the placeholders in <see paramref="because" />.
+    /// </param>
+    [CustomAssertion]
+    public AndConstraint<HttpResponseMessageAssertions> Be418ImATeapot(string because = "", params object[] becauseArgs)
+    {
+#if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
+            .ForCondition(Subject is not null)
+            .BecauseOf(because, becauseArgs)
+            .FailWith("Expected a {context:response} to assert{reason}, but found <null>.");
+
+#if FAV8
+        CurrentAssertionChain
+#else
+        Execute.Assertion
+#endif
+            .BecauseOf(because, becauseArgs)
+            .ForCondition(418 == (int)Subject!.StatusCode)
+            .FailWith("Expected {context:response} to be {0}{reason}, but found {1}.{2}"
+                , "HttpStatusCode.ImATeapot", Subject!.StatusCode, Subject);
+        return new AndConstraint<HttpResponseMessageAssertions>(this);
+    }
+
+    /// <summary>
     /// Asserts that an HTTP response has the HTTP status 422 UnprocessableEntity
     /// </summary>        
     /// <param name="because">

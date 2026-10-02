@@ -2240,6 +2240,52 @@ public class HttpStatusCodeAssertionsSpecs
     }
     #endregion
 
+    #region 418 I'm A Teapot
+    [Fact]
+    public void When_asserting_418_Im_A_Teapot_response_to_be_418ImATeapot_it_should_succeed()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage((HttpStatusCode)418);
+
+        // Act
+        Action act = () =>
+            subject.Should().Be418ImATeapot();
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
+    [Fact]
+    public void When_asserting_other_than_418_Im_A_Teapot_response_to_be_418ImATeapot_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        using var subject = new HttpResponseMessage(HttpStatusCode.OK);
+
+        // Act
+        Action act = () =>
+            subject.Should().Be418ImATeapot("because we want to test the failure {0}", "message");
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("*HttpStatusCode.ImATeapot*because we want to test the failure message, but found HttpStatusCode.OK {value: 200}*");
+    }
+
+    [Fact]
+    public void When_asserting_null_HttpResponse_to_be_418_Im_A_Teapot_it_should_throw_with_descriptive_message()
+    {
+        // Arrange
+        HttpResponseMessage? subject = null;
+
+        // Act
+        Action act = () =>
+            subject.Should().Be418ImATeapot("because we want to test the failure {0}", "message");
+
+        // Assert
+        act.Should().Throw<XunitException>()
+            .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+    }
+    #endregion
+
     #region 422 Unprocessable Entity
     [Fact]
     public void When_asserting_422_Unprocessable_Entity_response_to_be_417ExpectationFailed_it_should_succeed()

@@ -270,3 +270,5 @@ coverage-html
 coverage-hits
 coverage.json
 opencovercoverage.xml
+
+.aider*
