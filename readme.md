@@ -1,5 +1,5 @@
 ## FluentAssertions.Web
-This is a [*FluentAssertions*](https://fluentassertions.com/) and [*AwesomeAssertions*](https://awesomeassertions.org//) extension over the *HttpResponseMessage* object.
+This is a [*FluentAssertions*](https://fluentassertions.com/) and [*AwesomeAssertions*](https://awesomeassertions.org/) extension over the *HttpResponseMessage* object.
 
 It provides assertions specific to HTTP responses and outputs rich errors messages when the tests fail, so less time with debugging is spent.
 
@@ -51,7 +51,7 @@ Once the response is ready you'll want to assert it. With first level properties
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adrianiftode_FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/project/overview?id=adrianiftode_FluentAssertions.Web)
 
 [![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.svg?label=FluentAssertions.Web)](https://www.nuget.org/packages/FluentAssertions.Web)
-[![NuGet FA v8](https://img.shields.io/nuget/v/FluentAssertions.Web.svg?label=FluentAssertions.Web.v8)](https://www.nuget.org/packages/FluentAssertions.Web.v8)
+[![NuGet FA v8](https://img.shields.io/nuget/v/FluentAssertions.Web.v8.svg?label=FluentAssertions.Web.v8)](https://www.nuget.org/packages/FluentAssertions.Web.v8)
 
 [![NuGet AwesomeAssertions](https://img.shields.io/nuget/v/AwesomeAssertions.Web.svg?label=AwesomeAssertions.Web)](https://www.nuget.org/packages/AwesomeAssertions.Web)
 
@@ -244,7 +244,7 @@ The change must be done before the test is run and this depends on the testing f
 
 #### Newtonsoft.Json
 
-The serializer itself is replaceable, so you can implement your own, by implementing the `ISerialize` interface. 
+The serializer itself is replaceable, so you can implement your own, by implementing the `ISerializer` interface. 
 The serializer is shipped via the **FluentAssertions.Web.Serializers.NewtonsoftJson** and **AwesomeAssertions.Web.Serializers.NewtonsoftJson** package.
 
 [![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.Serializers.NewtonsoftJson.svg?label=FluentAssertions.Web.Serializers.NewtonsoftJson)](https://www.nuget.org/packages/FluentAssertions.Web.Serializers.NewtonsoftJson)
@@ -263,7 +263,7 @@ AwesomeAssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
 
 ```
 
-The related `Newtonsoft.Json.JsonSerializerSetttings` used to configure the Newtonsoft.Json serializer is accesible via the `NewtonsoftJsonSerializerConfig.Options` static field. So if you want to add a custom converter, then the related setting is changed like this:
+The related `Newtonsoft.Json.JsonSerializerSettings` used to configure the Newtonsoft.Json serializer is accesible via the `NewtonsoftJsonSerializerConfig.Options` static field. So if you want to add a custom converter, then the related setting is changed like this:
 
 ```csharp
 NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConverter());
@@ -334,7 +334,7 @@ NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConver
 | **Should().Be206PartialContent()** | Asserts that an HTTP response has the HTTP status 206 Partial Content |
 | **Should().Be300Ambiguous()** | Asserts that an HTTP response has the HTTP status 300 Ambiguous |
 | **Should().Be300MultipleChoices()** | Asserts that an HTTP response has the HTTP status 300 Multiple Choices |
-| **Should().Be301Moved()** | Asserts that an HTTP response has the HTTP status 301 Moved Permanently |
+| **Should().Be301Moved()** | Asserts that an HTTP response has the HTTP status 301 Moved |
 | **Should().Be301MovedPermanently()** | Asserts that an HTTP response has the HTTP status 301 Moved Permanently |
 | **Should().Be302Found()** | Asserts that an HTTP response has the HTTP status 302 Found |
 | **Should().Be302Redirect()** | Asserts that an HTTP response has the HTTP status 302 Redirect |
@@ -367,7 +367,7 @@ NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConver
 | **Should().Be418ImATeapot()** | Asserts that an HTTP response has the HTTP status 418 I'm A Teapot |
 | **Should().Be422UnprocessableEntity()** | Asserts that an HTTP response has the HTTP status 422 Unprocessable Entity |
 | **Should().Be426UpgradeRequired()** | Asserts that an HTTP response has the HTTP status 426 UpgradeRequired |
-| **Should().Be429TooManyRequests()** | Asserts that an HTTP response has the HTTP status 422 Too Many Requests |
+| **Should().Be429TooManyRequests()** | Asserts that an HTTP response has the HTTP status 429 Too Many Requests |
 | **Should().Be500InternalServerError()** | Asserts that an HTTP response has the HTTP status 500 Internal Server Error |
 | **Should().Be501NotImplemented()** | Asserts that an HTTP response has the HTTP status 501 Not Implemented |
 | **Should().Be502BadGateway()** | Asserts that an HTTP response has the HTTP status 502 Bad Gateway |
