@@ -75,14 +75,18 @@ build_script:
               throw "SONAR_TOKEN environment variable is missing."
           }
 
-          dotnet sonarscanner begin `
-            /k:"adrianiftode_FluentAssertions.Web" `
-            /o:"adrianiftode-github" `
-            /d:sonar.host.url="https://sonarcloud.io" `
-            /d:sonar.token="$env:SONAR_TOKEN" `
-            /v:"$env:APPVEYOR_BUILD_NUMBER" `
-            /d:sonar.cs.opencover.reportsPaths="**\coverage.opencover.xml" `
-            /d:sonar.coverage.exclusions="test/**"
+          $sonarArgs = @(
+              "sonarscanner", "begin",
+              "/k:adrianiftode_FluentAssertions.Web",
+              "/o:adrianiftode-github",
+              "/d:sonar.host.url=https://sonarcloud.io",
+              "/d:sonar.token=$env:SONAR_TOKEN",
+              "/v:$env:APPVEYOR_BUILD_NUMBER",
+              "/d:sonar.cs.opencover.reportsPaths=**\coverage.opencover.xml",
+              "/d:sonar.coverage.exclusions=test/**"
+          )
+
+          dotnet @sonarArgs
 
           if ($LASTEXITCODE -ne 0) {
               throw "SonarScanner begin failed."
@@ -97,10 +101,9 @@ test_script:
 
 after_test:
   - ps: |
-      if (-not $env:APPVEYOR_PULL_REQUEST_NUMBER) {
+      if (-not \(env:APPVEYOR_PULL_REQUEST_NUMBER -and -not [string]::IsNullOrWhiteSpace(\)env:SONAR_TOKEN)) {
 
-          dotnet sonarscanner end `
-            /d:sonar.token="$env:SONAR_TOKEN"
+          dotnet sonarscanner end
 
           if ($LASTEXITCODE -ne 0) {
               throw "SonarScanner end failed."
