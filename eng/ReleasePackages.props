@@ -1,0 +1,79 @@
+<Project>
+
+  <!--
+    Release manifest: the release topology of this repo.
+
+    Versions live in each csproj as <Version>. This file answers the questions
+    MSBuild cannot work out on its own:
+      - which source paths make a given package "affected"?
+      - which packages must ship together because of a package dependency?
+
+    build/Get-ReleasePackages.ps1 reads this file to decide what to publish, and
+    to fail the build when a package's paths changed but its version was not
+    bumped.
+
+    ReleasePackage attributes:
+      Id                Package id. Must match the csproj file name.
+      ProjectPath       Path to the packable csproj, relative to the repo root.
+      WatchDirectories  Semicolon separated directories. A change under any of
+                        these means "this package is affected". Shared source
+                        directories belong here because the flavours link-compile
+                        each other via <Compile Include="..\...">.
+      WatchFiles        Semicolon separated files, same meaning.
+      DependsOn         Semicolon separated package ids. When one of these ships,
+                        this package ships too, so nothing is left published
+                        against a dependency version it was never built with.
+
+    Directory.Packages.props is in every WatchFiles set on purpose: bumping
+    FluentAssertions, AwesomeAssertions, Newtonsoft.Json or System.Text.Json
+    changes what ships inside every package.
+
+    IMPORTANT - bumping a dependency's version:
+    NuGet derives the dependency range in a package's nuspec from the referenced
+    project's own Version, and it emits an open ended floor (`version="2.1.0"`,
+    which NuGet reads as >= 2.1.0). So bumping HttpMessageFormatter without
+    bumping FluentAssertions.Web would ship FluentAssertions.Web still pinned to
+    the old floor, and a consumer installing both would let HttpMessageFormatter
+    float up to the next major. Bump the dependent packages in the same commit;
+    Get-ReleasePackages.ps1 will select them for you via DependsOn.
+  -->
+
+  <ItemGroup>
+    <ReleasePackage Include="HttpMessageFormatter"
+                    ProjectPath="src/HttpMessageFormatter/HttpMessageFormatter.csproj"
+                    WatchDirectories="src/HttpMessageFormatter"
+                    WatchFiles="Directory.Packages.props"
+                    DependsOn="" />
+
+    <ReleasePackage Include="FluentAssertions.Web"
+                    ProjectPath="src/FluentAssertions.Web/FluentAssertions.Web.csproj"
+                    WatchDirectories="src/FluentAssertions.Web;src/FluentAssertions.Web.Types;src/FluentAssertions.HttpMessageFormatter"
+                    WatchFiles="readme.md;Directory.Packages.props"
+                    DependsOn="HttpMessageFormatter" />
+
+    <ReleasePackage Include="FluentAssertions.Web.v8"
+                    ProjectPath="src/FluentAssertions.Web.v8/FluentAssertions.Web.v8.csproj"
+                    WatchDirectories="src/FluentAssertions.Web.v8;src/FluentAssertions.Web;src/FluentAssertions.Web.Types;src/FluentAssertions.HttpMessageFormatter"
+                    WatchFiles="readme.md;Directory.Packages.props"
+                    DependsOn="HttpMessageFormatter" />
+
+    <ReleasePackage Include="AwesomeAssertions.Web"
+                    ProjectPath="src/AwesomeAssertions.Web/AwesomeAssertions.Web.csproj"
+                    WatchDirectories="src/AwesomeAssertions.Web;src/AwesomeAssertions.Web.Types;src/AwesomeAssertions.HttpMessageFormatter;src/FluentAssertions.Web"
+                    WatchFiles="readme.md;Directory.Packages.props"
+                    DependsOn="HttpMessageFormatter" />
+
+    <ReleasePackage Include="FluentAssertions.Web.Serializers.NewtonsoftJson"
+                    ProjectPath="src/FluentAssertions.Web.Serializers.NewtonsoftJson/FluentAssertions.Web.Serializers.NewtonsoftJson.csproj"
+                    WatchDirectories="src/FluentAssertions.Web.Serializers.NewtonsoftJson;src/FluentAssertions.Web.Types"
+                    WatchFiles="Directory.Packages.props"
+                    DependsOn="" />
+
+    <ReleasePackage Include="AwesomeAssertions.Web.Serializers.NewtonsoftJson"
+                    ProjectPath="src/AwesomeAssertions.Web.Serializers.NewtonsoftJson/AwesomeAssertions.Web.Serializers.NewtonsoftJson.csproj"
+                    WatchDirectories="src/AwesomeAssertions.Web.Serializers.NewtonsoftJson;src/AwesomeAssertions.Web.Types"
+                    WatchFiles="Directory.Packages.props"
+                    DependsOn="" />
+  </ItemGroup>
+
+</Project>

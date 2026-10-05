@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- Released independently of the other packages in this repo. See eng/ReleasePackages.props. -->
+    <Version>2.0.4</Version>
     <PackageDescription>
       This is a FluentAssertions extension over the HttpResponseMessage object.
       It provides specific assertions and outputs rich erros messages that include the HTTP Request and Response.

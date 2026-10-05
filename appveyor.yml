@@ -1,4 +1,5 @@
 version: 0.0.0-ci-{build}
+# A non release build never publishes; only tags do. See the deploy section.
 
 image: Visual Studio 2026
 
@@ -33,14 +34,17 @@ skip_commits:
 init:
   - cmd: dotnet --version
 
+  # The tag no longer dictates package versions. Each csproj carries its own
+  # <Version>, so a release can bump only the packages that changed. The tag is
+  # still just the release trigger, and the label keeps it visible in the UI.
   - ps: |
       $ErrorActionPreference = "Stop"
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
           try {
-              Update-AppveyorBuild -Version $env:APPVEYOR_REPO_TAG_NAME
+              Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_TAG_NAME) (release)"
           }
           catch {
-              throw "Failed to update build version from tag: $_"
+              throw "Failed to update build label from tag: $_"
           }
       }
 
@@ -93,7 +97,9 @@ build_script:
           }
       }
 
-  - cmd: dotnet build -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+  # No /p:Version here on purpose: versions come from each csproj so packages can
+  # be released independently.
+  - cmd: dotnet build -c %CONFIGURATION%
 
 test_script:
   # Uses native coverlet collector to safely output an OpenCover report without altering compiled disk files
@@ -111,7 +117,56 @@ after_test:
           }
       }
 
-  - cmd: dotnet pack --include-symbols -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+  # Decide what this release publishes, then pack only that. Runs for every build
+  # so a non release build still produces artifacts; the deploy section below is
+  # what restricts publishing to tags.
+  - ps: |
+      $ErrorActionPreference = "Stop"
+
+      # shallow_clone is on, so tags are missing and detection cannot work.
+      if (-not (git tag)) {
+          Write-Host "Fetching tags so release detection has a baseline to diff against."
+          git fetch --tags --force --depth=200 origin
+          if ($LASTEXITCODE -ne 0) {
+              throw "Failed to fetch tags."
+          }
+      }
+
+      if (-not (git tag)) {
+          throw "No git tags available. Release detection needs at least one tag to diff against; push a baseline tag on the default branch."
+      }
+
+  - ps: |
+      $ErrorActionPreference = "Stop"
+
+      # A tag build publishes, so an already published version is a real error.
+      # A branch build must not fail on it, because the bump happens later.
+      $params = @{
+          ChangedPackagesFile = "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt"
+          EnforceVersionCheck = ($env:APPVEYOR_REPO_TAG -eq "true")
+      }
+
+      & .\build\Get-ReleasePackages.ps1 @params
+
+      if ($LASTEXITCODE -ne 0) {
+          throw "Release package detection failed."
+      }
+
+      $selected = @(Get-Content "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt" -ErrorAction SilentlyContinue | Where-Object { $_ })
+      Write-Host "Release includes $($selected.Count) package(s): $($selected -join ', ')"
+
+  - ps: |
+      $ErrorActionPreference = "Stop"
+
+      & .\build\Pack-ReleasePackages.ps1 `
+        -SelectedPackagesFile "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt" `
+        -Configuration $env:CONFIGURATION `
+        -RepositoryUrl "https://github.com/adrianiftode/FluentAssertions.Web" `
+        -PublishableFeedsFile "$env:APPVEYOR_BUILD_FOLDER\publishable-feeds.txt"
+
+      if ($LASTEXITCODE -ne 0) {
+          throw "Packing the selected packages failed."
+      }
 
 artifacts:
   - path: '**\FluentAssertions.Web*.nupkg'
@@ -123,7 +178,16 @@ artifacts:
   - path: '**\HttpMessageFormatter*.nupkg'
     name: HttpMessageFormatterPackage
 
+  # Everything this release produced, regardless of feed. The GitHub release uses
+  # this one artifact, because listing three artifact names would break whenever a
+  # release only touches one of the feeds and the other artifacts stay empty.
+  - path: '**\*.nupkg'
+    name: ReleasePackages
+
 deploy:
+  # Each feed publishes only when the release actually included one of its
+  # packages. PUBLISH_<FEED> is set by build/Pack-ReleasePackages.ps1, so a change
+  # to one package leaves the other feeds untouched.
   - provider: NuGet
     api_key:
       secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
@@ -131,6 +195,7 @@ deploy:
     artifact: FluentAssertionsPackages
     on:
       appveyor_repo_tag: true
+      PUBLISH_FLUENTASSERTIONS: true
 
   - provider: NuGet
     api_key:
@@ -139,6 +204,7 @@ deploy:
     artifact: HttpMessageFormatterPackage
     on:
       appveyor_repo_tag: true
+      PUBLISH_HTTPMESSAGEFORMATTER: true
 
   - provider: NuGet
     api_key:
@@ -147,11 +213,13 @@ deploy:
     artifact: AwesomeAssertionsPackages
     on:
       appveyor_repo_tag: true
+      PUBLISH_AWESOMEASSERTIONS: true
 
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: WXU/Xj3ntIZVx89KDAa/V/FGerV2fURqVQJxrKIqMcCijmXeC065twmHPYQMWGBabafs1llkLbe6DMKRAGnz+GxwH8GpT3A86rcSOLxbsp4uRkeMRsLxWHI+eDHTonOY
-    artifact: FluentAssertionsPackages, AwesomeAssertionsPackages, HttpMessageFormatterPackage
+    artifact: ReleasePackages
     on:
       appveyor_repo_tag: true
+      PUBLISH_ANY: true

@@ -1,0 +1,267 @@
+<#
+.SYNOPSIS
+    Tests build/Get-ReleasePackages.ps1 against synthetic git history.
+
+.DESCRIPTION
+    Change detection is the part of the release pipeline that is easy to get
+    subtly wrong, and a wrong answer either drops a package that needed shipping
+    or needlessly republishes ones that did not change. These cases run against a
+    throwaway git repo so they exercise the real script, including its git calls,
+    without touching the real history or requiring a network.
+
+    Run from the repo root:
+        ./build/tests/Test-ReleasePackageDetection.ps1
+#>
+[CmdletBinding()]
+param()
+
+$ErrorActionPreference = 'Stop'
+
+$scriptDir = $PSScriptRoot
+$repoRoot = Split-Path -Parent (Split-Path -Parent $scriptDir)
+$workDir = Join-Path ([System.IO.Path]::GetTempPath()) "faw-release-detection-$PID"
+
+$script:failures = 0
+
+function Write-CaseResult($name, $ok, $expected, $actual) {
+    if ($ok) {
+        Write-Host "PASS  $name" -ForegroundColor Green
+    }
+    else {
+        Write-Host "FAIL  $name" -ForegroundColor Red
+        Write-Host "      expected: $($expected -join ', ')" -ForegroundColor Red
+        Write-Host "      actual:   $($actual -join ', ')" -ForegroundColor Red
+        $script:failures++
+    }
+}
+
+function New-Fixture {
+    <#
+        Builds a minimal repo containing the real manifest and the real detection
+        script, so the cases test shipped behaviour rather than a copy of it.
+    #>
+    if (Test-Path -LiteralPath $workDir) {
+        Remove-Item -LiteralPath $workDir -Recurse -Force
+    }
+
+    New-Item -ItemType Directory -Path (Join-Path $workDir 'build') -Force | Out-Null
+    New-Item -ItemType Directory -Path (Join-Path $workDir 'eng') -Force | Out-Null
+
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'build/Get-ReleasePackages.ps1') `
+              -Destination (Join-Path $workDir 'build') -Force
+    Copy-Item -LiteralPath (Join-Path $repoRoot 'eng/ReleasePackages.props') `
+              -Destination (Join-Path $workDir 'eng') -Force
+
+    # One stub csproj per manifest entry, each with the same version the real
+    # packages have, so the version check passes.
+    [xml] $manifest = Get-Content -LiteralPath (Join-Path $workDir 'eng/ReleasePackages.props') -Raw
+    $watchDirectories = [System.Collections.Generic.HashSet[string]]::new()
+
+    foreach ($package in $manifest.Project.ItemGroup.ReleasePackage) {
+        $projectPath = $package.ProjectPath.Replace('\', '/')
+
+        $full = Join-Path $workDir $projectPath
+        New-Item -ItemType Directory -Path (Split-Path -Parent $full) -Force | Out-Null
+        Set-Content -LiteralPath $full -NoNewline -Value @"
+<Project>
+  <PropertyGroup>
+    <Version>2.0.4</Version>
+  </PropertyGroup>
+</Project>
+"@
+
+        foreach ($dir in ($package.WatchDirectories -split ';' | Where-Object { $_ })) {
+            [void] $watchDirectories.Add($dir.Trim())
+        }
+
+        foreach ($file in ($package.WatchFiles -split ';' | Where-Object { $_ })) {
+            $fullFile = Join-Path $workDir $file.Trim()
+            if (-not (Test-Path -LiteralPath $fullFile)) {
+                New-Item -ItemType Directory -Path (Split-Path -Parent $fullFile) -Force | Out-Null
+                Set-Content -LiteralPath $fullFile -Value "placeholder"
+            }
+        }
+    }
+
+    foreach ($dir in $watchDirectories) {
+        $full = Join-Path $workDir $dir
+        New-Item -ItemType Directory -Path $full -Force | Out-Null
+        Set-Content -LiteralPath (Join-Path $full '.keep') -Value ''
+    }
+
+    Push-Location $workDir
+    try {
+        $gitQuiet = @('-c', 'core.autocrlf=false', '-c', 'core.safecrlf=false')
+        & git init -q . 2>$null | Out-Null
+        & git config user.email 'release-tests@example.com'
+        & git config user.name 'Release Tests'
+        & git @gitQuiet add -A 2>$null | Out-Null
+        & git @gitQuiet commit -q -m 'initial' 2>$null | Out-Null
+        & git tag '2.0.4'
+    }
+    finally {
+        Pop-Location
+    }
+}
+
+function Invoke-Case($name, $changedFiles, $expected) {
+    <#
+        Commits the given files on top of the baseline tag, runs detection, and
+        compares the packages it selects against the expected set. The working
+        tree is reset first so cases stay independent of each other.
+    #>
+    Push-Location $workDir
+    try {
+        & git reset -q --hard 2.0.4 2>$null | Out-Null
+        & git clean -qfd 2>$null | Out-Null
+
+        foreach ($file in $changedFiles) {
+            $full = Join-Path $workDir $file
+            New-Item -ItemType Directory -Path (Split-Path -Parent $full) -Force | Out-Null
+            if (Test-Path -LiteralPath $full) {
+                Add-Content -LiteralPath $full -Value 'x'
+            }
+            else {
+                Set-Content -LiteralPath $full -Value 'x'
+            }
+        }
+
+        & git -c core.autocrlf=false -c core.safecrlf=false add -A 2>$null | Out-Null
+        & git -c core.autocrlf=false -c core.safecrlf=false commit -q -m $name 2>$null | Out-Null
+
+        $selectedFile = Join-Path $workDir 'selected-packages.txt'
+
+        & (Join-Path $workDir 'build/Get-ReleasePackages.ps1') `
+            -RepoRoot $workDir `
+            -SkipVersionCheck `
+            -ChangedPackagesFile $selectedFile 2>$null | Out-Null
+
+        $actual = @()
+        if (Test-Path -LiteralPath $selectedFile) {
+            $actual = @(Get-Content -LiteralPath $selectedFile | Where-Object { $_ })
+        }
+    }
+    finally {
+        Pop-Location
+    }
+
+    Write-CaseResult $name ($null -eq (Compare-Object $actual @($expected))) $expected $actual
+}
+
+function Invoke-RejectionCase($name, $mutate, $expectedFragment) {
+    <#
+        Runs detection against a manifest or project that has been deliberately
+        broken, and checks it refuses rather than silently shipping something wrong.
+        Offline: these cases rely on -SkipVersionCheck, so they never call nuget.org.
+    #>
+    Push-Location $workDir
+    try {
+        & git reset -q --hard 2.0.4 2>$null | Out-Null
+        & git clean -qfd 2>$null | Out-Null
+
+        & $mutate
+
+        $failed = $false
+        $message = ''
+        try {
+            & (Join-Path $workDir 'build/Get-ReleasePackages.ps1') `
+                -RepoRoot $workDir `
+                -SkipVersionCheck `
+                -IncludeUnchanged 2>&1 | ForEach-Object { $message += "$_`n" }
+        }
+        catch {
+            $failed = $true
+            $message = $_.Exception.Message
+        }
+
+        Write-CaseResult $name ($failed -and ($message -like "*$expectedFragment*")) `
+            "failure containing '$expectedFragment'" $(if ($message) { $message.Trim() } else { '(no error raised)' })
+    }
+    finally {
+        Pop-Location
+    }
+}
+
+try {
+    New-Fixture
+
+    # A serializer has no dependency on the assertion packages, so changing one
+    # must publish exactly one package. This is the case the old lockstep
+    # pipeline got wrong.
+    Invoke-Case 'serializer change publishes only that serializer' `
+        @('src/AwesomeAssertions.Web.Serializers.NewtonsoftJson/Serializer.cs') `
+        @('AwesomeAssertions.Web.Serializers.NewtonsoftJson')
+
+    # The three flavours link-compile src/FluentAssertions.Web, so one edit there
+    # affects all of them and nothing else.
+    Invoke-Case 'shared assertion source publishes the three flavours' `
+        @('src/FluentAssertions.Web/HttpStatusCodeAssertions.cs') `
+        @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web')
+
+    # HttpMessageFormatter is a real NuGet dependency of the three assertion
+    # packages, so it must never ship without them.
+    Invoke-Case 'formatter change pulls in its dependents' `
+        @('src/HttpMessageFormatter/Internal/Formatter.cs') `
+        @('HttpMessageFormatter', 'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web')
+
+    # readme.md ships inside the three assertion packages, and not in the others.
+    Invoke-Case 'readme change publishes the packages that embed it' `
+        @('readme.md') `
+        @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web')
+
+    # A dependency bump changes what ships in every package.
+    Invoke-Case 'dependency bump publishes everything' `
+        @('Directory.Packages.props') `
+        @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web',
+          'HttpMessageFormatter',
+          'FluentAssertions.Web.Serializers.NewtonsoftJson',
+          'AwesomeAssertions.Web.Serializers.NewtonsoftJson')
+
+    # Docs and CI config are in nobody's package.
+    Invoke-Case 'docs change publishes nothing' `
+        @('CONVENTIONS.md') `
+        @()
+
+    # A csproj with no <Version> would pack as 1.0.0 and overwrite a published
+    # package, so detection has to stop rather than pass it through.
+    Invoke-RejectionCase 'project without a version is rejected' `
+        {
+            $csproj = Join-Path $workDir 'src/AwesomeAssertions.Web/AwesomeAssertions.Web.csproj'
+            (Get-Content -LiteralPath $csproj -Raw) -replace '\s*<Version>.*</Version>', '' |
+                Set-Content -LiteralPath $csproj -NoNewline
+        } `
+        'has no <Version>'
+
+    # A DependsOn typo would otherwise drop the dependent from the release without
+    # a word, so it has to fail too.
+    Invoke-RejectionCase 'DependsOn pointing at an unknown package is rejected' `
+        {
+            $manifestFile = Join-Path $workDir 'eng/ReleasePackages.props'
+            (Get-Content -LiteralPath $manifestFile -Raw) -replace 'DependsOn="HttpMessageFormatter"', 'DependsOn="HttpMessageFormatterr"' |
+                Set-Content -LiteralPath $manifestFile -NoNewline
+        } `
+        'not in the release manifest'
+
+    # A csproj that the manifest points at but that is not there would pack
+    # whatever git resolved, so the path is verified up front.
+    Invoke-RejectionCase 'manifest pointing at a missing project is rejected' `
+        {
+            $manifestFile = Join-Path $workDir 'eng/ReleasePackages.props'
+            (Get-Content -LiteralPath $manifestFile -Raw) -replace 'src/HttpMessageFormatter/HttpMessageFormatter\.csproj', 'src/HttpMessageFormatter/DoesNotExist.csproj' |
+                Set-Content -LiteralPath $manifestFile -NoNewline
+        } `
+        'does not exist'
+}
+finally {
+    if (Test-Path -LiteralPath $workDir) {
+        Remove-Item -LiteralPath $workDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
+Write-Host ''
+if ($script:failures -gt 0) {
+    Write-Host "$script:failures case(s) failed." -ForegroundColor Red
+    exit 1
+}
+
+Write-Host 'All cases passed.' -ForegroundColor Green
