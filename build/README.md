@@ -33,6 +33,48 @@ The script fails the build if a package's source changed but its version was not
 bumped, which turns "forgot to bump the version" into an error instead of a
 silently skipped release.
 
+## Where releases are allowed from
+
+A tag is not automatically a release. `build/Test-ReleasePolicy.ps1` runs on every
+tag build and publishes only when one of these holds:
+
+- the tag's commit is contained in `master` or `master-v8`, or
+- every version in the release is a NuGet prerelease (`-preview.1`, `-beta`, `-rc1`)
+
+The reason is that nuget.org packages are immutable. Publishing `2.0.5` from a tag
+on an unmerged branch burns that version number permanently, and the eventual merge
+cannot reuse it. Prereleases have no such cost, which makes them the supported way
+to share a fix before merging it.
+
+Note that `branches.only` in `appveyor.yml` applies to tag *names*, not branches,
+so it cannot express this rule. A tag like `2.0.5` matches the `/\d+\.\d+\.\d+/`
+pattern regardless of which branch it was pushed from. That is what this policy
+check is for.
+
+## Previewing a fix without merging
+
+To let someone try a bug fix before it lands on master:
+
+1. On your feature branch, set the versions to a prerelease, for example
+   `<Version>2.0.5-preview.1</Version>`. Bump dependents as usual if you changed
+   `HttpMessageFormatter`.
+2. Commit and push the branch.
+3. Tag with the same string and push the tag:
+
+   ```powershell
+   git push origin features/my-fix
+   git push origin 2.0.5-preview.1
+   ```
+
+4. Consumers install it explicitly:
+
+   ```powershell
+   dotnet add package FluentAssertions.Web --version 2.0.5-preview.1 --prerelease
+   ```
+
+Once the PR merges, bump to the stable `2.0.5` and tag that from master. The
+prerelease stays on nuget.org as a superseded version, which is normal.
+
 ## Worked example: a non-breaking HttpMessageFormatter change
 
 You changed something in `src/HttpMessageFormatter`, it is not breaking, and you
@@ -140,6 +182,7 @@ entries in `eng/ReleasePackages.props`, but their `<Version>` is your job.
 |---|---|---|
 | `Version 2.0.4 of FluentAssertions.Web is already on nuget.org` | You bumped the formatter but not its dependents | Bump the three dependents to `2.0.5` and push a new tag |
 | `Version 2.0.5 of HttpMessageFormatter is already on nuget.org` | That version already shipped | Bump to `2.0.6` |
+| `NOT PUBLISHING: Tag '2.0.5' is not on any release branch` | You tagged a feature branch with a stable version | Merge the PR and tag master, or publish a `-preview` version instead |
 | `No git tags available` | Tag history was not fetched | Usually transient; re-run the build. If it persists, push a baseline tag |
 | `dotnet pack failed for <id>` | A compile or pack error | Read the error above it; this is not a versioning problem |
 
@@ -181,7 +224,9 @@ changes what ships inside every package.
 dotnet build
 dotnet test
 ./build/tests/Test-ReleasePackageDetection.ps1
+./build/tests/Test-ReleasePolicy.ps1
 ```
 
 The detection test builds a throwaway git repo and checks that each kind of change
-selects the right packages, so you can change the manifest without guessing.
+selects the right packages, so you can change the manifest without guessing. The
+policy test does the same for which tags are allowed to publish.

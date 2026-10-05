@@ -155,6 +155,22 @@ after_test:
       $selected = @(Get-Content "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt" -ErrorAction SilentlyContinue | Where-Object { $_ })
       Write-Host "Release includes $($selected.Count) package(s): $($selected -join ', ')"
 
+      # A tag on a feature branch may publish prereleases, but not stable version
+      # numbers: nuget.org packages are immutable, so a stable version shipped from
+      # an unmerged tag is burned forever. Skipped for branch builds, which do not
+      # publish at all.
+      if ($env:APPVEYOR_REPO_TAG -eq "true") {
+          & .\build\Test-ReleasePolicy.ps1 `
+              -SelectedPackagesFile "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt"
+
+          if ($LASTEXITCODE -ne 0) {
+              throw "Release policy check failed."
+          }
+      }
+      else {
+          $env:PUBLISH_ALLOWED = "false"
+      }
+
   - ps: |
       $ErrorActionPreference = "Stop"
 
@@ -185,9 +201,12 @@ artifacts:
     name: ReleasePackages
 
 deploy:
-  # Each feed publishes only when the release actually included one of its
-  # packages. PUBLISH_<FEED> is set by build/Pack-ReleasePackages.ps1, so a change
-  # to one package leaves the other feeds untouched.
+  # Three things must all be true to publish:
+  #   appveyor_repo_tag  a tag was pushed, not just a branch commit
+  #   PUBLISH_ALLOWED    build/Test-ReleasePolicy.ps1 allowed this tag to publish,
+  #                      which excludes stable versions from unmerged branches
+  #   PUBLISH_<FEED>     build/Pack-ReleasePackages.ps1 found packages for this
+  #                      feed in the release, so an untouched feed is left alone
   - provider: NuGet
     api_key:
       secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
@@ -195,6 +214,7 @@ deploy:
     artifact: FluentAssertionsPackages
     on:
       appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
       PUBLISH_FLUENTASSERTIONS: true
 
   - provider: NuGet
@@ -204,6 +224,7 @@ deploy:
     artifact: HttpMessageFormatterPackage
     on:
       appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
       PUBLISH_HTTPMESSAGEFORMATTER: true
 
   - provider: NuGet
@@ -213,8 +234,11 @@ deploy:
     artifact: AwesomeAssertionsPackages
     on:
       appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
       PUBLISH_AWESOMEASSERTIONS: true
 
+  # The GitHub release carries the .nupkg files, so it is created only when at
+  # least one package is actually being published.
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
@@ -222,4 +246,5 @@ deploy:
     artifact: ReleasePackages
     on:
       appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
       PUBLISH_ANY: true
