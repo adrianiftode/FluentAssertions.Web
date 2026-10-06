@@ -4,7 +4,8 @@ internal class FallbackProcessor : ProcessorBase
 {
     private readonly HttpContent? _httpContent;
 
-    public FallbackProcessor(HttpContent? httpContent)
+    public FallbackProcessor(HttpContent? httpContent, HttpResponseFormatterOptions? options = null)
+        : base(options)
     {
         _httpContent = httpContent;
     }

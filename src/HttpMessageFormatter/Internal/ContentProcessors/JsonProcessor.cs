@@ -9,7 +9,8 @@ internal class JsonProcessor : ProcessorBase
     private static readonly JavaScriptEncoder JavaScriptEncoder = JavaScriptEncoder.Create(UnicodeRanges.All);
     private readonly HttpContent? _httpContent;
 
-    public JsonProcessor(HttpContent? httpContent)
+    public JsonProcessor(HttpContent? httpContent, HttpResponseFormatterOptions? options = null)
+        : base(options)
     {
         _httpContent = httpContent;
     }

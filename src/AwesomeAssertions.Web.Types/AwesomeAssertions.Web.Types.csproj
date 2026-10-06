@@ -8,6 +8,10 @@
     <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HttpMessageFormatter\HttpMessageFormatter.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);AAV</DefineConstants>
   </PropertyGroup>

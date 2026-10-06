@@ -4,7 +4,8 @@ internal class BinaryProcessor : ProcessorBase
 {
     private readonly HttpContent? _httpContent;
 
-    public BinaryProcessor(HttpContent? httpContent)
+    public BinaryProcessor(HttpContent? httpContent, HttpResponseFormatterOptions? options = null)
+        : base(options)
     {
         _httpContent = httpContent;
     }

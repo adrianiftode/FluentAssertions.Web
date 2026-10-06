@@ -4,7 +4,8 @@ internal class MultipartProcessor : ProcessorBase
 {
     private readonly HttpContent? _httpContent;
 
-    public MultipartProcessor(HttpContent? httpContent)
+    public MultipartProcessor(HttpContent? httpContent, HttpResponseFormatterOptions? options = null)
+        : base(options)
     {
         _httpContent = httpContent;
     }
@@ -52,7 +53,7 @@ internal class MultipartProcessor : ProcessorBase
 
                 Appender.AppendHeaders(contentBuilder, content.Headers);
 
-                await Appender.AppendContent(contentBuilder, content, true);
+                await Appender.AppendContent(contentBuilder, content, true, Options);
             }
         }
         finally

@@ -60,6 +60,49 @@ public class FallbackProcessorTests
     }
 
     [Fact]
+    public async Task GivenContentLargerThanTheGivenMaximumReadableBytes_WhenGetContentInfo_ThenItTruncatesToTheGivenMaximumReadableBytes()
+    {
+        // Arrange
+        using var response = new HttpResponseMessage
+        {
+            Content = new StringContent(new string('-', 100))
+        };
+        var sut = new FallbackProcessor(response.Content, new HttpResponseFormatterOptions
+        {
+            MaximumReadableBytes = 10
+        });
+        var contentBuilder = new StringBuilder();
+
+        // Act
+        await sut.GetContentInfo(contentBuilder);
+
+        // Assert
+        contentBuilder.ToString().Should().Match("*too large*")
+            .And.EndWith(new string('-', 10));
+    }
+
+    [Fact]
+    public async Task GivenContentSmallerThanTheGivenMaximumReadableBytes_WhenGetContentInfo_ThenItPrintsTheWholeContent()
+    {
+        // Arrange
+        using var response = new HttpResponseMessage
+        {
+            Content = new StringContent("the content")
+        };
+        var sut = new FallbackProcessor(response.Content, new HttpResponseFormatterOptions
+        {
+            MaximumReadableBytes = 1000
+        });
+        var contentBuilder = new StringBuilder();
+
+        // Act
+        await sut.GetContentInfo(contentBuilder);
+
+        // Assert
+        contentBuilder.ToString().Should().Be("the content");
+    }
+
+    [Fact]
     public async Task GivenHttpResponseWithDisposedContent_WhenGetContentInfo_ThenIsEmpty()
     {
         // Arrange

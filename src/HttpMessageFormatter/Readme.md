@@ -25,3 +25,17 @@ public class HttpResponseFormatterExtensionsTests
 }
 
 ```
+
+### Limiting The Printed Content
+
+By default, only the first 10 * 128 * 1024 characters of the content are printed. Pass an
+`HttpResponseFormatterOptions` parameter object to change this limit:
+
+```csharp
+using HttpMessageFormatter;
+
+var formatted = subject.Format(new HttpResponseFormatterOptions
+{
+    MaximumReadableBytes = 4 * 1024
+});
+```

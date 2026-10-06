@@ -13,11 +13,11 @@ internal static class ProcessorsRunner
         return contentBuilder;
     }
 
-    public static IReadOnlyCollection<IContentProcessor> CommonProcessors(HttpContent content) => new IContentProcessor[]
+    public static IReadOnlyCollection<IContentProcessor> CommonProcessors(HttpContent content, HttpResponseFormatterOptions? options = null) => new IContentProcessor[]
     {
-        new JsonProcessor(content),
-        new BinaryProcessor(content),
-        new MultipartProcessor(content),
-        new FallbackProcessor(content)
+        new JsonProcessor(content, options),
+        new BinaryProcessor(content, options),
+        new MultipartProcessor(content, options),
+        new FallbackProcessor(content, options)
     };
 }
