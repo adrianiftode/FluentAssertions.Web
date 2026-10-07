@@ -3,6 +3,22 @@ This is a [*FluentAssertions*](https://fluentassertions.com/) and [*AwesomeAsser
 
 It provides assertions specific to HTTP responses and outputs rich errors messages when the tests fail, so less time with debugging is spent.
 
+### Assertions at a glance
+
+```csharp
+response.Should().Be200Ok();                                               // status codes: Be200Ok, Be404NotFound, Be400BadRequest, Be5XXServerError, ...
+response.Should().Be400BadRequest().And.HaveError("Author", "*required*"); // validation errors carried by a 400 response
+response.Should().BeAs(new { Author = "John" });                           // the body is equivalent to an object
+response.Should().Satisfy<IEnumerable<Comment>>(comments =>               // any assertions over the deserialized body
+    comments.Should().HaveCount(2).And.OnlyHaveUniqueItems(c => c.CommentId));
+response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*");         // headers
+response.Should().MatchInContent("*\"author\"*");                          // raw content
+```
+
+Jump straight to the [examples](#fluentassertionsweb-examples), or to the [full API](#full-api) listing.
+
+A typical test:
+
 ```csharp
 [Fact]
 public async Task Post_ReturnsOk()
@@ -24,6 +40,58 @@ public async Task Post_ReturnsOk()
 }
 ```
 
+### When a test fails, you see the whole conversation
+
+Every failure message produced by this library is followed by **the complete HTTP response _and_ the originating HTTP request** — status line, headers and both bodies, the same way an HTTP interceptor like Fiddler would render them. There is no need to attach a debugger or to watch `response.Content.ReadAsStringAsync().Result` anymore: the reason for the failure and the payload that caused it are already in the test output.
+
+Running the test above with `dotnet test` against an endpoint that answers `201 Created` instead of `200 OK` prints:
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Post_ReturnsOk [614 ms]
+  Error Message:
+   Expected response to be HttpStatusCode.OK {value: 200}, but found HttpStatusCode.Created {value: 201}.
+
+The HTTP response was:
+
+HTTP/1.1 201 Created
+Location: http://localhost/api/Comments/1
+X-Correlation-ID: 42c3a077-12ec-470e-8569-ddeaade90127
+Content-Type: application/json; charset=utf-8
+
+{
+  "author": "John",
+  "content": "Hey, you...",
+  "commentId": 1
+}
+
+The originating HTTP request was:
+
+POST http://localhost/api/comments HTTP 1.1
+Content-Type: application/json; charset=utf-8
+Content-Length: 50
+{
+  "author": "John",
+  "content": "Hey, you..."
+}
+  Stack Trace:
+     at FluentAssertions.Execution.XUnit2TestFramework.Throw(String message)
+   at FluentAssertions.Execution.TestFrameworkProvider.Throw(String message)
+   at FluentAssertions.Execution.DefaultAssertionStrategy.HandleFailure(String message)
+   at FluentAssertions.Web.HttpResponseMessageAssertions.Be200Ok(String because, Object[] becauseArgs)
+   at Sample.Api.Tests.CommentsControllerTests.Post_ReturnsOk()
+--- End of stack trace from previous location ---
+```
+
+The same text is shown in the *Test Detail Summary* of Visual Studio and Rider, and ends up in the CI logs, so the failure can usually be assessed without even running the test locally:
+
+![FailedTest1](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest1.png?raw=true)
+
+A couple of details about that output:
+
+- when there is no originating request (for example because the `HttpResponseMessage` was created by hand), the last section reads `The originating HTTP request was <null>.`
+- when the response content is disposed it is reported as `***** Content is disposed so it cannot be read. *****`
+- when the response content is bigger than `ResponseFormatterOptions.MaximumReadableBytes` (1.25 MB by default), it is truncated and a `***** Content is too large to display and only a part is printed. *****` warning is printed instead — see [Response Formatting](#response-formatting)
+
 
 ## Why?
 
@@ -41,9 +109,7 @@ Once the response is ready you'll want to assert it. With first level properties
 - debug the failing test
 - add an Watch for ``` response.Content.ReadAsStringAsync().Result ``` and see the actual response content
 
-**And this can be avoided**, if the *Test Detail Summary* contains the request and the response information, providing a similar experience as with an HTTP interceptor like Fiddler. 
-
-![FailedTest1](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest1.png?raw=true)
+**And this can be avoided**, if the *Test Detail Summary* contains the request and the response information, providing a similar experience as with an HTTP interceptor like Fiddler. See [When a test fails, you see the whole conversation](#when-a-test-fails-you-see-the-whole-conversation) for the exact output.
 
 ### Status
 
@@ -106,6 +172,45 @@ public async Task Post_ReturnsOkAndWithContent()
 }
 ```
 
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the API persisted a different <code>content</code>)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Post_ReturnsOkAndWithContent [41 ms]
+  Error Message:
+   Expected response to have a content equivalent to a model, but it has differences:
+
+    - expected property response.Content to be "Expected, but not really there..." with a length of 33, but "Hey, you..." has a length of 11, differs near "Hey" (index 0).
+. 
+
+The HTTP response was:
+
+HTTP/1.1 201 Created
+Location: http://localhost/api/Comments/1
+X-Correlation-ID: 4f1b4ccb-d4f2-4105-954c-f0a999ce8f27
+Content-Type: application/json; charset=utf-8
+
+{
+  "author": "John",
+  "content": "Hey, you...",
+  "commentId": 1
+}
+
+The originating HTTP request was:
+
+POST http://localhost/api/comments HTTP 1.1
+Content-Type: application/json; charset=utf-8
+Content-Length: 50
+{
+  "author": "John",
+  "content": "Hey, you..."
+}
+  Stack Trace:
+     ...
+```
+
+</details>
+
 - Asserting that the response is 200 OK and the content is like an array of specific objects:
 
 ```csharp
@@ -121,10 +226,52 @@ public async Task Get_Returns_Ok_With_CommentsList()
     // Assert
     response.Should().Be200Ok().And.BeAs(new[]
     {
-        new { Author = "Adrian", Content = "Hey" }
+        new { Author = "Adrian", Content = "Hey" },
+        new { Author = "Johnny", Content = "Hey!" }
     });
 }
 ```
+
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the response contained one comment more than expected)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_Returns_Ok_With_CommentsList [403 ms]
+  Error Message:
+   Expected response to have a content equivalent to a model, but it has differences:
+
+    - expected response to be a collection with 1 item(s), but {{ Author = Adrian, Content = Hey }, { Author = Johnny, Content = Hey! }}"
+"contains 1 item(s) more than"
+"{{ Author = Adrian, Content = Hey }}.
+. 
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+X-Correlation-ID: 7150524b-1b2f-4fc5-9574-8b797d776c95
+Content-Type: application/json; charset=utf-8
+
+[
+  {
+    "author": "Adrian",
+    "content": "Hey",
+    "commentId": 1
+  },
+  {
+    "author": "Johnny",
+    "content": "Hey!",
+    "commentId": 2
+  }
+]
+
+The originating HTTP request was:
+
+GET http://localhost/api/comments HTTP 1.1
+  Stack Trace:
+     ...
+```
+
+</details>
 
 - Asserting that the response is an HTTP 400 BadRequest and contains a single error message
 
@@ -149,6 +296,50 @@ public async Task Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMe
 }
 ```
 
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the response reported an error for the <code>Content</code> field as well, so there is more than one)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMessageRelatedToAuthorOnly [31 ms]
+  Error Message:
+   Expected response to only contain an error message related to the "Author" field, but more than this one was found.
+
+The HTTP response was:
+
+HTTP/1.1 400 BadRequest
+X-Correlation-ID: 5b4b76b1-a1fe-4088-bbf1-5c14f82f4dc3
+Content-Type: application/problem+json; charset=utf-8
+
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400,
+  "errors": {
+    "Author": [
+      "The Author field is required."
+    ],
+    "Content": [
+      "The Content field is required."
+    ]
+  },
+  "traceId": "00-fd941763cb7e1f0fd046d1551ddddc92-6d3df58bb1d79a64-00"
+}
+
+The originating HTTP request was:
+
+POST http://localhost/api/comments HTTP 1.1
+Content-Type: application/json; charset=utf-8
+Content-Length: 35
+{
+  "author": "",
+  "content": ""
+}
+  Stack Trace:
+     ...
+```
+
+</details>
+
 - Asserting the response content once deserialized into a strongly typed object it satisfies a certain assertion
 
 ```csharp
@@ -166,6 +357,59 @@ public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
             model.Should().HaveCount(2).And.OnlyHaveUniqueItems(c => c.CommentId));
 }
 ```
+
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the collection had a different count)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments [12 ms]
+  Error Message:
+   Expected response to satisfy one or more model assertions, but it wasn't: 
+
+    - expected model to contain 3 item(s), but found 2: {
+    Sample.Api.Controllers.Comment
+    {
+        Author = "Adrian", 
+        CommentId = 1, 
+        Content = "Hey"
+    }, 
+    Sample.Api.Controllers.Comment
+    {
+        Author = "Johnny", 
+        CommentId = 2, 
+        Content = "Hey!"
+    }
+}
+.
+
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+X-Correlation-ID: 29da9489-0e1e-48b7-8f80-3e3a97bbc749
+Content-Type: application/json; charset=utf-8
+
+[
+  {
+    "author": "Adrian",
+    "content": "Hey",
+    "commentId": 1
+  },
+  {
+    "author": "Johnny",
+    "content": "Hey!",
+    "commentId": 2
+  }
+]
+
+The originating HTTP request was:
+
+GET http://localhost/api/comments HTTP 1.1
+  Stack Trace:
+     ...
+```
+
+</details>
 
 - Asserting the response content once deserialized into a anonymous object it satisfies a certain assertion
 
@@ -192,6 +436,39 @@ public async Task Get_WithCommentId_Returns_A_NonSpam_Comment()
 }
 ```
 
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: <code>Author</code> was expected to be <code>"I DO SPAM!"</code>)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_WithCommentId_Returns_A_NonSpam_Comment [20 ms]
+  Error Message:
+   Expected response to satisfy one or more model assertions, but it wasn't: 
+
+    - expected model.Author to be "I DO SPAM!" with a length of 10, but "Adrian" has a length of 6, differs near "Adr" (index 0).
+
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+x-vendor: vendor
+X-Correlation-ID: 6a779339-4740-4166-95ee-04a6563fed8e
+Content-Type: application/json; charset=utf-8
+
+{
+  "author": "Adrian",
+  "content": "Hey",
+  "commentId": 1
+}
+
+The originating HTTP request was:
+
+GET http://localhost/api/comments/1 HTTP 1.1
+  Stack Trace:
+     ...
+```
+
+</details>
+
 - Asserting the response has a header with the name `X-Correlation-ID` and the value matches a certain pattern
 
 ```csharp
@@ -209,22 +486,86 @@ public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
 }
 ```
 
-- Asserting the response has a header with the name `X-Correlation-ID` and the value is not empty
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the pattern used was <code>*-not-a-guid*</code>)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_Should_Contain_a_Header_With_Correlation_Id [13 ms]
+  Error Message:
+   Expected response to contain the HTTP header "X-Correlation-ID" having a value matching "*-not-a-guid*", but there was no match because we want to test the correlation id is a Guid like one. 
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+X-Correlation-ID: 35f25ad0-dfac-4e78-9f0a-a13072dfce93
+Content-Type: application/json; charset=utf-8
+
+[
+  "value1",
+  "value2"
+]
+
+The originating HTTP request was:
+
+GET http://localhost/api/values HTTP 1.1
+  Stack Trace:
+     ...
+```
+
+</details>
+
+- Asserting the response has a header with the name `x-vendor` and the value is not empty
 
 ```csharp
 [Fact]
-public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
+public async Task Get_Should_Contain_a_NonEmpty_Header_With_Vendor()
 {
     // Arrange
     var client = _factory.CreateClient();
 
     // Act
-    var response = await client.GetAsync("/api/values");
+    var response = await client.GetAsync("/api/comments/1");
 
     // Assert
-    response.Should().HaveHeader("X-Correlation-ID").And.NotBeEmpty();
+    response.Should().HaveHeader("x-vendor").And.NotBeEmpty();
 }
 ```
+
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the endpoint called did not return the header at all — <code>GET /api/comments</code> instead of <code>GET /api/comments/1</code>)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_Should_Contain_a_NonEmpty_Header_With_Vendor [3 ms]
+  Error Message:
+   Expected response to contain the HTTP header "x-vendor", but no such header was found in the actual response.
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+X-Correlation-ID: e78196c0-438e-402a-b90a-baddfb3c6e01
+Content-Type: application/json; charset=utf-8
+
+[
+  {
+    "author": "Adrian",
+    "content": "Hey",
+    "commentId": 1
+  },
+  {
+    "author": "Johnny",
+    "content": "Hey!",
+    "commentId": 2
+  }
+]
+
+The originating HTTP request was:
+
+GET http://localhost/api/comments HTTP 1.1
+  Stack Trace:
+     ...
+```
+
+</details>
 
 Many more examples can be found in the [Samples](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/samples) projects and in the Specs files from the [FluentAssertions.Web.Tests](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/FluentAssertions.Web.Tests) project
 
@@ -271,7 +612,7 @@ NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConver
 
 ### Response Formatting
 
-The assertion failure messages include a readable rendering of the HTTP response. By default, only the first `10 * 128 * 1024` characters of the response content are printed, the rest being replaced by a warning message. To change this limit globally, set the `ResponseFormatterOptions`:
+The assertion failure messages include a readable rendering of the HTTP response (see [When a test fails, you see the whole conversation](#when-a-test-fails-you-see-the-whole-conversation) for an example). By default, only the first `10 * 128 * 1024` bytes of the response content are printed, the rest being replaced by a warning message. To change this limit globally, set the `ResponseFormatterOptions`:
 
 ```csharp
 FluentAssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
@@ -299,17 +640,60 @@ var formatted = response.Format(new HttpResponseFormatterOptions
 
 ## Full API
 
+The tables below list every assertion. Each group is followed by a short example and, where it helps, by the `dotnet test` output you get when the assertion does not hold, so it is clear what is actually being reported.
+
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to the HTTP content. |
 | --- | --- |
 | **Should().BeEmpty()** | Asserts that HTTP response content is empty. |
 | **Should().BeAs&lt;TModel&gt;()** | Asserts that HTTP response content can be an equivalent representation of the expected model. |
 | **Should().HaveHeader()** | Asserts that an HTTP response has a named header. |
 | **Should().NotHaveHeader()** | Asserts that an HTTP response does not have a named header. |
-| **Should().HaveHttpStatus()** | Asserts that an HTTP response has an HTTP status with the specified code. |
-| **Should().NotHaveHttpStatus()** |  that an HTTP response does not have an HTTP status with the specified code. |
+| **Should().HaveHttpStatusCode()** | Asserts that an HTTP response has an HTTP status with the specified code. |
+| **Should().NotHaveHttpStatusCode()** | Asserts that an HTTP response does not have an HTTP status with the specified code. |
 | **Should().MatchInContent()** | Asserts that HTTP response has content that matches a wildcard pattern. |
-| **Should().Satisfy&lt;TModel&gt;()** |  Asserts that an HTTP response content can be a model that satisfies an assertion. |
-| **Should().Satisfy&lt;HttpResponseMessage&gt;()** |  Asserts that an HTTP response content can be a model that satisfies an assertion. |
+| **Should().Satisfy&lt;TModel&gt;()** | Asserts that the HTTP response content, once deserialized to `TModel`, satisfies an assertion. |
+| **Should().Satisfy()** | Asserts that the `HttpResponseMessage` itself satisfies an assertion. |
+
+```csharp
+response.Should().BeAs(new { Author = "John", Content = "Hey, you..." });
+response.Should().HaveHttpStatusCode(HttpStatusCode.Accepted);
+response.Should().MatchInContent("*\"commentId\": 1*");
+response.Should().Satisfy<IEnumerable<Comment>>(comments => comments.Should().HaveCount(2));
+response.Should().Satisfy(response => response.Headers.Contains("X-Correlation-ID"));
+```
+
+<details>
+<summary><code>dotnet test</code> output for <code>HaveHttpStatusCode(HttpStatusCode.Accepted)</code> when it fails</summary>
+
+```text
+  Error Message:
+   Expected response to be HttpStatusCode.Accepted {value: 202}, but found HttpStatusCode.Created {value: 201}.
+
+The HTTP response was:
+
+HTTP/1.1 201 Created
+Location: http://localhost/api/Comments/1
+X-Correlation-ID: 6ec3cb4b-36cf-4003-b95b-c2d577a9f739
+Content-Type: application/json; charset=utf-8
+
+{
+  "author": "John",
+  "content": "Hey, you...",
+  "commentId": 1
+}
+
+The originating HTTP request was:
+
+POST http://localhost/api/comments HTTP 1.1
+Content-Type: application/json; charset=utf-8
+Content-Length: 50
+{
+  "author": "John",
+  "content": "Hey, you..."
+}
+```
+
+</details>
 
 |  *Should().HaveHeader().And.* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to HTTP headers. |
 | --- | --- |
@@ -319,12 +703,90 @@ var formatted = response.Format(new HttpResponseFormatterOptions
 | **BeValues()** | Asserts that an existing HTTP header in an HTTP response has an expected list of header values. |
 | **Match()** | Asserts that an existing HTTP header in an HTTP response contains at least a value that matches a wildcard pattern. |
 
+```csharp
+response.Should().HaveHeader("X-Correlation-ID").And.NotBeEmpty();
+response.Should().HaveHeader("X-Correlation-ID").And.BeValue("5f1615eb-549e-4afa-a015-8c95fd8715c9");
+response.Should().HaveHeader("Set-Cookie").And.BeValues(new[] { "a=1", "b=2" });
+response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*", "it should look like a Guid");
+```
+
+<details>
+<summary><code>dotnet test</code> output for <code>And.BeValue("other-vendor")</code> when it fails</summary>
+
+```text
+  Error Message:
+   Expected response to contain the "x-vendor" HTTP header and the expected header value to be equivalent to "other-vendor" with a length of 12, but "vendor" has a length of 6, differs near "ven" (index 0).
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+x-vendor: vendor
+X-Correlation-ID: e3903b0e-36b3-495d-a8f3-dfda4cee1566
+Content-Type: application/json; charset=utf-8
+
+{
+  "author": "Adrian",
+  "content": "Hey",
+  "commentId": 1
+}
+
+The originating HTTP request was:
+
+GET http://localhost/api/comments/1 HTTP 1.1
+```
+
+</details>
+
 |  *Should().Be400BadRequest().And.* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to HTTP Bad Request response |
 | --- | --- |
 | **HaveError()** | Asserts that a Bad Request HTTP response content contains an error message identifiable by an expected field name and a wildcard error text. |
 | **OnlyHaveError()** | Asserts that a Bad Request HTTP response content contains only a single error message identifiable by an expected field name and a wildcard error text. |
 | **NotHaveError()** | Asserts that a Bad Request HTTP response content does not contain an error message identifiable by an expected field name and a wildcard error text. |
 | **HaveErrorMessage()** | Asserts that a Bad Request HTTP response content contains an error message identifiable by an wildcard error text. |
+
+```csharp
+response.Should().Be400BadRequest()
+    .And.HaveError("Author", "*required*")
+    .And.NotHaveError("Content")
+    .And.HaveErrorMessage("*one or more validation errors*");
+```
+
+<details>
+<summary><code>dotnet test</code> output for <code>HaveError()</code> when it fails</summary>
+
+```text
+  Error Message:
+   Expected response to contain an error message related to the "Content" field, but was not found.
+
+The HTTP response was:
+
+HTTP/1.1 400 BadRequest
+X-Correlation-ID: c61ba4fa-ea03-484b-8345-ad6243e1e9ab
+Content-Type: application/problem+json; charset=utf-8
+
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400,
+  "errors": {
+    "Author": [
+      "The Author field is required."
+    ]
+  },
+  "traceId": "00-aae99e6ddbee1a15d42f336faae193e3-1972a9b2677febe5-00"
+}
+
+The originating HTTP request was:
+
+POST http://localhost/api/comments HTTP 1.1
+Content-Type: application/json; charset=utf-8
+Content-Length: 30
+{
+  "content": "Hey, you..."
+}
+```
+
+</details>
 
 |  *HaveLocation* Header related assertions. | |
 | --- | --- |
@@ -342,7 +804,53 @@ var formatted = response.Format(new HttpResponseFormatterOptions
 | Should().Be307RedirectKeepVerb().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 307 status code has a location header. |
 | Should().Be307TemporaryRedirect().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 307 status code has a location header. |
 | Should().Be308PermanentRedirect().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 308 status code has a location header. |
-| Should().Be3XXRedirection().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP response with 308 status code has a location header. |
+| Should().Be3XXRedirection().And.**HaveLocation()**.And.BeValue() |  Asserts that an HTTP redirection response has a location header. |
+
+```csharp
+response.Should().Be201Created()
+    .And.HaveLocation()
+    .And.Match("*/api/Comments/1");
+```
+
+<details>
+<summary><code>dotnet test</code> output for <code>Be201Created()</code> when the response is a 400 instead</summary>
+
+```text
+  Error Message:
+   Expected response to be HttpStatusCode.Created {value: 201}, but found HttpStatusCode.BadRequest {value: 400}.
+
+The HTTP response was:
+
+HTTP/1.1 400 BadRequest
+X-Correlation-ID: 55b73f11-0235-4110-85d3-1ad3477fdd3e
+Content-Type: application/problem+json; charset=utf-8
+
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400,
+  "errors": {
+    "Author": [
+      "The Author field is required."
+    ],
+    "Content": [
+      "The Content field is required."
+    ]
+  },
+  "traceId": "00-88afb99689f9c20df02c7b18e409e45f-c1994f2de745b13d-00"
+}
+
+The originating HTTP request was:
+
+POST http://localhost/api/comments HTTP 1.1
+Content-Type: application/json; charset=utf-8
+Content-Length: 19
+{
+  "content": ""
+}
+```
+
+</details>
 
 |  *Fine grained status assertions.* | |
 | --- | --- |
@@ -402,6 +910,14 @@ var formatted = response.Format(new HttpResponseFormatterOptions
 | **Should().Be503ServiceUnavailable()** | Asserts that an HTTP response has the HTTP status 503 Service Unavailable |
 | **Should().Be504GatewayTimeout()** | Asserts that an HTTP response has the HTTP status 504 Gateway Timeout |
 | **Should().Be505HttpVersionNotSupported()** | Asserts that an HTTP response has the HTTP status 505 Http Version Not Supported |
+
+```csharp
+response.Should().Be2XXSuccessful();
+response.Should().Be404NotFound();
+response.Should().Be5XXServerError();
+```
+
+A failure here looks exactly like the status code outputs shown above: the expected/actual status codes, then the full response and the originating request.
 
 
 ### The HttpResponsesMessage assertions from FluentAssertions vs. FluentAssertions.Web
