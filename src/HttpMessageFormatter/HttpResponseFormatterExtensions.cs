@@ -15,23 +15,33 @@ public static class HttpResponseFormatterExtensions
     /// <param name="response">The HTTP response message to format.</param>
     /// <returns>A formatted string representation of the HTTP response.</returns>
     public static string Format(this HttpResponseMessage response)
+        => Format(response, null);
+
+    /// <summary>
+    /// Formats an HTTP response message into a readable string representation using the given <paramref name="options"/>.
+    /// </summary>
+    /// <param name="response">The HTTP response message to format.</param>
+    /// <param name="options">The options controlling the formatting, like the maximum number of content characters to print.
+    /// When <see langword="null"/>, the default options are used.</param>
+    /// <returns>A formatted string representation of the HTTP response.</returns>
+    public static string Format(this HttpResponseMessage response, HttpResponseFormatterOptions? options)
     {
         var messageBuilder = new StringBuilder();
         messageBuilder.AppendLine();
         messageBuilder.AppendLine();
         messageBuilder.AppendLine("The HTTP response was:");
 
-        Func<Task> contentResolver = async () => await AppendHttpResponseMessage(messageBuilder, response);
+        Func<Task> contentResolver = async () => await AppendHttpResponseMessage(messageBuilder, response, options);
         contentResolver.ExecuteInDefaultSynchronizationContext();
 
         return messageBuilder.ToString();
     }
 
-    private static async Task AppendHttpResponseMessage(StringBuilder messageBuilder, HttpResponseMessage response)
+    private static async Task AppendHttpResponseMessage(StringBuilder messageBuilder, HttpResponseMessage response, HttpResponseFormatterOptions? options)
     {
         try
         {
-            await AppendResponse(messageBuilder, response);
+            await AppendResponse(messageBuilder, response, options);
         }
         catch (Exception e)
         {
@@ -40,7 +50,7 @@ public static class HttpResponseFormatterExtensions
         }
         try
         {
-            await AppendRequest(messageBuilder, response);
+            await AppendRequest(messageBuilder, response, options);
         }
         catch (Exception e)
         {
@@ -49,15 +59,15 @@ public static class HttpResponseFormatterExtensions
         }
     }
 
-    private static async Task AppendResponse(StringBuilder messageBuilder, HttpResponseMessage response)
+    private static async Task AppendResponse(StringBuilder messageBuilder, HttpResponseMessage response, HttpResponseFormatterOptions? options)
     {
         AppendProtocolAndStatusCode(messageBuilder, response);
         Appender.AppendHeaders(messageBuilder, response.GetHeaders());
         AppendContentLength(messageBuilder, response.Content);
-        await AppendResponseContent(messageBuilder, response);
+        await AppendResponseContent(messageBuilder, response, options);
     }
 
-    private static async Task AppendRequest(StringBuilder messageBuilder, HttpResponseMessage response)
+    private static async Task AppendRequest(StringBuilder messageBuilder, HttpResponseMessage response, HttpResponseFormatterOptions? options)
     {
         messageBuilder.AppendLine();
         messageBuilder.AppendLine();
@@ -75,10 +85,10 @@ public static class HttpResponseFormatterExtensions
         Appender.AppendHeaders(messageBuilder, request.GetHeaders());
         AppendContentLength(messageBuilder, request.Content);
 
-        await AppendRequestContent(messageBuilder, request.Content);
+        await AppendRequestContent(messageBuilder, request.Content, options);
     }
 
-    private static async Task AppendResponseContent(StringBuilder messageBuilder, HttpResponseMessage response)
+    private static async Task AppendResponseContent(StringBuilder messageBuilder, HttpResponseMessage response, HttpResponseFormatterOptions? options)
     {
         var content = response.Content;
         if (content == null)
@@ -88,7 +98,7 @@ public static class HttpResponseFormatterExtensions
 
         var processors = new List<IContentProcessor>();
         processors.Add(new InternalServerErrorProcessor(response, content));
-        processors.AddRange(ProcessorsRunner.CommonProcessors(content));
+        processors.AddRange(ProcessorsRunner.CommonProcessors(content, options));
 
         var contentBuilder = await ProcessorsRunner.RunProcessors(processors);
         messageBuilder.AppendLine();
@@ -109,9 +119,9 @@ public static class HttpResponseFormatterExtensions
         return request.Headers.Union(requestContentHeaders);
     }
 
-    private static async Task AppendRequestContent(StringBuilder messageBuilder, HttpContent content)
+    private static async Task AppendRequestContent(StringBuilder messageBuilder, HttpContent content, HttpResponseFormatterOptions? options)
     {
-        await Appender.AppendContent(messageBuilder, content, false);
+        await Appender.AppendContent(messageBuilder, content, false, options);
     }
 
     private static void AppendProtocolAndStatusCode(StringBuilder messageBuilder, HttpResponseMessage response)

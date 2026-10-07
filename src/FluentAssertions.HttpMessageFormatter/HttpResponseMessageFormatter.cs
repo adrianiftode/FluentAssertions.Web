@@ -26,7 +26,12 @@ public class HttpResponseMessageFormatter : IValueFormatter
         FormatChild formatChild)
     {
         var response = (HttpResponseMessage)value;
-        var formatted = response.Format();
+#if AAV
+        var options = AwesomeAssertionsWebConfig.ResponseFormatterOptions;
+#else
+        var options = FluentAssertionsWebConfig.ResponseFormatterOptions;
+#endif
+        var formatted = response.Format(options);
 
         formattedGraph.AddFragment(formatted);
     }

@@ -16,9 +16,9 @@ internal static class Appender
         }
     }
 
-    public static async Task AppendContent(StringBuilder contentBuilder, HttpContent content, bool appendLineBeforeContent)
+    public static async Task AppendContent(StringBuilder contentBuilder, HttpContent content, bool appendLineBeforeContent, HttpResponseFormatterOptions? options = null)
     {
-        var partContentBuilder = await ProcessorsRunner.RunProcessors(ProcessorsRunner.CommonProcessors(content));
+        var partContentBuilder = await ProcessorsRunner.RunProcessors(ProcessorsRunner.CommonProcessors(content, options));
 
         if (partContentBuilder.Length > 0)
         {

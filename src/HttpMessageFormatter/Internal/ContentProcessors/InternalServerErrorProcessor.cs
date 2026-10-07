@@ -7,7 +7,9 @@ internal class InternalServerErrorProcessor : ProcessorBase
     private readonly HttpResponseMessage? _httpResponseMessage;
     private readonly HttpContent? _httpContent;
 
+    // the exception details are extracted as they are and are not limited by the readable bytes limit
     public InternalServerErrorProcessor(HttpResponseMessage? httpResponseMessage, HttpContent? httpContent)
+        : base(null)
     {
         _httpResponseMessage = httpResponseMessage;
         _httpContent = httpContent;

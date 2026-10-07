@@ -269,6 +269,34 @@ The related `Newtonsoft.Json.JsonSerializerSettings` used to configure the Newto
 NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConverter());
 ```
 
+### Response Formatting
+
+The assertion failure messages include a readable rendering of the HTTP response. By default, only the first `10 * 128 * 1024` characters of the response content are printed, the rest being replaced by a warning message. To change this limit globally, set the `ResponseFormatterOptions`:
+
+```csharp
+FluentAssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
+{
+    MaximumReadableBytes = 4 * 1024
+};
+```
+or
+
+```csharp
+AwesomeAssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
+{
+    MaximumReadableBytes = 4 * 1024
+};
+```
+
+The change must be done before the test is run, like for the serializer configuration above. The global options only apply to the messages produced by **FluentAssertions.Web** and **AwesomeAssertions.Web**. The **HttpMessageFormatter** library itself keeps no global state and accepts the same `HttpResponseFormatterOptions` parameter object per call:
+
+```csharp
+var formatted = response.Format(new HttpResponseFormatterOptions
+{
+    MaximumReadableBytes = 4 * 1024
+});
+```
+
 ## Full API
 
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to the HTTP content. |
