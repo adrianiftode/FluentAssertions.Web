@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <!-- Released independently of the other packages in this repo. See eng/ReleasePackages.props. -->
-    <Version>2.0.4</Version>
+    <Version>2.0.5</Version>
     <PackageDescription>
       NewtonsoftJson based serializer for AwesomeAssertions.Web
     </PackageDescription>
