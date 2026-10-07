@@ -30,8 +30,6 @@
     </Compile>
     <Compile Remove="..\FluentAssertions.Web.Tests\HttpResponseContentAssertionsSpecs.cs"><!-- Task 07 converts this file -->
     </Compile>
-    <Compile Remove="..\FluentAssertions.Web.Tests\HttpStatusCodeAssertionsSpecs.cs"><!-- Task 06 converts this file -->
-    </Compile>
     <Compile Remove="..\FluentAssertions.Web.Tests\LocationAssertionsSpecs.cs"><!-- Task 09 converts this file -->
     </Compile>
     <Compile Remove="..\FluentAssertions.Web.Tests\SatisfyHttpResponseMessageAssertionsAsyncSpecs.cs"><!-- Task 08 converts this file -->

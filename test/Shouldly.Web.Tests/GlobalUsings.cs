@@ -1,5 +1,6 @@
 global using Assertions.Web;
 global using Shouldly;
+global using Shouldly.Web.Tests.TestSupport;
 global using System;
 global using System.Collections.Generic;
 global using System.IO;
