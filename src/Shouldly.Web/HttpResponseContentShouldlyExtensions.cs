@@ -102,12 +102,8 @@ public static class HttpResponseContentShouldlyExtensions
 
         if (!success)
         {
-            throw ShouldlyWebFailure.Create(response, new ExpectedActualShouldlyMessage(
-                expectedModelType,
-                errorMessage,
-                customMessage,
-                shouldlyMethod: nameof(ShouldBeAs),
-                actualExpression: $"{actualExpression}.Content"));
+            throw ShouldlyWebFailure.Deserialization(response, expectedModelType, errorMessage, customMessage,
+                nameof(ShouldBeAs), $"{actualExpression}.Content");
         }
 
         ShouldlyWebFailure.Rethrow(response,

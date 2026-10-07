@@ -26,6 +26,12 @@ internal static class ShouldlyWebFailure
         }
     }
 
+    /// <summary>A model could not be deserialized from the response: report the model type and the underlying error.</summary>
+    internal static ShouldAssertException Deserialization(HttpResponseMessage response, Type modelType,
+        string? errorMessage, string? customMessage, string shouldlyMethod, string actualExpression)
+        => Create(response, new ExpectedActualShouldlyMessage(modelType, errorMessage, customMessage, shouldlyMethod,
+            actualExpression));
+
     private static string Dump(HttpResponseMessage response)
         => response.Format(AssertionsWebConfig.ResponseFormatterOptions);
 }

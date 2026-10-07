@@ -30,14 +30,6 @@
     </Compile>
     <Compile Remove="..\FluentAssertions.Web.Tests\LocationAssertionsSpecs.cs"><!-- Task 09 converts this file -->
     </Compile>
-    <Compile Remove="..\FluentAssertions.Web.Tests\SatisfyHttpResponseMessageAssertionsAsyncSpecs.cs"><!-- Task 08 converts this file -->
-    </Compile>
-    <Compile Remove="..\FluentAssertions.Web.Tests\SatisfyHttpResponseMessageAssertionsSpecs.cs"><!-- Task 08 converts this file -->
-    </Compile>
-    <Compile Remove="..\FluentAssertions.Web.Tests\SatisfyModelAssertionsAsyncSpecs.cs"><!-- Task 08 converts this file -->
-    </Compile>
-    <Compile Remove="..\FluentAssertions.Web.Tests\SatisfyModelAssertionsSpecs.cs"><!-- Task 08 converts this file -->
-    </Compile>
 
     <!-- v1 leftovers and test artifacts sitting in this directory (gitignored); never compile them. -->
     <Compile Remove="Backup\**" />

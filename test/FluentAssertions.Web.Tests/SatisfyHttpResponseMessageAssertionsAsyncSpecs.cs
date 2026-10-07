@@ -1,4 +1,6 @@
-﻿#if AAV
+﻿#if SH
+namespace Shouldly.Web.Tests;
+#elif AAV
 namespace AwesomeAssertions.Web.Tests;
 #else
 namespace FluentAssertions.Web.Tests;
@@ -13,6 +15,20 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         using var subject = new HttpResponseMessage();
         bool completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(async response =>
+            {
+                await Task.Delay(10);
+                true.ShouldBeTrue();
+                completed = true;
+            });
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(async response =>
@@ -25,6 +41,7 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -33,6 +50,19 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(async response =>
+            {
+                await Task.Delay(10);
+                response.Headers.AcceptRanges.ShouldContain("byte");
+
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject", "should satisfy all the conditions specified, but does not.", "Error 1", "response.Headers.AcceptRanges", "should contain", "\"byte\"", "but was actually", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(async response =>
@@ -45,6 +75,7 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("""Expected * to satisfy one or more assertions, but it wasn't because we want to test the reason:*expected*{empty} to contain "byte"*HTTP response*""");
+#endif
     }
 
     [Fact]
@@ -53,6 +84,22 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Shouldly stops at the first failure; nest ShouldSatisfy to report all.
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(
+                async response =>
+                {
+                    await Task.Delay(10);
+                    response.ShouldSatisfy([
+                        r => r.Headers.AcceptRanges.ShouldContain("byte"),
+                        r => r.Headers.ShouldBeNull()]);
+                }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject", "should satisfy all the conditions specified, but does not.", "Error 1", "r.Headers.AcceptRanges", "should contain", "\"byte\"", "Error 2", "r.Headers", "should be null but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(
@@ -66,6 +113,7 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("""Expected * to satisfy one or more assertions, but it wasn't because we want to test the reason:*expected*"byte"*expected*to be <null>*The HTTP response was:*""");
+#endif
     }
 
     [Fact]
@@ -74,6 +122,15 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy((Func<HttpResponseMessage, Task>)null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify the subject satisfies a `null` assertion.");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy((Func<HttpResponseMessage, Task>)null!);
@@ -81,6 +138,7 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*Cannot verify the subject satisfies a `null` assertion.*");
+#endif
     }
 
     [Fact]
@@ -89,6 +147,14 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         // Arrange
         HttpResponseMessage? subject = null;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(async response => await Task.Run(() => true.ShouldBeTrue()), "because we want to test the failure message");
+
+        // Assert
+        act.ShouldFailWith("subject", "should not be null", "Additional Info:", "because we want to test the failure message");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(async response => await Task.Run(() => true.Should().BeTrue()), "because we want to test the failure {0}", "message");
@@ -96,5 +162,6 @@ public class SatisfyHttpResponseMessageAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+#endif
     }
 }

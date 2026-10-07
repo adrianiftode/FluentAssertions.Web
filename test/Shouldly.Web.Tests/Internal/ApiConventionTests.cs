@@ -74,7 +74,13 @@ public class ApiConventionTests
         "ShouldBeAs",
         "ShouldBeAs",
         "ShouldBeEmpty",
-        "ShouldMatchInContent"
+        "ShouldMatchInContent",
+        "ShouldSatisfy",
+        "ShouldSatisfy",
+        "ShouldSatisfy",
+        "ShouldSatisfy",
+        "ShouldSatisfy",
+        "ShouldSatisfy"
     };
 
     private static IEnumerable<Type> ExportedTypes =>
