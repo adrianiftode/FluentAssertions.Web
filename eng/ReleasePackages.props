@@ -63,15 +63,9 @@
                     WatchFiles="readme.md;Directory.Packages.props"
                     DependsOn="HttpMessageFormatter" />
 
-    <ReleasePackage Include="FluentAssertions.Web.Serializers.NewtonsoftJson"
-                    ProjectPath="src/FluentAssertions.Web.Serializers.NewtonsoftJson/FluentAssertions.Web.Serializers.NewtonsoftJson.csproj"
-                    WatchDirectories="src/FluentAssertions.Web.Serializers.NewtonsoftJson;src/Assertions.Web"
-                    WatchFiles="Directory.Packages.props"
-                    DependsOn="" />
-
-    <ReleasePackage Include="AwesomeAssertions.Web.Serializers.NewtonsoftJson"
-                    ProjectPath="src/AwesomeAssertions.Web.Serializers.NewtonsoftJson/AwesomeAssertions.Web.Serializers.NewtonsoftJson.csproj"
-                    WatchDirectories="src/AwesomeAssertions.Web.Serializers.NewtonsoftJson;src/Assertions.Web"
+    <ReleasePackage Include="Assertions.Web.Serializers.NewtonsoftJson"
+                    ProjectPath="src/Assertions.Web.Serializers.NewtonsoftJson/Assertions.Web.Serializers.NewtonsoftJson.csproj"
+                    WatchDirectories="src/Assertions.Web.Serializers.NewtonsoftJson;src/Assertions.Web"
                     WatchFiles="Directory.Packages.props"
                     DependsOn="" />
   </ItemGroup>

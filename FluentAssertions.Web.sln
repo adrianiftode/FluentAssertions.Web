@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Api.Tests", "test\Sa
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample.Api.Shared", "Samples\Sample.Api.Shared\Sample.Api.Shared.shproj", "{815C141D-4504-42B1-A6F7-672C2476A474}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssertions.Web.Serializers.NewtonsoftJson", "src\FluentAssertions.Web.Serializers.NewtonsoftJson\FluentAssertions.Web.Serializers.NewtonsoftJson.csproj", "{1BDE8312-1789-40EA-86B2-83784E560740}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assertions.Web.Serializers.NewtonsoftJson", "src\Assertions.Web.Serializers.NewtonsoftJson\Assertions.Web.Serializers.NewtonsoftJson.csproj", "{1BDE8312-1789-40EA-86B2-83784E560740}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentAssertions.Web.Serializers.NewtonsoftJson.Tests", "test\FluentAssertions.Web.Serializers.NewtonsoftJson.Tests\FluentAssertions.Web.Serializers.NewtonsoftJson.Tests.csproj", "{F2C0B6F2-4ACE-4688-8F96-9EB1D5718B60}"
 EndProject
@@ -55,8 +55,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assertions.Web", "src\Assertions.Web\Assertions.Web.csproj", "{5FB1E532-10B5-4F80-AA14-F889F3516CBA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwesomeAssertions.Web", "src\AwesomeAssertions.Web\AwesomeAssertions.Web.csproj", "{54EF3A12-DB43-48C4-A64C-97D2B62E3C2E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwesomeAssertions.Web.Serializers.NewtonsoftJson", "src\AwesomeAssertions.Web.Serializers.NewtonsoftJson\AwesomeAssertions.Web.Serializers.NewtonsoftJson.csproj", "{79495BD6-C628-42E9-8147-990B8112F377}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwesomeAssertions.Web.Tests", "test\AwesomeAssertions.Web.Tests\AwesomeAssertions.Web.Tests.csproj", "{BBBB8E66-221B-4D89-A942-E63BC7C64C94}"
 EndProject
@@ -136,10 +134,6 @@ Global
 		{54EF3A12-DB43-48C4-A64C-97D2B62E3C2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54EF3A12-DB43-48C4-A64C-97D2B62E3C2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54EF3A12-DB43-48C4-A64C-97D2B62E3C2E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79495BD6-C628-42E9-8147-990B8112F377}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79495BD6-C628-42E9-8147-990B8112F377}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79495BD6-C628-42E9-8147-990B8112F377}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79495BD6-C628-42E9-8147-990B8112F377}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BBBB8E66-221B-4D89-A942-E63BC7C64C94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BBBB8E66-221B-4D89-A942-E63BC7C64C94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBBB8E66-221B-4D89-A942-E63BC7C64C94}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -199,7 +193,6 @@ Global
 		{056E517C-F644-4B8A-9494-09276E6E3C6B} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 		{5FB1E532-10B5-4F80-AA14-F889F3516CBA} = {14FDD52D-B83A-445B-BD2F-04B3E7B8033C}
 		{54EF3A12-DB43-48C4-A64C-97D2B62E3C2E} = {14FDD52D-B83A-445B-BD2F-04B3E7B8033C}
-		{79495BD6-C628-42E9-8147-990B8112F377} = {14FDD52D-B83A-445B-BD2F-04B3E7B8033C}
 		{BBBB8E66-221B-4D89-A942-E63BC7C64C94} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 		{1455C2AB-9EE2-4C4B-96AC-B030EB06928C} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}
 		{E2EC106A-42E7-448F-85F5-85FB07BA2AC1} = {BFF7517A-C9EA-458D-829E-28A10F8D61BF}

@@ -265,15 +265,14 @@ try {
     $allPackages = @(
         'HttpMessageFormatter',
         'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web',
-        'FluentAssertions.Web.Serializers.NewtonsoftJson',
-        'AwesomeAssertions.Web.Serializers.NewtonsoftJson')
+        'Assertions.Web.Serializers.NewtonsoftJson')
 
     # A serializer has no dependency on the assertion packages, so changing one
     # must publish exactly one package. This is the case the old lockstep
     # pipeline got wrong.
     Invoke-Case 'serializer change publishes only that serializer' `
-        @('src/AwesomeAssertions.Web.Serializers.NewtonsoftJson/Serializer.cs') `
-        @('AwesomeAssertions.Web.Serializers.NewtonsoftJson')
+        @('src/Assertions.Web.Serializers.NewtonsoftJson/Serializer.cs') `
+        @('Assertions.Web.Serializers.NewtonsoftJson')
 
     # The three flavours link-compile src/FluentAssertions.Web, so one edit there
     # affects all of them and nothing else.
@@ -297,8 +296,7 @@ try {
         @('Directory.Packages.props') `
         @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web',
           'HttpMessageFormatter',
-          'FluentAssertions.Web.Serializers.NewtonsoftJson',
-          'AwesomeAssertions.Web.Serializers.NewtonsoftJson')
+          'Assertions.Web.Serializers.NewtonsoftJson')
 
     # Docs and CI config are in nobody's package.
     Invoke-Case 'docs change publishes nothing' `

@@ -199,6 +199,9 @@ after_test:
         -PublishableFeedsFile "$env:APPVEYOR_BUILD_FOLDER\publishable-feeds.txt"
 
 artifacts:
+  - path: '**\Assertions.Web*.nupkg'
+    name: AssertionsWebPackages
+
   - path: '**\FluentAssertions.Web*.nupkg'
     name: FluentAssertionsPackages
 
@@ -221,6 +224,19 @@ deploy:
   #                      which excludes stable versions from unmerged branches
   #   PUBLISH_<FEED>     build/Pack-ReleasePackages.ps1 found packages for this
   #                      feed in the release, so an untouched feed is left alone
+  # The shared serializer package (Assertions.Web.Serializers.NewtonsoftJson) ships
+  # on the FluentAssertions feed for now; Task 12 asks the owner which feed it should
+  # really use.
+  - provider: NuGet
+    api_key:
+      secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
+    skip_symbols: true
+    artifact: AssertionsWebPackages
+    on:
+      appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
+      PUBLISH_FLUENTASSERTIONS: true
+
   - provider: NuGet
     api_key:
       secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I

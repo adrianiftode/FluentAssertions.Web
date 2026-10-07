@@ -588,9 +588,13 @@ The change must be done before the test is run and this depends on the testing f
 #### Newtonsoft.Json
 
 The serializer itself is replaceable, so you can implement your own, by implementing the `ISerializer` interface. 
-The serializer is shipped via the **FluentAssertions.Web.Serializers.NewtonsoftJson** and **AwesomeAssertions.Web.Serializers.NewtonsoftJson** package.
+The serializer ships as the single **Assertions.Web.Serializers.NewtonsoftJson** package, shared by every flavour:
 
-[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.Serializers.NewtonsoftJson.svg?label=FluentAssertions.Web.Serializers.NewtonsoftJson)](https://www.nuget.org/packages/FluentAssertions.Web.Serializers.NewtonsoftJson)
+```
+dotnet add package Assertions.Web.Serializers.NewtonsoftJson
+```
+
+[![NuGet](https://img.shields.io/nuget/v/Assertions.Web.Serializers.NewtonsoftJson.svg?label=Assertions.Web.Serializers.NewtonsoftJson)](https://www.nuget.org/packages/Assertions.Web.Serializers.NewtonsoftJson)
 
 
 To set the default serializer to **Newtonsoft.Json** one, use the following configuration:

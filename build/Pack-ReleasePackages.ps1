@@ -60,9 +60,10 @@ if (-not $selected) {
 }
 
 # Feed assignment mirrors the deploy section in appveyor.yml. FluentAssertions.Web
-# is matched first because its glob also covers FluentAssertions.Web.v8 and the
-# serializer package, exactly as the artifact globs do.
+# is matched first because its glob also covers FluentAssertions.Web.v8; the shared
+# serializer package has its own rule, exactly as its artifact glob does.
 function Get-FeedFor($id) {
+    if ($id -like 'Assertions.Web.Serializers*') { return 'FluentAssertions' }
     if ($id -like 'AwesomeAssertions.Web*') { return 'AwesomeAssertions' }
     if ($id -like 'FluentAssertions.Web*') { return 'FluentAssertions' }
     if ($id -like 'HttpMessageFormatter*') { return 'HttpMessageFormatter' }

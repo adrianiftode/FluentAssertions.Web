@@ -1,9 +1,5 @@
 ﻿// ReSharper disable once CheckNamespace
-#if AAV
-namespace AwesomeAssertions;
-#else
-namespace FluentAssertions;
-#endif
+namespace Assertions.Web;
 
 /// <summary>
 /// Holder of the global <see cref="Newtonsoft.Json.JsonSerializerSettings"/>

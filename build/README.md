@@ -9,8 +9,7 @@ to one package does not force a new version of the others.
 | `FluentAssertions.Web` | `src/FluentAssertions.Web` | `HttpMessageFormatter` |
 | `FluentAssertions.Web.v8` | `src/FluentAssertions.Web.v8` | `HttpMessageFormatter` |
 | `AwesomeAssertions.Web` | `src/AwesomeAssertions.Web` | `HttpMessageFormatter` |
-| `FluentAssertions.Web.Serializers.NewtonsoftJson` | `src/FluentAssertions.Web.Serializers.NewtonsoftJson` | — |
-| `AwesomeAssertions.Web.Serializers.NewtonsoftJson` | `src/AwesomeAssertions.Web.Serializers.NewtonsoftJson` | — |
+| `Assertions.Web.Serializers.NewtonsoftJson` | `src/Assertions.Web.Serializers.NewtonsoftJson` | — |
 
 ## How to release
 
@@ -117,8 +116,8 @@ entries in `eng/ReleasePackages.props`, but their `<Version>` is your job.
    src/AwesomeAssertions.Web/AwesomeAssertions.Web.csproj           2.0.4 -> 2.0.5
    ```
 
-   The two serializer packages stay at `2.0.4`. They do not depend on
-   `HttpMessageFormatter`, so nothing about them changed.
+   The serializer package stays at `2.0.4`. It does not depend on
+   `HttpMessageFormatter`, so nothing about it changed.
 
 2. Build and test, as usual:
 
@@ -173,7 +172,7 @@ entries in `eng/ReleasePackages.props`, but their `<Version>` is your job.
 
 - You did not edit `eng/ReleasePackages.props`. The `DependsOn` entries already
   handle the dependency chain.
-- You did not bump the two serializer packages.
+- You did not bump the serializer package.
 - You did not touch `appveyor.yml` or run any publishing command yourself.
 
 ### If the build fails
