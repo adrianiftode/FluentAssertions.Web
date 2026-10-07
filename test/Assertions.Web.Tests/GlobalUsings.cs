@@ -1,6 +1,13 @@
 global using Assertions.Web;
+global using Assertions.Web.Internal;
 global using Assertions.Web.Internal.Serializers;
 global using FluentAssertions;
 global using HttpMessageFormatter;
 global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Net.Http;
+global using System.Text.Json;
+global using System.Threading.Tasks;
 global using Xunit;

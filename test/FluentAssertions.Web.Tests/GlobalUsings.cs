@@ -1,4 +1,5 @@
 ﻿global using Assertions.Web;
+global using Assertions.Web.Internal;
 global using Assertions.Web.Internal.Serializers;
 global using FluentAssertions.Equivalency;
 global using FluentAssertions.Execution;

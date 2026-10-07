@@ -1,8 +1,4 @@
-﻿#if AAV
-namespace AwesomeAssertions.Web.Internal;
-#else
-namespace FluentAssertions.Web.Internal;
-#endif
+namespace Assertions.Web.Internal;
 
 internal static class JsonExtensions
 {

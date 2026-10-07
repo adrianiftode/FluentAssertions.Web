@@ -30,6 +30,8 @@
     <None Include="../../readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
+  <Import Project="..\Assertions.Web.Shared\Assertions.Web.Shared.props" />
+
   <ItemGroup>
     <Compile Include="..\FluentAssertions.Web\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>

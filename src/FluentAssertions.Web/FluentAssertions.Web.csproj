@@ -24,6 +24,9 @@
   <ItemGroup>
     <None Include="../../readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
+
+  <Import Project="..\Assertions.Web.Shared\Assertions.Web.Shared.props" />
+
   <PropertyGroup>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>

@@ -1,8 +1,4 @@
-﻿#if AAV
-namespace AwesomeAssertions.Web.Tests.Internal;
-#else
-namespace FluentAssertions.Web.Tests.Internal;
-#endif
+﻿namespace Assertions.Web.Tests.Internal;
 
 public class JsonExtensionsTests
 {

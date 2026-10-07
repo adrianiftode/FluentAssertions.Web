@@ -1,14 +1,6 @@
-#if AAV
-using AwesomeAssertions;
-#else
-using FluentAssertions;
-#endif
+using Assertions.Web;
 
-#if AAV
-namespace AwesomeAssertions.Web.Internal;
-#else
-namespace FluentAssertions.Web.Internal;
-#endif
+namespace Assertions.Web.Internal;
 
 /// <summary>
 /// Provides extension methods for working with <see cref="HttpContent"/> instances.
