@@ -1,4 +1,5 @@
 version: 0.0.0-ci-{build}
+# A non release build never publishes; only tags do. See the deploy section.
 
 image: Visual Studio 2026
 
@@ -15,7 +16,11 @@ skip_branch_with_pr: true
 
 configuration: Release
 
-shallow_clone: true
+# Must stay false. Release detection and the policy check are git operations, and
+# shallow_clone made AppVeyor download a zip archive instead of cloning, so the
+# checkout had no .git directory and every git call died with
+# "fatal: not a git repository". A full clone of this repo is cheap.
+shallow_clone: false
 
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -33,14 +38,17 @@ skip_commits:
 init:
   - cmd: dotnet --version
 
+  # The tag no longer dictates package versions. Each csproj carries its own
+  # <Version>, so a release can bump only the packages that changed. The tag is
+  # still just the release trigger, and the label keeps it visible in the UI.
   - ps: |
       $ErrorActionPreference = "Stop"
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
           try {
-              Update-AppveyorBuild -Version $env:APPVEYOR_REPO_TAG_NAME
+              Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_TAG_NAME) (release)"
           }
           catch {
-              throw "Failed to update build version from tag: $_"
+              throw "Failed to update build label from tag: $_"
           }
       }
 
@@ -93,7 +101,9 @@ build_script:
           }
       }
 
-  - cmd: dotnet build -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+  # No /p:Version here on purpose: versions come from each csproj so packages can
+  # be released independently.
+  - cmd: dotnet build -c %CONFIGURATION%
 
 test_script:
   # Uses native coverlet collector to safely output an OpenCover report without altering compiled disk files
@@ -111,7 +121,82 @@ after_test:
           }
       }
 
-  - cmd: dotnet pack --include-symbols -c %CONFIGURATION% /p:Version=%APPVEYOR_BUILD_VERSION% /p:PackageVersion=%APPVEYOR_BUILD_VERSION%
+  # Decide what this release publishes, then pack only that. Runs for every build
+  # so a non release build still produces artifacts; the deploy section below is
+  # what restricts publishing to tags.
+  #
+  # Release detection needs git history and tags to diff against. shallow_clone is
+  # off so this is a real clone; the block below is the safety net for when the
+  # checkout is not (a zip download has no .git directory, which used to kill every
+  # later git call with "fatal: not a git repository"). Git's stderr is merged into
+  # the log and judged by exit code, never by redirection under EAP=Stop, which
+  # would raise a terminating error before any check could run.
+  - ps: |
+      $ErrorActionPreference = "Continue"
+
+      $tags = @(git tag 2>&1)
+
+      if ($LASTEXITCODE -ne 0) {
+          if (-not (Test-Path -LiteralPath (Join-Path $env:APPVEYOR_BUILD_FOLDER ".git"))) {
+              throw "This checkout has no .git directory, so release detection cannot work. Keep shallow_clone: false in appveyor.yml; a shallow or zip clone ships without git metadata."
+          }
+
+          throw "git tag failed (exit code $LASTEXITCODE): $($tags -join '; '). Release detection needs a working git clone."
+      }
+
+      if (-not ($tags | Where-Object { $_ })) {
+          Write-Host "Fetching tags so release detection has a baseline to diff against."
+          git fetch --tags --force origin
+          if ($LASTEXITCODE -ne 0) {
+              throw "Failed to fetch tags (exit code $LASTEXITCODE). Release detection needs at least one tag to diff against."
+          }
+
+          $tags = @(git tag 2>&1)
+          if ($LASTEXITCODE -ne 0 -or -not ($tags | Where-Object { $_ })) {
+              throw "No git tags available. Release detection needs at least one tag to diff against; push a baseline tag on the default branch."
+          }
+      }
+
+  # The three scripts below fail by throwing, so reaching the end of a block means
+  # it succeeded. $LASTEXITCODE is deliberately not checked after them: it holds
+  # whatever the last git or dotnet call inside the script returned, and the
+  # scripts are allowed to recover from a non-zero git exit code (that is how
+  # detection falls back to publishing everything when the diff cannot be read).
+  - ps: |
+      $ErrorActionPreference = "Stop"
+
+      # A tag build publishes, so an already published version is a real error.
+      # A branch build must not fail on it, because the bump happens later.
+      $params = @{
+          ChangedPackagesFile = "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt"
+          EnforceVersionCheck = ($env:APPVEYOR_REPO_TAG -eq "true")
+      }
+
+      & .\build\Get-ReleasePackages.ps1 @params
+
+      $selected = @(Get-Content "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt" -ErrorAction SilentlyContinue | Where-Object { $_ })
+      Write-Host "Release includes $($selected.Count) package(s): $($selected -join ', ')"
+
+      # A tag on a feature branch may publish prereleases, but not stable version
+      # numbers: nuget.org packages are immutable, so a stable version shipped from
+      # an unmerged tag is burned forever. Skipped for branch builds, which do not
+      # publish at all.
+      if ($env:APPVEYOR_REPO_TAG -eq "true") {
+          & .\build\Test-ReleasePolicy.ps1 `
+              -SelectedPackagesFile "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt"
+      }
+      else {
+          $env:PUBLISH_ALLOWED = "false"
+      }
+
+  - ps: |
+      $ErrorActionPreference = "Stop"
+
+      & .\build\Pack-ReleasePackages.ps1 `
+        -SelectedPackagesFile "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt" `
+        -Configuration $env:CONFIGURATION `
+        -RepositoryUrl "https://github.com/adrianiftode/FluentAssertions.Web" `
+        -PublishableFeedsFile "$env:APPVEYOR_BUILD_FOLDER\publishable-feeds.txt"
 
 artifacts:
   - path: '**\FluentAssertions.Web*.nupkg'
@@ -123,7 +208,19 @@ artifacts:
   - path: '**\HttpMessageFormatter*.nupkg'
     name: HttpMessageFormatterPackage
 
+  # Everything this release produced, regardless of feed. The GitHub release uses
+  # this one artifact, because listing three artifact names would break whenever a
+  # release only touches one of the feeds and the other artifacts stay empty.
+  - path: '**\*.nupkg'
+    name: ReleasePackages
+
 deploy:
+  # Three things must all be true to publish:
+  #   appveyor_repo_tag  a tag was pushed, not just a branch commit
+  #   PUBLISH_ALLOWED    build/Test-ReleasePolicy.ps1 allowed this tag to publish,
+  #                      which excludes stable versions from unmerged branches
+  #   PUBLISH_<FEED>     build/Pack-ReleasePackages.ps1 found packages for this
+  #                      feed in the release, so an untouched feed is left alone
   - provider: NuGet
     api_key:
       secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
@@ -131,6 +228,8 @@ deploy:
     artifact: FluentAssertionsPackages
     on:
       appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
+      PUBLISH_FLUENTASSERTIONS: true
 
   - provider: NuGet
     api_key:
@@ -139,6 +238,8 @@ deploy:
     artifact: HttpMessageFormatterPackage
     on:
       appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
+      PUBLISH_HTTPMESSAGEFORMATTER: true
 
   - provider: NuGet
     api_key:
@@ -147,11 +248,17 @@ deploy:
     artifact: AwesomeAssertionsPackages
     on:
       appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
+      PUBLISH_AWESOMEASSERTIONS: true
 
+  # The GitHub release carries the .nupkg files, so it is created only when at
+  # least one package is actually being published.
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: WXU/Xj3ntIZVx89KDAa/V/FGerV2fURqVQJxrKIqMcCijmXeC065twmHPYQMWGBabafs1llkLbe6DMKRAGnz+GxwH8GpT3A86rcSOLxbsp4uRkeMRsLxWHI+eDHTonOY
-    artifact: FluentAssertionsPackages, AwesomeAssertionsPackages, HttpMessageFormatterPackage
+    artifact: ReleasePackages
     on:
       appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
+      PUBLISH_ANY: true

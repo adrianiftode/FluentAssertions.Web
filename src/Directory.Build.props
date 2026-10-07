@@ -13,11 +13,28 @@
   <PropertyGroup>
     <Authors>Adrian Iftode</Authors>
     <PackageTags>fluentassertions;awesomeassertions;httpresponsemessage;fluentassertionsweb;awesomeassertionsweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
-    <VersionPrefix>1.1.0</VersionPrefix>
     <PackageProjectUrl>https://github.com/adrianiftode/FluentAssertions.Web</PackageProjectUrl>
     <RepositoryUrl>https://github.com/adrianiftode/FluentAssertions.Web</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
+
+  <!--
+    Per package versioning.
+
+    Every packable project carries its own <Version>, so a release can bump only
+    the packages it actually affects. eng/ReleasePackages.props holds the release
+    topology (which paths affect which package, what depends on what) that MSBuild
+    cannot infer.
+
+    There is deliberately no VersionPrefix fallback: a single repo wide default is
+    exactly what made every package ship at the same version.
+
+    Note that MSBuild cannot guard against a missing <Version> here. The SDK
+    defaults Version to 1.0.0 rather than leaving it empty, so "unset" and "1.0.0"
+    are indistinguishable at evaluation time. build/Get-ReleasePackages.ps1
+    validates the csproj XML instead, where an absent <Version> element is
+    actually visible.
+  -->
 
 </Project>
