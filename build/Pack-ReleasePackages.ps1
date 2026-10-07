@@ -79,10 +79,24 @@ foreach ($id in $selected) {
     $projectPath = $packages[$id].ProjectPath.Replace('\', '/')
     Write-Host "==> Packing $id from $projectPath"
 
-    & dotnet pack $projectPath -c $Configuration --include-symbols --nologo `
-        -p:RepositoryUrl=$RepositoryUrl -p:RepositoryType=git
-    if ($LASTEXITCODE -ne 0) {
-        throw "dotnet pack failed for $id."
+    # dotnet writes warnings and progress to stderr, which under
+    # $ErrorActionPreference = 'Stop' would crash this script before the exit code
+    # could be read. Run it with the preference relaxed, keep its output visible
+    # in the log, and check the exit code ourselves.
+    $previousEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        & dotnet pack $projectPath -c $Configuration --include-symbols --nologo `
+            -p:RepositoryUrl=$RepositoryUrl -p:RepositoryType=git 2>&1 |
+            ForEach-Object { "$_" }
+        $packExitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousEap
+    }
+
+    if ($packExitCode -ne 0) {
+        throw "dotnet pack failed for $id (exit code $packExitCode)."
     }
 
     $feed = Get-FeedFor $id
@@ -123,3 +137,8 @@ if ($PublishableFeedsFile) {
         Set-Content -LiteralPath $PublishableFeedsFile -Encoding UTF8
     Write-Host "==> Wrote feed decisions to '$PublishableFeedsFile'."
 }
+
+# Failures throw, and every dotnet pack exit code is checked where it runs, so a
+# run that reaches this line succeeded. Clears any stale native exit code, as in
+# Get-ReleasePackages.ps1.
+$global:LASTEXITCODE = 0

@@ -183,6 +183,8 @@ entries in `eng/ReleasePackages.props`, but their `<Version>` is your job.
 | `Version 2.0.4 of FluentAssertions.Web is already on nuget.org` | You bumped the formatter but not its dependents | Bump the three dependents to `2.0.5` and push a new tag |
 | `Version 2.0.5 of HttpMessageFormatter is already on nuget.org` | That version already shipped | Bump to `2.0.6` |
 | `NOT PUBLISHING: Tag '2.0.5' is not on any release branch` | You tagged a feature branch with a stable version | Merge the PR and tag master, or publish a `-preview` version instead |
+| `This checkout has no .git directory` | CI handed the build a zip archive instead of a git clone | Keep `shallow_clone: false` in `appveyor.yml`, then re-run the build |
+| `Could not determine which branches contain '<tag>'` | git could not resolve the tag in this clone: the fetch failed, or the tag no longer exists | Re-run the build; if it persists, run `git fetch --tags` locally and check the tag is still on the remote |
 | `No git tags available` | Tag history was not fetched | Usually transient; re-run the build. If it persists, push a baseline tag |
 | `dotnet pack failed for <id>` | A compile or pack error | Read the error above it; this is not a versioning problem |
 
@@ -228,5 +230,9 @@ dotnet test
 ```
 
 The detection test builds a throwaway git repo and checks that each kind of change
-selects the right packages, so you can change the manifest without guessing. The
-policy test does the same for which tags are allowed to publish.
+selects the right packages, so you can change the manifest without guessing. It
+also covers what happens when git itself fails — an unreadable baseline ref, or a
+checkout with no `.git` directory at all, which is what a zip archive from CI
+looks like: detection must fall back to publishing every package rather than
+crash or claim nothing changed. The policy test does the same for which tags are
+allowed to publish, including a tag git has never heard of.

@@ -104,11 +104,17 @@ function New-Fixture {
     }
 }
 
-function Invoke-Case($name, $changedFiles, $expected) {
+function Invoke-Case($name, $changedFiles, $expected, [string] $Baseline) {
     <#
         Commits the given files on top of the baseline tag, runs detection, and
         compares the packages it selects against the expected set. The working
         tree is reset first so cases stay independent of each other.
+
+        -Baseline is forwarded to the detection script so a case can probe how it
+        behaves when the baseline ref is unusable. A throw from the script is
+        captured and reported as this case's own failure instead of aborting the
+        rest of the run, because these cases exist precisely to pin down what
+        happens when a git call goes wrong.
     #>
     Push-Location $workDir
     try {
@@ -126,22 +132,91 @@ function Invoke-Case($name, $changedFiles, $expected) {
             }
         }
 
-        & git -c core.autocrlf=false -c core.safecrlf=false add -A 2>$null | Out-Null
-        & git -c core.autocrlf=false -c core.safecrlf=false commit -q -m $name 2>$null | Out-Null
+        if ($changedFiles) {
+            & git -c core.autocrlf=false -c core.safecrlf=false add -A 2>$null | Out-Null
+            & git -c core.autocrlf=false -c core.safecrlf=false commit -q -m $name 2>$null | Out-Null
+        }
 
         $selectedFile = Join-Path $workDir 'selected-packages.txt'
 
-        & (Join-Path $workDir 'build/Get-ReleasePackages.ps1') `
-            -RepoRoot $workDir `
-            -SkipVersionCheck `
-            -ChangedPackagesFile $selectedFile 2>$null | Out-Null
+        $detectParams = @{
+            RepoRoot            = $workDir
+            SkipVersionCheck    = $true
+            ChangedPackagesFile = $selectedFile
+        }
+        if ($Baseline) {
+            $detectParams['Baseline'] = $Baseline
+        }
+
+        $thrown = ''
+        try {
+            & (Join-Path $workDir 'build/Get-ReleasePackages.ps1') @detectParams 2>$null | Out-Null
+        }
+        catch {
+            $thrown = $_.Exception.Message
+        }
 
         $actual = @()
         if (Test-Path -LiteralPath $selectedFile) {
             $actual = @(Get-Content -LiteralPath $selectedFile | Where-Object { $_ })
         }
+
+        if ($thrown -and -not $actual) {
+            $actual = @("(detection script threw: $thrown)")
+        }
     }
     finally {
+        Pop-Location
+    }
+
+    Write-CaseResult $name ($null -eq (Compare-Object $actual @($expected))) $expected $actual
+}
+
+function Invoke-NoGitCase($name, $expected) {
+    <#
+        Simulates a checkout without any git metadata, which is exactly what
+        AppVeyor's zip download used to hand the build: no .git directory, so every
+        git call fails with "fatal: not a git repository". Detection has neither a
+        baseline nor a diff in that state, and the only safe answer is every
+        package rather than none. The .git directory is parked and restored so the
+        case can run anywhere in the list.
+    #>
+    $gitDir = Join-Path $workDir '.git'
+    $parkedGitDir = Join-Path $workDir '.git-parked'
+
+    Push-Location $workDir
+    try {
+        & git reset -q --hard 2.0.4 2>$null | Out-Null
+        & git clean -qfd 2>$null | Out-Null
+
+        Move-Item -LiteralPath $gitDir -Destination $parkedGitDir -Force
+
+        $selectedFile = Join-Path $workDir 'selected-packages.txt'
+
+        $thrown = ''
+        try {
+            & (Join-Path $workDir 'build/Get-ReleasePackages.ps1') `
+                -RepoRoot $workDir `
+                -SkipVersionCheck `
+                -ChangedPackagesFile $selectedFile 2>$null | Out-Null
+        }
+        catch {
+            $thrown = $_.Exception.Message
+        }
+
+        $actual = @()
+        if (Test-Path -LiteralPath $selectedFile) {
+            $actual = @(Get-Content -LiteralPath $selectedFile | Where-Object { $_ })
+        }
+
+        if ($thrown -and -not $actual) {
+            $actual = @("(detection script threw: $thrown)")
+        }
+    }
+    finally {
+        if ((Test-Path -LiteralPath $parkedGitDir) -and -not (Test-Path -LiteralPath $gitDir)) {
+            Move-Item -LiteralPath $parkedGitDir -Destination $gitDir -Force
+        }
         Pop-Location
     }
 
@@ -185,6 +260,14 @@ function Invoke-RejectionCase($name, $mutate, $expectedFragment) {
 try {
     New-Fixture
 
+    # Every package in the manifest, for the cases where detection has no usable
+    # change information: guessing "nothing changed" would silently drop a release.
+    $allPackages = @(
+        'HttpMessageFormatter',
+        'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web',
+        'FluentAssertions.Web.Serializers.NewtonsoftJson',
+        'AwesomeAssertions.Web.Serializers.NewtonsoftJson')
+
     # A serializer has no dependency on the assertion packages, so changing one
     # must publish exactly one package. This is the case the old lockstep
     # pipeline got wrong.
@@ -222,6 +305,18 @@ try {
         @('CONVENTIONS.md') `
         @()
 
+    # A diff that succeeds but lists nothing means there is genuinely nothing new,
+    # which is not the same as not being able to read the diff. Nothing should ship.
+    Invoke-Case 'no changes since the baseline publishes nothing' @() @()
+
+    # A baseline ref git cannot resolve (a tag fetch that failed, a stale ref) must
+    # not be mistaken for "no changes": the change list is unknown, and the only
+    # safe answer then is every package.
+    Invoke-Case 'unreadable baseline selects every package' `
+        @('CONVENTIONS.md') `
+        $allPackages `
+        -Baseline 'refs/tags/does-not-exist'
+
     # A csproj with no <Version> would pack as 1.0.0 and overwrite a published
     # package, so detection has to stop rather than pass it through.
     Invoke-RejectionCase 'project without a version is rejected' `
@@ -251,6 +346,11 @@ try {
                 Set-Content -LiteralPath $manifestFile -NoNewline
         } `
         'does not exist'
+
+    # The failure AppVeyor hit: a checkout handed to the build as a zip archive,
+    # with no .git directory at all. Every git call fails there, and detection has
+    # to degrade to publishing everything instead of killing the build.
+    Invoke-NoGitCase 'checkout without git metadata selects every package' $allPackages
 }
 finally {
     if (Test-Path -LiteralPath $workDir) {

@@ -66,6 +66,46 @@ function Write-Step($message) {
     Write-Host "==> $message"
 }
 
+# Runs git and reports the result as data instead of as an exception.
+#
+# Under $ErrorActionPreference = 'Stop' a native command's stderr becomes a
+# terminating error the moment it is redirected (2>$null or 2>&1), so the exit
+# code fallbacks below would never be reached and every git failure would crash
+# the script. That is exactly what happened on CI when the checkout had no .git
+# directory at all. Running git with the preference temporarily relaxed and
+# collecting both streams keeps a failed git call something this script can
+# recover from: the exit code and the first line of output come back in an object.
+function Invoke-Git {
+    param(
+        [Parameter(Mandatory, Position = 0)]
+        [string[]] $Arguments
+    )
+
+    if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+        return [pscustomobject]@{
+            Output   = @()
+            ExitCode = -1
+            Reason   = 'git is not installed or not on PATH.'
+        }
+    }
+
+    $previousEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $output = @(& git @Arguments 2>&1 | ForEach-Object { "$_" })
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousEap
+    }
+
+    return [pscustomobject]@{
+        Output   = $output
+        ExitCode = $exitCode
+        Reason   = $(if ($output) { @($output)[0] } else { '' })
+    }
+}
+
 function Get-ManifestPackages {
     if (-not (Test-Path -LiteralPath $manifestPath)) {
         throw "Release manifest not found at '$manifestPath'."
@@ -130,16 +170,31 @@ function Get-PackageVersion($package) {
     return $version.Trim()
 }
 
+function Get-MergedTags {
+    # Every tag reachable from HEAD, newest first. Git failing (no git installed,
+    # no repository, unreadable refs) is treated as "this clone has no tags",
+    # which sends the caller down the fallbacks rather than failing the build.
+    $result = Invoke-Git @('-C', $RepoRoot, 'tag', '--sort=-creatordate', '--merged', 'HEAD')
+
+    if ($result.ExitCode -ne 0) {
+        Write-Step "Could not list release tags$(if ($result.Reason) { ": $($result.Reason)" }). Treating this clone as having none."
+        return @()
+    }
+
+    return @($result.Output | Where-Object { $_ })
+}
+
 function Get-BaseLineRef {
     if ($Baseline) { return $Baseline }
 
     $script:currentTag = $env:APPVEYOR_REPO_TAG_NAME
 
     # The tag being built is HEAD itself, so it cannot be the diff baseline.
-    $tagRef = git -C $RepoRoot tag --sort=-creatordate --merged HEAD 2>$null | Select-Object -First 1
+    $tags = @(Get-MergedTags)
+    $tagRef = $tags | Select-Object -First 1
 
     if ($tagRef -and $script:currentTag -and $tagRef -eq $script:currentTag) {
-        $tagRef = git -C $RepoRoot tag --sort=-creatordate --merged HEAD 2>$null | Select-Object -Skip 1 -First 1
+        $tagRef = $tags | Select-Object -Skip 1 -First 1
     }
 
     if ($tagRef) {
@@ -168,13 +223,19 @@ function Get-ChangedFiles($baselineRef) {
     }
     $gitArgs += "$baselineRef...$EndRef"
 
-    $output = & git @gitArgs 2>$null
-    if ($LASTEXITCODE -ne 0) {
-        Write-Step "Could not diff against '$baselineRef'. Treating everything as changed."
+    $result = Invoke-Git -Arguments $gitArgs
+
+    if ($result.ExitCode -ne 0) {
+        # No diff means the change list is unknown, not that nothing changed, so
+        # the caller publishes every package rather than none.
+        Write-Step "Could not diff against '$baselineRef'$(if ($result.Reason) { " ($($result.Reason))" }). Treating everything as changed."
         return $null
     }
 
-    return @($output | Where-Object { $_ } | ForEach-Object { $_.Replace('\', '/') })
+    # The comma keeps an empty result an empty array instead of collapsing to
+    # $null: a diff that succeeded but lists nothing means there is genuinely
+    # nothing new, which must stay distinguishable from the failure above.
+    return ,@($result.Output | Where-Object { $_ } | ForEach-Object { $_.Replace('\', '/') })
 }
 
 function Test-PackageAffected($package, $changedFiles) {
@@ -314,3 +375,8 @@ if ($ChangedPackagesFile) {
 
 $env:RELEASE_PACKAGE_IDS = ($selected -join ',')
 $env:RELEASE_PACKAGE_VERSIONS = (($selected | ForEach-Object { "$_=$($allVersions[$_])" }) -join ',')
+
+# Success here means "did not throw", not "the last git call returned 0": the
+# fallbacks above deliberately recover from non-zero git exit codes, so the stale
+# code is cleared rather than left for a caller inspecting $LASTEXITCODE after &.
+$global:LASTEXITCODE = 0

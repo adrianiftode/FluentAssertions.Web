@@ -133,6 +133,38 @@ function Invoke-PolicyCase($name, $tagName, $packages, $expectedAllowed) {
     Write-CaseResult $name ($allowed -eq $expectedAllowed) "PUBLISH_ALLOWED=$expectedAllowed" "PUBLISH_ALLOWED=$allowed"
 }
 
+function Invoke-PolicyRejectCase($name, $tagName, $expectedFragment) {
+    <#
+        Runs the policy against a tag git has never heard of, which is what a failed
+        tag fetch or a mistyped tag name looks like, and checks it fails with an
+        actionable message rather than with git's own error text. A throw from the
+        script is captured so one such case cannot abort the rest of the run.
+    #>
+    $selectedFile = Join-Path $workDir 'selected-packages.txt'
+    @('HttpMessageFormatter') | Set-Content -LiteralPath $selectedFile -Encoding UTF8
+
+    $env:APPVEYOR_REPO_TAG_NAME = $tagName
+
+    $failed = $false
+    $message = ''
+    try {
+        & (Join-Path $workDir 'build/Test-ReleasePolicy.ps1') `
+            -SelectedPackagesFile $selectedFile `
+            -RepoRoot $workDir 2>&1 | ForEach-Object { $message += "$_`n" }
+    }
+    catch {
+        $failed = $true
+        $message = $_.Exception.Message
+    }
+    finally {
+        $env:APPVEYOR_REPO_TAG_NAME = $null
+        $env:PUBLISH_ALLOWED = $null
+    }
+
+    Write-CaseResult $name ($failed -and ($message -like "*$expectedFragment*")) `
+        "failure containing '$expectedFragment'" $(if ($message) { $message.Trim() } else { '(no error raised)' })
+}
+
 try {
     New-Fixture
 
@@ -183,6 +215,13 @@ try {
         Invoke-PolicyCase "'$version' counts as stable" `
             '2.0.5-preview-branch' @('HttpMessageFormatter') 'false'
     }
+
+    # A tag git cannot resolve means the fetch failed or the name is wrong. Calling
+    # it "not on a release branch" would be a misleading guess, and raw git error
+    # text tells nobody what to do, so the check must fail with an explanation.
+    Invoke-PolicyRejectCase 'unknown tag fails with a clear message' `
+        '9.9.9-does-not-exist' `
+        'Could not determine which branches contain'
 }
 finally {
     if (Test-Path -LiteralPath $workDir) {

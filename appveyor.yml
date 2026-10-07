@@ -16,7 +16,11 @@ skip_branch_with_pr: true
 
 configuration: Release
 
-shallow_clone: true
+# Must stay false. Release detection and the policy check are git operations, and
+# shallow_clone made AppVeyor download a zip archive instead of cloning, so the
+# checkout had no .git directory and every git call died with
+# "fatal: not a git repository". A full clone of this repo is cheap.
+shallow_clone: false
 
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -120,22 +124,44 @@ after_test:
   # Decide what this release publishes, then pack only that. Runs for every build
   # so a non release build still produces artifacts; the deploy section below is
   # what restricts publishing to tags.
+  #
+  # Release detection needs git history and tags to diff against. shallow_clone is
+  # off so this is a real clone; the block below is the safety net for when the
+  # checkout is not (a zip download has no .git directory, which used to kill every
+  # later git call with "fatal: not a git repository"). Git's stderr is merged into
+  # the log and judged by exit code, never by redirection under EAP=Stop, which
+  # would raise a terminating error before any check could run.
   - ps: |
-      $ErrorActionPreference = "Stop"
+      $ErrorActionPreference = "Continue"
 
-      # shallow_clone is on, so tags are missing and detection cannot work.
-      if (-not (git tag)) {
+      $tags = @(git tag 2>&1)
+
+      if ($LASTEXITCODE -ne 0) {
+          if (-not (Test-Path -LiteralPath (Join-Path $env:APPVEYOR_BUILD_FOLDER ".git"))) {
+              throw "This checkout has no .git directory, so release detection cannot work. Keep shallow_clone: false in appveyor.yml; a shallow or zip clone ships without git metadata."
+          }
+
+          throw "git tag failed (exit code $LASTEXITCODE): $($tags -join '; '). Release detection needs a working git clone."
+      }
+
+      if (-not ($tags | Where-Object { $_ })) {
           Write-Host "Fetching tags so release detection has a baseline to diff against."
-          git fetch --tags --force --depth=200 origin
+          git fetch --tags --force origin
           if ($LASTEXITCODE -ne 0) {
-              throw "Failed to fetch tags."
+              throw "Failed to fetch tags (exit code $LASTEXITCODE). Release detection needs at least one tag to diff against."
+          }
+
+          $tags = @(git tag 2>&1)
+          if ($LASTEXITCODE -ne 0 -or -not ($tags | Where-Object { $_ })) {
+              throw "No git tags available. Release detection needs at least one tag to diff against; push a baseline tag on the default branch."
           }
       }
 
-      if (-not (git tag)) {
-          throw "No git tags available. Release detection needs at least one tag to diff against; push a baseline tag on the default branch."
-      }
-
+  # The three scripts below fail by throwing, so reaching the end of a block means
+  # it succeeded. $LASTEXITCODE is deliberately not checked after them: it holds
+  # whatever the last git or dotnet call inside the script returned, and the
+  # scripts are allowed to recover from a non-zero git exit code (that is how
+  # detection falls back to publishing everything when the diff cannot be read).
   - ps: |
       $ErrorActionPreference = "Stop"
 
@@ -148,10 +174,6 @@ after_test:
 
       & .\build\Get-ReleasePackages.ps1 @params
 
-      if ($LASTEXITCODE -ne 0) {
-          throw "Release package detection failed."
-      }
-
       $selected = @(Get-Content "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt" -ErrorAction SilentlyContinue | Where-Object { $_ })
       Write-Host "Release includes $($selected.Count) package(s): $($selected -join ', ')"
 
@@ -162,10 +184,6 @@ after_test:
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
           & .\build\Test-ReleasePolicy.ps1 `
               -SelectedPackagesFile "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt"
-
-          if ($LASTEXITCODE -ne 0) {
-              throw "Release policy check failed."
-          }
       }
       else {
           $env:PUBLISH_ALLOWED = "false"
@@ -179,10 +197,6 @@ after_test:
         -Configuration $env:CONFIGURATION `
         -RepositoryUrl "https://github.com/adrianiftode/FluentAssertions.Web" `
         -PublishableFeedsFile "$env:APPVEYOR_BUILD_FOLDER\publishable-feeds.txt"
-
-      if ($LASTEXITCODE -ne 0) {
-          throw "Packing the selected packages failed."
-      }
 
 artifacts:
   - path: '**\FluentAssertions.Web*.nupkg'

@@ -58,14 +58,52 @@ function Write-Step($message) {
     Write-Host "==> $message"
 }
 
+# Runs git and reports the result as data instead of as an exception. See the
+# identical helper in Get-ReleasePackages.ps1 for why: under
+# $ErrorActionPreference = 'Stop' a redirected native stderr terminates the
+# script before the exit code can be inspected, which turns a missing tag into a
+# raw "fatal: ..." instead of an actionable policy failure. The helper is
+# duplicated rather than shared because each script is copied on its own into the
+# throwaway repos the tests build.
+function Invoke-Git {
+    param(
+        [Parameter(Mandatory, Position = 0)]
+        [string[]] $Arguments
+    )
+
+    if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+        return [pscustomobject]@{
+            Output   = @()
+            ExitCode = -1
+            Reason   = 'git is not installed or not on PATH.'
+        }
+    }
+
+    $previousEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        $output = @(& git @Arguments 2>&1 | ForEach-Object { "$_" })
+        $exitCode = $LASTEXITCODE
+    }
+    finally {
+        $ErrorActionPreference = $previousEap
+    }
+
+    return [pscustomobject]@{
+        Output   = $output
+        ExitCode = $exitCode
+        Reason   = $(if ($output) { @($output)[0] } else { '' })
+    }
+}
+
 function Test-IsPrereleaseVersion([string] $version) {
     # NuGet treats anything after the first '-' as the prerelease label, so
     # 2.0.5-preview.1 and 2.0.5-rc are prereleases while 2.0.5 is not.
     return $version -match '-'
 }
 
-# Which branches contain the tagged commit. Remotes are included because a shallow
-# CI clone has no local branch other than the one it checked out, so a local-only
+# Which branches contain the tagged commit. Remotes are included because a CI
+# clone has no local branch other than the one it checked out, so a local-only
 # lookup would report master as missing on every build.
 $tagName = $env:APPVEYOR_REPO_TAG_NAME
 
@@ -75,15 +113,20 @@ if (-not $tagName) {
 
 $tagRef = "refs/tags/$tagName"
 
+$result = Invoke-Git @('-C', $RepoRoot, 'branch', '-a', '--contains', $tagRef, '--format=%(refname:short)')
+
+if ($result.ExitCode -ne 0) {
+    # git cannot resolve the tag at all: the fetch failed, the tag was deleted, or
+    # this clone never had it. Guessing a branch answer from that would be wrong,
+    # so the build stops with the reason instead of git's raw error text.
+    throw "Could not determine which branches contain '$tagName'. git exit $($result.ExitCode): $($result.Reason) The tag fetch may have failed, or this clone does not have '$tagRef'."
+}
+
 $containingBranches = @(
-    & git -C $RepoRoot branch -a --contains $tagRef --format='%(refname:short)' 2>$null |
-        ForEach-Object { $_.Trim() } |
+    $result.Output |
+        ForEach-Object { "$_".Trim() } |
         Where-Object { $_ }
 )
-
-if ($LASTEXITCODE -ne 0) {
-    throw "Could not determine which branches contain '$tagName'. The tag fetch may have failed."
-}
 
 # Only the branch name is compared, so origin/master and master both match.
 $releaseBranchPattern = '(^|/)({0})$' -f (($ReleaseBranches -split ',' | ForEach-Object { $_.Trim() }) -join '|')
@@ -151,3 +194,8 @@ if ($blockedReason) {
     Write-Host ''
     Write-Host "    NOT PUBLISHING: $blockedReason" -ForegroundColor Yellow
 }
+
+# A blocked tag is a completed run, not a crashed one: the answer travels in
+# PUBLISH_ALLOWED, so reaching this line is success even when git or the versions
+# said no. Clears any stale native exit code, as in Get-ReleasePackages.ps1.
+$global:LASTEXITCODE = 0
