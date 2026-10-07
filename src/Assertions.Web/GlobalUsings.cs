@@ -1,4 +1,4 @@
-﻿global using FluentAssertions.Web.Internal.Serializers;
+﻿global using Assertions.Web.Internal.Serializers;
 global using System;
 global using System.IO;
 global using System.Text.Json;

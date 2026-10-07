@@ -6,9 +6,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FluentAssertions.Web\FluentAssertions.Web.csproj" />
     <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
-    <ProjectReference Include="..\..\src\FluentAssertions.Web.Serializers.NewtonsoftJson\FluentAssertions.Web.Serializers.NewtonsoftJson.csproj" />
+    <ProjectReference Include="..\..\src\HttpMessageFormatter\HttpMessageFormatter.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

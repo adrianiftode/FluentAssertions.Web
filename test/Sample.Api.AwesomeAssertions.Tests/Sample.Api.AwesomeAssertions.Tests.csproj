@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web\AwesomeAssertions.Web.csproj" />
-    <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

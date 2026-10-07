@@ -1,4 +1,5 @@
-﻿global using System;
+﻿global using Assertions.Web;
+global using System;
 global using System.Net.Http;
 global using System.Text;
 global using Xunit;

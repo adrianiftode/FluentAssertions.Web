@@ -1,7 +1,8 @@
-﻿global using FluentAssertions.Equivalency;
+﻿global using Assertions.Web;
+global using Assertions.Web.Internal.Serializers;
+global using FluentAssertions.Equivalency;
 global using FluentAssertions.Execution;
 global using FluentAssertions.Web.Internal;
-global using FluentAssertions.Web.Internal.Serializers;
 global using System;
 global using System.Collections.Generic;
 global using System.IO;

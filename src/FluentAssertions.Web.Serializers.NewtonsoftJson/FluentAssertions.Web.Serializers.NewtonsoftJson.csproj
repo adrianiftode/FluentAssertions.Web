@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Assertions.Web\Assertions.Web.csproj" PrivateAssets="all" />
   </ItemGroup>
 
   <PropertyGroup>

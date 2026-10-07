@@ -1,12 +1,7 @@
-﻿// ReSharper disable once CheckNamespace
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.Json.Serialization;
 
-#if AAV
-namespace AwesomeAssertions.Web.Internal.Serializers;
-#else
-namespace FluentAssertions.Web.Internal.Serializers;
-#endif
+namespace Assertions.Web.Internal.Serializers;
 
 internal class SystemTextJsonSerializer : ISerializer
 {

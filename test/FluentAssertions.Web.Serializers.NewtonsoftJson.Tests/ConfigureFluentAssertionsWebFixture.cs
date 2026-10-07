@@ -7,6 +7,6 @@ public class ConfigureFluentAssertionsWebFixture : XunitTestFramework
     {
         NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConverter());
 
-        FluentAssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
+        AssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
     }
 }

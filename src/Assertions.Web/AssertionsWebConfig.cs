@@ -1,40 +1,21 @@
 ﻿using HttpMessageFormatter;
 
-// ReSharper disable once CheckNamespace
-#if AAV
-namespace AwesomeAssertions;
-#else
-namespace FluentAssertions;
-#endif
+namespace Assertions.Web;
 
-#if AAV
 /// <summary>
-/// Holder of the global <see cref="AwesomeAssertionsWebConfig"/>
+/// Holder of the global serializer and response formatter settings used by every flavour:
+/// FluentAssertions.Web, FluentAssertions.Web.v8, AwesomeAssertions.Web and Shouldly.Web.
 /// </summary>
-public static class AwesomeAssertionsWebConfig
-#else
-/// <summary>
-/// Holder of the global <see cref="FluentAssertionsWebConfig"/>
-/// </summary>
-public static class FluentAssertionsWebConfig
-#endif
+public static class AssertionsWebConfig
 {
     private static ISerializer? _serializer;
     private static HttpResponseFormatterOptions? _responseFormatterOptions;
 
-#if AAV
-    static AwesomeAssertionsWebConfig()
+    static AssertionsWebConfig()
     {
         Serializer = new SystemTextJsonSerializer();
         ResponseFormatterOptions = new HttpResponseFormatterOptions();
     }
-#else
-    static FluentAssertionsWebConfig()
-    {
-        Serializer = new SystemTextJsonSerializer();
-        ResponseFormatterOptions = new HttpResponseFormatterOptions();
-    }
-#endif
 
     /// <summary>
     /// The serializer instance used to deserialize the responses into a model of a specified typed

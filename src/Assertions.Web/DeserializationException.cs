@@ -1,12 +1,6 @@
-﻿// ReSharper disable once CheckNamespace
+﻿using System.Runtime.Serialization;
 
-using System.Runtime.Serialization;
-
-#if AAV
-namespace AwesomeAssertions;
-#else
-namespace FluentAssertions;
-#endif
+namespace Assertions.Web;
 
 /// <summary>
 /// Captures serialization exceptions.

@@ -571,11 +571,13 @@ Many more examples can be found in the [Samples](https://github.com/adrianiftode
 
 ## Optional Global Configuration
 
+> **Breaking in 3.0:** the separate holders `FluentAssertionsWebConfig` and `AwesomeAssertionsWebConfig` are replaced by the single `AssertionsWebConfig` (from `Assertions.Web`, referenced by every flavour), which carries both `Serializer` and `ResponseFormatterOptions`.
+
 ### Deserialization
 
 #### System.Text.Json
 
-By default `System.Text.Json` is used to deserialize the response content. The related `System.Text.Json.JsonSerializerOptions` used to configure the serializer is accessible via the `SystemTextJsonSerializerConfig.Options` static field from FluentAssertions.Web. So if you want to make the serializer case sensitive, then the related setting is changed like this:
+By default `System.Text.Json` is used to deserialize the response content. The related `System.Text.Json.JsonSerializerOptions` used to configure the serializer is accessible via the `SystemTextJsonSerializerConfig.Options` static field from Assertions.Web. So if you want to make the serializer case sensitive, then the related setting is changed like this:
 
 ```csharp
 SystemTextJsonSerializerConfig.Options.PropertyNameCaseInsensitive = false; 
@@ -594,14 +596,7 @@ The serializer is shipped via the **FluentAssertions.Web.Serializers.NewtonsoftJ
 To set the default serializer to **Newtonsoft.Json** one, use the following configuration:
 
 ```csharp
-FluentAssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
-
-```
-or
-
-```csharp
-AwesomeAssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
-
+AssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
 ```
 
 The related `Newtonsoft.Json.JsonSerializerSettings` used to configure the Newtonsoft.Json serializer is accesible via the `NewtonsoftJsonSerializerConfig.Options` static field. So if you want to add a custom converter, then the related setting is changed like this:
@@ -615,15 +610,7 @@ NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConver
 The assertion failure messages include a readable rendering of the HTTP response (see [When a test fails, you see the whole conversation](#when-a-test-fails-you-see-the-whole-conversation) for an example). By default, only the first `10 * 128 * 1024` bytes of the response content are printed, the rest being replaced by a warning message. To change this limit globally, set the `ResponseFormatterOptions`:
 
 ```csharp
-FluentAssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
-{
-    MaximumReadableBytes = 4 * 1024
-};
-```
-or
-
-```csharp
-AwesomeAssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
+AssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
 {
     MaximumReadableBytes = 4 * 1024
 };

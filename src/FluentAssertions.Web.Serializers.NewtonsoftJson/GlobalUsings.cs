@@ -1,4 +1,5 @@
-﻿global using Newtonsoft.Json;
+﻿global using Assertions.Web;
+global using Newtonsoft.Json;
 global using System;
 global using System.IO;
 global using System.Text;

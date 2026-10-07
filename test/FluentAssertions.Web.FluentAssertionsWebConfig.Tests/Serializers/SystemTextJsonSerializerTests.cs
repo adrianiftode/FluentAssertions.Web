@@ -1,4 +1,4 @@
-﻿using FluentAssertions.Web.Internal.Serializers;
+﻿using Assertions.Web.Internal.Serializers;
 
 namespace FluentAssertions.Web.FluentAssertionsWebConfig.Tests.Serializers;
 
@@ -8,7 +8,7 @@ public class SystemTextJsonSerializerTests
     [Fact]
     public void DefaultSerializer_IsOfSystemTextJsonSerializer_Type()
     {
-        FluentAssertions.FluentAssertionsWebConfig.Serializer.Should().BeOfType<SystemTextJsonSerializer>();
+        AssertionsWebConfig.Serializer.Should().BeOfType<SystemTextJsonSerializer>();
     }
 
     [Fact]
