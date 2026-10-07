@@ -70,7 +70,11 @@ public class ApiConventionTests
         "ShouldBe502BadGateway",
         "ShouldBe503ServiceUnavailable",
         "ShouldBe504GatewayTimeout",
-        "ShouldBe505HttpVersionNotSupported"
+        "ShouldBe505HttpVersionNotSupported",
+        "ShouldBeAs",
+        "ShouldBeAs",
+        "ShouldBeEmpty",
+        "ShouldMatchInContent"
     };
 
     private static IEnumerable<Type> ExportedTypes =>

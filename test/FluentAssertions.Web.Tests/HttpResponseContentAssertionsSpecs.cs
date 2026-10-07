@@ -1,4 +1,6 @@
-﻿#if AAV
+﻿#if SH
+namespace Shouldly.Web.Tests;
+#elif AAV
 namespace AwesomeAssertions.Web.Tests;
 #else
 namespace FluentAssertions.Web.Tests;
@@ -14,11 +16,20 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeEmpty();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().BeEmpty();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -30,11 +41,20 @@ public class HttpResponseContentAssertionsSpecs
             Content = new StringContent("")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeEmpty();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().BeEmpty();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -51,12 +71,21 @@ public class HttpResponseContentAssertionsSpecs
                                                      """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeEmpty("because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject.Content", "should be null or empty", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () => subject.Should().BeEmpty("we want to test the {0}", "reason");
 
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*to have no content*");
+#endif
     }
     #endregion
 
@@ -75,6 +104,18 @@ public class HttpResponseContentAssertionsSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new
+            {
+                Comment = "Hey",
+                Author = "John"
+            });
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(new
@@ -85,6 +126,7 @@ public class HttpResponseContentAssertionsSpecs
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -101,6 +143,17 @@ public class HttpResponseContentAssertionsSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new
+            {
+                Comment = "Hey",
+            });
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(new
@@ -110,6 +163,7 @@ public class HttpResponseContentAssertionsSpecs
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -126,6 +180,18 @@ public class HttpResponseContentAssertionsSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new
+            {
+                Comment = "Not Hey",
+                Author = "John"
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("Comparing object equivalence", "Comment", "\"Not Hey\"", "but was", "\"Hey\"", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(new
@@ -137,6 +203,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*Not Hey*with a length*reason*");
+#endif
     }
 
     public static IEnumerable<object[]> Data =>
@@ -156,12 +223,21 @@ public class HttpResponseContentAssertionsSpecs
             Content = new StringContent(expectedModel.ToJson(), Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(expectedModel);
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(expectedModel);
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -173,12 +249,21 @@ public class HttpResponseContentAssertionsSpecs
             Content = new StringContent(1.ToJson(), Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(1);
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(1);
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -194,6 +279,18 @@ public class HttpResponseContentAssertionsSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new
+            {
+                Comment = "Hey",
+                Author = "John"
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("Comparing object equivalence", "Author", "\"John\"", "but was", "null", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(new
@@ -205,6 +302,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("""*Author to be "John"*reason*""");
+#endif
     }
 
     [Fact]
@@ -216,6 +314,17 @@ public class HttpResponseContentAssertionsSpecs
             Content = new StringContent("some text:that doesn't look like a json {", Encoding.UTF8, "text/plain")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new
+            {
+                Comment = "Hey"
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Content", "should be as", "but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(new
@@ -226,6 +335,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
+#endif
     }
 
     [Fact]
@@ -237,6 +347,17 @@ public class HttpResponseContentAssertionsSpecs
             Content = new StringContent(/*lang=json,strict*/ """{ "price" : 0.0}""", Encoding.UTF8, "text/plain")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new
+            {
+                price = 0
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Content", "should be as", "but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(new
@@ -247,6 +368,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("""*to have a content equivalent to a model of type*, but the JSON representation could not be parsed, as the operation failed with the following message: "Exception while deserializing the model with SystemTextJsonSerializer: The JSON value could not be converted to * Path: $.price | LineNumber: 0 | BytePositionInLine: 15.*""");
+#endif
     }
 
     [Fact]
@@ -258,6 +380,17 @@ public class HttpResponseContentAssertionsSpecs
             Content = new StringContent(/*lang=json,strict*/ """[{ "price" : 0.0}, { "price" : 1.0}]""", Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new
+            {
+                price = 0m
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Content", "should be as", "but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(new
@@ -278,6 +411,7 @@ public class HttpResponseContentAssertionsSpecs
               }
             ]*
             """);
+#endif
     }
 
     [Fact]
@@ -295,6 +429,19 @@ public class HttpResponseContentAssertionsSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new
+            {
+                author = "John",
+                comment = "Hey",
+                version = "version 2"
+            }, new EquivalencyOptions { MembersToIgnore = { "version" } });
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(new
@@ -306,6 +453,7 @@ public class HttpResponseContentAssertionsSpecs
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -322,6 +470,18 @@ public class HttpResponseContentAssertionsSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new
+            {
+                Comment = "Not Hey",
+                Author = "John"
+            }, new EquivalencyOptions { MembersToIgnore = { "Author" } }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("Comparing object equivalence", "Comment", "\"Not Hey\"", "but was", "\"Hey\"", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs(new
@@ -333,6 +493,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*Not Hey*with a length*reason*");
+#endif
     }
 
     [Fact]
@@ -341,6 +502,15 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs(new { }, (EquivalencyOptions)null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Value cannot be null");
+#else
         // Act
         Action act = () =>
 #if FAV8
@@ -352,6 +522,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("Value cannot be null*options*");
+#endif
     }
 
     [Fact]
@@ -360,6 +531,15 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs((object?)null);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify having a content equivalent to a model against a <null> model.");
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs((object?)null);
@@ -367,6 +547,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*content*<null>*");
+#endif
     }
 
     [Fact]
@@ -375,6 +556,14 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         HttpResponseMessage? subject = null;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBeAs((object?)null, "because we want to test the failure message");
+
+        // Assert
+        act.ShouldFailWith("subject", "should not be null", "Additional Info:", "because we want to test the failure message");
+#else
         // Act
         Action act = () =>
             subject.Should().BeAs((object?)null, "because we want to test the failure {0}", "message");
@@ -382,6 +571,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+#endif
     }
 #endregion
 
@@ -402,12 +592,21 @@ public class HttpResponseContentAssertionsSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldMatchInContent(wildcardText);
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().MatchInContent(wildcardText);
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -424,6 +623,14 @@ public class HttpResponseContentAssertionsSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldMatchInContent("*notes*", "because we want to test the failure message");
+
+        // Assert
+        act.ShouldFailWith("subject.Content", "should match in content", "\"*notes*\"", "but was", "Additional Info:", "because we want to test the failure message", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().MatchInContent("*notes*", "because we want to test the failure {0}", "message");
@@ -431,6 +638,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*notes*message*");
+#endif
     }
 
     [Fact]
@@ -439,6 +647,14 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldMatchInContent("*notes*", "because we want to test the failure message");
+
+        // Assert
+        act.ShouldFailWith("subject.Content", "should match in content", "\"*notes*\"", "but was", "\"\"", "Additional Info:", "because we want to test the failure message", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().MatchInContent("*notes*", "because we want to test the failure {0}", "message");
@@ -446,6 +662,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*the wildcard pattern*notes*content was <null>*message*");
+#endif
     }
 
     [Fact]
@@ -454,6 +671,15 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldMatchInContent(null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify an HTTP response content match a <null> wildcard pattern.");
+#else
         // Act
         Action act = () =>
             subject.Should().MatchInContent(null!);
@@ -461,6 +687,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*<null>*wildcard*");
+#endif
     }
 
     [Fact]
@@ -469,6 +696,14 @@ public class HttpResponseContentAssertionsSpecs
         // Arrange
         HttpResponseMessage? subject = null;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldMatchInContent("wildcard", "because we want to test the failure message");
+
+        // Assert
+        act.ShouldFailWith("subject", "should not be null", "Additional Info:", "because we want to test the failure message");
+#else
         // Act
         Action act = () =>
             subject.Should().MatchInContent("wildcard", "because we want to test the failure {0}", "message");
@@ -476,6 +711,7 @@ public class HttpResponseContentAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+#endif
     }
     #endregion
 }
