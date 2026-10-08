@@ -101,5 +101,7 @@ The change must be done before the test is run. These global options only apply 
 The complete listing of every assertion, with the `dotnet test` failure output for each group, lives in the [repository readme](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/readme.md):
 
 - [Full API (FluentAssertions / AwesomeAssertions names)](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/readme.md#full-api)
+- [Shouldly.Web API (the flat Shouldly naming)](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/readme.md#shouldlyweb-api)
 - [Shouldly.Web: the Shouldly names for the same assertions](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/readme.md#shouldlyweb)
-- [Worked examples](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/readme.md#fluentassertionsweb-examples)
+- [Worked examples](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/readme.md#fluentassertionswebawesomeassertionsweb-examples)
+- [Worked examples for Shouldly.Web](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/readme.md#shouldlyweb-examples)
