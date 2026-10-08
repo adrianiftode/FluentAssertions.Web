@@ -207,15 +207,14 @@ public class SatisfyModelAssertionsSpecs
         };
 
 #if SH
-        // Shouldly stops at the first failure; nest ShouldSatisfy to report all.
-        // Act
+        // Act: every condition is separate, so all failing ones are reported.
         Action act = () =>
-            subject.ShouldSatisfy<Model>(model => model.ShouldSatisfy([
+            subject.ShouldSatisfy<Model>([
                 m => m.Property.ShouldBe("Not Value"),
-                m => m.ShouldBeNull()]), "because we want to test the reason");
+                m => m.ShouldBeNull()], "because we want to test the reason");
 
         // Assert
-        act.ShouldFailContaining("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "m.Property", "should be", "\"Not Value\"", "but was", "\"Value\"", "Error 2", "should be null but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+        act.ShouldFailWith("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "m.Property", "should be", "\"Not Value\"", "but was", "\"Value\"", "Error 2", "should be null but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
 #else
         // Act
         Action act = () =>
@@ -541,18 +540,17 @@ public class SatisfyModelAssertionsSpecs
         };
 
 #if SH
-        // Shouldly stops at the first failure; nest ShouldSatisfy to report all.
-        // Act
+        // Act: every condition is separate, so all failing ones are reported.
         Action act = () =>
-            subject.ShouldSatisfy(givenModelStructure: new
+            subject.ShouldSatisfy(new
             {
                 Property = default(string)
-            }, assertion: model => model.ShouldSatisfy([
+            }, [
                 m => m.Property.ShouldBe("Not Value"),
-                m => m.ShouldBeNull()]), "because we want to test the reason");
+                m => m.ShouldBeNull()], "because we want to test the reason");
 
         // Assert
-        act.ShouldFailContaining("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "m.Property", "should be", "\"Not Value\"", "but was", "\"Value\"", "Error 2", "should be null but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+        act.ShouldFailWith("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "m.Property", "should be", "\"Not Value\"", "but was", "\"Value\"", "Error 2", "should be null but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
 #else
         // Act
         Action act = () =>

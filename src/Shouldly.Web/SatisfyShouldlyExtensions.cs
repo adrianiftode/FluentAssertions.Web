@@ -30,7 +30,53 @@ public static class SatisfyShouldlyExtensions
         var response = ResponseGuard.EnsureNotNull(actual, customMessage, actualExpression);
 
         ShouldlyWebFailure.Rethrow(response,
-            () => response.ShouldSatisfy(new[] { assertion }, customMessage, actualExpression));
+            () => NativeShouldSatisfy(response, new[] { assertion }, customMessage, actualExpression));
+    }
+
+    /// <summary>
+    /// Asserts that an HTTP response satisfies every one of the given assertions.
+    /// </summary>
+    /// <remarks>
+    /// Each entry runs as its own condition, so all failing assertions are reported. By contrast, a single
+    /// assertion whose lambda body holds several statements stops at its first failure.
+    /// </remarks>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="assertions">Assertions about the HTTP response; each one is a separate condition.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldSatisfy(this HttpResponseMessage? actual, Action<HttpResponseMessage>[] assertions,
+        string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+    {
+        Guard.ThrowIfArgumentIsNull(assertions, nameof(assertions),
+            "Cannot verify the subject satisfies a `null` assertion.");
+        var response = ResponseGuard.EnsureNotNull(actual, customMessage, actualExpression);
+
+        ShouldlyWebFailure.Rethrow(response,
+            () => NativeShouldSatisfy(response, assertions, customMessage, actualExpression));
+    }
+
+    /// <summary>
+    /// Asserts that an HTTP response satisfies every one of the given assertions.
+    /// </summary>
+    /// <remarks>
+    /// Each entry runs as its own condition, so all failing assertions are reported. By contrast, a single
+    /// assertion whose lambda body holds several statements stops at its first failure.
+    /// </remarks>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="assertions">Assertions about the HTTP response; each one is a separate condition.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldSatisfy(this HttpResponseMessage? actual, IEnumerable<Action<HttpResponseMessage>> assertions,
+        string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+    {
+        Guard.ThrowIfArgumentIsNull(assertions, nameof(assertions),
+            "Cannot verify the subject satisfies a `null` assertion.");
+        var response = ResponseGuard.EnsureNotNull(actual, customMessage, actualExpression);
+
+        ShouldlyWebFailure.Rethrow(response,
+            () => NativeShouldSatisfy(response, assertions.ToArray(), customMessage, actualExpression));
     }
 
     /// <summary>
@@ -49,7 +95,7 @@ public static class SatisfyShouldlyExtensions
         var response = ResponseGuard.EnsureNotNull(actual, customMessage, actualExpression);
 
         ShouldlyWebFailure.Rethrow(response,
-            () => response.ShouldSatisfy(new[]
+            () => NativeShouldSatisfy(response, new[]
             {
                 (Action<HttpResponseMessage>)(r => new Func<Task>(() => assertion(r))
                     .ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult())
@@ -149,6 +195,56 @@ public static class SatisfyShouldlyExtensions
     }
 
     /// <summary>
+    /// Asserts that an HTTP response content can be a model that satisfies every one of the given assertions.
+    /// </summary>
+    /// <remarks>
+    /// Each entry runs as its own condition, so all failing assertions are reported. By contrast, a single
+    /// assertion whose lambda body holds several statements stops at its first failure.
+    /// </remarks>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="assertions">Assertions regarding the model; each one is a separate condition.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldSatisfy<TModel>(this HttpResponseMessage? actual, IEnumerable<Action<TModel>> assertions,
+        string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+    {
+        Guard.ThrowIfArgumentIsNull(assertions, nameof(assertions),
+            "Cannot verify the subject satisfies a `null` assertion.");
+        var response = ResponseGuard.EnsureNotNull(actual, customMessage, actualExpression);
+
+        SatisfyModel(response, assertions.ToArray(), customMessage, $"{actualExpression}.Content");
+    }
+
+    /// <summary>
+    /// Asserts that an HTTP response content can be a model that satisfies every one of the given assertions,
+    /// starting from an inferred model structure.
+    /// </summary>
+    /// <remarks>
+    /// Each entry runs as its own condition, so all failing assertions are reported. By contrast, a single
+    /// assertion whose lambda body holds several statements stops at its first failure.
+    /// </remarks>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="givenModelStructure">
+    /// A proposed model structure that will help to compose the assertions. This is used to define the type
+    /// of the asserted model and it doesn't have to contain other values than the default one.
+    /// </param>
+    /// <param name="assertions">Assertions regarding the model; each one is a separate condition.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldSatisfy<TModel>(this HttpResponseMessage? actual, TModel givenModelStructure,
+        IEnumerable<Action<TModel>> assertions, string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+    {
+        _ = givenModelStructure; // Only used to infer TModel, as in the master library.
+        Guard.ThrowIfArgumentIsNull(assertions, nameof(assertions),
+            "Cannot verify the subject satisfies a `null` assertion.");
+        var response = ResponseGuard.EnsureNotNull(actual, customMessage, actualExpression);
+
+        SatisfyModel(response, assertions.ToArray(), customMessage, $"{actualExpression}.Content");
+    }
+
+    /// <summary>
     /// Deserializes the response into a model and runs the inner assertions against it, appending the
     /// HTTP response dump to any failure.
     /// </summary>
@@ -169,6 +265,17 @@ public static class SatisfyShouldlyExtensions
         // The null-forgiving operator makes the native generic infer TModel (not TModel?), which matches
         // Action<TModel>[] exactly; a null subject model is still passed through, as in the master library.
         ShouldlyWebFailure.Rethrow(response,
-            () => subjectModel!.ShouldSatisfy(assertions, customMessage, actualExpression));
+            () => NativeShouldSatisfy(subjectModel!, assertions, customMessage, actualExpression));
     }
+
+    /// <summary>
+    /// Calls Shouldly's native multi-conditions assertion.
+    /// The free <typeparamref name="T"/> receiver matters: at this call site only the native overload is
+    /// applicable, because every extension of this class requires an <see cref="HttpResponseMessage"/>
+    /// receiver. Without it the call would bind to this class' own overloads, which win overload resolution
+    /// against the native one for identical arguments, and recurse.
+    /// </summary>
+    private static void NativeShouldSatisfy<T>(T actual, Action<T>[] conditions, string? customMessage,
+        string? actualExpression)
+        => actual.ShouldSatisfy(conditions, customMessage, actualExpression);
 }

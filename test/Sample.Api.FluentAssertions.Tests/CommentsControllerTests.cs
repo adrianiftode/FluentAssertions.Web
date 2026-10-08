@@ -1,6 +1,5 @@
 ﻿#if SH
 using Shouldly;
-using System.Linq;
 #elif AAV
 using AwesomeAssertions;
 #else
@@ -9,6 +8,8 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Sample.Api.Controllers;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,11 +90,9 @@ namespace Sample.Api.Tests
 
             // Assert
 #if SH
-            response.ShouldSatisfy<IEnumerable<Comment>>(model =>
-            {
-                model.Count().ShouldBe(2);
-                model.Select(c => c.CommentId).ShouldBeUnique();
-            });
+            response.ShouldSatisfy<IEnumerable<Comment>>([
+                model => model.Count().ShouldBe(2),
+                model => model.Select(c => c.CommentId).ShouldBeUnique()]);
 #else
             response.Should().Satisfy<IEnumerable<Comment>>(model => 
                     model.Should().HaveCount(2).And.OnlyHaveUniqueItems(c => c.CommentId));
@@ -115,11 +114,9 @@ namespace Sample.Api.Tests
             {
                 Author = default(string),
                 Content = default(string)
-            }, model =>
-            {
-                model.Author.ShouldNotBe("I DO SPAM!");
-                model.Content.ShouldNotContain("BUY MORE");
-            });
+            }, [
+                model => model.Author.ShouldNotBe("I DO SPAM!"),
+                model => model.Content.ShouldNotContain("BUY MORE")]);
 #else
             response.Should().Satisfy(givenModelStructure: new
             {
@@ -144,11 +141,9 @@ namespace Sample.Api.Tests
 
             // Assert
 #if SH
-            response.ShouldSatisfy(r =>
-            {
-                r.Content.Headers.ContentRange.ShouldBeNull();
-                r.Content.Headers.Allow.ShouldNotBeNull();
-            });
+            response.ShouldSatisfy([
+                r => r.Content.Headers.ContentRange.ShouldBeNull(),
+                r => r.Content.Headers.Allow.ShouldNotBeNull()]);
 #else
             response.Should().Satisfy(
                     r =>
@@ -157,6 +152,48 @@ namespace Sample.Api.Tests
                         r.Content.Headers.Allow.Should().NotBeNull();
                     }
             );
+#endif
+        }
+
+        [Fact]
+        public async Task Get_WithCommentId_Failing_Single_Satisfy_Action_Shows_The_Whole_Http_Conversation()
+        {
+            // Arrange
+            var client = _factory.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("/api/comments/1");
+
+            // Assert: a single action can wrap any complex logic; when an assertion inside it fails,
+            // the failure message still shows the whole request/response conversation.
+#if SH
+            var exception = Record.Exception(() => response.ShouldSatisfy(r =>
+            {
+                var vendor = r.Headers.GetValues("x-vendor").Single();
+
+                vendor.ShouldNotBeNullOrEmpty();
+
+                // Deliberately wrong on purpose, so the failure output can be inspected below.
+                r.StatusCode.ShouldNotBe(HttpStatusCode.OK);
+            }));
+
+            exception.ShouldNotBeNull();
+            exception!.Message.ShouldContain("The HTTP response was:");
+            exception!.Message.ShouldContain("The originating HTTP request was:");
+#else
+            var exception = Record.Exception(() => response.Should().Satisfy(r =>
+            {
+                var vendor = r.Headers.GetValues("x-vendor").Single();
+
+                vendor.Should().NotBeNullOrEmpty();
+
+                // Deliberately wrong on purpose, so the failure output can be inspected below.
+                r.StatusCode.Should().NotBe(HttpStatusCode.OK);
+            }));
+
+            exception.Should().NotBeNull();
+            exception!.Message.Should().Contain("The HTTP response was:");
+            exception!.Message.Should().Contain("The originating HTTP request was:");
 #endif
         }
 

@@ -96,6 +96,10 @@ public class ApiConventionTests
         "ShouldSatisfy",
         "ShouldSatisfy",
         "ShouldSatisfy",
+        "ShouldSatisfy",
+        "ShouldSatisfy",
+        "ShouldSatisfy",
+        "ShouldSatisfy",
         "ShouldSatisfy"
     };
 

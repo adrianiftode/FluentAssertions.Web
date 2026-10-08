@@ -788,15 +788,13 @@ public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
     var response = await client.GetAsync("/api/comments");
 
     // Assert
-    response.ShouldSatisfy<IEnumerable<Comment>>(model =>
-    {
-        model.Count().ShouldBe(2);
-        model.Select(c => c.CommentId).ShouldBeUnique();
-    });
+    response.ShouldSatisfy<IEnumerable<Comment>>([
+        model => model.Count().ShouldBe(2),
+        model => model.Select(c => c.CommentId).ShouldBeUnique()]);
 }
 ```
 
-> **Note:** Shouldly's `ShouldSatisfy` reports all failures only when nesting multiple inner assertions via `ShouldSatisfy` (e.g. `model.ShouldSatisfy([...])`). FluentAssertions collects all failures from a single lambda body. See the shared specs for the recommended pattern.
+> **Note:** Each entry of the collection is a separate condition, so **every** failing assertion is reported as its own `Error 1`, `Error 2`, … block — the same as FluentAssertions does for a multi-statement lambda body. A single assertion lambda, by contrast, runs as one condition and stops at its first failure: when migrating from FluentAssertions, pass the statements of that lambda as the condition list instead.
 
 - Asserting the response content once deserialized into a anonymous object it satisfies a certain assertion
 
@@ -815,11 +813,9 @@ public async Task Get_WithCommentId_Returns_A_NonSpam_Comment()
     {
         Author = default(string),
         Content = default(string)
-    }, model =>
-    {
-        model.Author.ShouldNotBe("I DO SPAM!");
-        model.Content.ShouldNotContain("BUY MORE");
-    });
+    }, [
+        model => model.Author.ShouldNotBe("I DO SPAM!"),
+        model => model.Content.ShouldNotContain("BUY MORE")]);
 }
 ```
 
@@ -1156,15 +1152,19 @@ The same groups as above, with the flat Shouldly naming: the `Should()`/`And` ch
 | **ShouldHaveHttpStatusCode()** | Asserts that an HTTP response has an HTTP status with the specified code. |
 | **ShouldNotHaveHttpStatusCode()** | Asserts that an HTTP response does not have an HTTP status with the specified code. |
 | **ShouldMatchInContent()** | Asserts that HTTP response has content that matches a wildcard pattern. |
-| **ShouldSatisfy&lt;TModel&gt;()** | Asserts that the HTTP response content, once deserialized to `TModel`, satisfies an assertion. |
-| **ShouldSatisfy()** | Asserts that the `HttpResponseMessage` itself satisfies an assertion. |
+| **ShouldSatisfy&lt;TModel&gt;()** | Asserts that the HTTP response content, once deserialized to `TModel`, satisfies one or more assertions; passing them as a collection reports every failing assertion. |
+| **ShouldSatisfy()** | Asserts that the `HttpResponseMessage` itself satisfies one or more assertions; passing them as a collection reports every failing assertion. |
 
 ```csharp
 response.ShouldBeAs(new { Author = "John", Content = "Hey, you..." });
 response.ShouldHaveHttpStatusCode(HttpStatusCode.Accepted);
 response.ShouldMatchInContent("*\"commentId\": 1*");
 response.ShouldSatisfy<IEnumerable<Comment>>(comments => comments.Count().ShouldBe(2));
-response.ShouldSatisfy(r => r.Headers.Contains("X-Correlation-ID"));
+
+// Several conditions, each its own entry: every failing assertion is reported, not only the first.
+response.ShouldSatisfy([
+    r => r.Headers.Contains("X-Correlation-ID"),
+    r => r.Headers.AcceptRanges.ShouldContain("byte")]);
 ```
 
 |  *Header value assertions.* | |
@@ -1328,7 +1328,7 @@ response.ShouldMatchInContent("*\"author\"*");
 
 The named assertions map to the FluentAssertions/AwesomeAssertions ones described in the [Full API](#full-api) section, and are listed in full, following the same structure, in [Shouldly.Web API](#shouldlyweb-api). Worked examples are in [Shouldly.Web Examples](#shouldlyweb-examples):
 
-> **Note on multiple failures:** When asserting multiple conditions inside a single `ShouldSatisfy` lambda, Shouldly's native behavior collects all failures only when assertions are nested appropriately (the specs show nesting `ShouldSatisfy` inside `ShouldSatisfy` to report all). FluentAssertions reports all collected failures from a single assertion lambda. Check the [shared specs](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/Shouldly.Web.Tests/Backup) for the exact pattern used.
+> **Note on multiple failures:** To report *all* failing assertions, pass each one as a separate condition (a collection expression, array or `IEnumerable` of `Action`s), exactly as FluentAssertions' `Should().Satisfy(...)` reports every statement of a multi-statement lambda: each failing condition gets its own `Error 1`, `Error 2`, … block. A single assertion lambda runs as one condition and stops at its first failure. The [shared specs](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/FluentAssertions.Web.Tests) show both forms.
 
 | FluentAssertions.Web | Shouldly.Web |
 |---|---|

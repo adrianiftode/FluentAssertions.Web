@@ -62,16 +62,14 @@ public class SatisfyHttpResponseMessageAssertionsSpecs
         using var subject = new HttpResponseMessage();
 
 #if SH
-        // Shouldly stops at the first failure; nest ShouldSatisfy to report all.
-        // Act
+        // Act: every condition is separate, so all failing ones are reported.
         Action act = () =>
-            subject.ShouldSatisfy(
-                response => response.ShouldSatisfy([
-                    r => r.Headers.AcceptRanges.ShouldContain("byte"),
-                    r => r.Headers.ShouldBeNull()]), "because we want to test the reason");
+            subject.ShouldSatisfy([
+                r => r.Headers.AcceptRanges.ShouldContain("byte"),
+                r => r.Headers.ShouldBeNull()], "because we want to test the reason");
 
         // Assert
-        act.ShouldFailContaining("subject", "should satisfy all the conditions specified, but does not.", "Error 1", "r.Headers.AcceptRanges", "should contain", "\"byte\"", "Error 2", "r.Headers", "should be null but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+        act.ShouldFailWith("subject", "should satisfy all the conditions specified, but does not.", "Error 1", "r.Headers.AcceptRanges", "should contain", "\"byte\"", "Error 2", "r.Headers", "should be null but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
 #else
         // Act
         Action act = () =>

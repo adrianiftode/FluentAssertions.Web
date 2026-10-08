@@ -22,7 +22,9 @@ internal static class ShouldlyWebFailure
         }
         catch (ShouldAssertException ex)
         {
-            throw new ShouldAssertException(ex.Message + Dump(response), ex);
+            // Deliberately no inner exception: test runners print the inner exception's message after the
+            // outer one, which would show this failure (and its error list) a second time.
+            throw new ShouldAssertException(ex.Message + Dump(response));
         }
     }
 
