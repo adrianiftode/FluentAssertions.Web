@@ -796,6 +796,8 @@ public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
 }
 ```
 
+> **Note:** Shouldly's `ShouldSatisfy` reports all failures only when nesting multiple inner assertions via `ShouldSatisfy` (e.g. `model.ShouldSatisfy([...])`). FluentAssertions collects all failures from a single lambda body. See the shared specs for the recommended pattern.
+
 - Asserting the response content once deserialized into a anonymous object it satisfies a certain assertion
 
 ```csharp
@@ -1325,6 +1327,8 @@ response.ShouldMatchInContent("*\"author\"*");
 > No chaining is available in the Shouldly flavour: the assertions return `void`, so each call is a standalone assertion.
 
 The named assertions map to the FluentAssertions/AwesomeAssertions ones described in the [Full API](#full-api) section, and are listed in full, following the same structure, in [Shouldly.Web API](#shouldlyweb-api). Worked examples are in [Shouldly.Web Examples](#shouldlyweb-examples):
+
+> **Note on multiple failures:** When asserting multiple conditions inside a single `ShouldSatisfy` lambda, Shouldly's native behavior collects all failures only when assertions are nested appropriately (the specs show nesting `ShouldSatisfy` inside `ShouldSatisfy` to report all). FluentAssertions reports all collected failures from a single assertion lambda. Check the [shared specs](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/Shouldly.Web.Tests/Backup) for the exact pattern used.
 
 | FluentAssertions.Web | Shouldly.Web |
 |---|---|
