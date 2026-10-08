@@ -272,7 +272,7 @@ deploy:
 
   - provider: NuGet
     api_key:
-      secure: OWNER_TO_SET_ENCRYPTED_NUGET_KEY
+      secure: tOCTpsWpsK7vE2lMFPoo8lv5KM7cGI1Es1+B4xEGTU0gYZjDmvaUAQr6fvSns5kQ
     skip_symbols: true
     artifact: ShouldlyPackages
     on:
