@@ -1,4 +1,6 @@
-﻿#if AAV
+﻿#if SH
+using Shouldly;
+#elif AAV
 using AwesomeAssertions;
 #else
 using FluentAssertions;
@@ -54,7 +56,11 @@ namespace Sample.Api.Tests
             using var response = await client.GetAsync("/exception");
 
             // Assert
+#if SH
+            response.ShouldBe500InternalServerError();
+#else
             response.Should().Be500InternalServerError();
+#endif
         }
     }
 }

@@ -82,6 +82,7 @@ public class ApiConventionTests
         "ShouldHaveHeaderWithValue",
         "ShouldHaveHeaderWithValues",
         "ShouldHaveLocation",
+        "ShouldHaveLocationMatching",
         "ShouldHaveLocationWithValue",
         "ShouldHaveLocationWithValues",
         "ShouldHaveNonEmptyHeader",

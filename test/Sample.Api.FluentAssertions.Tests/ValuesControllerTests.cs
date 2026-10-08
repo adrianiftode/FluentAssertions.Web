@@ -1,4 +1,6 @@
-#if AAV
+﻿#if SH
+using Shouldly;
+#elif AAV
 using AwesomeAssertions;
 #else
 using FluentAssertions;
@@ -31,7 +33,11 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/values");
 
             // Assert
+#if SH
+            response.ShouldBe200Ok();
+#else
             response.Should().Be200Ok();
+#endif
         }
 
         [Theory]
@@ -47,7 +53,11 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync($"/api/values/generated/{howMuchData}");
 
             // Assert
+#if SH
+            response.ShouldBe200Ok();
+#else
             response.Should().Be200Ok();
+#endif
         }
 
         [Fact]
@@ -60,7 +70,11 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/values/1");
 
             // Assert
+#if SH
+            response.ShouldBe200Ok();
+#else
             response.Should().Be200Ok();
+#endif
         }
 
         [Fact]
@@ -75,7 +89,12 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/values/1");
 
             // Assert
+#if SH
+            response.ShouldBe200Ok();
+            response.ShouldBeAs("value");
+#else
             response.Should().Be200Ok().And.BeAs<string>("value");
+#endif
         }
 
 #if NETCOREAPP2_1 || NETCOREAPP2_2
@@ -89,7 +108,11 @@ namespace Sample.Api.Tests
             var response = await client.PatchAsync("/api/values", new StringContent("", Encoding.UTF32, "application/json"));
 
             // Assert
+#if SH
+            response.ShouldBe404NotFound("It's .Net Core 2.2");
+#else
             response.Should().Be404NotFound("It's .Net Core 2.2");
+#endif
         }
 #endif
 
@@ -104,7 +127,11 @@ namespace Sample.Api.Tests
                         var response = await client.PatchAsync("/api/values", new StringContent("", Encoding.UTF32, "application/json"));
 
                         // Assert
+#if SH
+                        response.ShouldBe405MethodNotAllowed();
+#else
                         response.Should().Be405MethodNotAllowed();
+#endif
                 }
 #endif
 
@@ -118,7 +145,11 @@ namespace Sample.Api.Tests
             var response = await client.PostAsync("/api/values", new StringContent(@"""value""", Encoding.UTF8, "application/json"));
 
             // Assert
+#if SH
+            response.ShouldBeEmpty();
+#else
             response.Should().BeEmpty();
+#endif
         }
 
         [Fact]
@@ -131,7 +162,11 @@ namespace Sample.Api.Tests
             var response = await client.PostAsync("/api/values", new StringContent(@"""value""", Encoding.UTF8, "application/json"));
 
             // Assert
+#if SH
+            response.ShouldBe200Ok();
+#else
             response.Should().Be200Ok();
+#endif
         }
 
         [Fact]
@@ -145,11 +180,21 @@ namespace Sample.Api.Tests
 
             // Assert
 #if NETCOREAPP2_2 || NET5_0_OR_GREATER
+#if SH
+                        response.ShouldBe400BadRequest();
+                        response.ShouldHaveErrorMessage("A non-empty request body is required.");
+#else
                         response.Should().Be400BadRequest()
                                 .And.HaveErrorMessage("A non-empty request body is required.");
+#endif
 #elif NETCOREAPP3_0 || NETCOREAPP3_1
+#if SH
+                        response.ShouldBe400BadRequest();
+                        response.ShouldHaveErrorMessage("*The input does not contain any JSON tokens*");
+#else
                         response.Should().Be400BadRequest()
                                 .And.HaveErrorMessage("*The input does not contain any JSON tokens*");
+#endif
 #endif
         }
 
@@ -163,7 +208,11 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/values");
 
             // Assert
+#if SH
+            response.ShouldHaveHeaderMatching("X-Correlation-ID", "*-*", "we want to test the correlation id is a Guid like one");
+#else
             response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*", "we want to test the correlation id is a Guid like one");
+#endif
         }
 
         [Fact]
@@ -176,7 +225,11 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/values");
 
             // Assert
+#if SH
+            response.ShouldHaveNonEmptyHeader("X-Correlation-ID", "we want to test the correlation id header has some value");
+#else
             response.Should().HaveHeader("X-Correlation-ID").And.NotBeEmpty("we want to test the correlation id header has some value");
+#endif
         }
     }
 }

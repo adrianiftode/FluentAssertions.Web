@@ -8,3 +8,4 @@
 [assembly: InternalsVisibleTo("AwesomeAssertions.Web.Tests")]
 [assembly: InternalsVisibleTo("FluentAssertions.Web.FluentAssertionsWebConfig.Tests")]
 [assembly: InternalsVisibleTo("AwesomeAssertions.Web.AwesomeAssertionsWebConfig.Tests")]
+[assembly: InternalsVisibleTo("Shouldly.Web.AssertionsWebConfig.Tests")]

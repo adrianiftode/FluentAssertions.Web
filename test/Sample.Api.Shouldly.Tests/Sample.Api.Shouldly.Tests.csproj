@@ -1,13 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
-    <DefineConstants>$(DefineConstants);FAV8</DefineConstants>
+    <DefineConstants>$(DefineConstants);SH</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" VersionOverride="8.0.0" />
-    <PackageReference Include="FluentAssertions.Analyzers" />
+    <PackageReference Include="Shouldly" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net9.0' ">
@@ -21,12 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FluentAssertions.Web.v8\FluentAssertions.Web.v8.csproj" />
+    <ProjectReference Include="..\..\src\Shouldly.Web\Shouldly.Web.csproj" />
     <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\Sample.Api.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
+    <Compile Include="..\Sample.Api.FluentAssertions.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>

@@ -189,7 +189,7 @@ public static class HeadersShouldlyExtensions
                 $"{actualExpression}.Headers[\"{header}\"]"));
     }
 
-    private static void AssertHeaderMatching(HttpResponseMessage? actual, string header,
+    internal static void AssertHeaderMatching(HttpResponseMessage? actual, string header,
         string expectedWildcardValue, string? customMessage, string shouldlyMethod, string? actualExpression)
     {
         var response = EnsureHeaderPresent(actual, header, customMessage, shouldlyMethod, actualExpression);

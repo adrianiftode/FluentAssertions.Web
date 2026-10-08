@@ -1,4 +1,6 @@
-﻿#if AAV
+﻿#if SH
+using Shouldly;
+#elif AAV
 using AwesomeAssertions;
 #else
 using FluentAssertions;
@@ -28,7 +30,11 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/files");
 
             // Assert
+#if SH
+            response.ShouldBe200Ok();
+#else
             response.Should().Be200Ok();
+#endif
         }
     }
 }

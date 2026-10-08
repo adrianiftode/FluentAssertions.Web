@@ -52,6 +52,24 @@ public static class LocationShouldlyExtensions
     }
 
     /// <summary>
+    /// Asserts that the Location header of an HTTP response has at least one value matching a wildcard
+    /// pattern, where <c>*</c> matches any run of characters and <c>?</c> matches exactly one.
+    /// </summary>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="expectedWildcardValue">The wildcard pattern with which the header values are matched.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldHaveLocationMatching(this HttpResponseMessage? actual, string expectedWildcardValue,
+        string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+    {
+        Guard.ThrowIfArgumentIsNull(expectedWildcardValue, nameof(expectedWildcardValue),
+            "Cannot verify an HTTP header to be a value against a <null> value. Use ShouldHaveEmptyHeader to test if the HTTP header has no values.");
+        HeadersShouldlyExtensions.AssertHeaderMatching(actual, "Location", expectedWildcardValue, customMessage,
+            nameof(ShouldHaveLocationMatching), actualExpression);
+    }
+
+    /// <summary>
     /// Asserts that the Location header of an HTTP response has all expected values, in any order.
     /// Each value is compared with its expectation case-sensitively. Mirroring the
     /// FluentAssertions assertions, the header itself is looked up case-sensitively here.

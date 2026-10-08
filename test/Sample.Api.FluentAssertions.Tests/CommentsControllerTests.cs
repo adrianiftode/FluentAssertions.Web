@@ -1,4 +1,7 @@
-#if AAV
+﻿#if SH
+using Shouldly;
+using System.Linq;
+#elif AAV
 using AwesomeAssertions;
 #else
 using FluentAssertions;
@@ -33,11 +36,20 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments");
 
             // Assert
+#if SH
+            response.ShouldBe200Ok();
+            response.ShouldBeAs(new[]
+            {
+                new { Author = "Adrian", Content = "Hey" },
+                new { Author = "Johnny", Content = "Hey!" }
+            });
+#else
             response.Should().Be200Ok().And.BeAs(new[]
             {
                 new { Author = "Adrian", Content = "Hey" },
                 new { Author = "Johnny", Content = "Hey!" }
             });
+#endif
         }
 
         [Fact]
@@ -50,11 +62,20 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments/1");
 
             // Assert
+#if SH
+            response.ShouldBe200Ok();
+            response.ShouldBeAs(new
+            {
+                Author = "Adrian",
+                Content = "Hey"
+            });
+#else
             response.Should().Be200Ok().And.BeAs(new
             {
                 Author = "Adrian",
                 Content = "Hey"
             });
+#endif
         }
 
         [Fact]
@@ -67,8 +88,16 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments");
 
             // Assert
+#if SH
+            response.ShouldSatisfy<IEnumerable<Comment>>(model =>
+            {
+                model.Count().ShouldBe(2);
+                model.Select(c => c.CommentId).ShouldBeUnique();
+            });
+#else
             response.Should().Satisfy<IEnumerable<Comment>>(model => 
                     model.Should().HaveCount(2).And.OnlyHaveUniqueItems(c => c.CommentId));
+#endif
         }
 
         [Fact]
@@ -81,6 +110,17 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments/1");
 
             // Assert
+#if SH
+            response.ShouldSatisfy(new
+            {
+                Author = default(string),
+                Content = default(string)
+            }, model =>
+            {
+                model.Author.ShouldNotBe("I DO SPAM!");
+                model.Content.ShouldNotContain("BUY MORE");
+            });
+#else
             response.Should().Satisfy(givenModelStructure: new
             {
                 Author = default(string),
@@ -90,6 +130,7 @@ namespace Sample.Api.Tests
                     model.Author.Should().NotBe("I DO SPAM!");
                     model.Content.Should().NotContain("BUY MORE");
                 });
+#endif
         }
 
         [Fact]
@@ -102,6 +143,13 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments/1");
 
             // Assert
+#if SH
+            response.ShouldSatisfy(r =>
+            {
+                r.Content.Headers.ContentRange.ShouldBeNull();
+                r.Content.Headers.Allow.ShouldNotBeNull();
+            });
+#else
             response.Should().Satisfy(
                     r =>
                     {
@@ -109,6 +157,7 @@ namespace Sample.Api.Tests
                         r.Content.Headers.Allow.Should().NotBeNull();
                     }
             );
+#endif
         }
 
         [Fact]
@@ -121,7 +170,11 @@ namespace Sample.Api.Tests
             var response = await client.GetAsync("/api/comments/1");
 
             // Assert
+#if SH
+            response.ShouldHaveHeaderWithValue("x-vendor", "vendor", "we want to test the header has a specific value");
+#else
             response.Should().HaveHeader("x-vendor").And.BeValue("vendor", "we want to test the header has a specific value");
+#endif
         }
 
         [Fact]
@@ -137,7 +190,13 @@ namespace Sample.Api.Tests
                     }", Encoding.UTF8, "application/json"));
 
             // Assert
+#if SH
+            response.ShouldBe201Created();
+            response.ShouldHaveLocation();
+            response.ShouldHaveLocationMatching("*/api/Comments/1");
+#else
             response.Should().Be201Created().And.HaveLocation().And.Match("*/api/Comments/1");
+#endif
         }
 
         [Fact]
@@ -153,6 +212,16 @@ namespace Sample.Api.Tests
                     }", Encoding.UTF8, "application/json"));
 
             // Assert
+#if SH
+            response.ShouldBe201Created();
+            response.ShouldHaveLocation();
+            response.ShouldHaveLocationWithValue("http://localhost/api/Comments/1");
+            response.ShouldBeAs(new
+            {
+                Author = "John",
+                Content = "Hey, you..."
+            });
+#else
             response.Should().Be201Created()
                 .And.HaveLocation().And.BeValue("http://localhost/api/Comments/1")
                 .And.BeAs(new
@@ -160,6 +229,7 @@ namespace Sample.Api.Tests
                 Author = "John",
                 Content = "Hey, you..."
             });
+#endif
         }
 
         [Fact]
@@ -173,11 +243,21 @@ namespace Sample.Api.Tests
 
             // Assert
 #if NETCOREAPP2_1 || NETCOREAPP2_2 || NET5_0_OR_GREATER
+#if SH
+            response.ShouldBe400BadRequest();
+            response.ShouldHaveErrorMessage("A non-empty request body is required.");
+#else
             response.Should().Be400BadRequest()
                 .And.HaveErrorMessage("A non-empty request body is required.");
+#endif
 #elif NETCOREAPP3_0 || NETCOREAPP3_1
+#if SH
+            response.ShouldBe400BadRequest();
+            response.ShouldHaveErrorMessage("*The input does not contain any JSON tokens*");
+#else
             response.Should().Be400BadRequest()
                 .And.HaveErrorMessage("*The input does not contain any JSON tokens*");
+#endif
 #endif
         }
 
@@ -194,9 +274,15 @@ namespace Sample.Api.Tests
                     }", Encoding.UTF8, "application/json"));
 
             // Assert
+#if SH
+            response.ShouldBe400BadRequest();
+            response.ShouldHaveError("Author", "The Author field is required.");
+            response.ShouldHaveError("Content", "The Content field is required.");
+#else
             response.Should().Be400BadRequest()
                 .And.HaveError("Author", "The Author field is required.")
                 .And.HaveError("Content", "The Content field is required.");
+#endif
         }
 
         [Fact]
@@ -211,9 +297,15 @@ namespace Sample.Api.Tests
                                         }", Encoding.UTF8, "application/json"));
 
             // Assert
+#if SH
+            response.ShouldBe400BadRequest();
+            response.ShouldHaveError("Author", "The Author field is required.");
+            response.ShouldNotHaveError("content");
+#else
             response.Should().Be400BadRequest()
                 .And.HaveError("Author", "The Author field is required.")
                 .And.NotHaveError("content");
+#endif
         }
 
         [Fact]
@@ -228,8 +320,13 @@ namespace Sample.Api.Tests
                                         }", Encoding.UTF8, "application/json"));
 
             // Assert
+#if SH
+            response.ShouldBe400BadRequest();
+            response.ShouldOnlyHaveError("Author", "The Author field is required.");
+#else
             response.Should().Be400BadRequest()
                 .And.OnlyHaveError("Author", "The Author field is required.");
+#endif
         }
 
         [Fact]
@@ -244,8 +341,13 @@ namespace Sample.Api.Tests
                                         }", Encoding.UTF8, "application/json"));
 
             // Assert
+#if SH
+            response.ShouldBe400BadRequest();
+            response.ShouldNotHaveLocation("Bad Request responses are not designed to have Location headers.");
+#else
             response.Should().Be400BadRequest()
                 .And.NotHaveLocation("Bad Request responses are not designed to have Location headers.");
+#endif
         }
     }
 }
