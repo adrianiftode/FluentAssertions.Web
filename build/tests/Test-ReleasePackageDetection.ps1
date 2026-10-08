@@ -287,10 +287,17 @@ try {
         @('src/HttpMessageFormatter/Internal/Formatter.cs') `
         @('HttpMessageFormatter', 'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web', 'Shouldly.Web')
 
-    # readme.md ships inside the packages that embed it, and not in the others.
-    Invoke-Case 'readme change publishes the packages that embed it' `
+    # The repo readme is no longer embedded by any package, and neither is the
+    # shared Assertions.Web documentation, so doc edits publish nothing.
+    Invoke-Case 'repo readme change publishes nothing' `
         @('readme.md') `
-        @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web', 'Shouldly.Web')
+        @()
+
+    # Each package packs its own Readme.md, so a local readme edit republishes
+    # that package only.
+    Invoke-Case 'package readme change publishes that package' `
+        @('src/Shouldly.Web/Readme.md') `
+        @('Shouldly.Web')
 
     # A dependency bump changes what ships in every package.
     Invoke-Case 'dependency bump publishes everything' `
@@ -302,7 +309,7 @@ try {
 
     # Docs and CI config are in nobody's package.
     Invoke-Case 'docs change publishes nothing' `
-        @('CONVENTIONS.md') `
+        @('CONVENTIONS.md', 'docs/Assertions.Web/Readme.md') `
         @()
 
     # A diff that succeeds but lists nothing means there is genuinely nothing new,

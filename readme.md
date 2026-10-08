@@ -1,21 +1,109 @@
-## FluentAssertions.Web
-This is a [*FluentAssertions*](https://fluentassertions.com/) and [*AwesomeAssertions*](https://awesomeassertions.org/) extension over the *HttpResponseMessage* object.
+## Assertions.Web
 
-It provides assertions specific to HTTP responses and outputs rich errors messages when the tests fail, so less time with debugging is spent.
+HTTP assertions for .NET that turn a failing test into the whole request and response conversation, so you debug less.
 
-### Assertions at a glance
+The repository is home to a family of assertion frameworks on top of the shared [`Assertions.Web`](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/src/Assertions.Web) contract and the [`HttpMessageFormatter`](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/src/HttpMessageFormatter) request/response renderer.
+
+### Status
+
+[![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adrianiftode_FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/project/overview?id=adrianiftode_FluentAssertions.Web)
+
+[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.svg?label=FluentAssertions.Web)](https://www.nuget.org/packages/FluentAssertions.Web)
+[![NuGet FA v8](https://img.shields.io/nuget/v/FluentAssertions.Web.v8.svg?label=FluentAssertions.Web.v8)](https://www.nuget.org/packages/FluentAssertions.Web.v8)
+
+[![NuGet AwesomeAssertions](https://img.shields.io/nuget/v/AwesomeAssertions.Web.svg?label=AwesomeAssertions.Web)](https://www.nuget.org/packages/AwesomeAssertions.Web)
+
+[![NuGet Shouldly.Web](https://img.shields.io/nuget/v/Shouldly.Web.svg?label=Shouldly.Web)](https://www.nuget.org/packages/Shouldly.Web)
+
+[![NuGet HttpMessageFormatter](https://img.shields.io/nuget/v/HttpMessageFormatter.svg?label=HttpMessageFormatter)](https://www.nuget.org/packages/HttpMessageFormatter/)
+
+## The libraries
+
+| Package | For | Assertion style |
+|---|---|---|
+| [**FluentAssertions.Web**](#fluentassertionsweb) | FluentAssertions < 8.0.0 | `response.Should().Be200Ok()` |
+| [**FluentAssertions.Web.v8**](#fluentassertionswebv8) | FluentAssertions >= 8.0.0 (commercial) | `response.Should().Be200Ok()` |
+| [**AwesomeAssertions.Web**](#awesomeassertionsweb) | AwesomeAssertions | `response.Should().Be200Ok()` |
+| [**Shouldly.Web**](#shouldlyweb) | Shouldly 5 (prerelease) | `response.ShouldBe200Ok()` |
+| [**Assertions.Web.Serializers.NewtonsoftJson**](#optional-global-configuration) | Newtonsoft.Json serialization, shared by every flavour | — |
+| [**HttpMessageFormatter**](#httpresponse-formatter) | Standalone request/response formatter | — |
+
+Every flavour targets `netstandard2.0`, packs its own copy of the `Assertions.Web` contract and renders failure output with the shared `HttpMessageFormatter`. The first four packages differ only in the assertion framework they extend; the assertions themselves are the same set, exposed through each framework's native syntax.
+
+## Quick starts
+
+### Quick start: FluentAssertions.Web
 
 ```csharp
-response.Should().Be200Ok();                                               // status codes: Be200Ok, Be404NotFound, Be400BadRequest, Be5XXServerError, ...
-response.Should().Be400BadRequest().And.HaveError("Author", "*required*"); // validation errors carried by a 400 response
-response.Should().BeAs(new { Author = "John" });                           // the body is equivalent to an object
-response.Should().Satisfy<IEnumerable<Comment>>(comments =>               // any assertions over the deserialized body
-    comments.Should().HaveCount(2).And.OnlyHaveUniqueItems(c => c.CommentId));
-response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*");         // headers
-response.Should().MatchInContent("*\"author\"*");                          // raw content
+response.Should().Be200Ok();
+response.Should().BeAs(new { Author = "John", Content = "Hey, you..." });
+response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*");
+response.Should().Satisfy<IEnumerable<Comment>>(comments => comments.Should().HaveCount(2));
 ```
 
-Jump straight to the [examples](#fluentassertionsweb-examples), or to the [full API](#full-api) listing.
+```shell
+dotnet add package FluentAssertions.Web
+```
+
+### Quick start: FluentAssertions.Web.v8
+
+The same code as above (starting with FluentAssertions 8.0.0 FluentAssertions is a commercial product, so it ships as a separate package depending on the commercial versions):
+
+```shell
+dotnet add package FluentAssertions.Web.v8
+```
+
+### Quick start: AwesomeAssertions.Web
+
+`Should()` and `And` work exactly like in the FluentAssertions flavour:
+
+```shell
+dotnet add package AwesomeAssertions.Web
+```
+
+### Quick start: Shouldly.Web
+
+With Shouldly the assertions are called directly on the response and there is no `Should()`/`And` chaining — each assertion is its own call:
+
+```csharp
+response.ShouldBe200Ok();
+response.ShouldBeAs(new { Author = "John", Content = "Hey, you..." });
+response.ShouldHaveHeader("X-Correlation-ID");
+response.ShouldMatchInContent("*\"author\"*");
+```
+
+> Prerelease: Shouldly.Web is in preview until Shouldly 5.0.0 is stable, and requires Shouldly >= 5.0.0-preview.2 (`EquivalencyOptions`).
+
+```shell
+dotnet add package Shouldly.Web
+```
+
+### Quick start: Newtonsoft serializer
+
+```shell
+dotnet add package Assertions.Web.Serializers.NewtonsoftJson
+```
+
+```csharp
+AssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
+```
+
+### Quick start: HttpMessageFormatter
+
+```shell
+dotnet add package HttpMessageFormatter
+```
+
+```csharp
+using HttpMessageFormatter;
+
+var formatted = response.Format();
+```
+
+## When a test fails, you see the whole conversation
+
+Every failure message produced by this library is followed by **the complete HTTP response _and_ the originating HTTP request** — status line, headers and both bodies, the same way an HTTP interceptor like Fiddler would render them. There is no need to attach a debugger or to watch `response.Content.ReadAsStringAsync().Result` anymore: the reason for the failure and the payload that caused it are already in the test output.
 
 A typical test:
 
@@ -40,11 +128,7 @@ public async Task Post_ReturnsOk()
 }
 ```
 
-### When a test fails, you see the whole conversation
-
-Every failure message produced by this library is followed by **the complete HTTP response _and_ the originating HTTP request** — status line, headers and both bodies, the same way an HTTP interceptor like Fiddler would render them. There is no need to attach a debugger or to watch `response.Content.ReadAsStringAsync().Result` anymore: the reason for the failure and the payload that caused it are already in the test output.
-
-Running the test above with `dotnet test` against an endpoint that answers `201 Created` instead of `200 OK` prints:
+Running this with `dotnet test` against an endpoint that answers `201 Created` instead of `200 OK` prints:
 
 ```text
   Failed Sample.Api.Tests.CommentsControllerTests.Post_ReturnsOk [614 ms]
@@ -92,7 +176,6 @@ A couple of details about that output:
 - when the response content is disposed it is reported as `***** Content is disposed so it cannot be read. *****`
 - when the response content is bigger than `ResponseFormatterOptions.MaximumReadableBytes` (1.25 MB by default), it is truncated and a `***** Content is too large to display and only a part is printed. *****` warning is printed instead — see [Response Formatting](#response-formatting)
 
-
 ## Why?
 
 Writing tests for ASP.NET Core APIs and or any APIs by using the HttpClient classes leads to some repetitive code and also often to an incomplete one. When the test fails, the developer needs to debug the test in order to assess the failure reason, as the test itself did not usually consider what happens in this case.
@@ -101,7 +184,7 @@ Thus this library solves two problems:
 
 ##### Focus on the Assert part and not on the HttpClient related APIs, neither on the response deserialization
 
-Once the response is ready you'll want to assert it. With first level properties like `StatusCode` is somehow easy, especially with FluentAssertions/AwesomeAssertions, but often we need more, like to deserialize the content into an object of a certain type and then to Assert it. Or to simply assert something about the response content itself. Soon duplication code occurs and the urge to reduce it is just the next logical step. 
+Once the response is ready you'll want to assert it. With first level properties like `StatusCode` is somehow easy, especially with FluentAssertions/AwesomeAssertions, but often we need more, like to deserialize the content into an object of a certain type and then to Assert it. Or to simply assert something about the response content itself. Soon duplication code occurs and the urge to reduce it is just the next logical step.
 
 ##### Debugging failed tests interrupts the programmer's flow state
  When a test is failing, the following actions are taken most of the time:
@@ -111,37 +194,21 @@ Once the response is ready you'll want to assert it. With first level properties
 
 **And this can be avoided**, if the *Test Detail Summary* contains the request and the response information, providing a similar experience as with an HTTP interceptor like Fiddler. See [When a test fails, you see the whole conversation](#when-a-test-fails-you-see-the-whole-conversation) for the exact output.
 
-### Status
+## Full documentation
 
-[![Build status](https://ci.appveyor.com/api/projects/status/93qtbyftww0snl4x/branch/master?svg=true)](https://ci.appveyor.com/project/adrianiftode/fluentassertions-web/branch/master)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adrianiftode_FluentAssertions.Web&metric=alert_status)](https://sonarcloud.io/project/overview?id=adrianiftode_FluentAssertions.Web)
+### Assertions at a glance
 
-[![NuGet](https://img.shields.io/nuget/v/FluentAssertions.Web.svg?label=FluentAssertions.Web)](https://www.nuget.org/packages/FluentAssertions.Web)
-[![NuGet FA v8](https://img.shields.io/nuget/v/FluentAssertions.Web.v8.svg?label=FluentAssertions.Web.v8)](https://www.nuget.org/packages/FluentAssertions.Web.v8)
-
-[![NuGet AwesomeAssertions](https://img.shields.io/nuget/v/AwesomeAssertions.Web.svg?label=AwesomeAssertions.Web)](https://www.nuget.org/packages/AwesomeAssertions.Web)
-
-[![NuGet HttpMessageFormatter](https://img.shields.io/nuget/v/HttpMessageFormatter.svg?label=HttpMessageFormatter)](https://www.nuget.org/packages/HttpMessageFormatter/)
-
-
-### Getting started
-
-If you are using FluentAssertions < 8.0.0
-```
-dotnet add package FluentAssertions.Web
+```csharp
+response.Should().Be200Ok();                                               // status codes: Be200Ok, Be404NotFound, Be400BadRequest, Be5XXServerError, ...
+response.Should().Be400BadRequest().And.HaveError("Author", "*required*"); // validation errors carried by a 400 response
+response.Should().BeAs(new { Author = "John" });                           // the body is equivalent to an object
+response.Should().Satisfy<IEnumerable<Comment>>(comments =>               // any assertions over the deserialized body
+    comments.Should().HaveCount(2).And.OnlyHaveUniqueItems(c => c.CommentId));
+response.Should().HaveHeader("X-Correlation-ID").And.Match("*-*");         // headers
+response.Should().MatchInContent("*\"author\"*");                          // raw content
 ```
 
-If you are using FluentAssertions >= 8.0.0
-
-```
-dotnet add package FluentAssertions.Web.v8
-```
-
-If you are using AwesomeAssertions >= 8.0.0
-
-```
-dotnet add package AwesomeAssertions.Web
-```
+For the Shouldly flavour this is the same set of assertions, written Shouldly-style — see [Shouldly.Web](#shouldlyweb) below.
 
 ### FluentAssertions.Web Examples
 
@@ -181,7 +248,7 @@ public async Task Post_ReturnsOkAndWithContent()
    Expected response to have a content equivalent to a model, but it has differences:
 
     - expected property response.Content to be "Expected, but not really there..." with a length of 33, but "Hey, you..." has a length of 11, differs near "Hey" (index 0).
-. 
+.
 
 The HTTP response was:
 
@@ -243,7 +310,7 @@ public async Task Get_Returns_Ok_With_CommentsList()
     - expected response to be a collection with 1 item(s), but {{ Author = Adrian, Content = Hey }, { Author = Johnny, Content = Hey! }}"
 "contains 1 item(s) more than"
 "{{ Author = Adrian, Content = Hey }}.
-. 
+.
 
 The HTTP response was:
 
@@ -353,7 +420,7 @@ public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
     var response = await client.GetAsync("/api/comments");
 
     // Assert
-    response.Should().Satisfy<IEnumerable<Comment>>(model => 
+    response.Should().Satisfy<IEnumerable<Comment>>(model =>
             model.Should().HaveCount(2).And.OnlyHaveUniqueItems(c => c.CommentId));
 }
 ```
@@ -364,19 +431,19 @@ public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
 ```text
   Failed Sample.Api.Tests.CommentsControllerTests.Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments [12 ms]
   Error Message:
-   Expected response to satisfy one or more model assertions, but it wasn't: 
+   Expected response to satisfy one or more model assertions, but it wasn't:
 
     - expected model to contain 3 item(s), but found 2: {
     Sample.Api.Controllers.Comment
     {
-        Author = "Adrian", 
-        CommentId = 1, 
+        Author = "Adrian",
+        CommentId = 1,
         Content = "Hey"
-    }, 
+    },
     Sample.Api.Controllers.Comment
     {
-        Author = "Johnny", 
-        CommentId = 2, 
+        Author = "Johnny",
+        CommentId = 2,
         Content = "Hey!"
     }
 }
@@ -442,7 +509,7 @@ public async Task Get_WithCommentId_Returns_A_NonSpam_Comment()
 ```text
   Failed Sample.Api.Tests.CommentsControllerTests.Get_WithCommentId_Returns_A_NonSpam_Comment [20 ms]
   Error Message:
-   Expected response to satisfy one or more model assertions, but it wasn't: 
+   Expected response to satisfy one or more model assertions, but it wasn't:
 
     - expected model.Author to be "I DO SPAM!" with a length of 10, but "Adrian" has a length of 6, differs near "Adr" (index 0).
 
@@ -492,7 +559,7 @@ public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
 ```text
   Failed Sample.Api.Tests.CommentsControllerTests.Get_Should_Contain_a_Header_With_Correlation_Id [13 ms]
   Error Message:
-   Expected response to contain the HTTP header "X-Correlation-ID" having a value matching "*-not-a-guid*", but there was no match because we want to test the correlation id is a Guid like one. 
+   Expected response to contain the HTTP header "X-Correlation-ID" having a value matching "*-not-a-guid*", but there was no match because we want to test the correlation id is a Guid like one.
 
 The HTTP response was:
 
@@ -569,69 +636,9 @@ GET http://localhost/api/comments HTTP 1.1
 
 Many more examples can be found in the [Samples](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/samples) projects and in the Specs files from the [FluentAssertions.Web.Tests](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/FluentAssertions.Web.Tests) project
 
-## Optional Global Configuration
+### Full API
 
-> **Breaking in 3.0:** the separate holders `FluentAssertionsWebConfig` and `AwesomeAssertionsWebConfig` are replaced by the single `AssertionsWebConfig` (from `Assertions.Web`, referenced by every flavour), which carries both `Serializer` and `ResponseFormatterOptions`.
-
-### Deserialization
-
-#### System.Text.Json
-
-By default `System.Text.Json` is used to deserialize the response content. The related `System.Text.Json.JsonSerializerOptions` used to configure the serializer is accessible via the `SystemTextJsonSerializerConfig.Options` static field from Assertions.Web. So if you want to make the serializer case sensitive, then the related setting is changed like this:
-
-```csharp
-SystemTextJsonSerializerConfig.Options.PropertyNameCaseInsensitive = false; 
-```
-
-The change must be done before the test is run and this depends on the testing framework. Check the NewtonsoftSerializerTests from this repo to see how it can be done with xUnit.
-
-#### Newtonsoft.Json
-
-The serializer itself is replaceable, so you can implement your own, by implementing the `ISerializer` interface. 
-The serializer ships as the single **Assertions.Web.Serializers.NewtonsoftJson** package, shared by every flavour:
-
-```
-dotnet add package Assertions.Web.Serializers.NewtonsoftJson
-```
-
-[![NuGet](https://img.shields.io/nuget/v/Assertions.Web.Serializers.NewtonsoftJson.svg?label=Assertions.Web.Serializers.NewtonsoftJson)](https://www.nuget.org/packages/Assertions.Web.Serializers.NewtonsoftJson)
-
-
-To set the default serializer to **Newtonsoft.Json** one, use the following configuration:
-
-```csharp
-AssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
-```
-
-The related `Newtonsoft.Json.JsonSerializerSettings` used to configure the Newtonsoft.Json serializer is accesible via the `NewtonsoftJsonSerializerConfig.Options` static field. So if you want to add a custom converter, then the related setting is changed like this:
-
-```csharp
-NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConverter());
-```
-
-### Response Formatting
-
-The assertion failure messages include a readable rendering of the HTTP response (see [When a test fails, you see the whole conversation](#when-a-test-fails-you-see-the-whole-conversation) for an example). By default, only the first `10 * 128 * 1024` bytes of the response content are printed, the rest being replaced by a warning message. To change this limit globally, set the `ResponseFormatterOptions`:
-
-```csharp
-AssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
-{
-    MaximumReadableBytes = 4 * 1024
-};
-```
-
-The change must be done before the test is run, like for the serializer configuration above. The global options only apply to the messages produced by **FluentAssertions.Web** and **AwesomeAssertions.Web**. The **HttpMessageFormatter** library itself keeps no global state and accepts the same `HttpResponseFormatterOptions` parameter object per call:
-
-```csharp
-var formatted = response.Format(new HttpResponseFormatterOptions
-{
-    MaximumReadableBytes = 4 * 1024
-});
-```
-
-## Full API
-
-The tables below list every assertion. Each group is followed by a short example and, where it helps, by the `dotnet test` output you get when the assertion does not hold, so it is clear what is actually being reported.
+The tables below list every assertion. Each group is followed by a short example and, where it helps, by the `dotnet test` output you get when the assertion does not hold, so it is clear what is actually being reported. The names apply to the FluentAssertions and AwesomeAssertions flavours; the [Shouldly.Web](#shouldlyweb) section maps them to the Shouldly naming.
 
 |  *HttpResponseMessageAssertions* | Contains a number of methods to assert that an HttpResponseMessage is in the expected state related to the HTTP content. |
 | --- | --- |
@@ -910,31 +917,160 @@ response.Should().Be5XXServerError();
 
 A failure here looks exactly like the status code outputs shown above: the expected/actual status codes, then the full response and the originating request.
 
+### FluentAssertions.Web
 
-### The HttpResponsesMessage assertions from FluentAssertions vs. FluentAssertions.Web
-
-In the [6.4.0](https://fluentassertions.com/releases/#640) release FluentAssertions introduced a set of related assertions: *BeSuccessful, BeRedirection, HaveClientError, HaveServerError, HaveError, HaveStatusCode, NotHaveStatusCode*. 
-
-This library can still be used with FluentAssertions and it did not become obsoleted, not only because of the rich set of assertions, but also for the comprehensive output messages that are displayed when the test fails, feature that is not present in the main library, but in FluentAssertions.Web one.
-
-### FluentAssertions.Web vs FluentAssertions.Mvc vs FluentAssertions.Http
+#### FluentAssertions.Web vs FluentAssertions.Mvc vs FluentAssertions.Http
 
 **FluentAssertions.Web** does not extend the assertions for the ASP.NET Core *Controllers*, if you are looking for that, then consider [FluentAssertions.Mvc](https://github.com/fluentassertions/fluentassertions.mvc).
 
 When FluentAssertions.Web was created, [FluentAssertions.Http](https://github.com/balanikas/FluentAssertions.Http) also existed at the time, solving the same problem when considering the asserting language.
 Besides the extra assertions added by FluentAssertions.Web, an important effort is put by this library on what happens when a test fails.
 
-**FluentAssertions 8.0.0 and beyond**
+#### The HttpResponsesMessage assertions from FluentAssertions vs. FluentAssertions.Web
+
+In the [6.4.0](https://fluentassertions.com/releases/#640) release FluentAssertions introduced a set of related assertions: *BeSuccessful, BeRedirection, HaveClientError, HaveServerError, HaveError, HaveStatusCode, NotHaveStatusCode*.
+
+This library can still be used with FluentAssertions and it did not become obsoleted, not only because of the rich set of assertions, but also for the comprehensive output messages that are displayed when the test fails, feature that is not present in the main library, but in FluentAssertions.Web one.
+
+### FluentAssertions.Web.v8
 
 Starting 8.0.0, FA is not an FOSS anymore. **FluentAssertions.Web** will maintain both FOSS (< 8.0.0) and the Commercial versions of FA (>= 8.0.0), so they will be deployed as separate Nuget packages:
     - **FluentAssertions.Web** will continue to dependend on the FOSS versions
     - **FluentAssertions.Web.v8** will dependend on the Commercial versions
 
+### AwesomeAssertions.Web
+
+AwesomeAssertions.Web is the AwesomeAssertions flavour of the same assertions. It exposes the identical `Should()`/`And` API as the FluentAssertions flavour, so all the examples and the [Full API](#full-api) above apply unchanged. It depends on AwesomeAssertions instead of FluentAssertions.
+
+### Shouldly.Web
+
+Shouldly.Web is the Shouldly flavour, a community-maintained, unofficial extension that is **not endorsed by the Shouldly project**. It requires Shouldly >= 5.0.0-preview.2 and is itself prerelease until Shouldly 5.0.0 is stable.
+
+Instead of `response.Should().Be200Ok()`, Shouldly's `ShouldlyMethodsAttribute` lets the same assertions be called directly on the response, and each assertion returns `void` — there is no `Should()`/`And` chain, so every assertion is its own call (you can also pass a custom message as the first optional argument):
+
+```csharp
+response.ShouldBe200Ok();
+response.ShouldBe400BadRequest();
+response.ShouldHaveError("Author", "*required*");
+response.ShouldBeAs(new { Author = "John", Content = "Hey, you..." });
+response.ShouldSatisfy<IEnumerable<Comment>>(comments => comments.ShouldHaveCount(2));
+response.ShouldHaveHeader("X-Correlation-ID");
+response.ShouldMatchInContent("*\"author\"*");
+```
+
+> No chaining is available in the Shouldly flavour: the assertions return `void`, so each call is a standalone assertion.
+
+The named assertions map to the FluentAssertions/AwesomeAssertions ones described in the [Full API](#full-api) section:
+
+| FluentAssertions.Web | Shouldly.Web |
+|---|---|
+| `Should().Be200Ok()` | `ShouldBe200Ok()` |
+| `Should().BeAs<T>()` | `ShouldBeAs<T>()` |
+| `Should().BeEmpty()` | `ShouldBeEmpty()` |
+| `Should().HaveHeader()` / `NotHaveHeader()` | `ShouldHaveHeader()` / `ShouldNotHaveHeader()` |
+| `Should().HaveHeader().And.BeValue()` | `ShouldHaveHeaderWithValue()` |
+| `Should().HaveHeader().And.BeValues()` | `ShouldHaveHeaderWithValues()` |
+| `Should().HaveHeader().And.Match()` | `ShouldHaveHeaderMatching()` |
+| `Should().HaveHeader().And.BeEmpty()` / `NotBeEmpty()` | `ShouldHaveEmptyHeader()` / `ShouldHaveNonEmptyHeader()` |
+| `Should().Satisfy<T>()` / `Should().Satisfy()` | `ShouldSatisfy<T>()` / `ShouldSatisfy()` |
+| `Should().MatchInContent()` | `ShouldMatchInContent()` |
+| `Should().HaveHttpStatusCode()` / `NotHaveHttpStatusCode()` | `ShouldHaveHttpStatusCode()` / `ShouldNotHaveHttpStatusCode()` |
+| `Should().HaveLocation()` etc. | `ShouldHaveLocation()`, `ShouldHaveLocationWithValue()`, `ShouldHaveLocationWithValues()`, `ShouldHaveLocationMatching()`, `ShouldNotHaveLocation()` |
+| `Should().Be400BadRequest().And.HaveError()` | `ShouldHaveError()` |
+| `Should().Be400BadRequest().And.OnlyHaveError()` | `ShouldOnlyHaveError()` |
+| `Should().Be400BadRequest().And.NotHaveError()` | `ShouldNotHaveError()` |
+| `Should().Be400BadRequest().And.HaveErrorMessage()` | `ShouldHaveErrorMessage()` |
+
+The failure messages follow the Shouldly layout, so the expected/actual values are rendered as `should be`/`but was`, followed by the same HTTP conversation dump. When a custom message is passed it is reported under `Additional Info`:
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Post_ReturnsCreated [614 ms]
+  Error Message:
+   response.StatusCode
+    should be
+HttpStatusCode.Created
+    but was
+HttpStatusCode.OK
+
+Additional Info:
+    we need it
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+
+The originating HTTP request was <null>.
+  Stack Trace:
+     ...
+```
+
+The dump after `The HTTP response was:` is produced by the same `HttpMessageFormatter` the other flavours use, so everything said about the [failure output](#when-a-test-fails-you-see-the-whole-conversation) applies here as well.
+
+### Optional Global Configuration
+
+> **Breaking in 3.0:** the separate holders `FluentAssertionsWebConfig` and `AwesomeAssertionsWebConfig` are replaced by the single `AssertionsWebConfig` (from `Assertions.Web`, referenced by every flavour), which carries both `Serializer` and `ResponseFormatterOptions`.
+
+#### Deserialization
+
+##### System.Text.Json
+
+By default `System.Text.Json` is used to deserialize the response content. The related `System.Text.Json.JsonSerializerOptions` used to configure the serializer is accessible via the `SystemTextJsonSerializerConfig.Options` static field from Assertions.Web. So if you want to make the serializer case sensitive, then the related setting is changed like this:
+
+```csharp
+SystemTextJsonSerializerConfig.Options.PropertyNameCaseInsensitive = false;
+```
+
+The change must be done before the test is run and this depends on the testing framework. Check the NewtonsoftSerializerTests from this repo to see how it can be done with xUnit.
+
+##### Newtonsoft.Json
+
+The serializer itself is replaceable, so you can implement your own, by implementing the `ISerializer` interface.
+The serializer ships as the single **Assertions.Web.Serializers.NewtonsoftJson** package, shared by every flavour:
+
+```
+dotnet add package Assertions.Web.Serializers.NewtonsoftJson
+```
+
+[![NuGet](https://img.shields.io/nuget/v/Assertions.Web.Serializers.NewtonsoftJson.svg?label=Assertions.Web.Serializers.NewtonsoftJson)](https://www.nuget.org/packages/Assertions.Web.Serializers.NewtonsoftJson)
+
+
+To set the default serializer to **Newtonsoft.Json** one, use the following configuration:
+
+```csharp
+AssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
+```
+
+The related `Newtonsoft.Json.JsonSerializerSettings` used to configure the Newtonsoft.Json serializer is accesible via the `NewtonsoftJsonSerializerConfig.Options` static field. So if you want to add a custom converter, then the related setting is changed like this:
+
+```csharp
+NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConverter());
+```
+
+#### Response Formatting
+
+The assertion failure messages include a readable rendering of the HTTP response (see [When a test fails, you see the whole conversation](#when-a-test-fails-you-see-the-whole-conversation) for an example). By default, only the first `10 * 128 * 1024` bytes of the response content are printed, the rest being replaced by a warning message. To change this limit globally, set the `ResponseFormatterOptions`:
+
+```csharp
+AssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
+{
+    MaximumReadableBytes = 4 * 1024
+};
+```
+
+The change must be done before the test is run, like for the serializer configuration above. The global options only apply to the messages produced by the assertion packages. The **HttpMessageFormatter** library itself keeps no global state and accepts the same `HttpResponseFormatterOptions` parameter object per call:
+
+```csharp
+var formatted = response.Format(new HttpResponseFormatterOptions
+{
+    MaximumReadableBytes = 4 * 1024
+});
+```
+
 ### HttpResponse Formatter
 
-The internal HTTP Request/Response formatter used by FluentAssertions.Web is now published as a standalone package, so it can be reused in other projects.
+The internal HTTP Request/Response formatter used by the assertion packages is published as a standalone package, so it can be reused in other projects.
 
-Basic usage: 
+Basic usage:
  - start from an HTTPResponseMessage instance
  - reference the HttpMessageFormatter package from Nuget
  - import the extension method _using HttpMessageFormatter;_

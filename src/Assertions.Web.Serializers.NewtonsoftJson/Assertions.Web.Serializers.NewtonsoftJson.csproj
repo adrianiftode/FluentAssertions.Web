@@ -6,10 +6,15 @@
     <PackageDescription>
       Newtonsoft.Json based serializer for FluentAssertions.Web, AwesomeAssertions.Web and Shouldly.Web
     </PackageDescription>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>

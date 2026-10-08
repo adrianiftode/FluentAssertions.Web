@@ -8,7 +8,7 @@
       It provides specific assertions and outputs rich erros messages that include the HTTP Request and Response.
       This version **DOES NOT** depend on the commercial version of the FluentAssertions library (&gt;= 8.0.0).
     </PackageDescription>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../readme.md" Pack="true" PackagePath="\"/>
+    <None Include="Readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <Import Project="..\Assertions.Web.Shared\Assertions.Web.Shared.props" />

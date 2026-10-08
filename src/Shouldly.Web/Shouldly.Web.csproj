@@ -9,7 +9,7 @@
       requires Shouldly &gt;= 5.0.0-preview.2 (EquivalencyOptions). This is an unofficial, community-maintained
       extension and is not endorsed by the Shouldly project.
     </PackageDescription>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
     <PackageTags>shouldly;httpresponsemessage;shouldlyweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
   </PropertyGroup>
 
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../readme.md" Pack="true" PackagePath="\"/>
+    <None Include="Readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <Import Project="..\Assertions.Web.Shared\Assertions.Web.Shared.props" />

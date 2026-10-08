@@ -7,7 +7,7 @@
       This is a AwesomeAssertions extension over the HttpResponseMessage object.
       It provides specific assertions and outputs rich erros messages that include the HTTP Request and Response.
     </PackageDescription>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -26,13 +26,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../readme.md" Pack="true" PackagePath="\" />
+    <None Include="Readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <Import Project="..\Assertions.Web.Shared\Assertions.Web.Shared.props" />
 
   <ItemGroup>
-    <Compile Include="..\FluentAssertions.Web\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj;**\GlobalUsings.cs">
+    <Compile Include="..\FluentAssertions.Web\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj;**\GlobalUsings.cs;**\Readme.md">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
       <PackagePath>$(ContentTargetFolders)\src\%RecursiveDir%</PackagePath>
     </Compile>
