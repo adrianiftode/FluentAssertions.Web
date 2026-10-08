@@ -201,6 +201,62 @@ Once the response is ready you'll want to assert it. With first level properties
 
 **And this can be avoided**, if the *Test Detail Summary* contains the request and the response information, providing a similar experience as with an HTTP interceptor like Fiddler. See [When a test fails, you see the whole conversation](#when-a-test-fails-you-see-the-whole-conversation) for the exact output.
 
+## Migrating to 3.0
+
+Version 3.0 consolidates the configuration and the Newtonsoft.Json serializer into flavour-agnostic packages. The changes are breaking but mechanical — there are no compatibility shims — so an upgrade is a package swap plus a find-and-replace of the config holder.
+
+### 1. The config holder is now `AssertionsWebConfig`
+
+The per-flavour holders `FluentAssertionsWebConfig` (FluentAssertions.Web / .v8) and `AwesomeAssertionsWebConfig` (AwesomeAssertions.Web) are replaced by the single `AssertionsWebConfig` in the `Assertions.Web` namespace, referenced by every flavour. It carries the same two members, with the same defaults and the same null guards: `Serializer` and `ResponseFormatterOptions`.
+
+**Before (2.x):**
+
+```csharp
+FluentAssertionsWebConfig.ResponseFormatterOptions =
+    new HttpResponseFormatterOptions { MaximumReadableBytes = 1024 };
+
+// or, on the AwesomeAssertions.Web flavour:
+AwesomeAssertionsWebConfig.ResponseFormatterOptions =
+    new HttpResponseFormatterOptions { MaximumReadableBytes = 1024 };
+```
+
+**After (3.0):**
+
+```csharp
+using Assertions.Web;
+
+AssertionsWebConfig.ResponseFormatterOptions =
+    new HttpResponseFormatterOptions { MaximumReadableBytes = 1024 };
+```
+
+The same replacement applies to every usage in [Optional Global Configuration](#optional-global-configuration).
+
+### 2. One shared Newtonsoft.Json serializer package
+
+`FluentAssertions.Web.Serializers.NewtonsoftJson` and `AwesomeAssertions.Web.Serializers.NewtonsoftJson` are replaced by the single **`Assertions.Web.Serializers.NewtonsoftJson`** package, and its types moved to the `Assertions.Web` namespace — the same `using` as the config holder:
+
+```shell
+dotnet remove package FluentAssertions.Web.Serializers.NewtonsoftJson  # on whichever flavour(s) you used
+dotnet add package Assertions.Web.Serializers.NewtonsoftJson
+```
+
+```csharp
+using Assertions.Web;
+
+AssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
+NewtonsoftJsonSerializerConfig.Options.Converters.Add(new YesNoBooleanJsonConverter());
+```
+
+### 3. Other types that moved to `Assertions.Web`
+
+`ISerializer`, `DeserializationException` and `SystemTextJsonSerializerConfig` (the default `System.Text.Json` serializer's options) are also in the `Assertions.Web` namespace now — add `using Assertions.Web;` where you referenced them.
+
+### What did not change
+
+- The assertions themselves: every `Should()`/`And` method, the status-code assertions, `BeAs`, `Satisfy`, `Match`, the header assertions and the deserializers behave exactly as before, with the same failure output.
+- **HttpMessageFormatter** keeps its own version and is unaffected.
+- **Shouldly.Web** is new in this release and stays prerelease (`1.0.0-preview.x`) until Shouldly 5.0.0 is stable.
+
 ## Full documentation
 
 ### Assertions at a glance
@@ -1015,7 +1071,7 @@ The dump after `The HTTP response was:` is produced by the same `HttpMessageForm
 
 ### Optional Global Configuration
 
-> **Breaking in 3.0:** the separate holders `FluentAssertionsWebConfig` and `AwesomeAssertionsWebConfig` are replaced by the single `AssertionsWebConfig` (from `Assertions.Web`, referenced by every flavour), which carries both `Serializer` and `ResponseFormatterOptions`.
+> **Breaking in 3.0:** the separate holders `FluentAssertionsWebConfig` and `AwesomeAssertionsWebConfig` are replaced by the single `AssertionsWebConfig` (from `Assertions.Web`, referenced by every flavour), which carries both `Serializer` and `ResponseFormatterOptions`. See [Migrating to 3.0](#migrating-to-30) for the full guide.
 
 #### Deserialization
 
