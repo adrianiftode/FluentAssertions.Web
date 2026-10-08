@@ -66,6 +66,7 @@ function Get-FeedFor($id) {
     if ($id -like 'Assertions.Web.Serializers*') { return 'FluentAssertions' }
     if ($id -like 'AwesomeAssertions.Web*') { return 'AwesomeAssertions' }
     if ($id -like 'FluentAssertions.Web*') { return 'FluentAssertions' }
+    if ($id -like 'Shouldly.Web*') { return 'Shouldly' }
     if ($id -like 'HttpMessageFormatter*') { return 'HttpMessageFormatter' }
     return $null
 }
@@ -115,6 +116,7 @@ foreach ($id in $selected) {
 # later steps of the build.
 $env:PUBLISH_FLUENTASSERTIONS     = $(if ($feeds.Contains('FluentAssertions'))     { 'true' } else { 'false' })
 $env:PUBLISH_AWESOMEASSERTIONS    = $(if ($feeds.Contains('AwesomeAssertions'))    { 'true' } else { 'false' })
+$env:PUBLISH_SHOULDLY             = $(if ($feeds.Contains('Shouldly'))             { 'true' } else { 'false' })
 $env:PUBLISH_HTTPMESSAGEFORMATTER = $(if ($feeds.Contains('HttpMessageFormatter')) { 'true' } else { 'false' })
 
 # Gates the GitHub release, so a tag that affects nothing does not create an
@@ -124,6 +126,7 @@ $env:PUBLISH_ANY = $(if ($feeds.Count -gt 0) { 'true' } else { 'false' })
 $feedResults = [ordered]@{
     FluentAssertions     = $env:PUBLISH_FLUENTASSERTIONS
     AwesomeAssertions    = $env:PUBLISH_AWESOMEASSERTIONS
+    Shouldly             = $env:PUBLISH_SHOULDLY
     HttpMessageFormatter = $env:PUBLISH_HTTPMESSAGEFORMATTER
 }
 

@@ -68,6 +68,12 @@
                     WatchDirectories="src/Assertions.Web.Serializers.NewtonsoftJson;src/Assertions.Web"
                     WatchFiles="Directory.Packages.props"
                     DependsOn="" />
+
+    <ReleasePackage Include="Shouldly.Web"
+                    ProjectPath="src/Shouldly.Web/Shouldly.Web.csproj"
+                    WatchDirectories="src/Shouldly.Web;src/Assertions.Web;src/Assertions.Web.Shared"
+                    WatchFiles="readme.md;Directory.Packages.props"
+                    DependsOn="HttpMessageFormatter" />
   </ItemGroup>
 
 </Project>

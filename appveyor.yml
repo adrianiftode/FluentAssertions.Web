@@ -211,6 +211,9 @@ artifacts:
   - path: '**\HttpMessageFormatter*.nupkg'
     name: HttpMessageFormatterPackage
 
+  - path: '**\Shouldly.Web*.nupkg'
+    name: ShouldlyPackages
+
   # Everything this release produced, regardless of feed. The GitHub release uses
   # this one artifact, because listing three artifact names would break whenever a
   # release only touches one of the feeds and the other artifacts stay empty.
@@ -225,8 +228,8 @@ deploy:
   #   PUBLISH_<FEED>     build/Pack-ReleasePackages.ps1 found packages for this
   #                      feed in the release, so an untouched feed is left alone
   # The shared serializer package (Assertions.Web.Serializers.NewtonsoftJson) ships
-  # on the FluentAssertions feed for now; Task 12 asks the owner which feed it should
-  # really use.
+  # on the FluentAssertions feed. Shouldly.Web is its own feed (Task 12), published
+  # with its own key; the literal placeholder below is replaced by the owner.
   - provider: NuGet
     api_key:
       secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
@@ -266,6 +269,16 @@ deploy:
       appveyor_repo_tag: true
       PUBLISH_ALLOWED: true
       PUBLISH_AWESOMEASSERTIONS: true
+
+  - provider: NuGet
+    api_key:
+      secure: OWNER_TO_SET_ENCRYPTED_NUGET_KEY
+    skip_symbols: true
+    artifact: ShouldlyPackages
+    on:
+      appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
+      PUBLISH_SHOULDLY: true
 
   # The GitHub release carries the .nupkg files, so it is created only when at
   # least one package is actually being published.

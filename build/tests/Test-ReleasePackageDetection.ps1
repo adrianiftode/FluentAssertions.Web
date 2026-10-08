@@ -265,7 +265,8 @@ try {
     $allPackages = @(
         'HttpMessageFormatter',
         'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web',
-        'Assertions.Web.Serializers.NewtonsoftJson')
+        'Assertions.Web.Serializers.NewtonsoftJson',
+        'Shouldly.Web')
 
     # A serializer has no dependency on the assertion packages, so changing one
     # must publish exactly one package. This is the case the old lockstep
@@ -284,19 +285,20 @@ try {
     # packages, so it must never ship without them.
     Invoke-Case 'formatter change pulls in its dependents' `
         @('src/HttpMessageFormatter/Internal/Formatter.cs') `
-        @('HttpMessageFormatter', 'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web')
+        @('HttpMessageFormatter', 'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web', 'Shouldly.Web')
 
-    # readme.md ships inside the three assertion packages, and not in the others.
+    # readme.md ships inside the packages that embed it, and not in the others.
     Invoke-Case 'readme change publishes the packages that embed it' `
         @('readme.md') `
-        @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web')
+        @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web', 'Shouldly.Web')
 
     # A dependency bump changes what ships in every package.
     Invoke-Case 'dependency bump publishes everything' `
         @('Directory.Packages.props') `
         @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web',
           'HttpMessageFormatter',
-          'Assertions.Web.Serializers.NewtonsoftJson')
+          'Assertions.Web.Serializers.NewtonsoftJson',
+          'Shouldly.Web')
 
     # Docs and CI config are in nobody's package.
     Invoke-Case 'docs change publishes nothing' `

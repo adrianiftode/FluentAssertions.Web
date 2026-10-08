@@ -1,8 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- Not released yet; Task 12 flips this and adds the package to the release manifest. -->
-    <IsPackable>false</IsPackable>
+    <!-- Released independently of the other packages in this repo. See eng/ReleasePackages.props. -->
+    <Version>1.0.0-preview.1</Version>
+    <PackageDescription>
+      A Shouldly extension over the HttpResponseMessage object. It provides HTTP-specific assertions whose
+      failure messages include the HTTP request and response. Prerelease until Shouldly 5.0.0 is stable;
+      requires Shouldly &gt;= 5.0.0-preview.2 (EquivalencyOptions). This is an unofficial, community-maintained
+      extension and is not endorsed by the Shouldly project.
+    </PackageDescription>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageTags>shouldly;httpresponsemessage;shouldlyweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +21,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Assertions.Web\Assertions.Web.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\HttpMessageFormatter\HttpMessageFormatter.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <Import Project="..\Assertions.Web.Shared\Assertions.Web.Shared.props" />
