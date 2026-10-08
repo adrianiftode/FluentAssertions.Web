@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Linked from day one. -->
-    <Compile Remove="..\FluentAssertions.Web.Tests\BadRequestAssertionsSpecs.cs"><!-- Task 10 converts this file -->
-    </Compile>
-
     <!-- v1 leftovers and test artifacts sitting in this directory (gitignored); never compile them. -->
     <Compile Remove="Backup\**" />
     <Compile Remove="TestResults\**" />
