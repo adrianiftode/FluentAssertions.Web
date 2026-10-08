@@ -218,6 +218,230 @@ public class FailureMessageLayoutTests
             """));
     }
 
+    [Fact]
+    public void ShouldHaveHeader_missing_header_uses_the_expected_actual_layout()
+    {
+        using var response = new HttpResponseMessage();
+
+        var message = Capture(() => response.ShouldHaveHeader("custom-header", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers
+                should have header
+            "custom-header"
+                but was
+            []
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldNotHaveHeader_present_header_uses_the_expected_actual_layout()
+    {
+        using var response = new HttpResponseMessage();
+        response.Headers.Add("that-header", "with-a-value");
+
+        var message = Capture(() => response.ShouldNotHaveHeader("that-header", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers
+                should not have header
+            "that-header"
+                but was
+            ["with-a-value"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldHaveHeaderWithValue_with_multiple_values_uses_the_expected_actual_layout()
+    {
+        using var response = new HttpResponseMessage();
+        response.Headers.Add("custom-header", "value1");
+        response.Headers.Add("custom-header", "value2");
+
+        var message = Capture(() => response.ShouldHaveHeaderWithValue("custom-header", "value1", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers["custom-header"]
+                should have header with value
+            "value1"
+                but was
+            ["value1", "value2"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldHaveHeaderWithValues_mismatch_uses_the_native_should_be_layout()
+    {
+        using var response = new HttpResponseMessage();
+        response.Headers.Add("custom-header", "value1");
+
+        var message = Capture(() => response.ShouldHaveHeaderWithValues(
+            "custom-header", new[] { "other-than-value1", "another-other-than-value1" }, "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers["custom-header"]
+                should be
+            ["other-than-value1", "another-other-than-value1"]
+                but was (case sensitive comparison)
+            ["value1"]
+                difference
+            [*"value1"*, *]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldHaveHeaderMatching_no_match_uses_the_expected_actual_layout()
+    {
+        using var response = new HttpResponseMessage();
+        response.Headers.Add("custom-header", "value1");
+
+        var message = Capture(() => response.ShouldHaveHeaderMatching("custom-header", "other-than-value1", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers["custom-header"]
+                should have header matching
+            "other-than-value1"
+                but was
+            ["value1"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldHaveEmptyHeader_with_values_uses_the_native_should_be_empty_layout()
+    {
+        using var response = new HttpResponseMessage();
+        response.Headers.Add("custom-header", "some-non-empty-value");
+
+        var message = Capture(() => response.ShouldHaveEmptyHeader("custom-header", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers["custom-header"]
+                should be empty but had
+            1
+                item and was
+            ["some-non-empty-value"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldHaveNonEmptyHeader_without_values_uses_the_native_should_not_be_empty_layout()
+    {
+        using var response = new HttpResponseMessage
+        {
+            Headers =
+            {
+                { "custom-header", (string?)null }
+            }
+        };
+
+        var message = Capture(() => response.ShouldHaveNonEmptyHeader("custom-header", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers["custom-header"]
+                should not be empty but was
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldHaveLocation_missing_header_uses_the_expected_actual_layout()
+    {
+        using var response = new HttpResponseMessage(HttpStatusCode.Created);
+
+        var message = Capture(() => response.ShouldHaveLocation("we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers
+                should have location
+            "Location"
+                but was
+            []
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldNotHaveLocation_present_header_uses_the_expected_actual_layout()
+    {
+        using var response = new HttpResponseMessage(HttpStatusCode.Created);
+        response.Headers.Add("Location", "1.html");
+
+        var message = Capture(() => response.ShouldNotHaveLocation("we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers
+                should not have location
+            "Location"
+                but was
+            ["1.html"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldHaveLocationWithValue_mismatch_uses_the_expected_actual_layout()
+    {
+        using var response = new HttpResponseMessage(HttpStatusCode.Created);
+        response.Headers.Add("Location", "1.html");
+
+        var message = Capture(() => response.ShouldHaveLocationWithValue("2.html", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Headers["Location"]
+                should have location with value
+            "2.html"
+                but was
+            ["1.html"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
     private static string Capture(Action act) =>
         Normalise(CutDump(Should.Throw<ShouldAssertException>(act).Message));
 

@@ -26,10 +26,6 @@
     <!-- Linked from day one. -->
     <Compile Remove="..\FluentAssertions.Web.Tests\BadRequestAssertionsSpecs.cs"><!-- Task 10 converts this file -->
     </Compile>
-    <Compile Remove="..\FluentAssertions.Web.Tests\HeadersAssertionsSpecs.cs"><!-- Task 09 converts this file -->
-    </Compile>
-    <Compile Remove="..\FluentAssertions.Web.Tests\LocationAssertionsSpecs.cs"><!-- Task 09 converts this file -->
-    </Compile>
 
     <!-- v1 leftovers and test artifacts sitting in this directory (gitignored); never compile them. -->
     <Compile Remove="Backup\**" />
