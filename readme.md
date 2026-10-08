@@ -18,7 +18,7 @@ The repository is home to a family of assertion frameworks on top of the shared 
 
 [![NuGet HttpMessageFormatter](https://img.shields.io/nuget/v/HttpMessageFormatter.svg?label=HttpMessageFormatter)](https://www.nuget.org/packages/HttpMessageFormatter/)
 
-## The libraries
+## The assertion libraries
 
 | Package | For | Assertion style |
 |---|---|---|
@@ -26,10 +26,13 @@ The repository is home to a family of assertion frameworks on top of the shared 
 | [**FluentAssertions.Web.v8**](#fluentassertionswebv8) | FluentAssertions >= 8.0.0 (commercial) | `response.Should().Be200Ok()` |
 | [**AwesomeAssertions.Web**](#awesomeassertionsweb) | AwesomeAssertions | `response.Should().Be200Ok()` |
 | [**Shouldly.Web**](#shouldlyweb) | Shouldly 5 (prerelease) | `response.ShouldBe200Ok()` |
-| [**Assertions.Web.Serializers.NewtonsoftJson**](#optional-global-configuration) | Newtonsoft.Json serialization, shared by every flavour | — |
-| [**HttpMessageFormatter**](#httpresponse-formatter) | Standalone request/response formatter | — |
 
-Every flavour targets `netstandard2.0`, packs its own copy of the `Assertions.Web` contract and renders failure output with the shared `HttpMessageFormatter`. The first four packages differ only in the assertion framework they extend; the assertions themselves are the same set, exposed through each framework's native syntax.
+Every flavour targets `netstandard2.0`, packs its own copy of the `Assertions.Web` contract and renders failure output with the shared `HttpMessageFormatter`. The packages differ only in the assertion framework they extend; the assertions themselves are the same set, exposed through each framework's native syntax.
+
+Two secondary packages complete the ecosystem, without being assertion libraries themselves:
+
+- **Assertions.Web.Serializers.NewtonsoftJson** is *optional*: every assertion library already ships with `System.Text.Json` deserialization built in, and this package is only needed to switch the default serializer to Newtonsoft.Json — see [Optional Global Configuration](#optional-global-configuration).
+- **HttpMessageFormatter** is the *shared* rendering engine behind all four assertion libraries. It has no assertions and no dependency on any assertion framework, so it can format HTTP messages in any other context too — see [HttpResponse Formatter](#httpresponse-formatter).
 
 ## Quick starts
 
@@ -81,6 +84,8 @@ dotnet add package Shouldly.Web
 
 ### Quick start: Newtonsoft serializer
 
+> Optional: the assertion libraries already ship the default `System.Text.Json` serializer. Install this package only to switch the default to Newtonsoft.Json.
+
 ```shell
 dotnet add package Assertions.Web.Serializers.NewtonsoftJson
 ```
@@ -90,6 +95,8 @@ AssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
 ```
 
 ### Quick start: HttpMessageFormatter
+
+> Shared: this is the rendering engine behind the assertion libraries. It carries no assertion framework dependency, so it can be used standalone, in any context.
 
 ```shell
 dotnet add package HttpMessageFormatter
@@ -1024,8 +1031,9 @@ The change must be done before the test is run and this depends on the testing f
 
 ##### Newtonsoft.Json
 
-The serializer itself is replaceable, so you can implement your own, by implementing the `ISerializer` interface.
-The serializer ships as the single **Assertions.Web.Serializers.NewtonsoftJson** package, shared by every flavour:
+Newtonsoft.Json support is **optional**: `System.Text.Json` is the default serializer and is already shipped with every assertion library. Install this package only if you want to switch. The serializer itself is also replaceable — you can implement your own, by implementing the `ISerializer` interface.
+
+The Newtonsoft.Json serializer ships as the single **Assertions.Web.Serializers.NewtonsoftJson** package, shared by every flavour:
 
 ```
 dotnet add package Assertions.Web.Serializers.NewtonsoftJson
@@ -1068,7 +1076,7 @@ var formatted = response.Format(new HttpResponseFormatterOptions
 
 ### HttpResponse Formatter
 
-The internal HTTP Request/Response formatter used by the assertion packages is published as a standalone package, so it can be reused in other projects.
+The internal HTTP Request/Response formatter used by the assertion packages is published as the **shared** **HttpMessageFormatter** package. It is not an assertion library: it carries no dependency on any assertion framework, so beyond powering the failure output of the assertion packages it can be reused in any other context where HTTP requests and responses need to be rendered for inspection and debugging.
 
 Basic usage:
  - start from an HTTPResponseMessage instance

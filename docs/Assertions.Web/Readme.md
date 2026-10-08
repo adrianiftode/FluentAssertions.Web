@@ -77,7 +77,7 @@ By default `System.Text.Json` is used to deserialize the response content. The r
 SystemTextJsonSerializerConfig.Options.PropertyNameCaseInsensitive = false;
 ```
 
-The serializer itself is replaceable by implementing the `ISerializer` interface. The Newtonsoft.Json one ships as the single **Assertions.Web.Serializers.NewtonsoftJson** package, shared by every flavour:
+Newtonsoft.Json support is **optional** — `System.Text.Json` is the default serializer and already ships with every assertion library. The serializer is also replaceable by implementing the `ISerializer` interface; the Newtonsoft.Json one ships as the single **Assertions.Web.Serializers.NewtonsoftJson** package, shared by every flavour:
 
 ```csharp
 AssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();

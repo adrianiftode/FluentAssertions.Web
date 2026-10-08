@@ -2,6 +2,8 @@
 
 A [Newtonsoft.Json](https://www.newtonsoft.com/json) based serializer for the Assertions.Web family of packages: [FluentAssertions.Web](https://www.nuget.org/packages/FluentAssertions.Web), [FluentAssertions.Web.v8](https://www.nuget.org/packages/FluentAssertions.Web.v8), [AwesomeAssertions.Web](https://www.nuget.org/packages/AwesomeAssertions.Web) and [Shouldly.Web](https://www.nuget.org/packages/Shouldly.Web).
 
+> Optional package: the assertion libraries already ship with `System.Text.Json` deserialization by default. Install this package only if you want to switch the default serializer to Newtonsoft.Json.
+
 By default those packages deserialize the HTTP response content with `System.Text.Json`. Install this package to switch the default serializer to Newtonsoft.Json.
 
 ## Install
