@@ -2,7 +2,7 @@
 
 HTTP assertions for .NET that turn a failing test into the whole request and response conversation, so you debug less.
 
-The repository is home to a family of assertion frameworks on top of the shared [`Assertions.Web`](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/src/Assertions.Web) contract and the [`HttpMessageFormatter`](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/src/HttpMessageFormatter) request/response renderer.
+The repository is home to a family of assertion frameworks on top of the shared [`Assertions.Web`](https://github.com/adrianiftode/Assertions.Web/tree/master/src/Assertions.Web) contract and the [`HttpMessageFormatter`](https://github.com/adrianiftode/Assertions.Web/tree/master/src/HttpMessageFormatter) request/response renderer.
 
 ### Status
 
@@ -175,7 +175,7 @@ Content-Length: 50
 
 The same text is shown in the *Test Detail Summary* of Visual Studio and Rider, and ends up in the CI logs, so the failure can usually be assessed without even running the test locally:
 
-![FailedTest1](https://github.com/adrianiftode/FluentAssertions.Web/blob/master/docs/images/FailedTest1.png?raw=true)
+![FailedTest1](https://github.com/adrianiftode/Assertions.Web/blob/master/docs/images/FailedTest1.png?raw=true)
 
 A couple of details about that output:
 
@@ -697,7 +697,7 @@ GET http://localhost/api/comments HTTP 1.1
 
 </details>
 
-Many more examples can be found in the [Samples](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/samples) projects and in the Specs files from the [FluentAssertions.Web.Tests](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/FluentAssertions.Web.Tests) project
+Many more examples can be found in the [Samples](https://github.com/adrianiftode/Assertions.Web/tree/master/samples) projects and in the Specs files from the [FluentAssertions.Web.Tests](https://github.com/adrianiftode/Assertions.Web/tree/master/test/FluentAssertions.Web.Tests) project
 
 ### Shouldly.Web Examples
 
@@ -1165,7 +1165,7 @@ GET http://localhost/api/comments HTTP 1.1
 
 When an assertion fails, the test output follows the [Shouldly message layout](#shouldlyweb) — `should be`/`but was` for the expected and actual values, an optional custom message under `Additional Info` — followed by the same HTTP response and originating request dump shown above.
 
-Many more examples can be found in the [Shouldly.Web.Tests](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/Shouldly.Web.Tests) and [Sample.Api.Shouldly.Tests](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/Sample.Api.Shouldly.Tests) projects, which run the same shared specs as the FluentAssertions and AwesomeAssertions flavours.
+Many more examples can be found in the [Shouldly.Web.Tests](https://github.com/adrianiftode/Assertions.Web/tree/master/test/Shouldly.Web.Tests) and [Sample.Api.Shouldly.Tests](https://github.com/adrianiftode/Assertions.Web/tree/master/test/Sample.Api.Shouldly.Tests) projects, which run the same shared specs as the FluentAssertions and AwesomeAssertions flavours.
 
 ### Full API
 
@@ -1637,7 +1637,7 @@ response.ShouldMatchInContent("*\"author\"*");
 
 The named assertions map to the FluentAssertions/AwesomeAssertions ones described in the [Full API](#full-api) section, and are listed in full, following the same structure, in [Shouldly.Web API](#shouldlyweb-api). Worked examples are in [Shouldly.Web Examples](#shouldlyweb-examples):
 
-> **Note on multiple failures:** To report *all* failing assertions, pass each one as a separate condition (a collection expression, array or `IEnumerable` of `Action`s), exactly as FluentAssertions' `Should().Satisfy(...)` reports every statement of a multi-statement lambda: each failing condition gets its own `Error 1`, `Error 2`, … block. A single assertion lambda runs as one condition and stops at its first failure. The [shared specs](https://github.com/adrianiftode/FluentAssertions.Web/tree/master/test/FluentAssertions.Web.Tests) show both forms.
+> **Note on multiple failures:** To report *all* failing assertions, pass each one as a separate condition (a collection expression, array or `IEnumerable` of `Action`s), exactly as FluentAssertions' `Should().Satisfy(...)` reports every statement of a multi-statement lambda: each failing condition gets its own `Error 1`, `Error 2`, … block. A single assertion lambda runs as one condition and stops at its first failure. The [shared specs](https://github.com/adrianiftode/Assertions.Web/tree/master/test/FluentAssertions.Web.Tests) show both forms.
 
 | FluentAssertions.Web | Shouldly.Web |
 |---|---|

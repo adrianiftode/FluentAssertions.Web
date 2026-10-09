@@ -195,7 +195,7 @@ after_test:
       & .\build\Pack-ReleasePackages.ps1 `
         -SelectedPackagesFile "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt" `
         -Configuration $env:CONFIGURATION `
-        -RepositoryUrl "https://github.com/adrianiftode/FluentAssertions.Web" `
+        -RepositoryUrl "https://github.com/adrianiftode/Assertions.Web" `
         -PublishableFeedsFile "$env:APPVEYOR_BUILD_FOLDER\publishable-feeds.txt"
 
 artifacts:
