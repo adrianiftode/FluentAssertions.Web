@@ -256,8 +256,10 @@ deploy:
   # on the FluentAssertions feed. Shouldly.Web is its own feed (Task 12), published
   # with its own key; the literal placeholder below is replaced by the owner.
   - provider: NuGet
+    # Dedicated key scoped to the Assertions.Web* package ids, so this feed's key
+    # cannot publish the FluentAssertions.* or AwesomeAssertions.* flavours.
     api_key:
-      secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
+      secure: il9lT20hp/X5OZ8xpft7iz6v/v9twmkaByWx6BDuA52mgBEcEzxHuX+E1STRfS/W
     skip_symbols: true
     artifact: AssertionsWebPackages
     on:
