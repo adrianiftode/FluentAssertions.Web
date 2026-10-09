@@ -91,7 +91,10 @@ build_script:
               "/d:sonar.token=$env:SONAR_TOKEN",
               "/v:$env:APPVEYOR_BUILD_NUMBER",
               "/d:sonar.cs.opencover.reportsPaths=**\coverage.opencover.xml",
-              "/d:sonar.coverage.exclusions=test/**"
+              # PowerShell build tooling and the netstandard2.0-only compiler polyfill
+              # cannot be measured by the OpenCover report, so keep them out of the
+              # new-code coverage denominator.
+              "/d:sonar.coverage.exclusions=test/**,build/**,src/Assertions.Web.Shared/Polyfills/**"
           )
 
           dotnet @sonarArgs
@@ -106,8 +109,10 @@ build_script:
   - cmd: dotnet build -c %CONFIGURATION%
 
 test_script:
-  # Uses native coverlet collector to safely output an OpenCover report without altering compiled disk files
-  - cmd: dotnet test --no-restore --no-build --nologo --verbosity:q /p:CollectCoverage=true --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+  # Uses native coverlet collector to safely output an OpenCover report without altering compiled disk files.
+  # IncludeTestAssembly=true lets the source-shared internal helpers compiled into Assertions.Web.Tests
+  # contribute coverage; those sources live under src/, so sonar.coverage.exclusions=test/** does not hide them.
+  - cmd: dotnet test --no-restore --no-build --nologo --verbosity:q /p:CollectCoverage=true --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.IncludeTestAssembly=true
 
 after_test:
   - ps: |
