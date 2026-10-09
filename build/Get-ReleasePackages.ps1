@@ -392,7 +392,17 @@ foreach ($id in $selected) {
 }
 
 if ($ChangedPackagesFile) {
-    $selected | Set-Content -LiteralPath $ChangedPackagesFile -Encoding UTF8
+    if ($selected) {
+        $selected | Set-Content -LiteralPath $ChangedPackagesFile -Encoding UTF8
+    }
+    else {
+        # An empty pipeline never reaches Set-Content's process block, so piping an
+        # empty selection wrote no file at all. Pack-ReleasePackages.ps1 reads this
+        # file unconditionally, so a branch build whose HEAD is the release tag (the
+        # baseline then resolves to that same tag, yielding a 0-file diff) died with
+        # "Cannot find path ... release-packages.txt". Create it empty instead.
+        [System.IO.File]::WriteAllText($ChangedPackagesFile, '')
+    }
     Write-Step "Wrote $($selected.Count) package id(s) to '$ChangedPackagesFile'."
 }
 

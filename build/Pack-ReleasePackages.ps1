@@ -52,7 +52,14 @@ foreach ($node in $manifest.Project.ItemGroup.ReleasePackage) {
     $packages[$node.Include] = $node
 }
 
-$selected = @(Get-Content -LiteralPath $SelectedPackagesFile | Where-Object { $_ })
+# A missing manifest (never created, or deleted between steps) means nothing was
+# selected rather than a broken build. Get-ReleasePackages.ps1 normally writes an
+# empty file, but tolerate its absence so a stale or hand-run pipeline still reports
+# "nothing to pack" instead of failing on a path-not-found under -ErrorAction Stop.
+$selected = @()
+if (Test-Path -LiteralPath $SelectedPackagesFile) {
+    $selected = @(Get-Content -LiteralPath $SelectedPackagesFile | Where-Object { $_ })
+}
 
 if (-not $selected) {
     Write-Host "==> No packages selected. Nothing to pack."

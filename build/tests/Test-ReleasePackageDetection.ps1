@@ -104,7 +104,7 @@ function New-Fixture {
     }
 }
 
-function Invoke-Case($name, $changedFiles, $expected, [string] $Baseline) {
+function Invoke-Case($name, $changedFiles, $expected, [string] $Baseline, [switch] $RequireFile) {
     <#
         Commits the given files on top of the baseline tag, runs detection, and
         compares the packages it selects against the expected set. The working
@@ -115,6 +115,11 @@ function Invoke-Case($name, $changedFiles, $expected, [string] $Baseline) {
         captured and reported as this case's own failure instead of aborting the
         rest of the run, because these cases exist precisely to pin down what
         happens when a git call goes wrong.
+
+        -RequireFile additionally asserts that the selection file was created even
+        when the expected selection is empty. Pack-ReleasePackages.ps1 reads that
+        file unconditionally, so creating it is part of the contract; without this
+        switch an empty expected set passes whether or not the file exists.
     #>
     Push-Location $workDir
     try {
@@ -159,6 +164,11 @@ function Invoke-Case($name, $changedFiles, $expected, [string] $Baseline) {
         $actual = @()
         if (Test-Path -LiteralPath $selectedFile) {
             $actual = @(Get-Content -LiteralPath $selectedFile | Where-Object { $_ })
+        }
+        elseif ($RequireFile -and -not $thrown) {
+            # The script completed but wrote no manifest. That is a failure on its
+            # own: Pack-ReleasePackages.ps1 reads this file unconditionally.
+            $actual = @('(selection file was not created)')
         }
 
         if ($thrown -and -not $actual) {
@@ -313,8 +323,12 @@ try {
         @()
 
     # A diff that succeeds but lists nothing means there is genuinely nothing new,
-    # which is not the same as not being able to read the diff. Nothing should ship.
-    Invoke-Case 'no changes since the baseline publishes nothing' @() @()
+    # which is not the same as not being able to read the diff. Nothing should ship,
+    # but the selection file must still be created (empty): Pack-ReleasePackages.ps1
+    # reads it unconditionally. A branch build whose HEAD is the release tag resolves
+    # the baseline to that same tag, so it takes exactly this path, and the missing
+    # file used to kill the build with "Cannot find path ... release-packages.txt".
+    Invoke-Case 'no changes since the baseline publishes nothing' @() @() -RequireFile
 
     # A baseline ref git cannot resolve (a tag fetch that failed, a stale ref) must
     # not be mistaken for "no changes": the change list is unknown, and the only
