@@ -39,9 +39,12 @@
     Skip the nuget.org check for already published versions.
 
 .PARAMETER EnforceVersionCheck
-    Fail when a selected package's version is already on nuget.org. CI passes this
-    on tag builds only, so an ordinary branch build does not fail just because a
-    changed package has not been versioned yet.
+    Treat already published versions as a release problem. CI passes this on tag
+    builds only, so an ordinary branch build does not fail just because a changed
+    package has not been versioned yet. A package that is already on nuget.org is
+    dropped from the release so a half finished release can be resumed by running
+    the same tag again; the build fails only when that leaves nothing to publish,
+    which is the "forgot to bump <Version>" case this check exists to catch.
 
 .EXAMPLE
     ./Get-ReleasePackages.ps1
@@ -345,19 +348,39 @@ foreach ($package in $packages) {
     }
 }
 
+# Collect the already published versions first, then decide what to do with them.
+# On a tag build an already published version normally means someone forgot to
+# bump <Version>. But a release that failed half way through leaves some of its
+# packages published and the rest not, and running the same tag again is the only
+# way to finish it, so those packages are dropped with a warning and the rest
+# still ship. Failing only when that leaves nothing to publish keeps the
+# forgotten bump caught without making a half finished release unrecoverable.
+$alreadyPublished = [System.Collections.Generic.List[string]]::new()
+
 foreach ($id in $selected) {
-    $version = $allVersions[$id]
-
-    # Only warn off a release build. On a branch build the version is often still
-    # the published one, because the bump happens in the release commit, so
-    # failing there would break every ordinary build.
-    if (-not $SkipVersionCheck -and (Test-VersionAlreadyPublished $id $version)) {
-        if ($EnforceVersionCheck) {
-            throw "Version $version of $id is already on nuget.org. Either bump <Version> in '$($byId[$id].ProjectPath)' or remove that package from the release by reverting its changes."
-        }
-
-        Write-Host "    NOTE: $id $version is already on nuget.org; bump <Version> before releasing it."
+    if (-not $SkipVersionCheck -and (Test-VersionAlreadyPublished $id $allVersions[$id])) {
+        $alreadyPublished.Add($id)
     }
+}
+
+if ($EnforceVersionCheck -and $selected.Count -gt 0 -and $alreadyPublished.Count -eq $selected.Count) {
+    $id = $alreadyPublished[0]
+    throw "Version $($allVersions[$id]) of $id is already on nuget.org, and no selected package is left to publish. Either bump <Version> in '$($byId[$id].ProjectPath)' or remove that package from the release by reverting its changes."
+}
+
+foreach ($id in $alreadyPublished) {
+    if ($EnforceVersionCheck) {
+        Write-Host "    NOTE: $id $($allVersions[$id]) is already on nuget.org; skipping it so the rest of this release can finish."
+    }
+    else {
+        # Only warn off a release build. On a branch build the version is often
+        # still the published one, because the bump happens in the release commit.
+        Write-Host "    NOTE: $id $($allVersions[$id]) is already on nuget.org; bump <Version> before releasing it."
+    }
+}
+
+if ($EnforceVersionCheck -and $alreadyPublished.Count -gt 0) {
+    $selected = @($selected | Where-Object { $alreadyPublished -notcontains $_ })
 }
 
 if (-not $selected) {

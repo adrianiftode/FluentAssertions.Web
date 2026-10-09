@@ -204,7 +204,12 @@ after_test:
         -PublishableFeedsFile "$env:APPVEYOR_BUILD_FOLDER\publishable-feeds.txt"
 
 artifacts:
-  - path: '**\Assertions.Web*.nupkg'
+  # Anchored to the package id via the '.' after the name: '**\Assertions.Web*.nupkg'
+  # is a substring match that also claims FluentAssertions.Web*, FluentAssertions.Web.v8*
+  # and AwesomeAssertions.Web*. AppVeyor gives each file to the first artifact whose
+  # glob matches, so that shadowed the three flavoured artifacts below and sent
+  # AwesomeAssertions.Web to the FluentAssertions feed key, which rejected it (403).
+  - path: '**\Assertions.Web.*.nupkg'
     name: AssertionsWebPackages
 
   # FluentAssertions.Web and FluentAssertions.Web.v8 are isolated by project output
