@@ -730,8 +730,51 @@ public async Task Post_ReturnsOkAndWithContent()
 }
 ```
 
-- Asserting that the response is 200 OK and the content is like an array of specific objects
 
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the API persisted a different <code>content</code>)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Post_ReturnsOkAndWithContent [72 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : Comparing object equivalence, at path:
+response.Content [<anonymous type>]
+    Content [System.String]
+
+    Expected value to be
+"Expected, but not really there..."
+    but was
+"Hey, you..."
+
+The HTTP response was:
+
+HTTP/1.1 201 Created
+Location: http://localhost/api/Comments/1
+X-Correlation-ID: 3259aec0-1585-4b15-94ff-8c882729c3ce
+Content-Type: application/json; charset=utf-8
+
+{
+  "author": "John",
+  "content": "Hey, you...",
+  "commentId": 1
+}
+
+The originating HTTP request was:
+
+POST http://localhost/api/comments HTTP 1.1
+Content-Type: application/json; charset=utf-8
+Content-Length: 50
+{
+  "author": "John",
+  "content": "Hey, you..."
+}
+  Stack Trace:
+     ...
+```
+
+</details>
+
+- Asserting that the response is 200 OK and the content is like an array of specific objects
 ```csharp
 [Fact]
 public async Task Get_Returns_Ok_With_CommentsList()
@@ -751,6 +794,49 @@ public async Task Get_Returns_Ok_With_CommentsList()
     });
 }
 ```
+
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the response contained one comment more than expected)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_Returns_Ok_With_CommentsList [15 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : Comparing object equivalence, at path:
+response.Content [<anonymous type>[]]
+    Count
+
+    Expected value to be
+1
+    but was
+2
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+X-Correlation-ID: 78751d19-8bde-4d99-80fb-0388497151f0
+Content-Type: application/json; charset=utf-8
+
+[
+  {
+    "author": "Adrian",
+    "content": "Hey",
+    "commentId": 1
+  },
+  {
+    "author": "Johnny",
+    "content": "Hey!",
+    "commentId": 2
+  }
+]
+
+The originating HTTP request was:
+
+GET http://localhost/api/comments HTTP 1.1
+  Stack Trace:
+     ...
+```
+
+</details>
 
 - Asserting that the response is an HTTP 400 BadRequest and contains a single error message
 
@@ -775,6 +861,54 @@ public async Task Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMe
 }
 ```
 
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the response reported an error for the <code>Content</code> field as well, so there is more than one)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Post_WithNoAuthorButWithContent_ReturnsBadRequestWithAnErrorMessageRelatedToAuthorOnly [47 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : response.Errors
+    should only contain this error field
+"Author"
+    but was
+["Author", "Content"]
+
+The HTTP response was:
+
+HTTP/1.1 400 BadRequest
+X-Correlation-ID: 21af9dfd-1216-48c8-b289-7ad77883521b
+Content-Type: application/problem+json; charset=utf-8
+
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "One or more validation errors occurred.",
+  "status": 400,
+  "errors": {
+    "Author": [
+      "The Author field is required."
+    ],
+    "Content": [
+      "The Content field is required."
+    ]
+  },
+  "traceId": "00-66708776909c03ac083400fc5ff5fce1-dc2b2c50b9a6f9d2-00"
+}
+
+The originating HTTP request was:
+
+POST http://localhost/api/comments HTTP 1.1
+Content-Type: application/json; charset=utf-8
+Content-Length: 95
+{
+  "author": "",
+  "content": ""
+}
+  Stack Trace:
+     ...
+```
+
+</details>
+
 - Asserting the response content once deserialized into a strongly typed object it satisfies a certain assertion
 
 ```csharp
@@ -793,6 +927,60 @@ public async Task Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments()
         model => model.Select(c => c.CommentId).ShouldBeUnique()]);
 }
 ```
+
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: both conditions fail, so both are reported)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_Returns_Ok_With_CommentsList_With_TwoUniqueComments [440 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : response.Content
+    should satisfy all the conditions specified, but does not.
+The following errors were found ...
+---------------- Error 1 ----------------
+    model.Count()
+        should be
+    3
+        but was
+    2
+
+---------------- Error 2 ----------------
+    model.Select(c => c.CommentId)
+        should contain
+    3
+        but was actually
+    [1, 2]
+
+-----------------------------------------
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+X-Correlation-ID: fcebb384-604e-4b95-9404-ecb69e87932a
+Content-Type: application/json; charset=utf-8
+
+[
+  {
+    "author": "Adrian",
+    "content": "Hey",
+    "commentId": 1
+  },
+  {
+    "author": "Johnny",
+    "content": "Hey!",
+    "commentId": 2
+  }
+]
+
+The originating HTTP request was:
+
+GET http://localhost/api/comments HTTP 1.1
+
+  Stack Trace:
+     ...
+```
+
+</details>
 
 > **Note:** Each entry of the collection is a separate condition, so **every** failing assertion is reported as its own `Error 1`, `Error 2`, … block — the same as FluentAssertions does for a multi-statement lambda body. A single assertion lambda, by contrast, runs as one condition and stops at its first failure: when migrating from FluentAssertions, pass the statements of that lambda as the condition list instead.
 
@@ -819,6 +1007,50 @@ public async Task Get_WithCommentId_Returns_A_NonSpam_Comment()
 }
 ```
 
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: <code>Author</code> was expected to be <code>"I DO SPAM!"</code>)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_WithCommentId_Returns_A_NonSpam_Comment [50 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : response.Content
+    should satisfy all the conditions specified, but does not.
+The following errors were found ...
+---------------- Error 1 ----------------
+    model.Author
+        should be
+    "I DO SPAM!"
+        but was
+    "Adrian"
+        difference
+    Expected: "I DO SPAM!"
+    Actual:   "Adrian"
+
+-----------------------------------------
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+x-vendor: vendor
+X-Correlation-ID: c496e17e-9fb3-4025-8ee0-83a86e978711
+Content-Type: application/json; charset=utf-8
+
+{
+  "author": "Adrian",
+  "content": "Hey",
+  "commentId": 1
+}
+
+The originating HTTP request was:
+
+GET http://localhost/api/comments/1 HTTP 1.1
+
+  Stack Trace:
+     ...
+```
+
+</details>
+
 - Asserting the response has a header with the name `X-Correlation-ID` and the value matches a certain pattern
 
 ```csharp
@@ -837,6 +1069,42 @@ public async Task Get_Should_Contain_a_Header_With_Correlation_Id()
 }
 ```
 
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the pattern used was <code>*-not-a-guid*</code>)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_Should_Contain_a_Header_With_Correlation_Id [13 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : response.Headers["X-Correlation-ID"]
+    should have header matching
+"*-not-a-guid*"
+    but was
+["0a588fed-ba7e-48ba-b8a3-e0b1946967c1"]
+
+Additional Info:
+    we want to test the correlation id is a Guid like one
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+X-Correlation-ID: 0a588fed-ba7e-48ba-b8a3-e0b1946967c1
+Content-Type: application/json; charset=utf-8
+
+[
+  "value1",
+  "value2"
+]
+
+The originating HTTP request was:
+
+GET http://localhost/api/values HTTP 1.1
+
+  Stack Trace:
+     ...
+```
+
+</details>
+
 - Asserting the response has a header with the name `x-vendor` and the value is not empty
 
 ```csharp
@@ -853,6 +1121,47 @@ public async Task Get_Should_Contain_a_NonEmpty_Header_With_Vendor()
     response.ShouldHaveNonEmptyHeader("x-vendor");
 }
 ```
+
+<details>
+<summary><code>dotnet test</code> output when this assertion fails <em>(here: the endpoint called did not return the header at all — <code>GET /api/comments</code> instead of <code>GET /api/comments/1</code>)</em></summary>
+
+```text
+  Failed Sample.Api.Tests.CommentsControllerTests.Get_Should_Contain_a_NonEmpty_Header_With_Vendor [440 ms]
+  Error Message:
+   Shouldly.ShouldAssertException : response.Headers
+    should have non empty header
+"x-vendor"
+    but was
+["X-Correlation-ID", "Content-Type"]
+
+The HTTP response was:
+
+HTTP/1.1 200 OK
+X-Correlation-ID: 3a130b8a-6a2b-4316-8ed5-132d1d04ebfe
+Content-Type: application/json; charset=utf-8
+
+[
+  {
+    "author": "Adrian",
+    "content": "Hey",
+    "commentId": 1
+  },
+  {
+    "author": "Johnny",
+    "content": "Hey!",
+    "commentId": 2
+  }
+]
+
+The originating HTTP request was:
+
+GET http://localhost/api/comments HTTP 1.1
+
+  Stack Trace:
+     ...
+```
+
+</details>
 
 When an assertion fails, the test output follows the [Shouldly message layout](#shouldlyweb) — `should be`/`but was` for the expected and actual values, an optional custom message under `Additional Info` — followed by the same HTTP response and originating request dump shown above.
 
