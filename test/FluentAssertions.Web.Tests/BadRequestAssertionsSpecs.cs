@@ -23,12 +23,21 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldBe400BadRequest();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be400BadRequest();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     #region HaveError
@@ -57,12 +66,24 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("Author", "The Author field is required.");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveError("Author", "The Author field is required.");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -86,12 +107,24 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("Status", "Cannot add at Revoked Status.");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveError("Status", "Cannot add at Revoked Status.");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -115,12 +148,24 @@ public class BadRequestAssertionsSpecs
                                                              """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("title", "*empty*");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveError("title", "*empty*");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -144,12 +189,24 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("status", "2");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveError("status", "2");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -169,6 +226,17 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("status", "400");
+        };
+
+        // Assert
+        act.ShouldFailWith("subject.Errors", "should have error", "\"status\"", "[]", "The HTTP response was:");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveError("status", "400");
@@ -176,6 +244,7 @@ public class BadRequestAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*to contain*status*field, but was not found*");
+#endif
     }
 
     [Theory]
@@ -203,6 +272,17 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("Comments", "*required*");
+        };
+
+        // Assert
+        act.ShouldFailWith("subject.Errors", "should have error", "\"Comments\"", "[\"Author\"]", "The HTTP response was:");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveError("Comments", "*required*");
@@ -210,6 +290,7 @@ public class BadRequestAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*to contain*Comments*field, but was not found*");
+#endif
     }
 
     [Theory]
@@ -238,12 +319,24 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("Author", "*required*");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveError("Author", "*required*");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Theory]
@@ -267,6 +360,18 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            response.ShouldBe400BadRequest();
+            response.ShouldHaveError("id", "Error message 1.");
+            response.ShouldHaveError("id", "Error message 2.");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
            response.Should().Be400BadRequest()
@@ -275,6 +380,7 @@ public class BadRequestAssertionsSpecs
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Theory]
@@ -299,12 +405,24 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("Author", "The Author field is required.");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveError("Author", "The Author field is required.");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Theory]
@@ -335,6 +453,17 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("error", "*required*");
+        };
+
+        // Assert
+        act.ShouldFailWith("subject.Errors", "should have error", "\"error\"", "The HTTP response was:");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveError("error", "*required*");
@@ -342,12 +471,13 @@ public class BadRequestAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*error*");
+#endif
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string expectedField)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string? expectedField)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -363,19 +493,32 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError(expectedField!, "*required*");
+        };
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify having an error against a <null> or empty field name.");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.HaveError(expectedField, "*required*");
+            .And.HaveError(expectedField!, "*required*");
 
         // Assert
         act.Should().Throw<ArgumentException>()
             .WithMessage("*<null> or empty field name*");
+#endif
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string expectedWildcardErrorMessage)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string? expectedWildcardErrorMessage)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -391,13 +534,26 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveError("Author", expectedWildcardErrorMessage!);
+        };
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify having an error against a <null> or empty wildcard error message.");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.HaveError("Author", expectedWildcardErrorMessage);
+            .And.HaveError("Author", expectedWildcardErrorMessage!);
 
         // Assert
         act.Should().Throw<ArgumentException>()
             .WithMessage("*<null> or empty wildcard error message*");
+#endif
     }
     #endregion
 
@@ -419,6 +575,14 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            response.ShouldHaveErrorMessage("A non-empty request body is required.");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act 
         Action act = () =>
             response.Should().Be400BadRequest()
@@ -426,6 +590,7 @@ public class BadRequestAssertionsSpecs
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -441,12 +606,24 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveErrorMessage("The Author field is required.");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveErrorMessage("The Author field is required.");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -462,12 +639,24 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveErrorMessage("The Author field is required.");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveErrorMessage("The Author field is required.");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -485,6 +674,14 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            response.ShouldHaveErrorMessage("A non-empty request body is required.");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act 
         Action act = () =>
             response.Should().Be400BadRequest()
@@ -492,6 +689,7 @@ public class BadRequestAssertionsSpecs
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -515,6 +713,14 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            response.ShouldHaveErrorMessage("The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. Path: $ | LineNumber: 0 | BytePositionInLine: 0.");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act 
         Action act = () =>
             response.Should().Be400BadRequest()
@@ -522,6 +728,7 @@ public class BadRequestAssertionsSpecs
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -542,6 +749,17 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveErrorMessage("One or more validation errors occurred.");
+        };
+
+        // Assert
+        act.ShouldFailWith("subject.Errors", "should have error message", "\"One or more validation errors occurred.\"", "[]", "The HTTP response was:");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.HaveErrorMessage("One or more validation errors occurred.");
@@ -549,12 +767,13 @@ public class BadRequestAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("""Expected * to contain the error message "One or more validation errors occurred.", but no such message was found in the actual error messages list.*""");
+#endif
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveErrorMessage_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string expectedWildcardErrorMessage)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveErrorMessage_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string? expectedWildcardErrorMessage)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -570,13 +789,26 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldHaveErrorMessage(expectedWildcardErrorMessage!);
+        };
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify having an error against a <null> or empty wildcard error message.");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.HaveErrorMessage(expectedWildcardErrorMessage);
+            .And.HaveErrorMessage(expectedWildcardErrorMessage!);
 
         // Assert
         act.Should().Throw<ArgumentException>()
             .WithMessage("*<null> or empty wildcard error message*");
+#endif
     }
     #endregion
 
@@ -606,12 +838,24 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldNotHaveError("Comments");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.NotHaveError("Comments");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -635,12 +879,24 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldNotHaveError("status");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.NotHaveError("status");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Theory]
@@ -669,6 +925,17 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldNotHaveError("Author");
+        };
+
+        // Assert
+        act.ShouldFailWith("subject.Errors", "should not have error", "\"Author\"", "[\"Author\"]", "The HTTP response was:");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.NotHaveError("Author");
@@ -676,12 +943,13 @@ public class BadRequestAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*to not contain*Author*field, but was found*");
+#endif
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_NotHaveError_against_null_or_empty_string_value_for_the_expected_error_field_it_should_throw_with_descriptive_message(string expectedErrorField)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_NotHaveError_against_null_or_empty_string_value_for_the_expected_error_field_it_should_throw_with_descriptive_message(string? expectedErrorField)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -697,13 +965,26 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+        #if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldNotHaveError(expectedErrorField!);
+        };
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify not having an error against a <null> or empty field name.");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.NotHaveError(expectedErrorField);
+            .And.NotHaveError(expectedErrorField!);
 
         // Assert
         act.Should().Throw<ArgumentException>()
             .WithMessage("*not having*<null> or empty field name*");
+#endif
     }
     #endregion
 
@@ -729,12 +1010,24 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldOnlyHaveError("Author", "*required*");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.OnlyHaveError("Author", "*required*");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -758,12 +1051,24 @@ public class BadRequestAssertionsSpecs
                                                              """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldOnlyHaveError("Status", "Cannot add at Revoked Status.");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.OnlyHaveError("Status", "Cannot add at Revoked Status.");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -787,12 +1092,24 @@ public class BadRequestAssertionsSpecs
                                                              """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldOnlyHaveError("title", "*empty*");
+        };
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.OnlyHaveError("title", "*empty*");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Theory]
@@ -818,6 +1135,17 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+        #if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldOnlyHaveError("Author", "*required*");
+        };
+
+        // Assert
+        act.ShouldFailWith("subject.Errors", "should only contain this error field", "\"Author\"", "[\"Author\", \"Comments\"]", "The HTTP response was:");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.OnlyHaveError("Author", "*required*");
@@ -825,6 +1153,7 @@ public class BadRequestAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*author*but more than this one was found.*");
+#endif
     }
 
     [Theory]
@@ -854,6 +1183,17 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+        #if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldOnlyHaveError("Author", "*Message 1*");
+        };
+
+        // Assert
+        act.ShouldFailWith("subject.Errors[\"Author\"]", "should only have error message", "\"*Message 1*\"", "[\"Message 1.\", \"Message 2.\"]", "The HTTP response was:");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.OnlyHaveError("Author", "*Message 1*");
@@ -861,6 +1201,7 @@ public class BadRequestAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*author* field and message *Message 1*but more than this one was found.*");
+#endif
     }
 
     [Theory]
@@ -894,6 +1235,17 @@ public class BadRequestAssertionsSpecs
             Content = new StringContent(responseContent, Encoding.UTF8, "application/json")
         };
 
+        #if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldOnlyHaveError("Date", "*required*");
+        };
+
+        // Assert
+        act.ShouldFailWith("subject.Errors", "should only have error", "\"Date\"", "[\"Author\", \"Comments\"]", "The HTTP response was:");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
             .And.OnlyHaveError("Date", "*required*");
@@ -901,12 +1253,13 @@ public class BadRequestAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*to contain*Date*field, but was not found*");
+#endif
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string expectedField)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string? expectedField)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -922,19 +1275,32 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldOnlyHaveError(expectedField!, "*required*");
+        };
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify having only an error against a <null> or empty field name.");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.OnlyHaveError(expectedField, "*required*");
+            .And.OnlyHaveError(expectedField!, "*required*");
 
         // Assert
         act.Should().Throw<ArgumentException>()
             .WithMessage("*<null> or empty field name*");
+#endif
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string expectedWildcardErrorMessage)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string? expectedWildcardErrorMessage)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -950,13 +1316,26 @@ public class BadRequestAssertionsSpecs
                 """, Encoding.UTF8, "application/json")
         };
 
+        #if SH
+        // Act
+        Action act = () =>
+        {
+            subject.ShouldBe400BadRequest();
+            subject.ShouldOnlyHaveError("Author", expectedWildcardErrorMessage!);
+        };
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify having only an error against a <null> or empty wildcard error message.");
+#else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.OnlyHaveError("Author", expectedWildcardErrorMessage);
+            .And.OnlyHaveError("Author", expectedWildcardErrorMessage!);
 
         // Assert
         act.Should().Throw<ArgumentException>()
             .WithMessage("*<null> or empty wildcard error message*");
+#endif
     }
     #endregion
 }

@@ -195,12 +195,22 @@ after_test:
       & .\build\Pack-ReleasePackages.ps1 `
         -SelectedPackagesFile "$env:APPVEYOR_BUILD_FOLDER\release-packages.txt" `
         -Configuration $env:CONFIGURATION `
-        -RepositoryUrl "https://github.com/adrianiftode/FluentAssertions.Web" `
+        -RepositoryUrl "https://github.com/adrianiftode/Assertions.Web" `
         -PublishableFeedsFile "$env:APPVEYOR_BUILD_FOLDER\publishable-feeds.txt"
 
 artifacts:
-  - path: '**\FluentAssertions.Web*.nupkg'
+  - path: '**\Assertions.Web*.nupkg'
+    name: AssertionsWebPackages
+
+  # FluentAssertions.Web and FluentAssertions.Web.v8 are isolated by project output
+  # path: the name glob `FluentAssertions.Web*` matches both, so a name based
+  # artifact could not tell the two flavours apart and could not be gated by a
+  # per flavour flag.
+  - path: 'src\FluentAssertions.Web\bin\**\*.nupkg'
     name: FluentAssertionsPackages
+
+  - path: 'src\FluentAssertions.Web.v8\bin\**\*.nupkg'
+    name: FluentAssertionsV8Packages
 
   - path: '**\AwesomeAssertions.Web*.nupkg'
     name: AwesomeAssertionsPackages
@@ -208,11 +218,13 @@ artifacts:
   - path: '**\HttpMessageFormatter*.nupkg'
     name: HttpMessageFormatterPackage
 
-  # Everything this release produced, regardless of feed. The GitHub release uses
-  # this one artifact, because listing three artifact names would break whenever a
-  # release only touches one of the feeds and the other artifacts stay empty.
-  - path: '**\*.nupkg'
-    name: ReleasePackages
+  - path: '**\Shouldly.Web*.nupkg'
+    name: ShouldlyPackages
+
+  # There is deliberately no catch-all '**\*.nupkg' artifact. AppVeyor gives each
+  # file to the first artifact whose glob matches it, so the globs above claim
+  # every nupkg and a catch-all would collect zero files. The GitHub release below
+  # selects the named artifacts by regex instead.
 
 deploy:
   # Three things must all be true to publish:
@@ -221,6 +233,29 @@ deploy:
   #                      which excludes stable versions from unmerged branches
   #   PUBLISH_<FEED>     build/Pack-ReleasePackages.ps1 found packages for this
   #                      feed in the release, so an untouched feed is left alone
+  #
+  # The FluentAssertions feed produces three artifacts, so its feed flag alone cannot
+  # gate a deploy that names one of them. FluentAssertionsPackages,
+  # FluentAssertionsV8Packages and AssertionsWebPackages each also require
+  # PUBLISH_FLUENTASSERTIONSWEB, PUBLISH_FLUENTASSERTIONSV8 and PUBLISH_ASSERTIONSWEB
+  # respectively, which are true only when that artifact's packages are in this
+  # release. That stops a deploy from naming an artifact the build never produced,
+  # and lets FluentAssertions.Web and FluentAssertions.Web.v8 ship independently.
+  #
+  # The shared serializer package (Assertions.Web.Serializers.NewtonsoftJson) ships
+  # on the FluentAssertions feed. Shouldly.Web is its own feed (Task 12), published
+  # with its own key; the literal placeholder below is replaced by the owner.
+  - provider: NuGet
+    api_key:
+      secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
+    skip_symbols: true
+    artifact: AssertionsWebPackages
+    on:
+      appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
+      PUBLISH_FLUENTASSERTIONS: true
+      PUBLISH_ASSERTIONSWEB: true
+
   - provider: NuGet
     api_key:
       secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
@@ -230,6 +265,18 @@ deploy:
       appveyor_repo_tag: true
       PUBLISH_ALLOWED: true
       PUBLISH_FLUENTASSERTIONS: true
+      PUBLISH_FLUENTASSERTIONSWEB: true
+
+  - provider: NuGet
+    api_key:
+      secure: 6rs63nhNUqswGZO+5fPTAErKVSWuK015FkhlxPHuodj5F2i8ii+Im156iTCi7p6I
+    skip_symbols: true
+    artifact: FluentAssertionsV8Packages
+    on:
+      appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
+      PUBLISH_FLUENTASSERTIONS: true
+      PUBLISH_FLUENTASSERTIONSV8: true
 
   - provider: NuGet
     api_key:
@@ -251,13 +298,28 @@ deploy:
       PUBLISH_ALLOWED: true
       PUBLISH_AWESOMEASSERTIONS: true
 
+  - provider: NuGet
+    api_key:
+      secure: tOCTpsWpsK7vE2lMFPoo8lv5KM7cGI1Es1+B4xEGTU0gYZjDmvaUAQr6fvSns5kQ
+    skip_symbols: true
+    artifact: ShouldlyPackages
+    on:
+      appveyor_repo_tag: true
+      PUBLISH_ALLOWED: true
+      PUBLISH_SHOULDLY: true
+
   # The GitHub release carries the .nupkg files, so it is created only when at
-  # least one package is actually being published.
+  # least one package is actually being published. It selects artifacts by regex,
+  # not by name: an explicit list fails when one flavour's artifact is empty, and
+  # a named catch-all is shadowed by the per-flavour globs (that is what left the
+  # 2.0.5 release with no assets). The regex matches every artifact deployment
+  # name (each ends in "Package" or "Packages") and, as a fallback, any .nupkg
+  # file path.
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: WXU/Xj3ntIZVx89KDAa/V/FGerV2fURqVQJxrKIqMcCijmXeC065twmHPYQMWGBabafs1llkLbe6DMKRAGnz+GxwH8GpT3A86rcSOLxbsp4uRkeMRsLxWHI+eDHTonOY
-    artifact: ReleasePackages
+    artifact: /.*(Packages?|\.nupkg)/
     on:
       appveyor_repo_tag: true
       PUBLISH_ALLOWED: true

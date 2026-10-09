@@ -1,4 +1,6 @@
-﻿#if AAV
+﻿#if SH
+namespace Shouldly.Web.Tests;
+#elif AAV
 namespace AwesomeAssertions.Web.Tests;
 #else
 namespace FluentAssertions.Web.Tests;
@@ -19,12 +21,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be201Created().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Theory]
@@ -36,12 +47,21 @@ public class LocationAssertionsSpecs
         using var subject = new HttpResponseMessage(HttpStatusCode.Created);
         subject.Headers.TryAddWithoutValidation("Location", locationValue);
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be201Created().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -56,12 +76,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be300Ambiguous().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -76,12 +105,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be301Moved().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -96,12 +134,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be301MovedPermanently().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -116,12 +163,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be302Found().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -136,12 +192,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be303SeeOther().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -156,12 +221,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be305UseProxy().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -176,12 +250,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be307TemporaryRedirect().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -196,12 +279,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be307RedirectKeepVerb().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -216,12 +308,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be308PermanentRedirect().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -236,12 +337,21 @@ public class LocationAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().Be3XXRedirection().And.HaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -250,6 +360,14 @@ public class LocationAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.Created);
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveLocation("we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers", "should have location", "\"Location\"", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Be201Created().And.HaveLocation("we want to test the {0}", "reason");
@@ -257,6 +375,7 @@ public class LocationAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected subject to contain the Location HTTP header, but no such header was found in the actual response*reason*.");
+#endif
     }
     #endregion
 
@@ -267,12 +386,21 @@ public class LocationAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.OK);
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldNotHaveLocation();
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().NotHaveLocation();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Theory]
@@ -284,6 +412,14 @@ public class LocationAssertionsSpecs
         using var subject = new HttpResponseMessage(HttpStatusCode.Created);
         subject.Headers.TryAddWithoutValidation("Location", locationValue);
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldNotHaveLocation("we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers", "should not have location", "\"Location\"", "[]", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Be201Created().And.NotHaveLocation("we want to test the {0}", "reason");
@@ -291,6 +427,7 @@ public class LocationAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected subject to not contain the Location HTTP header, but the header was found in the actual response*reason*.");
+#endif
     }
 
     #endregion

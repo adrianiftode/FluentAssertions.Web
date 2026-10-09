@@ -11,13 +11,13 @@ public sealed class ResponseFormatterOptionsTests : IDisposable
 
     public ResponseFormatterOptionsTests()
     {
-        _initialResponseFormatterOptions = AwesomeAssertions.AwesomeAssertionsWebConfig.ResponseFormatterOptions;
+        _initialResponseFormatterOptions = AssertionsWebConfig.ResponseFormatterOptions;
     }
 
     [Fact]
     public void ResponseFormatterOptions_IsAvailableByDefault()
     {
-        AwesomeAssertions.AwesomeAssertionsWebConfig.ResponseFormatterOptions
+        AssertionsWebConfig.ResponseFormatterOptions
             .Should().BeOfType<HttpResponseFormatterOptions>()
             .Which.MaximumReadableBytes.Should().Be(10 * 128 * 1024);
     }
@@ -26,7 +26,7 @@ public sealed class ResponseFormatterOptionsTests : IDisposable
     public void ResponseFormatterOptions_ShouldLimitTheFormattedResponseContent()
     {
         // Arrange
-        AwesomeAssertions.AwesomeAssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
+        AssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
         {
             MaximumReadableBytes = 20
         };
@@ -48,6 +48,6 @@ public sealed class ResponseFormatterOptionsTests : IDisposable
 
     public void Dispose()
     {
-        AwesomeAssertions.AwesomeAssertionsWebConfig.ResponseFormatterOptions = _initialResponseFormatterOptions;
+        AssertionsWebConfig.ResponseFormatterOptions = _initialResponseFormatterOptions;
     }
 }

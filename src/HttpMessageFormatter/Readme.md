@@ -1,6 +1,6 @@
- **HttpMessageFormatter** is a utility library for formatting HTTP request and response messages for inspection and debugging.
-      It provides rich, readable output of HTTP messages including headers, content, status codes, and more.
-      This library has no dependencies on any assertion framework, making it suitable for general-purpose use.
+ **HttpMessageFormatter** is the shared HTTP request/response rendering engine behind the [FluentAssertions.Web](https://www.nuget.org/packages/FluentAssertions.Web), [FluentAssertions.Web.v8](https://www.nuget.org/packages/FluentAssertions.Web.v8), [AwesomeAssertions.Web](https://www.nuget.org/packages/AwesomeAssertions.Web) and [Shouldly.Web](https://www.nuget.org/packages/Shouldly.Web) assertion libraries, published on its own so it can be used in any other context too.
+
+It formats HTTP request and response messages for inspection and debugging, producing rich, readable output that includes headers, content, status codes, and more. This library has no dependencies on any assertion framework, making it suitable for general-purpose use.
 
 ### Basic Usage
 

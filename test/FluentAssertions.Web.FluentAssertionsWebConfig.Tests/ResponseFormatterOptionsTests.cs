@@ -11,13 +11,13 @@ public sealed class ResponseFormatterOptionsTests : IDisposable
 
     public ResponseFormatterOptionsTests()
     {
-        _initialResponseFormatterOptions = FluentAssertions.FluentAssertionsWebConfig.ResponseFormatterOptions;
+        _initialResponseFormatterOptions = AssertionsWebConfig.ResponseFormatterOptions;
     }
 
     [Fact]
     public void ResponseFormatterOptions_IsAvailableByDefault()
     {
-        FluentAssertions.FluentAssertionsWebConfig.ResponseFormatterOptions
+        AssertionsWebConfig.ResponseFormatterOptions
             .Should().BeOfType<HttpResponseFormatterOptions>()
             .Which.MaximumReadableBytes.Should().Be(10 * 128 * 1024);
     }
@@ -26,7 +26,7 @@ public sealed class ResponseFormatterOptionsTests : IDisposable
     public void ResponseFormatterOptions_ShouldLimitTheFormattedResponseContent()
     {
         // Arrange
-        FluentAssertions.FluentAssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
+        AssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
         {
             MaximumReadableBytes = 20
         };
@@ -48,6 +48,6 @@ public sealed class ResponseFormatterOptionsTests : IDisposable
 
     public void Dispose()
     {
-        FluentAssertions.FluentAssertionsWebConfig.ResponseFormatterOptions = _initialResponseFormatterOptions;
+        AssertionsWebConfig.ResponseFormatterOptions = _initialResponseFormatterOptions;
     }
 }

@@ -1,10 +1,14 @@
-﻿#if AAV
+﻿#if SH
+using Shouldly.Web.Tests.TestModels;
+#elif AAV
 using AwesomeAssertions.Web.Tests.TestModels;
 #else
 using FluentAssertions.Web.Tests.TestModels;
 #endif
 
-#if AAV
+#if SH
+namespace Shouldly.Web.Tests;
+#elif AAV
 namespace AwesomeAssertions.Web.Tests;
 #else
 namespace FluentAssertions.Web.Tests;
@@ -24,6 +28,21 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         bool completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModel>(
+                async model =>
+                {
+                    await Task.Delay(10);
+                    model.Property.ShouldNotBeEmpty();
+                    completed = true;
+                });
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModel>(
@@ -37,6 +56,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -48,6 +68,19 @@ public class SatisfyModelAssertionsAsyncSpecs
             Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModel>(
+                async model =>
+                {
+                    await Task.Delay(10);
+                    model.Property.ShouldBeEmpty();
+                }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "model.Property", "should be empty but was", "\"Value\"", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModel>(
@@ -60,6 +93,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("""Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*to be empty, but found "Value"*HTTP response*""");
+#endif
     }
 
     [Fact]
@@ -72,6 +106,21 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         bool completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModelWithEnum>(
+                async model =>
+                {
+                    await Task.Delay(10);
+                    model.TestEnum.ShouldBe(TestEnum.Type1);
+                    completed = true;
+                });
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModelWithEnum>(
@@ -85,6 +134,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -97,6 +147,21 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         bool completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModelWithEnum>(
+                async model =>
+                {
+                    await Task.Delay(10);
+                    model.TestEnum.ShouldBe(TestEnum.Type1);
+                    completed = true;
+                });
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModelWithEnum>(
@@ -110,6 +175,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -122,6 +188,21 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         bool completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModelWithEnum>(
+                async model =>
+                {
+                    await Task.Delay(10);
+                    model.TestEnum.ShouldBe((TestEnum)(-1));
+                    completed = true;
+                });
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModelWithEnum>(
@@ -135,6 +216,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -146,6 +228,19 @@ public class SatisfyModelAssertionsAsyncSpecs
             Content = new StringContent(/*lang=json,strict*/ """{ "testEnum" : -1 }""", Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModelWithEnum>(
+                async model =>
+                {
+                    await Task.Delay(10);
+                    model.TestEnum.ShouldBe(TestEnum.Type1);
+                }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "model.TestEnum", "should be", "TestEnum.Type1", "but was", "TestEnum.-1", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModelWithEnum>(
@@ -158,6 +253,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*the enum to be TestEnum.Type1*, but found TestEnum.-1**HTTP response*");
+#endif
     }
 
     [Fact]
@@ -171,6 +267,19 @@ public class SatisfyModelAssertionsAsyncSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModel>(
+                async model =>
+                {
+                    await Task.Delay(10);
+                    model.Property.ShouldBeNull();
+                }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject.Content", "should be as", "Exception while deserializing the model with SystemTextJsonSerializer", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModel>(
@@ -183,6 +292,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
+#endif
     }
 
     [Fact]
@@ -194,6 +304,22 @@ public class SatisfyModelAssertionsAsyncSpecs
             Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Shouldly stops at the first failure; nest ShouldSatisfy to report all.
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModel>(
+                async model =>
+                {
+                    await Task.Delay(10);
+                    model.ShouldSatisfy([
+                        m => m.Property.ShouldBe("Not Value"),
+                        m => m.ShouldBeNull()]);
+                }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "m.Property", "should be", "\"Not Value\"", "but was", "\"Value\"", "Error 2", "should be null but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModel>(
@@ -207,6 +333,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("""Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*Not Value*expected*to be <null>*The HTTP response was:*""");
+#endif
     }
 
     [Fact]
@@ -215,6 +342,15 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModel>((Func<TestModel, Task>)null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify the subject satisfies a `null` assertion.");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModel>((Func<TestModel, Task>)null!);
@@ -222,6 +358,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*Cannot verify the subject satisfies a `null` assertion.*");
+#endif
     }
 
     [Fact]
@@ -230,6 +367,14 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         HttpResponseMessage? subject = null;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy<TestModel>(async model => await Task.Run(() => true.ShouldBeTrue()), "because we want to test the failure message");
+
+        // Assert
+        act.ShouldFailWith("subject", "should not be null", "Additional Info:", "because we want to test the failure message");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy<TestModel>(async model => await Task.Run(() => true.Should().BeTrue()), "because we want to test the failure {0}", "message");
@@ -237,6 +382,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+#endif
     }
     #endregion
 
@@ -251,6 +397,23 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         var completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: new
+            {
+                Property = default(string)
+            }, assertion: async model =>
+            {
+                await Task.Delay(10);
+                model.Property.ShouldNotBeEmpty();
+                completed = true;
+            });
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -266,6 +429,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -278,6 +442,20 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         var completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: (TestModel?)null, async model =>
+            {
+                await Task.Delay(10);
+                model!.Property.ShouldNotBeNullOrEmpty();
+                completed = true;
+            });
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: (TestModel?)null, async model =>
@@ -290,6 +468,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -301,6 +480,21 @@ public class SatisfyModelAssertionsAsyncSpecs
             Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: new
+            {
+                Property = default(string)
+            }, assertion: async model =>
+            {
+                await Task.Delay(10);
+                model.Property.ShouldBeEmpty();
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "model.Property", "should be empty but was", "\"Value\"", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -315,6 +509,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("""Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*to be empty, but found "Value"*HTTP response*""");
+#endif
     }
 
     [Fact]
@@ -326,6 +521,24 @@ public class SatisfyModelAssertionsAsyncSpecs
             Content = new StringContent(/*lang=json,strict*/ """{ "property" : "Value"}""", Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Shouldly stops at the first failure; nest ShouldSatisfy to report all.
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: new
+            {
+                Property = default(string)
+            }, assertion: async model =>
+            {
+                await Task.Delay(10);
+                model.ShouldSatisfy([
+                    m => m.Property.ShouldBe("Not Value"),
+                    m => m.ShouldBeNull()]);
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "m.Property", "should be", "\"Not Value\"", "but was", "\"Value\"", "Error 2", "should be null but was", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -341,6 +554,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*Not Value*expected*to be <null>*The HTTP response was:*");
+#endif
     }
 
     [Fact]
@@ -353,6 +567,23 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         bool completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: new
+            {
+                TestEnum = TestEnum.Type1
+            }, assertion: async model =>
+            {
+                await Task.Delay(10);
+                model.TestEnum.ShouldBe(TestEnum.Type1);
+                completed = true;
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -368,6 +599,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -380,6 +612,23 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         bool completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: new
+            {
+                TestEnum = default(TestEnum)
+            }, assertion: async model =>
+            {
+                await Task.Delay(10);
+                model.TestEnum.ShouldBe(TestEnum.Type1);
+                completed = true;
+            });
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -395,6 +644,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -407,6 +657,23 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         bool completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: new
+            {
+                TestEnum = default(TestEnum)
+            }, assertion: async model =>
+            {
+                await Task.Delay(10);
+                model.TestEnum.ShouldBe((TestEnum)(-1));
+                completed = true;
+            });
+
+        // Assert
+        act.ShouldNotThrow();
+        completed.ShouldBeTrue();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -422,6 +689,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().NotThrow();
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -433,6 +701,24 @@ public class SatisfyModelAssertionsAsyncSpecs
         };
         bool completed = false;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: new
+            {
+                TestEnum = default(TestEnum)
+            }, assertion: async model =>
+            {
+                await Task.Delay(10);
+                model.TestEnum.ShouldBe(TestEnum.Type1);
+                completed = true;
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject.Content", "should satisfy all the conditions specified, but does not.", "Error 1", "model.TestEnum", "should be", "TestEnum.Type1", "but was", "TestEnum.-1", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+        // Shouldly aborts the lambda on the first failing assertion, so the flag was never set.
+        completed.ShouldBeFalse();
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -449,6 +735,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         act.Should().Throw<XunitException>()
             .WithMessage("Expected * to satisfy one or more model assertions, but it wasn't because we want to test the reason:*expected*the enum to be TestEnum.Type1*, but found TestEnum.-1**HTTP response*");
         completed.Should().BeTrue();
+#endif
     }
 
     [Fact]
@@ -462,6 +749,21 @@ public class SatisfyModelAssertionsAsyncSpecs
             """, Encoding.UTF8, "application/json")
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: new
+            {
+                Property = default(string)
+            }, assertion: async model =>
+            {
+                await Task.Delay(10);
+                model.Property.ShouldBeNull();
+            }, "because we want to test the reason");
+
+        // Assert
+        act.ShouldFailContaining("subject.Content", "should be as", "Exception while deserializing the model with SystemTextJsonSerializer", "Additional Info:", "because we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -476,6 +778,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*to have a content equivalent to a model of type*, but the JSON representation could not be parsed*");
+#endif
     }
 
     [Fact]
@@ -484,6 +787,16 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // The anonymous structure cannot infer a delegate type for a bare null; use an explicit structure.
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: (TestModel)null!, assertion: (Func<TestModel, Task>)null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify the subject satisfies a `null` assertion.");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -494,6 +807,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*Cannot verify the subject satisfies a `null` assertion.*");
+#endif
     }
 
 
@@ -504,6 +818,17 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Arrange
         HttpResponseMessage? subject = null;
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldSatisfy(givenModelStructure: new
+            {
+                Property = default(string)
+            }, assertion: async model => await Task.Run(() => true.ShouldBeTrue()), "because we want to test the failure message");
+
+        // Assert
+        act.ShouldFailWith("subject", "should not be null", "Additional Info:", "because we want to test the failure message");
+#else
         // Act
         Action act = () =>
             subject.Should().Satisfy(givenModelStructure: new
@@ -514,6 +839,7 @@ public class SatisfyModelAssertionsAsyncSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("Expected a * to assert because we want to test the failure message, but found <null>.");
+#endif
     }
     #endregion
 }

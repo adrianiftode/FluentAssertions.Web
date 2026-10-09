@@ -1,0 +1,12 @@
+<Project>
+  <!--
+    Compiles every file in this folder directly into the importing project.
+    These helpers are source-shared (decision D2), not a shared assembly:
+    each flavour gets its own copy, so they stay internal to that assembly.
+  -->
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)**\*.cs"
+             Exclude="$(MSBuildThisFileDirectory)bin\**;$(MSBuildThisFileDirectory)obj\**"
+             Link="Shared\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

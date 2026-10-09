@@ -1,0 +1,97 @@
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using Shouldly.Web.Internal;
+
+namespace Shouldly;
+
+/// <summary>
+/// Shouldly assertions on the Location header of an <see cref="HttpResponseMessage"/>.
+/// </summary>
+[ShouldlyMethods]
+[DebuggerStepThrough]
+[EditorBrowsable(EditorBrowsableState.Never)]
+public static class LocationShouldlyExtensions
+{
+    /// <summary>
+    /// Asserts that an HTTP response has a Location header.
+    /// </summary>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldHaveLocation(this HttpResponseMessage? actual, string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+        => HeadersShouldlyExtensions.EnsureHeaderPresent(actual, "Location", customMessage, nameof(ShouldHaveLocation), actualExpression);
+
+    /// <summary>
+    /// Asserts that an HTTP response does not have a Location header.
+    /// </summary>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldNotHaveLocation(this HttpResponseMessage? actual, string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+        => HeadersShouldlyExtensions.AssertHeaderAbsent(actual, "Location", customMessage, nameof(ShouldNotHaveLocation), actualExpression);
+
+    /// <summary>
+    /// Asserts that the Location header of an HTTP response has exactly one value equivalent to the
+    /// expected one. The comparison ignores the value's case, but not its surrounding whitespace.
+    /// </summary>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="expectedValue">The expected Location header value.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldHaveLocationWithValue(this HttpResponseMessage? actual, string expectedValue,
+        string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+    {
+        Guard.ThrowIfArgumentIsNullOrEmpty(expectedValue, nameof(expectedValue),
+            "Cannot verify an HTTP header to be a value against a <null> or empty value. Use ShouldHaveEmptyHeader to test if the HTTP header has no value.");
+        HeadersShouldlyExtensions.AssertHeaderWithValue(actual, "Location", expectedValue, customMessage,
+            nameof(ShouldHaveLocationWithValue), actualExpression);
+    }
+
+    /// <summary>
+    /// Asserts that the Location header of an HTTP response has at least one value matching a wildcard
+    /// pattern, where <c>*</c> matches any run of characters and <c>?</c> matches exactly one.
+    /// </summary>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="expectedWildcardValue">The wildcard pattern with which the header values are matched.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldHaveLocationMatching(this HttpResponseMessage? actual, string expectedWildcardValue,
+        string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+    {
+        Guard.ThrowIfArgumentIsNull(expectedWildcardValue, nameof(expectedWildcardValue),
+            "Cannot verify an HTTP header to be a value against a <null> value. Use ShouldHaveEmptyHeader to test if the HTTP header has no values.");
+        HeadersShouldlyExtensions.AssertHeaderMatching(actual, "Location", expectedWildcardValue, customMessage,
+            nameof(ShouldHaveLocationMatching), actualExpression);
+    }
+
+    /// <summary>
+    /// Asserts that the Location header of an HTTP response has all expected values, in any order.
+    /// Each value is compared with its expectation case-sensitively. Mirroring the
+    /// FluentAssertions assertions, the header itself is looked up case-sensitively here.
+    /// </summary>
+    /// <param name="actual">The HTTP response under test.</param>
+    /// <param name="expectedValues">The expected values with which the Location header values are compared.</param>
+    /// <param name="customMessage">Extra text shown under <c>Additional Info</c> when the assertion fails.</param>
+    /// <param name="actualExpression">Captured by the compiler; do not pass it.</param>
+    public static void ShouldHaveLocationWithValues(this HttpResponseMessage? actual, IEnumerable<string> expectedValues,
+        string? customMessage = null,
+        [CallerArgumentExpression(nameof(actual))] string? actualExpression = null)
+    {
+        Guard.ThrowIfArgumentIsNull(expectedValues, nameof(expectedValues),
+            "Cannot verify an HTTP header to be a collection of expected values against a <null> collection. Use ShouldHaveEmptyHeader to test if the HTTP header has no values.");
+        if (!expectedValues.Any())
+        {
+            throw new ArgumentException(
+                "Cannot verify an HTTP header to be a collection of expected values against an empty collection. Use ShouldHaveEmptyHeader to test if the HTTP header has no values.",
+                nameof(expectedValues));
+        }
+
+        HeadersShouldlyExtensions.AssertHeaderWithValues(actual, "Location", expectedValues, customMessage,
+            nameof(ShouldHaveLocationWithValues), actualExpression);
+    }
+}

@@ -1,4 +1,6 @@
-﻿#if AAV
+﻿#if SH
+namespace Shouldly.Web.Tests;
+#elif AAV
 namespace AwesomeAssertions.Web.Tests;
 #else
 namespace FluentAssertions.Web.Tests;
@@ -19,12 +21,21 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeader("custom-header");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -39,12 +50,21 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeader("custom-header");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -53,6 +73,14 @@ public class HeadersAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeader("custom-header", "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers", "should have header", "\"custom-header\"", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header", "we want to test the {0}", "reason");
@@ -60,6 +88,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*the HTTP header*custom-header*but no such header was found*reason*");
+#endif
     }
 
     [Fact]
@@ -74,6 +103,14 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeader("custom-header", "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers", "should have header", "\"custom-header\"", "[\"other-header\"]", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header", "we want to test the {0}", "reason");
@@ -81,6 +118,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*the HTTP header*custom-header*but no such header was found*reason*");
+#endif
     }
 
     [Fact]
@@ -89,6 +127,15 @@ public class HeadersAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeader(null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify having a header against a <null> header.");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader(null!);
@@ -96,6 +143,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*header*<null>*");
+#endif
     }
 
     #endregion
@@ -113,12 +161,21 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldNotHaveHeader("other-header");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().NotHaveHeader("other-header");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -127,12 +184,21 @@ public class HeadersAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldNotHaveHeader("custom-header");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().NotHaveHeader("custom-header");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -147,6 +213,14 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldNotHaveHeader("that-header", "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers", "should not have header", "\"that-header\"", "[\"with-a-value\"]", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().NotHaveHeader("that-header", "we want to test the {0}", "reason");
@@ -154,6 +228,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*to not contain the HTTP header*that-header*but the header was found*reason*");
+#endif
     }
 
     [Fact]
@@ -162,6 +237,15 @@ public class HeadersAssertionsSpecs
         // Arrange
         using var subject = new HttpResponseMessage();
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldNotHaveHeader(null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify not having a header against a <null> header.");
+#else
         // Act
         Action act = () =>
             subject.Should().NotHaveHeader(null!);
@@ -169,6 +253,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*not having*header*<null>*");
+#endif
     }
 
     #endregion
@@ -186,12 +271,21 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveEmptyHeader("custom-header");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeEmpty();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -206,6 +300,14 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveEmptyHeader("custom-header", "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers[\"custom-header\"]", "should be empty but had", "1", "item and was", "[\"some-non-empty-value\"]", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeEmpty("we want to test the {0}", "reason");
@@ -213,6 +315,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*the HTTP header *custom-header* with no header values*some-non-empty-value*reason*");
+#endif
     }
     #endregion
 
@@ -229,12 +332,21 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveNonEmptyHeader("custom-header");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.NotBeEmpty();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -250,12 +362,21 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveNonEmptyHeader("custom-header");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.NotBeEmpty();
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
 
@@ -273,6 +394,14 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveNonEmptyHeader("custom-header", "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers[\"custom-header\"]", "should not be empty but was", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.NotBeEmpty("we want to test the {0}", "reason");
@@ -280,6 +409,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*the HTTP header *custom-header* with any header values, but found the header and it has no values in the actual response*reason*");
+#endif
     }
     #endregion
 
@@ -296,12 +426,21 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderMatching("custom-header", "value*");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.Match("value*");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -316,6 +455,14 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderMatching("custom-header", "other-than-value1", "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers[\"custom-header\"]", "should have header matching", "\"other-than-value1\"", "[\"value1\"]", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.Match("other-than-value1", "we want to test the {0}", "reason");
@@ -323,6 +470,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*the HTTP header*custom-header* having a value matching *other-than-value1*, but there was no match*reason*");
+#endif
     }
 
     [Fact]
@@ -337,6 +485,15 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderMatching("custom-header", null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify an HTTP header to be a value against a <null> value.");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.Match(null!);
@@ -344,6 +501,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*<null>*Use And.BeEmpty to test if the HTTP header has no values.*");
+#endif
     }
     #endregion
 
@@ -360,12 +518,21 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValue("custom-header", "value1");
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValue("value1");
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -381,6 +548,14 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValue("custom-header", "value1", "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers[\"custom-header\"]", "should have header with value", "\"value1\"", "[\"value1\", \"value2\"]", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValue("value1", "we want to test the {0}", "reason");
@@ -388,6 +563,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*the*custom-header*HTTP header*value to be equivalent to*value1*but found the header and has more or no values*reason*");
+#endif
     }
 
     [Fact]
@@ -402,6 +578,14 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValue("custom-header", "value1", "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers[\"custom-header\"]", "should have header with value", "\"value1\"", "[\"value1,value2\"]", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValue("value1", "we want to test the {0}", "reason");
@@ -409,6 +593,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*the*custom-header*HTTP header*equivalent*value1*value2*reason*");
+#endif
     }
 
     [Fact]
@@ -423,6 +608,14 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValue("custom-header", "other-than-value1", "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers[\"custom-header\"]", "should have header with value", "\"other-than-value1\"", "[\"value1\"]", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValue("other-than-value1", "we want to test the {0}", "reason");
@@ -430,6 +623,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*custom-header*HTTP*header*value*equivalent*but*value1*reason*");
+#endif
     }
 
     [Fact]
@@ -444,6 +638,15 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValue("custom-header", null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify an HTTP header to be a value against a <null> or empty value.");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValue(null!);
@@ -451,6 +654,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*<null>*Use And.BeEmpty to test if the HTTP header has no value.*");
+#endif
     }
 
     [Fact]
@@ -465,6 +669,15 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValue("custom-header", "");
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify an HTTP header to be a value against a <null> or empty value.");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValue("");
@@ -472,6 +685,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentException>()
             .WithMessage("*empty*Use And.BeEmpty to test if the HTTP header has no value.*");
+#endif
     }
     #endregion
 
@@ -489,12 +703,21 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValues("custom-header", new[] { "value1", "value2" });
+
+        // Assert
+        act.ShouldNotThrow();
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValues(new[] { "value1", "value2" });
 
         // Assert
         act.Should().NotThrow();
+#endif
     }
 
     [Fact]
@@ -509,6 +732,16 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValues("custom-header", new[] {
+                "other-than-value1",
+                "another-other-than-value1" }, "we want to test the reason");
+
+        // Assert
+        act.ShouldFailWith("subject.Headers[\"custom-header\"]", "should be", "[\"other-than-value1\", \"another-other-than-value1\"]", "but was (case sensitive comparison)", "[\"value1\"]", "difference", "Additional Info:", "we want to test the reason", "The HTTP response was:");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValues(new[] {
@@ -518,6 +751,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<XunitException>()
             .WithMessage("*the HTTP header*custom-header*having values*other-than-value1*another-other-than-value1*reason*");
+#endif
     }
 
     [Fact]
@@ -532,6 +766,15 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValues("custom-header", null!);
+
+        // Assert
+        act.ShouldThrow<ArgumentNullException>()
+            .Message.ShouldStartWith("Cannot verify an HTTP header to be a collection of expected values against a <null> collection.");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValues(null!);
@@ -539,6 +782,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentNullException>()
             .WithMessage("*<null>*Use And.BeEmpty to test if the HTTP header has no values.*");
+#endif
     }
 
     [Fact]
@@ -553,6 +797,15 @@ public class HeadersAssertionsSpecs
             }
         };
 
+#if SH
+        // Act
+        Action act = () =>
+            subject.ShouldHaveHeaderWithValues("custom-header", Enumerable.Empty<string>());
+
+        // Assert
+        act.ShouldThrow<ArgumentException>()
+            .Message.ShouldStartWith("Cannot verify an HTTP header to be a collection of expected values against an empty collection.");
+#else
         // Act
         Action act = () =>
             subject.Should().HaveHeader("custom-header").And.BeValues(Enumerable.Empty<string>());
@@ -560,6 +813,7 @@ public class HeadersAssertionsSpecs
         // Assert
         act.Should().Throw<ArgumentException>()
             .WithMessage("*empty*Use And.BeEmpty to test if the HTTP header has no values.*");
+#endif
     }
     #endregion
 }

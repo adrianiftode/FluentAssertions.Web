@@ -6,14 +6,14 @@ public sealed class NewtonsoftJsonSerializerTests : IDisposable
     private readonly ISerializer _initialSerializer;
     public NewtonsoftJsonSerializerTests()
     {
-        _initialSerializer = AwesomeAssertions.AwesomeAssertionsWebConfig.Serializer;
+        _initialSerializer = AssertionsWebConfig.Serializer;
     }
     [Fact]
     public void Serializer_Can_Be_Set_To_NewtonsoftJsonDeserializer()
     {
-        AwesomeAssertions.AwesomeAssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
+        AssertionsWebConfig.Serializer = new NewtonsoftJsonSerializer();
 
-        AwesomeAssertions.AwesomeAssertionsWebConfig.Serializer.Should().BeOfType<NewtonsoftJsonSerializer>();
+        AssertionsWebConfig.Serializer.Should().BeOfType<NewtonsoftJsonSerializer>();
     }
 
     [Fact]
@@ -24,6 +24,6 @@ public sealed class NewtonsoftJsonSerializerTests : IDisposable
 
     public void Dispose()
     {
-        AwesomeAssertions.AwesomeAssertionsWebConfig.Serializer = _initialSerializer;
+        AssertionsWebConfig.Serializer = _initialSerializer;
     }
 }

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="FluentAssertions.Analyzers" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
+    <ProjectReference Include="..\..\src\HttpMessageFormatter\HttpMessageFormatter.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web.Serializers.NewtonsoftJson\Assertions.Web.Serializers.NewtonsoftJson.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\..\src\Assertions.Web.Shared\Assertions.Web.Shared.props" />
+
+  <ItemGroup>
+    <!-- Only the enum model used by HttpContentExtensionsTests; the rest of the
+         shared TestModels folder stays with the FluentAssertions specs. -->
+    <Compile Include="..\FluentAssertions.Web.Tests\TestModels\TestEnum.cs" Link="TestModels\TestEnum.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

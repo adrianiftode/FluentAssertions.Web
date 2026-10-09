@@ -60,11 +60,13 @@ if (-not $selected) {
 }
 
 # Feed assignment mirrors the deploy section in appveyor.yml. FluentAssertions.Web
-# is matched first because its glob also covers FluentAssertions.Web.v8 and the
-# serializer package, exactly as the artifact globs do.
+# is matched first because its glob also covers FluentAssertions.Web.v8; the shared
+# serializer package has its own rule, exactly as its artifact glob does.
 function Get-FeedFor($id) {
+    if ($id -like 'Assertions.Web.Serializers*') { return 'FluentAssertions' }
     if ($id -like 'AwesomeAssertions.Web*') { return 'AwesomeAssertions' }
     if ($id -like 'FluentAssertions.Web*') { return 'FluentAssertions' }
+    if ($id -like 'Shouldly.Web*') { return 'Shouldly' }
     if ($id -like 'HttpMessageFormatter*') { return 'HttpMessageFormatter' }
     return $null
 }
@@ -114,7 +116,19 @@ foreach ($id in $selected) {
 # later steps of the build.
 $env:PUBLISH_FLUENTASSERTIONS     = $(if ($feeds.Contains('FluentAssertions'))     { 'true' } else { 'false' })
 $env:PUBLISH_AWESOMEASSERTIONS    = $(if ($feeds.Contains('AwesomeAssertions'))    { 'true' } else { 'false' })
+$env:PUBLISH_SHOULDLY             = $(if ($feeds.Contains('Shouldly'))             { 'true' } else { 'false' })
 $env:PUBLISH_HTTPMESSAGEFORMATTER = $(if ($feeds.Contains('HttpMessageFormatter')) { 'true' } else { 'false' })
+
+# The FluentAssertions feed publishes three artifacts: FluentAssertionsPackages
+# (FluentAssertions.Web), FluentAssertionsV8Packages (FluentAssertions.Web.v8) and
+# AssertionsWebPackages (the shared Assertions.Web.Serializers.* package). The feed
+# flag above is true when any one is selected, so it cannot gate a deploy that names
+# just one artifact: the other artifact would be empty and AppVeyor fails a deploy
+# whose artifact the build never produced. Each artifact therefore gets its own flag,
+# matched exactly so FluentAssertions.Web does not also claim the .v8 flavor.
+$env:PUBLISH_FLUENTASSERTIONSWEB = $(if ($selected -contains 'FluentAssertions.Web')             { 'true' } else { 'false' })
+$env:PUBLISH_FLUENTASSERTIONSV8  = $(if ($selected -contains 'FluentAssertions.Web.v8')          { 'true' } else { 'false' })
+$env:PUBLISH_ASSERTIONSWEB       = $(if (@($selected -like 'Assertions.Web.Serializers*').Count) { 'true' } else { 'false' })
 
 # Gates the GitHub release, so a tag that affects nothing does not create an
 # empty release with no assets.
@@ -123,6 +137,7 @@ $env:PUBLISH_ANY = $(if ($feeds.Count -gt 0) { 'true' } else { 'false' })
 $feedResults = [ordered]@{
     FluentAssertions     = $env:PUBLISH_FLUENTASSERTIONS
     AwesomeAssertions    = $env:PUBLISH_AWESOMEASSERTIONS
+    Shouldly             = $env:PUBLISH_SHOULDLY
     HttpMessageFormatter = $env:PUBLISH_HTTPMESSAGEFORMATTER
 }
 
@@ -130,6 +145,9 @@ foreach ($feed in $feedResults.Keys) {
     Write-Host "    PUBLISH_$($feed.ToUpperInvariant()) = $($feedResults[$feed])"
 }
 
+Write-Host "    PUBLISH_FLUENTASSERTIONSWEB = $env:PUBLISH_FLUENTASSERTIONSWEB"
+Write-Host "    PUBLISH_FLUENTASSERTIONSV8 = $env:PUBLISH_FLUENTASSERTIONSV8"
+Write-Host "    PUBLISH_ASSERTIONSWEB = $env:PUBLISH_ASSERTIONSWEB"
 Write-Host "    PUBLISH_ANY = $env:PUBLISH_ANY"
 
 if ($PublishableFeedsFile) {

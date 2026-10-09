@@ -27,7 +27,7 @@ internal class FallbackProcessor : ProcessorBase
         }
 
         // we might get here some StreamContent, let's try to print it
-        // but let's try not to get into this issue again https://github.com/adrianiftode/FluentAssertions.Web/issues/93
+        // but let's try not to get into this issue again https://github.com/adrianiftode/Assertions.Web/issues/93
         var content = await _httpContent!.SafeReadAsStringAsync();
         AppendContentWithinLimits(contentBuilder, content);
     }

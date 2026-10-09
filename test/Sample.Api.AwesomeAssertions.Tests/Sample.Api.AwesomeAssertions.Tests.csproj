@@ -22,11 +22,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AwesomeAssertions.Web\AwesomeAssertions.Web.csproj" />
-    <ProjectReference Include="..\..\src\AwesomeAssertions.Web.Types\AwesomeAssertions.Web.Types.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\Sample.Api.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
+    <Compile Include="..\Sample.Api.FluentAssertions.Tests\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>

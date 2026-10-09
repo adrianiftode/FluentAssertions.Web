@@ -265,15 +265,15 @@ try {
     $allPackages = @(
         'HttpMessageFormatter',
         'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web',
-        'FluentAssertions.Web.Serializers.NewtonsoftJson',
-        'AwesomeAssertions.Web.Serializers.NewtonsoftJson')
+        'Assertions.Web.Serializers.NewtonsoftJson',
+        'Shouldly.Web')
 
     # A serializer has no dependency on the assertion packages, so changing one
     # must publish exactly one package. This is the case the old lockstep
     # pipeline got wrong.
     Invoke-Case 'serializer change publishes only that serializer' `
-        @('src/AwesomeAssertions.Web.Serializers.NewtonsoftJson/Serializer.cs') `
-        @('AwesomeAssertions.Web.Serializers.NewtonsoftJson')
+        @('src/Assertions.Web.Serializers.NewtonsoftJson/Serializer.cs') `
+        @('Assertions.Web.Serializers.NewtonsoftJson')
 
     # The three flavours link-compile src/FluentAssertions.Web, so one edit there
     # affects all of them and nothing else.
@@ -285,24 +285,31 @@ try {
     # packages, so it must never ship without them.
     Invoke-Case 'formatter change pulls in its dependents' `
         @('src/HttpMessageFormatter/Internal/Formatter.cs') `
-        @('HttpMessageFormatter', 'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web')
+        @('HttpMessageFormatter', 'FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web', 'Shouldly.Web')
 
-    # readme.md ships inside the three assertion packages, and not in the others.
-    Invoke-Case 'readme change publishes the packages that embed it' `
+    # The repo readme is no longer embedded by any package, and neither is the
+    # shared Assertions.Web documentation, so doc edits publish nothing.
+    Invoke-Case 'repo readme change publishes nothing' `
         @('readme.md') `
-        @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web')
+        @()
+
+    # Each package packs its own Readme.md, so a local readme edit republishes
+    # that package only.
+    Invoke-Case 'package readme change publishes that package' `
+        @('src/Shouldly.Web/Readme.md') `
+        @('Shouldly.Web')
 
     # A dependency bump changes what ships in every package.
     Invoke-Case 'dependency bump publishes everything' `
         @('Directory.Packages.props') `
         @('FluentAssertions.Web', 'FluentAssertions.Web.v8', 'AwesomeAssertions.Web',
           'HttpMessageFormatter',
-          'FluentAssertions.Web.Serializers.NewtonsoftJson',
-          'AwesomeAssertions.Web.Serializers.NewtonsoftJson')
+          'Assertions.Web.Serializers.NewtonsoftJson',
+          'Shouldly.Web')
 
     # Docs and CI config are in nobody's package.
     Invoke-Case 'docs change publishes nothing' `
-        @('CONVENTIONS.md') `
+        @('CONVENTIONS.md', 'docs/Assertions.Web/Readme.md') `
         @()
 
     # A diff that succeeds but lists nothing means there is genuinely nothing new,

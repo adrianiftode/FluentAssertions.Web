@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <!-- Released independently of the other packages in this repo. See eng/ReleasePackages.props. -->
-    <Version>2.0.5</Version>
+    <Version>3.0.0</Version>
     <PackageDescription>
       This is a FluentAssertions extension over the HttpResponseMessage object.
       It provides specific assertions and outputs rich erros messages that include the HTTP Request and Response.
       This version depends on the commercial version of the FluentAssertions library (&gt;= 8.0.0).
     </PackageDescription>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -21,17 +21,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentAssertions.Web.Types\FluentAssertions.Web.Types.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Assertions.Web\Assertions.Web.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\FluentAssertions.HttpMessageFormatter\FluentAssertions.HttpMessageFormatter.csproj" PrivateAssets="all"/>
     <ProjectReference Include="..\HttpMessageFormatter\HttpMessageFormatter.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../../readme.md" Pack="true" PackagePath="\" />
+    <None Include="Readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
+  <Import Project="..\Assertions.Web.Shared\Assertions.Web.Shared.props" />
+
   <ItemGroup>
-    <Compile Include="..\FluentAssertions.Web\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj">
+    <Compile Include="..\FluentAssertions.Web\**\*.*" Exclude="**\bin\**;**\obj\**;**\Properties\**;**\*.csproj;**\Readme.md">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
       <PackagePath>$(ContentTargetFolders)\src\%RecursiveDir%</PackagePath>
     </Compile>

@@ -1,7 +1,9 @@
-﻿global using AwesomeAssertions.Equivalency;
+﻿global using Assertions.Web;
+global using Assertions.Web.Internal;
+global using Assertions.Web.Internal.Serializers;
+global using AwesomeAssertions.Equivalency;
 global using AwesomeAssertions.Execution;
 global using AwesomeAssertions.Web.Internal;
-global using AwesomeAssertions.Web.Internal.Serializers;
 global using System;
 global using System.Collections.Generic;
 global using System.IO;

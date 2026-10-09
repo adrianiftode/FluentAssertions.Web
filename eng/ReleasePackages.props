@@ -47,33 +47,33 @@
 
     <ReleasePackage Include="FluentAssertions.Web"
                     ProjectPath="src/FluentAssertions.Web/FluentAssertions.Web.csproj"
-                    WatchDirectories="src/FluentAssertions.Web;src/FluentAssertions.Web.Types;src/FluentAssertions.HttpMessageFormatter"
-                    WatchFiles="readme.md;Directory.Packages.props"
+                    WatchDirectories="src/FluentAssertions.Web;src/Assertions.Web.Shared;src/Assertions.Web;src/FluentAssertions.HttpMessageFormatter"
+                    WatchFiles="Directory.Packages.props"
                     DependsOn="HttpMessageFormatter" />
 
     <ReleasePackage Include="FluentAssertions.Web.v8"
                     ProjectPath="src/FluentAssertions.Web.v8/FluentAssertions.Web.v8.csproj"
-                    WatchDirectories="src/FluentAssertions.Web.v8;src/FluentAssertions.Web;src/FluentAssertions.Web.Types;src/FluentAssertions.HttpMessageFormatter"
-                    WatchFiles="readme.md;Directory.Packages.props"
+                    WatchDirectories="src/FluentAssertions.Web.v8;src/FluentAssertions.Web;src/Assertions.Web.Shared;src/Assertions.Web;src/FluentAssertions.HttpMessageFormatter"
+                    WatchFiles="Directory.Packages.props"
                     DependsOn="HttpMessageFormatter" />
 
     <ReleasePackage Include="AwesomeAssertions.Web"
                     ProjectPath="src/AwesomeAssertions.Web/AwesomeAssertions.Web.csproj"
-                    WatchDirectories="src/AwesomeAssertions.Web;src/AwesomeAssertions.Web.Types;src/AwesomeAssertions.HttpMessageFormatter;src/FluentAssertions.Web"
-                    WatchFiles="readme.md;Directory.Packages.props"
+                    WatchDirectories="src/AwesomeAssertions.Web;src/Assertions.Web.Shared;src/Assertions.Web;src/AwesomeAssertions.HttpMessageFormatter;src/FluentAssertions.Web"
+                    WatchFiles="Directory.Packages.props"
                     DependsOn="HttpMessageFormatter" />
 
-    <ReleasePackage Include="FluentAssertions.Web.Serializers.NewtonsoftJson"
-                    ProjectPath="src/FluentAssertions.Web.Serializers.NewtonsoftJson/FluentAssertions.Web.Serializers.NewtonsoftJson.csproj"
-                    WatchDirectories="src/FluentAssertions.Web.Serializers.NewtonsoftJson;src/FluentAssertions.Web.Types"
+    <ReleasePackage Include="Assertions.Web.Serializers.NewtonsoftJson"
+                    ProjectPath="src/Assertions.Web.Serializers.NewtonsoftJson/Assertions.Web.Serializers.NewtonsoftJson.csproj"
+                    WatchDirectories="src/Assertions.Web.Serializers.NewtonsoftJson;src/Assertions.Web"
                     WatchFiles="Directory.Packages.props"
                     DependsOn="" />
 
-    <ReleasePackage Include="AwesomeAssertions.Web.Serializers.NewtonsoftJson"
-                    ProjectPath="src/AwesomeAssertions.Web.Serializers.NewtonsoftJson/AwesomeAssertions.Web.Serializers.NewtonsoftJson.csproj"
-                    WatchDirectories="src/AwesomeAssertions.Web.Serializers.NewtonsoftJson;src/AwesomeAssertions.Web.Types"
+    <ReleasePackage Include="Shouldly.Web"
+                    ProjectPath="src/Shouldly.Web/Shouldly.Web.csproj"
+                    WatchDirectories="src/Shouldly.Web;src/Assertions.Web;src/Assertions.Web.Shared"
                     WatchFiles="Directory.Packages.props"
-                    DependsOn="" />
+                    DependsOn="HttpMessageFormatter" />
   </ItemGroup>
 
 </Project>

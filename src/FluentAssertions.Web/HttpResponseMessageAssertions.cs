@@ -42,10 +42,7 @@ public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<Htt
     protected override string Identifier => $"{nameof(HttpResponseMessage)}";
 
     private protected string? GetContent()
-    {
-        Func<Task<string?>> content = () => Subject.GetStringContent();
-        return content.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
-    }
+        => Subject!.ReadContentAsString();
 
     private protected (bool success, string? errorMessage) TryGetSubjectModel<TModel>(out TModel? model)
     {
@@ -56,29 +53,9 @@ public partial class HttpResponseMessageAssertions : ReferenceTypeAssertions<Htt
 
     private protected (bool success, string? errorMessage) TryGetSubjectModel(out object? model, Type modelType)
     {
-#if AAV
-        var serializer = AwesomeAssertionsWebConfig.Serializer;
-#else
-        var serializer = FluentAssertionsWebConfig.Serializer;
-#endif
-        
-        Func<Task<object?>> readModel = () => Subject.Content.ReadAsAsync(modelType, serializer);
-        try
-        {
-            model = readModel.ExecuteInDefaultSynchronizationContext().GetAwaiter().GetResult();
-            return (true, null);
-        }
-        catch (Exception ex) when (ex is DeserializationException or NotSupportedException)
-        {
-            model = default;
-            var message = ex.Message;
-            if (ex.InnerException != null)
-            {
-                message += $": {ex.InnerException.Message}";
-            }
-
-            return (false, message);
-        }
+        var (success, errorMessage, readModel) = Subject!.TryReadModel(modelType);
+        model = readModel;
+        return (success, errorMessage);
     }
 
     private string[] CollectFailuresFromAssertion<TAsserted>(Action<TAsserted> assertion, TAsserted subject)

@@ -1,4 +1,4 @@
-﻿#if AAV
+#if AAV
 namespace AwesomeAssertions.Web;
 #else
 namespace FluentAssertions.Web;
@@ -37,7 +37,7 @@ public partial class HttpResponseMessageAssertions
         Execute.Assertion
 #endif
             .BecauseOf(because, becauseArgs)
-            .ForCondition(Subject!.StatusCode < HttpStatusCode.OK)
+            .ForCondition(Subject!.StatusCode.IsInformational())
             .FailWith("Expected {context:response} to have an HTTP status code representing an informational error, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
@@ -76,7 +76,7 @@ public partial class HttpResponseMessageAssertions
         Execute.Assertion
 #endif
             .BecauseOf(because, becauseArgs)
-            .ForCondition(Subject!.IsSuccessStatusCode)
+            .ForCondition(Subject!.StatusCode.IsSuccessful())
             .FailWith("Expected {context:response} to have a successful HTTP status code, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
@@ -115,7 +115,7 @@ public partial class HttpResponseMessageAssertions
         Execute.Assertion
 #endif
             .BecauseOf(because, becauseArgs)
-            .ForCondition(Subject!.StatusCode >= HttpStatusCode.Moved && Subject!.StatusCode < HttpStatusCode.BadRequest)
+            .ForCondition(Subject!.StatusCode.IsRedirection())
             .FailWith("Expected {context:response} to have an HTTP status code representing a redirection, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
@@ -158,7 +158,7 @@ public partial class HttpResponseMessageAssertions
         Execute.Assertion
 #endif
             .BecauseOf(because, becauseArgs)
-            .ForCondition(Subject!.StatusCode >= HttpStatusCode.BadRequest && Subject!.StatusCode < HttpStatusCode.InternalServerError)
+            .ForCondition(Subject!.StatusCode.IsClientError())
             .FailWith("Expected {context:response} to have an HTTP status code representing a client error, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 
@@ -197,7 +197,7 @@ public partial class HttpResponseMessageAssertions
         Execute.Assertion
 #endif
             .BecauseOf(because, becauseArgs)
-            .ForCondition(Subject!.StatusCode >= HttpStatusCode.InternalServerError)
+            .ForCondition(Subject!.StatusCode.IsServerError())
             .FailWith("Expected {context:response} to have an HTTP status code representing a server error, but it was {0}{reason}.{1}",
                 Subject!.StatusCode, Subject);
 

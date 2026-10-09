@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);SH</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- No FluentAssertions: this project tests the Shouldly port only. -->
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Shouldly.Web\Shouldly.Web.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web\Assertions.Web.csproj" />
+    <ProjectReference Include="..\..\src\Assertions.Web.Serializers.NewtonsoftJson\Assertions.Web.Serializers.NewtonsoftJson.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FluentAssertions.Web.Tests\**\*.cs"
+             Exclude="..\FluentAssertions.Web.Tests\bin\**;..\FluentAssertions.Web.Tests\obj\**;..\FluentAssertions.Web.Tests\Internal\**;..\FluentAssertions.Web.Tests\GlobalUsings.cs">
+      <Link>Shared\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- v1 leftovers and test artifacts sitting in this directory (gitignored); never compile them. -->
+    <Compile Remove="Backup\**" />
+    <Compile Remove="TestResults\**" />
+  </ItemGroup>
+
+</Project>

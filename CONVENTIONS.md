@@ -26,8 +26,7 @@ src/
  FluentAssertions.Web/ ← THE single source of truth for all assertion code
  FluentAssertions.Web.v8/ ← no .cs files; link-compiles the above with FAV8
  AwesomeAssertions.Web/ ← no .cs files; link-compiles the above with FAV8;AAV
- FluentAssertions.Web.Types/ ← ISerializer, FluentAssertionsWebConfig, DeserializationException
- AwesomeAssertions.Web.Types/ ← link-compiles the above with AAV
+ Assertions.Web/ ← ISerializer, AssertionsWebConfig, DeserializationException, shared contract of every flavour
  HttpMessageFormatter/ ← assertion-framework-agnostic HTTP formatter (own NuGet package)
  FluentAssertions.HttpMessageFormatter/ ← 20-line IValueFormatter adapter onto the above
  AwesomeAssertions.HttpMessageFormatter/ ← link-compiles the above with AAV
@@ -36,6 +35,7 @@ test/
  FluentAssertions.Web.Tests/ ← THE single source of truth for all specs
  FluentAssertions.Web.v8.Tests/ ← link-compiles the above with FAV8
  AwesomeAssertions.Web.Tests/ ← link-compiles the above with FAV8;AAV
+ Assertions.Web.Tests/ ← specs of the shared contract assembly (AssertionsWebConfig, DeserializationException)
  HttpMessageFormatter.Tests/ ← formatter-only, framework-agnostic
  Sample.Api.Tests/ (+ .v8, .AwesomeAssertions) ← end-to-end tests against samples/
 samples/ ← ASP.NET Core sample APIs used by the e2e tests
@@ -290,7 +290,7 @@ Style rules, all **[Established]**:
 
 Only `HttpResponseMessage` is asserted. Body handling: content is read as string once, or as a
 `System.Text.Json.JsonDocument` for the BadRequest assertions. Deserialization goes through the replaceable
-`ISerializer` (`FluentAssertionsWebConfig.Serializer`, default `SystemTextJsonSerializer`); failures surface as
+`ISerializer` (`AssertionsWebConfig.Serializer`, default `SystemTextJsonSerializer`); failures surface as
 `DeserializationException` and are converted into an assertion failure carrying the serializer's own message.
 **[Established]**
 

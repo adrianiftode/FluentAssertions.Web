@@ -13,8 +13,8 @@
   <PropertyGroup>
     <Authors>Adrian Iftode</Authors>
     <PackageTags>fluentassertions;awesomeassertions;httpresponsemessage;fluentassertionsweb;awesomeassertionsweb;unit;unittest;integration;integrationtest;functionaltest</PackageTags>
-    <PackageProjectUrl>https://github.com/adrianiftode/FluentAssertions.Web</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/adrianiftode/FluentAssertions.Web</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/adrianiftode/Assertions.Web</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/adrianiftode/Assertions.Web</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
