@@ -204,12 +204,14 @@ after_test:
         -PublishableFeedsFile "$env:APPVEYOR_BUILD_FOLDER\publishable-feeds.txt"
 
 artifacts:
-  # Anchored to the package id via the '.' after the name: '**\Assertions.Web*.nupkg'
-  # is a substring match that also claims FluentAssertions.Web*, FluentAssertions.Web.v8*
-  # and AwesomeAssertions.Web*. AppVeyor gives each file to the first artifact whose
-  # glob matches, so that shadowed the three flavoured artifacts below and sent
-  # AwesomeAssertions.Web to the FluentAssertions feed key, which rejected it (403).
-  - path: '**\Assertions.Web.*.nupkg'
+  # AppVeyor's artifact glob is not anchored to a path segment: '**\Assertions.Web*.nupkg'
+  # (and even '**\Assertions.Web.*.nupkg') matched FluentAssertions.Web* and
+  # AwesomeAssertions.Web* because the name matches as a substring, and AppVeyor gives
+  # each file to the first matching artifact. That starved the per flavoured artifacts
+  # below, so their NuGet deploys saw no artifacts and AwesomeAssertions.Web was pushed
+  # to the FluentAssertions feed key, which rejected it (403). Anchor the shared
+  # serializer to its project output path, exactly as the FluentAssertions flavours are.
+  - path: 'src\Assertions.Web.Serializers.NewtonsoftJson\bin\**\*.nupkg'
     name: AssertionsWebPackages
 
   # FluentAssertions.Web and FluentAssertions.Web.v8 are isolated by project output
@@ -332,6 +334,10 @@ deploy:
     auth_token:
       secure: WXU/Xj3ntIZVx89KDAa/V/FGerV2fURqVQJxrKIqMcCijmXeC065twmHPYQMWGBabafs1llkLbe6DMKRAGnz+GxwH8GpT3A86rcSOLxbsp4uRkeMRsLxWHI+eDHTonOY
     artifact: /.*(Packages?|\.nupkg)/
+    # force_update lets a rerun replace the release and its assets instead of
+    # failing because the release already exists (the AppVeyor default). A tag
+    # whose first deploy got part way through must be rerunnable.
+    force_update: true
     on:
       appveyor_repo_tag: true
       PUBLISH_ALLOWED: true
