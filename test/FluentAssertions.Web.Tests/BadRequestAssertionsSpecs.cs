@@ -477,7 +477,7 @@ public class BadRequestAssertionsSpecs
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string expectedField)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string? expectedField)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -498,7 +498,7 @@ public class BadRequestAssertionsSpecs
         Action act = () =>
         {
             subject.ShouldBe400BadRequest();
-            subject.ShouldHaveError(expectedField, "*required*");
+            subject.ShouldHaveError(expectedField!, "*required*");
         };
 
         // Assert
@@ -507,7 +507,7 @@ public class BadRequestAssertionsSpecs
 #else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.HaveError(expectedField, "*required*");
+            .And.HaveError(expectedField!, "*required*");
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -518,7 +518,7 @@ public class BadRequestAssertionsSpecs
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string expectedWildcardErrorMessage)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string? expectedWildcardErrorMessage)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -539,7 +539,7 @@ public class BadRequestAssertionsSpecs
         Action act = () =>
         {
             subject.ShouldBe400BadRequest();
-            subject.ShouldHaveError("Author", expectedWildcardErrorMessage);
+            subject.ShouldHaveError("Author", expectedWildcardErrorMessage!);
         };
 
         // Assert
@@ -548,7 +548,7 @@ public class BadRequestAssertionsSpecs
 #else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.HaveError("Author", expectedWildcardErrorMessage);
+            .And.HaveError("Author", expectedWildcardErrorMessage!);
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -773,7 +773,7 @@ public class BadRequestAssertionsSpecs
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveErrorMessage_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string expectedWildcardErrorMessage)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_HaveErrorMessage_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string? expectedWildcardErrorMessage)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -794,7 +794,7 @@ public class BadRequestAssertionsSpecs
         Action act = () =>
         {
             subject.ShouldBe400BadRequest();
-            subject.ShouldHaveErrorMessage(expectedWildcardErrorMessage);
+            subject.ShouldHaveErrorMessage(expectedWildcardErrorMessage!);
         };
 
         // Assert
@@ -803,7 +803,7 @@ public class BadRequestAssertionsSpecs
 #else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.HaveErrorMessage(expectedWildcardErrorMessage);
+            .And.HaveErrorMessage(expectedWildcardErrorMessage!);
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -949,7 +949,7 @@ public class BadRequestAssertionsSpecs
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_NotHaveError_against_null_or_empty_string_value_for_the_expected_error_field_it_should_throw_with_descriptive_message(string expectedErrorField)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_NotHaveError_against_null_or_empty_string_value_for_the_expected_error_field_it_should_throw_with_descriptive_message(string? expectedErrorField)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -970,7 +970,7 @@ public class BadRequestAssertionsSpecs
         Action act = () =>
         {
             subject.ShouldBe400BadRequest();
-            subject.ShouldNotHaveError(expectedErrorField);
+            subject.ShouldNotHaveError(expectedErrorField!);
         };
 
         // Assert
@@ -979,7 +979,7 @@ public class BadRequestAssertionsSpecs
 #else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.NotHaveError(expectedErrorField);
+            .And.NotHaveError(expectedErrorField!);
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -1259,7 +1259,7 @@ public class BadRequestAssertionsSpecs
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string expectedField)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_field_it_should_throw_with_descriptive_message(string? expectedField)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -1280,7 +1280,7 @@ public class BadRequestAssertionsSpecs
         Action act = () =>
         {
             subject.ShouldBe400BadRequest();
-            subject.ShouldOnlyHaveError(expectedField, "*required*");
+            subject.ShouldOnlyHaveError(expectedField!, "*required*");
         };
 
         // Assert
@@ -1289,7 +1289,7 @@ public class BadRequestAssertionsSpecs
 #else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.OnlyHaveError(expectedField, "*required*");
+            .And.OnlyHaveError(expectedField!, "*required*");
 
         // Assert
         act.Should().Throw<ArgumentException>()
@@ -1300,7 +1300,7 @@ public class BadRequestAssertionsSpecs
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string expectedWildcardErrorMessage)
+    public void When_asserting_bad_request_response_to_be_BadRequest_And_OnlyHaveError_against_null_or_empty_string_value_for_the_error_message_it_should_throw_with_descriptive_message(string? expectedWildcardErrorMessage)
     {
         // Arrange
         using var subject = new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -1321,7 +1321,7 @@ public class BadRequestAssertionsSpecs
         Action act = () =>
         {
             subject.ShouldBe400BadRequest();
-            subject.ShouldOnlyHaveError("Author", expectedWildcardErrorMessage);
+            subject.ShouldOnlyHaveError("Author", expectedWildcardErrorMessage!);
         };
 
         // Assert
@@ -1330,7 +1330,7 @@ public class BadRequestAssertionsSpecs
 #else
         // Act
         Action act = () => subject.Should().Be400BadRequest()
-            .And.OnlyHaveError("Author", expectedWildcardErrorMessage);
+            .And.OnlyHaveError("Author", expectedWildcardErrorMessage!);
 
         // Assert
         act.Should().Throw<ArgumentException>()

@@ -46,6 +46,52 @@ public sealed class ResponseFormatterOptionsTests : IDisposable
         message.ShouldNotContain("+");
     }
 
+    [Fact]
+    public void ShouldMatchInContent_ShouldLimitTheActualContentInTheFailureMessage()
+    {
+        // Arrange
+        AssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
+        {
+            MaximumReadableBytes = 20
+        };
+        using var subject = new HttpResponseMessage(HttpStatusCode.NotFound)
+        {
+            Content = new StringContent(new string('-', 50) + new string('+', 50))
+        };
+
+        // Act
+        var act = () => subject.ShouldMatchInContent("*i-am-not-there*");
+
+        // Assert
+        var message = act.ShouldThrow<ShouldAssertException>().Message;
+        message.ShouldContain("Content is too large to display");
+        message.ShouldContain(new string('-', 20));
+        message.ShouldNotContain("+");
+    }
+
+    [Fact]
+    public void ShouldBeEmpty_ShouldLimitTheActualContentInTheFailureMessage()
+    {
+        // Arrange
+        AssertionsWebConfig.ResponseFormatterOptions = new HttpResponseFormatterOptions
+        {
+            MaximumReadableBytes = 20
+        };
+        using var subject = new HttpResponseMessage(HttpStatusCode.NotFound)
+        {
+            Content = new StringContent(new string('-', 50) + new string('+', 50))
+        };
+
+        // Act
+        var act = () => subject.ShouldBeEmpty();
+
+        // Assert
+        var message = act.ShouldThrow<ShouldAssertException>().Message;
+        message.ShouldContain("Content is too large to display");
+        message.ShouldContain(new string('-', 20));
+        message.ShouldNotContain("+");
+    }
+
     public void Dispose()
     {
         AssertionsWebConfig.ResponseFormatterOptions = _initialResponseFormatterOptions;

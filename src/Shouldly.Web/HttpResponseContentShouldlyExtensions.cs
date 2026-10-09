@@ -25,8 +25,12 @@ public static class HttpResponseContentShouldlyExtensions
         var response = ResponseGuard.EnsureNotNull(actual, customMessage, actualExpression);
         var content = response.ReadContentAsString();
 
+        // Assert on the display value, not the original: it only ever differs from the original when the
+        // content is too large to print, in which case the truncated value is still non-empty and the
+        // assertion still fails with the same wording, only bounded.
         ShouldlyWebFailure.Rethrow(response,
-            () => content.ShouldBeNullOrEmpty(customMessage, $"{actualExpression}.Content"));
+            () => ShouldlyWebFailure.TruncateContentForMessage(content)
+                .ShouldBeNullOrEmpty(customMessage, $"{actualExpression}.Content"));
     }
 
     /// <summary>
@@ -79,7 +83,7 @@ public static class HttpResponseContentShouldlyExtensions
         {
             throw ShouldlyWebFailure.Create(response, new ExpectedActualShouldlyMessage(
                 expectedWildcardText,
-                content,
+                ShouldlyWebFailure.TruncateContentForMessage(content),
                 customMessage,
                 shouldlyMethod: nameof(ShouldMatchInContent),
                 actualExpression: $"{actualExpression}.Content"));

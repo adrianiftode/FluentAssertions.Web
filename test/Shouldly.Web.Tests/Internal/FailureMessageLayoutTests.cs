@@ -442,6 +442,163 @@ public class FailureMessageLayoutTests
             """));
     }
 
+    // The BadRequest assertions pass an explicit prose verb instead of nameof(...), because one method
+    // maps to several distinct failures. These tests pin every verb.
+
+    [Fact]
+    public void ShouldHaveError_missing_field_uses_the_should_have_error_layout()
+    {
+        using var response = BadRequest("""{ "errors": { "Author": ["The Author field is required."] } }""");
+
+        var message = Capture(() => response.ShouldHaveError("Missing", "The Author*", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Errors
+                should have error
+            "Missing"
+                but was
+            ["Author"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldHaveError_unmatching_message_uses_the_should_have_error_message_layout()
+    {
+        using var response = BadRequest("""{ "errors": { "Author": ["The Author field is required."] } }""");
+
+        var message = Capture(() => response.ShouldHaveError("Author", "*other*", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Errors["Author"]
+                should have error message
+            "*other*"
+                but was
+            ["The Author field is required."]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldNotHaveError_present_field_uses_the_should_not_have_error_layout()
+    {
+        using var response = BadRequest("""{ "errors": { "Author": ["The Author field is required."] } }""");
+
+        var message = Capture(() => response.ShouldNotHaveError("Author", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Errors
+                should not have error
+            "Author"
+                but was
+            ["Author"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldOnlyHaveError_missing_field_uses_the_should_only_have_error_layout()
+    {
+        using var response = BadRequest("""{ "errors": { "Author": ["The Author field is required."] } }""");
+
+        var message = Capture(() => response.ShouldOnlyHaveError("Missing", "The Author*", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Errors
+                should only have error
+            "Missing"
+                but was
+            ["Author"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldOnlyHaveError_extra_field_uses_the_should_only_contain_this_error_field_layout()
+    {
+        using var response = BadRequest(
+            """{ "errors": { "Author": ["The Author field is required."], "Content": ["The Content field is required."] } }""");
+
+        var message = Capture(() => response.ShouldOnlyHaveError("Author", "The Author*", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Errors
+                should only contain this error field
+            "Author"
+                but was
+            ["Author", "Content"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldOnlyHaveError_extra_message_uses_the_should_only_have_error_message_layout()
+    {
+        using var response = BadRequest("""{ "errors": { "Author": ["first match", "second"] } }""");
+
+        var message = Capture(() => response.ShouldOnlyHaveError("Author", "*match*", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Errors["Author"]
+                should only have error message
+            "*match*"
+                but was
+            ["first match", "second"]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    [Fact]
+    public void ShouldHaveErrorMessage_no_match_uses_the_should_have_error_message_layout()
+    {
+        using var response = BadRequest("""{ "errors": { "Author": ["The Author field is required."] } }""");
+
+        var message = Capture(() => response.ShouldHaveErrorMessage("*nothing*", "we need it"));
+
+        message.ShouldBe(Normalise("""
+            response.Errors
+                should have error message
+            "*nothing*"
+                but was
+            ["The Author field is required."]
+
+            Additional Info:
+                we need it
+
+            The HTTP response was:
+            """));
+    }
+
+    private static HttpResponseMessage BadRequest(string errorsJson)
+        => new(HttpStatusCode.BadRequest)
+        {
+            Content = new StringContent(errorsJson, Encoding.UTF8, "application/problem+json")
+        };
+
     private static string Capture(Action act) =>
         Normalise(CutDump(Should.Throw<ShouldAssertException>(act).Message));
 

@@ -185,6 +185,26 @@ public class SatisfyMultipleConditionsTests
     }
 
     [Fact]
+    public void Nested_shouldly_web_conditions_are_condensed_into_a_single_dump()
+    {
+        using var message = new HttpResponseMessage(HttpStatusCode.OK);
+
+        var failure = ((Action)(() => message.ShouldSatisfy([
+            r => r.ShouldBe201Created(),
+            r => r.ShouldHaveHeader("X-A")])))
+            .ShouldFailWith(
+                "message",
+                "should satisfy all the conditions specified, but does not.",
+                "Error 1",
+                "Error 2",
+                "The HTTP response was:");
+
+        // Both conditions fail through Shouldly.Web, so before the suppression each would append its own
+        // dump and the outer assertion a third one. Exactly one dump must survive.
+        CountOccurrences(failure, "The HTTP response was:").ShouldBe(1);
+    }
+
+    [Fact]
     public void The_thrown_exception_has_no_inner_exception_printing_the_same_failure_again()
     {
         using var response = new HttpResponseMessage();

@@ -1188,7 +1188,7 @@ response.Should().BeAs(new { Author = "John", Content = "Hey, you..." });
 response.Should().HaveHttpStatusCode(HttpStatusCode.Accepted);
 response.Should().MatchInContent("*\"commentId\": 1*");
 response.Should().Satisfy<IEnumerable<Comment>>(comments => comments.Should().HaveCount(2));
-response.Should().Satisfy(response => response.Headers.Contains("X-Correlation-ID"));
+response.Should().Satisfy(r => r.Headers.Contains("X-Correlation-ID").Should().BeTrue());
 ```
 
 <details>
@@ -1472,7 +1472,7 @@ response.ShouldSatisfy<IEnumerable<Comment>>(comments => comments.Count().Should
 
 // Several conditions, each its own entry: every failing assertion is reported, not only the first.
 response.ShouldSatisfy([
-    r => r.Headers.Contains("X-Correlation-ID"),
+    r => r.ShouldHaveHeader("X-Correlation-ID"),
     r => r.Headers.AcceptRanges.ShouldContain("byte")]);
 ```
 

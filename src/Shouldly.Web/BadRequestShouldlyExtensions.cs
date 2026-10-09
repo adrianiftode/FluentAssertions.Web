@@ -42,10 +42,11 @@ public static class BadRequestShouldlyExtensions
                 expectedErrorField, errors.Fields, customMessage, "should have error", $"{actualExpression}.Errors"));
         }
 
-        if (!errors.MessagesOf(expectedErrorField).Any(message => message.WildcardMatch(expectedWildcardErrorMessage)))
+        var messages = errors.MessagesOf(expectedErrorField);
+        if (!messages.Any(message => message.WildcardMatch(expectedWildcardErrorMessage)))
         {
             throw ShouldlyWebFailure.Create(response, new ExpectedActualShouldlyMessage(
-                expectedWildcardErrorMessage, errors.MessagesOf(expectedErrorField), customMessage,
+                expectedWildcardErrorMessage, messages, customMessage,
                 "should have error message", $"{actualExpression}.Errors[\"{expectedErrorField}\"]"));
         }
     }

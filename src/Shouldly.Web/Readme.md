@@ -43,7 +43,7 @@ Pass the assertions of a `ShouldSatisfy` check as a collection of conditions and
 
 ```csharp
 response.ShouldSatisfy([
-    r => r.Headers.Contains("X-Correlation-ID"),
+    r => r.ShouldHaveHeader("X-Correlation-ID"),
     r => r.Headers.AcceptRanges.ShouldContain("byte")]);
 ```
 
