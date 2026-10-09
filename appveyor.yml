@@ -221,11 +221,10 @@ artifacts:
   - path: '**\Shouldly.Web*.nupkg'
     name: ShouldlyPackages
 
-  # Everything this release produced, regardless of feed. The GitHub release uses
-  # this one artifact, because listing three artifact names would break whenever a
-  # release only touches one of the feeds and the other artifacts stay empty.
-  - path: '**\*.nupkg'
-    name: ReleasePackages
+  # There is deliberately no catch-all '**\*.nupkg' artifact. AppVeyor gives each
+  # file to the first artifact whose glob matches it, so the globs above claim
+  # every nupkg and a catch-all would collect zero files. The GitHub release below
+  # selects the named artifacts by regex instead.
 
 deploy:
   # Three things must all be true to publish:
@@ -310,12 +309,17 @@ deploy:
       PUBLISH_SHOULDLY: true
 
   # The GitHub release carries the .nupkg files, so it is created only when at
-  # least one package is actually being published.
+  # least one package is actually being published. It selects artifacts by regex,
+  # not by name: an explicit list fails when one flavour's artifact is empty, and
+  # a named catch-all is shadowed by the per-flavour globs (that is what left the
+  # 2.0.5 release with no assets). The regex matches every artifact deployment
+  # name (each ends in "Package" or "Packages") and, as a fallback, any .nupkg
+  # file path.
   - provider: GitHub
     release: $(APPVEYOR_REPO_TAG_NAME)
     auth_token:
       secure: WXU/Xj3ntIZVx89KDAa/V/FGerV2fURqVQJxrKIqMcCijmXeC065twmHPYQMWGBabafs1llkLbe6DMKRAGnz+GxwH8GpT3A86rcSOLxbsp4uRkeMRsLxWHI+eDHTonOY
-    artifact: ReleasePackages
+    artifact: /.*(Packages?|\.nupkg)/
     on:
       appveyor_repo_tag: true
       PUBLISH_ALLOWED: true
